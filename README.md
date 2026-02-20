@@ -1,83 +1,153 @@
 # Forge
 
-## About
+**Generate polished, domain-specific iOS apps in minutes.**
 
-Forge is a production-ready iOS 26+ SwiftUI template that ships with MVVM, AppRouter navigation, and clean integrations for Firebase, Mixpanel, RevenueCat, and Google Sign-In. It’s designed to stay simple at the surface while scaling to real-world product complexity.
+Forge is a monorepo scaffolding product that generates production-ready iOS apps with SwiftUI, Firebase, RevenueCat, and a clean design system. Choose an archetype, configure your features, and get a $50K-looking app from the CLI.
 
+---
 
-## Features
-
-- AppRouter-powered navigation (tabs + deep links + sheets)
-- MVVM views with `@Observable` view models
-- Three build configurations (Mock, Dev, Production)
-- Firebase integration (Auth, Firestore, Analytics, Crashlytics)
-- RevenueCat for in-app purchases
-- Mixpanel analytics
-- Consent + ATT settings
-- Push notification routing hooks
-- Gamification system (Streaks, XP, Progress)
-
-## Requirements
-
-- Xcode 16+ (iOS 26 SDK)
-- Swift 5.9+
-
-## Getting Started
-
-See [docs/getting-started.md](docs/getting-started.md) for the full guide, including build configurations, Firebase setup, and RevenueCat configuration.
-
-**Quick start (zero credentials):**
-1. Clone this repository
-2. Open in Xcode, select **Forge - Mock** scheme
-3. Run on simulator — no credentials needed, no API keys
-
-**For production setup:**
-- [Getting Started](docs/getting-started.md) — prerequisites, build configs, Firebase and RevenueCat setup
-- [Architecture Guide](docs/architecture.md) — MVVM layers, data flow, conventions
-- [Adding a Feature](docs/adding-a-feature.md) — step-by-step guide with a complete worked example
-
-## Build
-
-Use direct `xcodebuild`:
+## Quick Start
 
 ```bash
-xcodebuild -project Forge.xcodeproj -scheme "Forge - Mock" -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.2' build
+cd forge-cli
+swift build
+.build/debug/forge
 ```
 
-Resolve all app warnings before shipping. External package warnings are acceptable.
+The interactive wizard walks you through:
+1. **Archetype** — What are you building? (Blank, Finance Tracker, more coming)
+2. **Project name** — Your app's name
+3. **Bundle ID** — Reverse-domain identifier
+4. **Auth providers** — Apple, Google, Email, Anonymous
+5. **Monetization** — Subscription, One-Time, Free
+6. **Analytics** — Firebase, Mixpanel, Crashlytics
+7. **Features** — Onboarding, Push, A/B Testing, Image Upload
 
-## Scripts
+Generated project opens in Xcode, builds immediately.
 
-- `rename_project.sh` - Rename the project (optional `--bundle-id` and `--display-name`)
-- `scripts/new-app.sh` - Copy the template to a new folder and rename in one step
-- `scripts/setup-secrets.sh` - Create `Secrets.xcconfig.local` from the example file
+---
 
-## Navigation
+## Archetypes
 
-- Tabs and routes are defined in `Forge/App/Navigation/`
-- Use `AppRoute` for push navigation and `AppSheet` for modal flows
-- Deep links are handled via `.onOpenURL` in `AppTabsView`
+| Archetype | Screens | Description |
+|-----------|---------|-------------|
+| **Blank** | Home, Settings | Clean shell with auth, onboarding, paywall |
+| **Finance Tracker** | Dashboard, Transactions, Budgets, Reports | SwiftData + Swift Charts finance app |
 
-## Internal Packages (SPM)
+### Creating Your Own Archetype
 
-The shared modules live in `forge-core-packages` and are consumed as a single SPM dependency (Core + DesignSystem).
+1. Create `Archetypes/{id}/manifest.json` with tabs, routes, screens, models
+2. Add Swift files under `Archetypes/{id}/files/` mirroring the app structure
+3. Run `forge --archetype {id}` to test
 
-- Remote dependency: `https://github.com/sakhnenkoff/forge-core-packages.git`
-- Local override: in Xcode, use `File > Packages > Add Local...` to point to a local clone when iterating
+See `Archetypes/finance/manifest.json` for a complete example.
 
-## SDKs Used
+---
 
-- Firebase (Auth, Firestore, Analytics, Crashlytics, Messaging, RemoteConfig, Storage)
-- Mixpanel
-- RevenueCat
-- GoogleSignIn
+## Architecture
 
-## Documentation
+```
+forge/
+├── Forge/                    # iOS app template (SwiftUI, MVVM)
+│   ├── App/                  # Entry point, navigation, dependencies
+│   ├── Features/             # Home, Auth, Onboarding, Paywall, Settings
+│   ├── Managers/             # Auth, Purchases, Push, Logs, User, Data
+│   ├── Components/           # Reusable UI components
+│   ├── Extensions/           # Swift extensions
+│   └── Utilities/            # Config, feature flags, constants
+├── ForgeUnitTests/           # Unit tests
+├── Packages/core-packages/   # SPM: DesignSystem, Core, CoreMock
+├── Archetypes/               # Domain-specific app archetypes
+│   ├── blank/                # Default clean shell
+│   └── finance/              # Finance Tracker archetype
+├── forge-cli/                # CLI tool for project generation
+│   └── Sources/ForgeCLI/
+│       ├── Commands/         # GenerateCommand, ProgrammaticMode
+│       ├── Generator/        # ProjectGenerator, TemplateEngine
+│       ├── Archetypes/       # ArchetypeManifest, Injector, Registry
+│       ├── Wizard/           # Interactive wizard flow
+│       ├── Registry/         # Feature manifests, dependency resolver
+│       └── Output/           # Console formatting, next steps
+└── Forge.xcodeproj           # Xcode project (3 schemes)
+```
 
-- [Getting Started](docs/getting-started.md) — prerequisites, build configs, Firebase and RevenueCat setup
-- [Architecture Guide](docs/architecture.md) — MVVM layers, data flow, conventions
-- [Adding a Feature](docs/adding-a-feature.md) — step-by-step guide with a complete worked example
+### Build Configurations
+
+| Config | Use Case |
+|--------|----------|
+| **Mock** | Fast development, no Firebase, mock services |
+| **Development** | Real Firebase with dev credentials |
+| **Production** | Real Firebase with production credentials |
+
+---
+
+## Design System (v2)
+
+15 core components, one adaptive theme, no gimmicks.
+
+### Components
+
+| Component | Purpose |
+|-----------|---------|
+| `DSButton` | Primary, secondary, tertiary, destructive styles |
+| `DSIconButton` | Icon-only buttons with optional background |
+| `DSTextField` | Styled text input |
+| `DSScreen` | Scrollable screen container with navigation title |
+| `DSCard` | Clean card container |
+| `DSListCard` | Card optimized for list rows |
+| `DSListRow` | Compact list row with icon and trailing control |
+| `DSSection` | Section with title header |
+| `DSSectionHeader` | Standalone section header |
+| `DSChoiceButton` | Selectable choice for surveys/onboarding |
+| `DSSegmentedControl` | Animated segment picker |
+| `DSPillToggle` | Custom boolean toggle |
+| `EmptyStateView` | Empty state with icon, title, action |
+| `ErrorStateView` | Error state with retry |
+| `LoadingView` | Loading indicator |
+| `ToastView` | Success/error/warning/info toasts |
+
+### Theme
+
+```swift
+// In your app's init:
+DesignSystem.configure(theme: AdaptiveTheme(brandColor: .indigo))
+```
+
+All colors derive from the single `brandColor`. Token system: `ColorPalette`, `TypographyScale`, `SpacingScale`, `RadiiScale`, `ShadowScale`, `LayoutScale`.
+
+---
+
+## CLI Usage
+
+### Interactive Mode
+```bash
+forge
+```
+
+### Flag Mode (partial or full)
+```bash
+forge --projectName MyApp --preset standard --archetype finance
+```
+
+### Programmatic Mode (for AI agents)
+```bash
+echo '{"projectName":"MyApp","bundleId":"com.me.myapp","authProviders":["apple"],"monetizationModel":"subscription","analyticsServices":["firebase"],"features":["onboarding"],"archetype":"finance"}' | forge --programmatic
+```
+
+---
+
+## Tech Stack
+
+- **UI**: SwiftUI (iOS 18+), Swift 6.0+
+- **Auth**: Firebase Auth, Sign in with Apple, Google Sign-In
+- **Payments**: RevenueCat
+- **Analytics**: Firebase Analytics, Mixpanel, Crashlytics
+- **Navigation**: [AppRouter](https://github.com/Dimillian/AppRouter)
+- **Design**: Custom design system with adaptive theming
+- **Data**: SwiftData (archetypes), Firestore (sync)
+
+---
 
 ## License
 
-MIT License - See [LICENSE.txt](LICENSE.txt) for details.
+Proprietary. See LICENSE for details.

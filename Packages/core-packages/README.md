@@ -1,8 +1,8 @@
-# Essentia Core Packages
+# Forge Core Packages
 
 ## About
 
-Essentia Core Packages is a focused Swift package suite that bundles a single Core module (Domain, Data, Networking, Local Persistence) plus DesignSystem, so you can ship fast without wiring multiple targets.
+Forge Core Packages is a focused Swift package suite that bundles a single Core module (Domain, Data, Networking, Local Persistence) plus DesignSystem, so you can ship fast without wiring multiple targets.
 
 
 ## Packages
@@ -22,7 +22,7 @@ Package.swift example:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/sakhnenkoff/essentia-core-packages.git", from: "1.0.0")
+    .package(url: "https://github.com/yourorg/forge-core-packages.git", from: "1.0.0")
 ]
 ```
 
@@ -32,9 +32,9 @@ Add products to targets:
 .target(
     name: "MyApp",
     dependencies: [
-        .product(name: "Core", package: "essentia-core-packages"),
-        .product(name: "CoreMock", package: "essentia-core-packages"),
-        .product(name: "DesignSystem", package: "essentia-core-packages")
+        .product(name: "Core", package: "core-packages"),
+        .product(name: "CoreMock", package: "core-packages"),
+        .product(name: "DesignSystem", package: "core-packages")
     ]
 )
 ```

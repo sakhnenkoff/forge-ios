@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "essentia-core-packages",
+    name: "core-packages",
     platforms: [.iOS(.v18)],
     products: [
         .library(

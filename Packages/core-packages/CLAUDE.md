@@ -13,16 +13,11 @@ This file provides guidance to Claude Code when working in this repository.
 
 ## Project Overview
 
-This repo is a single multi-product Swift Package. It provides core modules used by CleanTemplate-based apps.
+This repo is a single multi-product Swift Package. It provides core modules used by Forge-based apps.
 
 Products:
-- Domain
-- DomainMock
-- Data
-- DataMock
-- Networking
-- LocalPersistance
-- LocalPersistanceMock
+- Core (Domain + Data + Networking + Local Persistence)
+- CoreMock
 - DesignSystem
 
 ---

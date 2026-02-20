@@ -1,0 +1,11 @@
+{
+  "id": "ab-testing",
+  "displayName": "A/B Testing",
+  "description": "Feature flags and A/B tests via Firebase Remote Config",
+  "featureFlag": "enableABTesting",
+  "dependencies": ["firebase-analytics"],
+  "conflicts": [],
+  "xcconfigs": [],
+  "requiredCredentials": [],
+  "category": "testing"
+}

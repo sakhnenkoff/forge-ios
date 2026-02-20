@@ -1,0 +1,23 @@
+{
+  "id": "mixpanel",
+  "displayName": "Mixpanel",
+  "description": "Product analytics and user behavior tracking",
+  "featureFlag": "enableMixpanel",
+  "dependencies": [],
+  "conflicts": [],
+  "xcconfigs": [
+    {
+      "key": "MIXPANEL_TOKEN",
+      "defaultValue": "",
+      "description": "Mixpanel project token from mixpanel.com"
+    }
+  ],
+  "requiredCredentials": [
+    {
+      "name": "Mixpanel Token",
+      "source": "mixpanel.com → Project Settings → Project Token",
+      "xconfigKey": "MIXPANEL_TOKEN"
+    }
+  ],
+  "category": "analytics"
+}

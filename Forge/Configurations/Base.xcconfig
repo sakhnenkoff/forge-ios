@@ -1,0 +1,13 @@
+// Base.xcconfig
+// Base configuration shared by all environments
+
+PRODUCT_NAME = Forge
+SWIFT_VERSION = 6.0
+IPHONEOS_DEPLOYMENT_TARGET = 26.0
+SWIFT_STRICT_CONCURRENCY = complete
+SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor
+OTHER_SWIFT_FLAGS = $(inherited) -Xfrontend -enable-upcoming-feature -Xfrontend NonisolatedNonsendingByDefault -Xfrontend -enable-upcoming-feature -Xfrontend InferIsolatedConformances
+
+// Default empty values for secrets (overridden by Secrets.xcconfig.local)
+MIXPANEL_TOKEN =
+REVENUECAT_API_KEY =

@@ -1,0 +1,17 @@
+{
+  "id": "firebase-analytics",
+  "displayName": "Firebase Analytics",
+  "description": "Event tracking and user analytics via Firebase",
+  "featureFlag": "enableFirebaseAnalytics",
+  "dependencies": [],
+  "conflicts": [],
+  "xcconfigs": [],
+  "requiredCredentials": [
+    {
+      "name": "GoogleService-Info.plist",
+      "source": "Firebase Console → Project Settings → iOS app → Download GoogleService-Info.plist",
+      "xconfigKey": null
+    }
+  ],
+  "category": "analytics"
+}

@@ -1,0 +1,11 @@
+// Production.xcconfig
+// Configuration for Production builds
+
+#include "Base.xcconfig"
+#include? "Secrets.xcconfig.local"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.organization.Forge
+INFOPLIST_KEY_CFBundleDisplayName = Forge
+API_BASE_URL = https://api.example.com
+API_KEY = your-prod-api-key
+ENVIRONMENT = prod

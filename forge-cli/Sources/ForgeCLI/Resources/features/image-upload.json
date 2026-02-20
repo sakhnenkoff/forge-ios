@@ -1,0 +1,11 @@
+{
+  "id": "image-upload",
+  "displayName": "Image Upload",
+  "description": "User image upload via SDWebImageSwiftUI",
+  "featureFlag": "",
+  "dependencies": [],
+  "conflicts": [],
+  "xcconfigs": [],
+  "requiredCredentials": [],
+  "category": "module"
+}

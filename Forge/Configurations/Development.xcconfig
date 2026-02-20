@@ -1,0 +1,12 @@
+// Development.xcconfig
+// Configuration for Development builds
+
+#include "Base.xcconfig"
+#include? "Secrets.xcconfig.local"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.organization.Forge.dev
+OTHER_SWIFT_FLAGS = $(inherited) -DDEV
+INFOPLIST_KEY_CFBundleDisplayName = Forge - Dev
+API_BASE_URL = https://dev-api.example.com
+API_KEY = your-dev-api-key
+ENVIRONMENT = dev

@@ -1,0 +1,12 @@
+{
+  "id": "blank",
+  "displayName": "Blank",
+  "description": "A clean shell with no domain-specific screens. Start from scratch.",
+  "tabs": [],
+  "routes": [],
+  "sheets": [],
+  "screens": [],
+  "models": [],
+  "onboarding": null,
+  "paywallCopy": null
+}

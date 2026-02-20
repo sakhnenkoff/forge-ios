@@ -1,0 +1,11 @@
+// Mock.xcconfig
+// Configuration for Mock builds (no Firebase)
+
+#include "Base.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.organization.Forge.mock
+OTHER_SWIFT_FLAGS = $(inherited) -DMOCK
+INFOPLIST_KEY_CFBundleDisplayName = Forge - Mock
+API_BASE_URL =
+API_KEY =
+ENVIRONMENT = mock

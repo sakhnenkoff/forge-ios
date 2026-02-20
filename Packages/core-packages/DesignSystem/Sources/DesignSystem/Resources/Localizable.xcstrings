@@ -1,0 +1,72 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Browse Items" : {
+      "comment" : "Button to browse available items when no favorites exist"
+    },
+    "Clear Search" : {
+      "comment" : "Button to clear the current search query"
+    },
+    "Connection Problem" : {
+      "comment" : "Title for network error state"
+    },
+    "Failed to Load" : {
+      "comment" : "Title for content load failure state"
+    },
+    "Items you favorite will appear here" : {
+      "comment" : "Message shown when user has no favorites"
+    },
+    "No Favorites" : {
+      "comment" : "Title for empty favorites state"
+    },
+    "No Notifications" : {
+      "comment" : "Title for empty notifications state"
+    },
+    "No Results Found" : {
+      "comment" : "Title for empty search results"
+    },
+    "No results for \"%@\"" : {
+      "comment" : "Message showing the search query that returned no results"
+    },
+    "Nothing Here Yet" : {
+      "comment" : "Default title for empty list state"
+    },
+    "Open Settings" : {
+      "comment" : "Button to open device settings for permission"
+    },
+    "Permission Required" : {
+      "comment" : "Title for permission denied state"
+    },
+    "Please check your internet connection and try again." : {
+      "comment" : "Message for network error state"
+    },
+    "Please grant %@ permission in Settings to use this feature." : {
+      "comment" : "Message explaining what permission is needed"
+    },
+    "Retry" : {
+      "comment" : "Button to retry a failed operation"
+    },
+    "Server Error" : {
+      "comment" : "Title for server error state"
+    },
+    "Something Went Wrong" : {
+      "comment" : "Default error title"
+    },
+    "Try Again" : {
+      "comment" : "Button to retry after an error"
+    },
+    "Try a different search term" : {
+      "comment" : "Suggestion when search returns no results"
+    },
+    "We couldn't load this content. Please try again." : {
+      "comment" : "Message for content load failure"
+    },
+    "We're having trouble connecting to our servers. Please try again later." : {
+      "comment" : "Message for server error state"
+    },
+    "You're all caught up!" : {
+      "comment" : "Message shown when user has no notifications"
+    }
+  },
+  "version" : "1.0"
+}

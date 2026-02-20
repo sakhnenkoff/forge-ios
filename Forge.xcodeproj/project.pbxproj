@@ -1,0 +1,1043 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0229588C2CEE932F00765488 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0229588B2CEE932F00765488 /* SDWebImageSwiftUI */; };
+		5A96869E2F3399C400E624B3 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = FE6564F6CEBD5C1FE3AF0DB2 /* Mixpanel */; };
+		5A96869F2F3399C400E624B3 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 89D13F792259469BB44E83E5 /* RevenueCat */; };
+		5A9686A02F3399C400E624B3 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C09CC53B5CB17AD2F6A3D602 /* GoogleSignIn */; };
+		5A9686A12F3399C400E624B3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DB90AE0C3609FEFAC8ECF27F /* FirebaseAuth */; };
+		5A9686A22F3399C400E624B3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6294D8E7E81078DDCD9CB58B /* FirebaseAnalytics */; };
+		5A9686A32F3399C400E624B3 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 27FFA538DBACEA0D2704038F /* FirebaseCrashlytics */; };
+		5A9686A42F3399C400E624B3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 81B3A8436827F6742DBECB23 /* FirebaseFirestore */; };
+		5A9686A52F3399C400E624B3 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = B589628E0344458686490681 /* AppRouter */; };
+		5A9686A62F3399C400E624B3 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 02B62BA12E662DC3008FB7FF /* FirebaseMessaging */; };
+		5A9686A72F3399C400E624B3 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 02B62BAF2E662E60008FB7FF /* FirebaseRemoteConfig */; };
+		5A9686A82F3399C400E624B3 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 02B62BB12E662E85008FB7FF /* FirebaseStorage */; };
+		5A9686A92F3399C400E624B3 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD577A92EF4316F006AE4ED /* Core */; };
+		5A9686AA2F3399C400E624B3 /* CoreMock in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD577AB2EF4316F006AE4ED /* CoreMock */; };
+		5A9686AB2F3399C400E624B3 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD577AE2EF4317E006AE4ED /* DesignSystem */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		022958432CEE7FF900765488 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 028F9B4B2CECF2C2009B9F48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 028F9B522CECF2C2009B9F48;
+			remoteInfo = Forge;
+		};
+		5A9687A72F3399C400E624B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 028F9B4B2CECF2C2009B9F48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 028F9B522CECF2C2009B9F48;
+			remoteInfo = Forge;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0229582F2CEE7FEF00765488 /* ForgeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0229583F2CEE7FF900765488 /* ForgeUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ForgeUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		028F9B532CECF2C2009B9F48 /* Forge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		028743182D336F3800C2C3E1 /* Exceptions for "Forge" folder in "Forge" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 028F9B522CECF2C2009B9F48 /* Forge */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		022958402CEE7FF900765488 /* ForgeUnitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ForgeUnitTests;
+			sourceTree = "<group>";
+		};
+		028F9B552CECF2C2009B9F48 /* Forge */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				028743182D336F3800C2C3E1 /* Exceptions for "Forge" folder in "Forge" target */,
+			);
+			path = Forge;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0229582C2CEE7FEF00765488 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0229583C2CEE7FF900765488 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		028F9B502CECF2C2009B9F48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A9686AB2F3399C400E624B3 /* DesignSystem in Frameworks */,
+				5A9686AA2F3399C400E624B3 /* CoreMock in Frameworks */,
+				5A9686A92F3399C400E624B3 /* Core in Frameworks */,
+				5A9686A82F3399C400E624B3 /* FirebaseStorage in Frameworks */,
+				5A9686A72F3399C400E624B3 /* FirebaseRemoteConfig in Frameworks */,
+				5A9686A62F3399C400E624B3 /* FirebaseMessaging in Frameworks */,
+				5A9686A52F3399C400E624B3 /* AppRouter in Frameworks */,
+				5A9686A42F3399C400E624B3 /* FirebaseFirestore in Frameworks */,
+				5A9686A32F3399C400E624B3 /* FirebaseCrashlytics in Frameworks */,
+				5A9686A22F3399C400E624B3 /* FirebaseAnalytics in Frameworks */,
+				5A9686A12F3399C400E624B3 /* FirebaseAuth in Frameworks */,
+				5A9686A02F3399C400E624B3 /* GoogleSignIn in Frameworks */,
+				5A96869F2F3399C400E624B3 /* RevenueCat in Frameworks */,
+				5A96869E2F3399C400E624B3 /* Mixpanel in Frameworks */,
+				0229588C2CEE932F00765488 /* SDWebImageSwiftUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		028F9B4A2CECF2C2009B9F48 = {
+			isa = PBXGroup;
+			children = (
+				028F9B552CECF2C2009B9F48 /* Forge */,
+				022958402CEE7FF900765488 /* ForgeUnitTests */,
+				028F9B542CECF2C2009B9F48 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		028F9B542CECF2C2009B9F48 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				028F9B532CECF2C2009B9F48 /* Forge.app */,
+				0229582F2CEE7FEF00765488 /* ForgeUITests.xctest */,
+				0229583F2CEE7FF900765488 /* ForgeUnitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0229582E2CEE7FEF00765488 /* ForgeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 022958372CEE7FEF00765488 /* Build configuration list for PBXNativeTarget "ForgeUITests" */;
+			buildPhases = (
+				0229582B2CEE7FEF00765488 /* Sources */,
+				0229582C2CEE7FEF00765488 /* Frameworks */,
+				0229582D2CEE7FEF00765488 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				022958362CEE7FEF00765488 /* PBXTargetDependency */,
+			);
+			name = ForgeUITests;
+			packageProductDependencies = (
+			);
+			productName = ForgeUITests;
+			productReference = 0229582F2CEE7FEF00765488 /* ForgeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		0229583E2CEE7FF900765488 /* ForgeUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 022958452CEE7FF900765488 /* Build configuration list for PBXNativeTarget "ForgeUnitTests" */;
+			buildPhases = (
+				0229583B2CEE7FF900765488 /* Sources */,
+				0229583C2CEE7FF900765488 /* Frameworks */,
+				0229583D2CEE7FF900765488 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				022958442CEE7FF900765488 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				022958402CEE7FF900765488 /* ForgeUnitTests */,
+			);
+			name = ForgeUnitTests;
+			packageProductDependencies = (
+			);
+			productName = ForgeUnitTests;
+			productReference = 0229583F2CEE7FF900765488 /* ForgeUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		028F9B522CECF2C2009B9F48 /* Forge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 028F9B782CECF2C4009B9F48 /* Build configuration list for PBXNativeTarget "Forge" */;
+			buildPhases = (
+				028F9B4F2CECF2C2009B9F48 /* Sources */,
+				028F9B502CECF2C2009B9F48 /* Frameworks */,
+				028F9B512CECF2C2009B9F48 /* Resources */,
+				022958C32CEFA29900765488 /* ShellScript */,
+				022958C42CEFA2DB00765488 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				028F9B552CECF2C2009B9F48 /* Forge */,
+			);
+			name = Forge;
+			packageProductDependencies = (
+				FE6564F6CEBD5C1FE3AF0DB2 /* Mixpanel */,
+				89D13F792259469BB44E83E5 /* RevenueCat */,
+				C09CC53B5CB17AD2F6A3D602 /* GoogleSignIn */,
+				DB90AE0C3609FEFAC8ECF27F /* FirebaseAuth */,
+				6294D8E7E81078DDCD9CB58B /* FirebaseAnalytics */,
+				27FFA538DBACEA0D2704038F /* FirebaseCrashlytics */,
+				81B3A8436827F6742DBECB23 /* FirebaseFirestore */,
+				0229588B2CEE932F00765488 /* SDWebImageSwiftUI */,
+				B589628E0344458686490681 /* AppRouter */,
+				02B62BA12E662DC3008FB7FF /* FirebaseMessaging */,
+				02B62BAF2E662E60008FB7FF /* FirebaseRemoteConfig */,
+				02B62BB12E662E85008FB7FF /* FirebaseStorage */,
+				5AD577A92EF4316F006AE4ED /* Core */,
+				5AD577AB2EF4316F006AE4ED /* CoreMock */,
+				5AD577AE2EF4317E006AE4ED /* DesignSystem */,
+			);
+			productName = Forge;
+			productReference = 028F9B532CECF2C2009B9F48 /* Forge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		028F9B4B2CECF2C2009B9F48 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					0229582E2CEE7FEF00765488 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 028F9B522CECF2C2009B9F48;
+					};
+					0229583E2CEE7FF900765488 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 028F9B522CECF2C2009B9F48;
+					};
+					028F9B522CECF2C2009B9F48 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 028F9B4E2CECF2C2009B9F48 /* Build configuration list for PBXProject "Forge" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 028F9B4A2CECF2C2009B9F48;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BFA72421752FABE55C78AFC6 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
+				CB262B8E15EA24F173FB208E /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				0B1491E9E5D567EC98F5F65D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				0229588A2CEE932F00765488 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				3C0A26DE24FC4478954EB23D /* XCRemoteSwiftPackageReference "AppRouter" */,
+				02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5AD577A82EF4316F006AE4ED /* XCLocalSwiftPackageReference "Packages/core-packages" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 028F9B542CECF2C2009B9F48 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				028F9B522CECF2C2009B9F48 /* Forge */,
+				0229582E2CEE7FEF00765488 /* ForgeUITests */,
+				0229583E2CEE7FF900765488 /* ForgeUnitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0229582D2CEE7FEF00765488 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0229583D2CEE7FF900765488 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		028F9B512CECF2C2009B9F48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		022958C32CEFA29900765488 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Check if running Xcode Cloud\nif [[ -z \"$CI\" ]]; then\n    if [[ \"$(uname -m)\" == arm64 ]]; then\n        export PATH=\"/opt/homebrew/bin:$PATH\"\n    fi\n\n    # Check if running in a SwiftUI preview\n    if [ \"$XCODE_RUNNING_FOR_PREVIEWS\" != \"1\" ]; then\n        if which swiftlint > /dev/null; then\n            cd \"${SRCROOT}\"\n            SWIFTLINT_CONFIG=\"${SRCROOT}/.swiftlint.yml\"\n            SWIFTLINT_PATHS=(\"${SRCROOT}/Forge\" \"${SRCROOT}/ForgeUnitTests\" \"${SRCROOT}/ForgeUITests\")\n            for path in \"${SWIFTLINT_PATHS[@]}\"; do\n                if [ -d \"$path\" ]; then\n                    swiftlint --config \"$SWIFTLINT_CONFIG\" \"$path\"\n                fi\n            done\n        else\n            echo \"warning: SwiftLint not installed, install it via HomeBrew.\"\n        fi\n    fi\nelse \n    # Running Xcode Cloud\n    echo \"Running in Xcode Cloud. Skipping SwiftLint.\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		022958C42CEFA2DB00765488 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Check for mock environment from xcconfig\nif [ \"${ENVIRONMENT}\" = \"mock\" ]; then\n  echo \"Skipping Crashlytics upload for Mock environment.\"\n  exit 0\nfi\n\nif [ \"${PLATFORM_NAME}\" = \"iphonesimulator\" ]; then\n  echo \"Skipping Crashlytics upload for simulator builds.\"\n  exit 0\nfi\n\nif [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n  GOOGLE_SERVICE_INFO_PLIST=\"${PROJECT_DIR}/Forge/SupportingFiles/GoogleServicePLists/GoogleService-Info-Dev.plist\"\nelif [ \"${CONFIGURATION}\" = \"Mock\" ]; then\n  echo \"Skipping Crashlytics upload for Mock configuration.\"\n  exit 0\nelif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n  GOOGLE_SERVICE_INFO_PLIST=\"${PROJECT_DIR}/Forge/SupportingFiles/GoogleServicePLists/GoogleService-Info-Prod.plist\"\nelse\n  echo \"No matching build configuration found for GoogleService-Info.plist!\"\n  exit 1\nfi\n\nCRASHLYTICS_RUN=\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nif [ ! -f \"${CRASHLYTICS_RUN}\" ]; then\n  echo \"Crashlytics run script not found. Skipping upload.\"\n  exit 0\nfi\n\n# Run the Crashlytics script with the selected plist file\n\"${CRASHLYTICS_RUN}\" -gsp \"${GOOGLE_SERVICE_INFO_PLIST}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0229582B2CEE7FEF00765488 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0229583B2CEE7FF900765488 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		028F9B4F2CECF2C2009B9F48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		022958362CEE7FEF00765488 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 028F9B522CECF2C2009B9F48 /* Forge */;
+			targetProxy = 5A9687A72F3399C400E624B3 /* PBXContainerItemProxy */;
+		};
+		022958442CEE7FF900765488 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 028F9B522CECF2C2009B9F48 /* Forge */;
+			targetProxy = 022958432CEE7FF900765488 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		022958172CEE4BB000765488 /* Mock */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Mock;
+		};
+		022958182CEE4BB000765488 /* Mock */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Forge/ForgeMock.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"Forge/SupportingFiles/Preview Content\"";
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Forge/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(INFOPLIST_KEY_CFBundleDisplayName)";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = "-DMOCK";
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.Forge.mock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Mock;
+		};
+		022958382CEE7FEF00765488 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.ForgeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Forge;
+			};
+			name = Debug;
+		};
+		022958392CEE7FEF00765488 /* Mock */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.ForgeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Forge;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Mock;
+		};
+		0229583A2CEE7FEF00765488 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.ForgeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Forge;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		022958462CEE7FF900765488 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.ForgeUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Forge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Forge";
+			};
+			name = Debug;
+		};
+		022958472CEE7FF900765488 /* Mock */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.ForgeUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Forge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Forge";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Mock;
+		};
+		022958482CEE7FF900765488 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Mock.xcconfig;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.ForgeUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Forge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Forge";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		028F9B762CECF2C4009B9F48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Development.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		028F9B772CECF2C4009B9F48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Production.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		028F9B792CECF2C4009B9F48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Development.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Forge/SupportingFiles/Forge.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"Forge/SupportingFiles/Preview Content\"";
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Forge/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(INFOPLIST_KEY_CFBundleDisplayName)";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = "-DDEV";
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.Forge.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		028F9B7A2CECF2C4009B9F48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 028F9B552CECF2C2009B9F48 /* Forge */;
+			baseConfigurationReferenceRelativePath = Configurations/Production.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Forge/SupportingFiles/Forge.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"Forge/SupportingFiles/Preview Content\"";
+				DEVELOPMENT_TEAM = DH4RW799CG;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Forge/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(INFOPLIST_KEY_CFBundleDisplayName)";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.organization.Forge;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		022958372CEE7FEF00765488 /* Build configuration list for PBXNativeTarget "ForgeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				022958382CEE7FEF00765488 /* Debug */,
+				022958392CEE7FEF00765488 /* Mock */,
+				0229583A2CEE7FEF00765488 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		022958452CEE7FF900765488 /* Build configuration list for PBXNativeTarget "ForgeUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				022958462CEE7FF900765488 /* Debug */,
+				022958472CEE7FF900765488 /* Mock */,
+				022958482CEE7FF900765488 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		028F9B4E2CECF2C2009B9F48 /* Build configuration list for PBXProject "Forge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				028F9B762CECF2C4009B9F48 /* Debug */,
+				022958172CEE4BB000765488 /* Mock */,
+				028F9B772CECF2C4009B9F48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		028F9B782CECF2C4009B9F48 /* Build configuration list for PBXNativeTarget "Forge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				028F9B792CECF2C4009B9F48 /* Debug */,
+				022958182CEE4BB000765488 /* Mock */,
+				028F9B7A2CECF2C4009B9F48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		5AD577A82EF4316F006AE4ED /* XCLocalSwiftPackageReference "Packages/core-packages" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/core-packages";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0229588A2CEE932F00765488 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+		02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.2.0;
+			};
+		};
+		0B1491E9E5D567EC98F5F65D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		3C0A26DE24FC4478954EB23D /* XCRemoteSwiftPackageReference "AppRouter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dimillian/AppRouter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		BFA72421752FABE55C78AFC6 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		CB262B8E15EA24F173FB208E /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0229588B2CEE932F00765488 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0229588A2CEE932F00765488 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		02B62BA12E662DC3008FB7FF /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		02B62BAF2E662E60008FB7FF /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		02B62BB12E662E85008FB7FF /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		27FFA538DBACEA0D2704038F /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		5AD577A92EF4316F006AE4ED /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AD577A82EF4316F006AE4ED /* XCLocalSwiftPackageReference "Packages/core-packages" */;
+			productName = Core;
+		};
+		5AD577AB2EF4316F006AE4ED /* CoreMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AD577A82EF4316F006AE4ED /* XCLocalSwiftPackageReference "Packages/core-packages" */;
+			productName = CoreMock;
+		};
+		5AD577AE2EF4317E006AE4ED /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AD577A82EF4316F006AE4ED /* XCLocalSwiftPackageReference "Packages/core-packages" */;
+			productName = DesignSystem;
+		};
+		6294D8E7E81078DDCD9CB58B /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		81B3A8436827F6742DBECB23 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		89D13F792259469BB44E83E5 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB262B8E15EA24F173FB208E /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+		B589628E0344458686490681 /* AppRouter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C0A26DE24FC4478954EB23D /* XCRemoteSwiftPackageReference "AppRouter" */;
+			productName = AppRouter;
+		};
+		C09CC53B5CB17AD2F6A3D602 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B1491E9E5D567EC98F5F65D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		DB90AE0C3609FEFAC8ECF27F /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B62BA02E662DC3008FB7FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		FE6564F6CEBD5C1FE3AF0DB2 /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFA72421752FABE55C78AFC6 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 028F9B4B2CECF2C2009B9F48 /* Project object */;
+}

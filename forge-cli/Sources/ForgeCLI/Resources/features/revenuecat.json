@@ -1,0 +1,23 @@
+{
+  "id": "revenuecat",
+  "displayName": "RevenueCat (In-App Purchases)",
+  "description": "Subscription and one-time purchase management via RevenueCat",
+  "featureFlag": "enablePurchases",
+  "dependencies": ["firebase-analytics"],
+  "conflicts": [],
+  "xcconfigs": [
+    {
+      "key": "REVENUECAT_API_KEY",
+      "defaultValue": "",
+      "description": "RevenueCat API key from your RevenueCat dashboard"
+    }
+  ],
+  "requiredCredentials": [
+    {
+      "name": "RevenueCat API Key",
+      "source": "app.revenuecat.com → Project → API Keys → Public Apple API key",
+      "xconfigKey": "REVENUECAT_API_KEY"
+    }
+  ],
+  "category": "monetization"
+}

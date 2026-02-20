@@ -1,0 +1,17 @@
+{
+  "id": "push-notifications",
+  "displayName": "Push Notifications",
+  "description": "Push notifications via Firebase Cloud Messaging",
+  "featureFlag": "enablePushNotifications",
+  "dependencies": ["firebase-analytics"],
+  "conflicts": [],
+  "xcconfigs": [],
+  "requiredCredentials": [
+    {
+      "name": "APNs Key or Certificate",
+      "source": "Apple Developer → Certificates → Keys → Create a new key with APNs enabled, upload to Firebase Console",
+      "xconfigKey": null
+    }
+  ],
+  "category": "notifications"
+}

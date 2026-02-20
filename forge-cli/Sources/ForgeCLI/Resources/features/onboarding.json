@@ -1,0 +1,11 @@
+{
+  "id": "onboarding",
+  "displayName": "Onboarding Flow",
+  "description": "Multi-step onboarding with value proposition and permission requests",
+  "featureFlag": "",
+  "dependencies": [],
+  "conflicts": [],
+  "xcconfigs": [],
+  "requiredCredentials": [],
+  "category": "module"
+}

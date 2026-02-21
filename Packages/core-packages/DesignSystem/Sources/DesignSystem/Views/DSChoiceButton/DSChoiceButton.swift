@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// A selectable choice button for onboarding flows, surveys, and multi-select interfaces.
-/// Displays a title, optional icon, and selection state.
+/// Displays a title, optional icon, and selection state with sketch-style aesthetics.
 public struct DSChoiceButton: View {
     let title: String
     let icon: String?
@@ -30,19 +30,24 @@ public struct DSChoiceButton: View {
             let shape = RoundedRectangle(cornerRadius: DSRadii.md, style: .continuous)
 
             HStack(spacing: DSSpacing.smd) {
+                // Leading icon with sketch style
                 if let icon {
-                    Image(systemName: icon)
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(isSelected ? Color.themePrimary : Color.textSecondary)
-                        .frame(width: 24)
+                    SketchIcon(
+                        systemName: icon,
+                        size: 18,
+                        color: isSelected ? Color.themePrimary : Color.textSecondary
+                    )
+                    .frame(width: 24)
                 }
 
+                // Title
                 Text(title)
                     .font(.bodyMedium())
                     .foregroundStyle(isSelected ? Color.textPrimary : Color.textSecondary)
 
                 Spacer(minLength: DSSpacing.sm)
 
+                // Selection indicator - simple dot
                 Circle()
                     .fill(isSelected ? Color.themePrimary : Color.border)
                     .frame(width: 8, height: 8)
@@ -66,12 +71,52 @@ public struct DSChoiceButton: View {
     }
 }
 
+// MARK: - Previews
+
 #Preview("Choice Buttons") {
     VStack(spacing: DSSpacing.sm) {
-        DSChoiceButton(title: "Launch fast", icon: "paperplane.fill", isSelected: true) {}
-        DSChoiceButton(title: "Monetize", icon: "creditcard.fill", isSelected: false) {}
-        DSChoiceButton(title: "Simple option", isSelected: false) {}
+        DSChoiceButton(
+            title: "Launch fast",
+            icon: "paperplane.fill",
+            isSelected: true
+        ) {}
+
+        DSChoiceButton(
+            title: "Monetize",
+            icon: "creditcard.fill",
+            isSelected: false
+        ) {}
+
+        DSChoiceButton(
+            title: "Measure growth",
+            icon: "chart.line.uptrend.xyaxis",
+            isSelected: true
+        ) {}
+
+        DSChoiceButton(
+            title: "Simple option",
+            isSelected: false
+        ) {}
     }
     .padding()
     .background(Color.backgroundPrimary)
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: DSSpacing.sm) {
+        DSChoiceButton(
+            title: "Selected Option",
+            icon: "star.fill",
+            isSelected: true
+        ) {}
+
+        DSChoiceButton(
+            title: "Unselected Option",
+            icon: "heart.fill",
+            isSelected: false
+        ) {}
+    }
+    .padding()
+    .background(Color.backgroundPrimary)
+    .preferredColorScheme(.dark)
 }

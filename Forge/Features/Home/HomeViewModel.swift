@@ -10,11 +10,18 @@ import DesignSystem
 @MainActor
 @Observable
 final class HomeViewModel {
-    var isLoading = false
-    var errorMessage: String?
     var toast: Toast?
 
     private var hasLoaded = false
+
+    // MARK: - Lifecycle
+
+    func greeting(for session: AppSession) -> String {
+        if let name = session.currentUser?.displayNameCalculated {
+            return "Welcome, \(name)"
+        }
+        return "Welcome"
+    }
 
     func onAppear(services: AppServices, session: AppSession) {
         services.logManager.trackEvent(event: Event.onAppear(isSignedIn: session.isSignedIn))

@@ -63,12 +63,20 @@ public struct AdaptiveTheme: Theme, Sendable {
             lifted: ShadowToken(color: .black.opacity(0.12), radius: 18, y: 9)
         )
 
+        let glass = GlassTokens(
+            tint:       Color.white.opacity(0.10),
+            strongTint: Color.white.opacity(0.18),
+            border:     Color.white.opacity(0.40),
+            shadow:     ShadowToken(color: .black.opacity(0.08), radius: 10, y: 4)
+        )
+
         self.tokens = DesignTokens(
             colors: colors,
             typography: typography,
             spacing: ThemeFactory.spacing(),
             radii: radii,
             shadows: shadows,
+            glass: glass,
             layout: ThemeFactory.layout()
         )
     }

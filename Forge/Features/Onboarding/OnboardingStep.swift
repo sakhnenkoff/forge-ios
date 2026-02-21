@@ -42,8 +42,8 @@ enum OnboardingStep: Int, CaseIterable {
     var title: String {
         switch self {
         case .intro1: "Welcome"
-        case .intro2: "Journey"
-        case .intro3: "Habits"
+        case .intro2: "Track"
+        case .intro3: "Control"
         case .goals: "Goals"
         case .permissions: "Notifications"
         case .name: "Profile"
@@ -53,11 +53,11 @@ enum OnboardingStep: Int, CaseIterable {
     var icon: String {
         switch self {
         case .intro1:
-            return "leaf"
+            return "banknote"
         case .intro2:
-            return "arrow.right"
+            return "chart.line.uptrend.xyaxis"
         case .intro3:
-            return "checkmark.circle"
+            return "lock.shield"
         case .goals:
             return "target"
         case .permissions:
@@ -71,11 +71,11 @@ enum OnboardingStep: Int, CaseIterable {
     var introHeadline: String {
         switch self {
         case .intro1:
-            return "A quiet space\nfor your thoughts"
+            return "Your money,\nclear as day"
         case .intro2:
-            return "Track your journey,\none day at a time"
+            return "Track every dollar,\neffortlessly"
         case .intro3:
-            return "Build habits that\nactually stick"
+            return "Take control of\nyour spending"
         case .goals, .permissions, .name:
             return ""
         }
@@ -87,9 +87,9 @@ enum OnboardingStep: Int, CaseIterable {
         case .intro1, .intro2, .intro3:
             return ""
         case .goals:
-            return "what are you "
+            return "what do you want to "
         case .permissions:
-            return "stay in the "
+            return "never miss a "
         case .name:
             return "tell us your "
         }
@@ -101,9 +101,9 @@ enum OnboardingStep: Int, CaseIterable {
         case .intro1, .intro2, .intro3:
             return ""
         case .goals:
-            return "shipping"
+            return "achieve"
         case .permissions:
-            return "loop"
+            return "bill"
         case .name:
             return "name"
         }
@@ -117,7 +117,7 @@ enum OnboardingStep: Int, CaseIterable {
         case .goals:
             return " first?"
         case .permissions:
-            return "."
+            return " again."
         case .name:
             return "."
         }
@@ -132,10 +132,9 @@ enum OnboardingStep: Int, CaseIterable {
         case .intro3:
             return ""
         case .goals:
-            return "Pick a focus to tailor the demo flow."
+            return "Pick a goal to personalize your dashboard."
         case .permissions:
-            // TODO: Replace with your app's notification value proposition
-            return "Enable notifications to get timely updates."
+            return "Get alerts for bills, budgets, and spending limits."
         case .name:
             return "Short, sweet, and personal."
         }
@@ -152,7 +151,7 @@ enum OnboardingStep: Int, CaseIterable {
         case .goals:
             return "Continue"
         case .permissions:
-            return "Allow notifications"
+            return "Enable alerts"
         case .name:
             return "Get started"
         }

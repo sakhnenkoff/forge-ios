@@ -13,12 +13,9 @@ struct CustomPaywallView: View {
     let onRestorePurchasePressed: () -> Void
     let onPurchaseProductPressed: (AnyProduct) -> Void
 
-    @State private var selectedInterval: SubscriptionInterval = .annual
+    @State private var selectedInterval: String = "Annual"
 
-    enum SubscriptionInterval: String, CaseIterable {
-        case monthly = "Monthly"
-        case annual = "Annual"
-    }
+    private static let intervals = ["Monthly", "Annual"]
 
     init(
         products: [AnyProduct] = [],
@@ -46,7 +43,7 @@ struct CustomPaywallView: View {
     }
 
     private var selectedSubscriptionProduct: AnyProduct? {
-        let targetId = selectedInterval == .annual
+        let targetId = selectedInterval == "Annual"
             ? EntitlementOption.annual.productId
             : EntitlementOption.monthly.productId
         return subscriptionProducts.first { $0.id == targetId }
@@ -69,7 +66,7 @@ struct CustomPaywallView: View {
 
             // CTA purchases the selected subscription
             DSButton.cta(
-                title: "Unlock Premium",
+                title: "Start Pro",
                 isLoading: isProcessing,
                 isEnabled: selectedSubscriptionProduct != nil
             ) {
@@ -87,21 +84,19 @@ struct CustomPaywallView: View {
 
     private var subscriptionSection: some View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
-            Text("Choose a plan")
+            Text("Choose your plan")
                 .font(.headlineMedium())
                 .foregroundStyle(Color.textPrimary)
 
             // Monthly / Annual toggle
-            Picker("Billing period", selection: $selectedInterval) {
-                ForEach(SubscriptionInterval.allCases, id: \.self) { interval in
-                    Text(interval.rawValue).tag(interval)
-                }
-            }
-            .pickerStyle(.segmented)
+            DSSegmentedControl(
+                items: Self.intervals,
+                selection: $selectedInterval
+            )
 
             // Selected subscription card
             if let product = selectedSubscriptionProduct {
-                planCard(product, isFeatured: selectedInterval == .annual)
+                planCard(product, isFeatured: selectedInterval == "Annual")
             }
         }
         .disabled(isProcessing)
@@ -114,7 +109,7 @@ struct CustomPaywallView: View {
             Rectangle()
                 .fill(Color.divider)
                 .frame(height: 1)
-            Text("Or get lifetime access")
+            Text("Or pay once, own forever")
                 .font(.captionLarge())
                 .foregroundStyle(Color.textTertiary)
                 .fixedSize()
@@ -129,7 +124,7 @@ struct CustomPaywallView: View {
             planCard(product, isFeatured: false)
 
             DSButton.cta(
-                title: "Buy lifetime access",
+                title: "Get lifetime access",
                 isLoading: isProcessing,
                 isEnabled: !isProcessing
             ) {
@@ -142,45 +137,37 @@ struct CustomPaywallView: View {
     // MARK: - Plan Card
 
     private func planCard(_ product: AnyProduct, isFeatured: Bool) -> some View {
-        VStack(alignment: .leading, spacing: DSSpacing.smd) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                    Text(product.title)
-                        .font(.headlineMedium())
-                        .foregroundStyle(Color.textPrimary)
-                    Text(product.subtitle)
-                        .font(.bodySmall())
-                        .foregroundStyle(Color.textSecondary)
+        DSCard(tint: Color.surfaceVariant.opacity(0.7), depth: .raised) {
+            VStack(alignment: .leading, spacing: DSSpacing.smd) {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                        Text(product.title)
+                            .font(.headlineMedium())
+                            .foregroundStyle(Color.textPrimary)
+                        Text(product.subtitle)
+                            .font(.bodySmall())
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                    Spacer()
+                    if isFeatured {
+                        Text("Best value")
+                            .font(.captionLarge())
+                            .foregroundStyle(Color.themePrimary)
+                            .padding(.horizontal, DSSpacing.sm)
+                            .padding(.vertical, DSSpacing.xs)
+                            .background(Color.themePrimary.opacity(0.12), in: Capsule())
+                    }
                 }
-                Spacer()
-                if isFeatured {
-                    Text("Best value")
-                        .font(.captionLarge())
-                        .foregroundStyle(Color.themePrimary)
-                        .padding(.horizontal, DSSpacing.sm)
-                        .padding(.vertical, DSSpacing.xs)
-                        .background(Color.themePrimary.opacity(0.12), in: Capsule())
-                }
-            }
 
-            Text(product.priceStringWithDuration)
-                .font(.headlineSmall())
-                .foregroundStyle(Color.themePrimary)
-                .padding(.horizontal, DSSpacing.md)
-                .padding(.vertical, DSSpacing.sm)
-                .background(Color.themePrimary.opacity(0.08), in: Capsule())
+                Text(product.priceStringWithDuration)
+                    .font(.headlineSmall())
+                    .foregroundStyle(Color.themePrimary)
+                    .padding(.horizontal, DSSpacing.md)
+                    .padding(.vertical, DSSpacing.sm)
+                    .background(Color.themePrimary.opacity(0.08), in: Capsule())
+                    .overlay(Capsule().stroke(Color.themePrimary.opacity(0.15), lineWidth: 1))
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(DSSpacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                .fill(Color.surfaceVariant.opacity(0.7))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                .stroke(Color.themePrimary.opacity(0.4), lineWidth: 1)
-        )
-        .shadow(color: DSShadows.lifted.color, radius: DSShadows.lifted.radius, x: 0, y: DSShadows.lifted.y)
     }
 }
 

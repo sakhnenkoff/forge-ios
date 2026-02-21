@@ -18,7 +18,7 @@ struct SettingsView: View {
     var body: some View {
         DSScreen(title: "Settings") {
             VStack(alignment: .leading, spacing: DSSpacing.xl) {
-                Text("Account, notifications, and app utilities.")
+                Text("Manage your account, subscription, and preferences.")
                     .font(.bodyMedium())
                     .foregroundStyle(Color.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,7 +106,7 @@ struct SettingsView: View {
                     EmptyStateView(
                         icon: "person.crop.circle.badge.exclamationmark",
                         title: "Not signed in",
-                        message: "Sign in to sync your account and access premium features.",
+                        message: "Sign in to sync your finances and unlock cloud backup.",
                         actionTitle: "Go to sign in",
                         action: { viewModel.showAuthScreen(services: services, session: session) }
                     )
@@ -164,10 +164,10 @@ struct SettingsView: View {
             DSListCard {
                 DSListRow(
                     title: "Plan",
-                    subtitle: session.isPremium ? "Premium active." : "Free plan.",
+                    subtitle: session.isPremium ? "Pro active." : "Free plan. Upgrade for more.",
                     leadingIcon: "sparkles"
                 ) {
-                    Text(session.isPremium ? "Premium" : "Free")
+                    Text(session.isPremium ? "Pro" : "Free")
                         .font(.captionLarge())
                         .foregroundStyle(Color.themePrimary)
                         .padding(.horizontal, DSSpacing.sm)
@@ -176,8 +176,8 @@ struct SettingsView: View {
                 }
                 Divider()
                 DSListRow(
-                    title: "View paywall",
-                    subtitle: "See the upgrade flow.",
+                    title: "Upgrade to Pro",
+                    subtitle: "Unlock all features.",
                     leadingIcon: "creditcard.fill"
                 ) {
                     router.presentSheet(.paywall)

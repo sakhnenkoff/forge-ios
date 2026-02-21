@@ -23,7 +23,7 @@ struct ProjectGenerator {
         let excludedNames: Set<String> = [
             ".git", ".swiftpm", "DerivedData", "build",
             "xcuserdata", ".build", "forge-cli",
-            ".planning", "scripts", "docs", "Archetypes"
+            ".planning", "scripts", "docs"
         ]
 
         let contents = try FileManager.default.contentsOfDirectory(

@@ -24,20 +24,12 @@ struct PaywallView: View {
 
     var body: some View {
         NavigationStack {
-            DSScreen(title: "Premium") {
+            DSScreen(title: "Forge Pro") {
                 VStack(spacing: DSSpacing.lg) {
                     heroCard
 
                     if FeatureFlags.enablePurchases {
                         paywallContent
-
-                        if viewModel.isProcessingPurchase {
-                            ProgressView("Updating your access...")
-                                .font(.bodySmall())
-                                .foregroundStyle(Color.textSecondary)
-                                .multilineTextAlignment(.center)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
                     } else {
                         EmptyStateView(
                             icon: "lock.slash",
@@ -54,7 +46,7 @@ struct PaywallView: View {
                         }
                     }
 
-                    Text("Cancel anytime in Settings.")
+                    Text("Cancel anytime. No questions asked.")
                         .font(.captionLarge())
                         .foregroundStyle(Color.textTertiary)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -73,12 +65,9 @@ struct PaywallView: View {
             .task {
                 await viewModel.loadProducts(services: services)
             }
-            .fullScreenCover(isPresented: $viewModel.showPremiumUnlocked) {
-                PremiumUnlockedView {
-                    viewModel.showPremiumUnlocked = false
-                    if showCloseButton {
-                        dismiss()
-                    }
+            .onChange(of: viewModel.didUnlockPremium) { _, unlocked in
+                if unlocked, showCloseButton {
+                    dismiss()
                 }
             }
         }
@@ -134,14 +123,14 @@ struct PaywallView: View {
     }
 
     private var heroCard: some View {
-        DSCard(tint: Color.surfaceVariant.opacity(0.7)) {
+        DSCard(tint: Color.themePrimary.opacity(0.04)) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 HStack(alignment: .top) {
                     Image(systemName: "sparkles")
                         .font(.system(size: DSLayout.iconMedium, weight: .medium))
                         .foregroundStyle(Color.themePrimary)
                     Spacer()
-                    Text("Premium")
+                    Text("Pro")
                         .font(.captionLarge())
                         .foregroundStyle(Color.themePrimary)
                         .padding(.horizontal, DSSpacing.sm)
@@ -149,18 +138,19 @@ struct PaywallView: View {
                         .background(Color.themePrimary.opacity(0.12), in: Capsule())
                 }
 
-                Text("Premium Studio")
+                Text("Forge Pro")
                     .font(.headlineMedium())
                     .foregroundStyle(Color.themePrimary)
 
-                Text("Unlock all features and take your app to the next level.")
+                Text("Unlock unlimited budgets, advanced analytics, and priority support.")
                     .font(.bodySmall())
                     .foregroundStyle(Color.textSecondary)
 
                 VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                    featureBullet(icon: "infinity", text: "Unlimited access")
-                    featureBullet(icon: "arrow.triangle.2.circlepath", text: "Sync across devices")
+                    featureBullet(icon: "infinity", text: "Unlimited budgets & categories")
+                    featureBullet(icon: "chart.bar.xaxis", text: "Advanced spending analytics")
                     featureBullet(icon: "headphones", text: "Priority support")
+                    featureBullet(icon: "bell.badge.fill", text: "Smart bill reminders")
                 }
                 .padding(.top, DSSpacing.sm)
             }

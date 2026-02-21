@@ -2,21 +2,23 @@ import SwiftUI
 
 /// A custom boolean toggle with two side-by-side pills.
 ///
-/// On state (right pill) displays a filled icon, off state (left pill) displays a dot indicator.
+/// On state (left pill) displays a filled icon, off state (right pill) displays a dot indicator.
 /// Both pills are contained in a single rounded container with a subtle border.
 public struct DSPillToggle: View {
     @Binding var isOn: Bool
     let icon: String
+    let usesGlass: Bool
     let accessibilityLabel: String?
 
     public init(
         isOn: Binding<Bool>,
         icon: String = "checkmark",
-        usesGlass: Bool = false,
+        usesGlass: Bool = true,
         accessibilityLabel: String? = nil
     ) {
         self._isOn = isOn
         self.icon = icon
+        self.usesGlass = usesGlass
         self.accessibilityLabel = accessibilityLabel
     }
 
@@ -29,7 +31,7 @@ public struct DSPillToggle: View {
         let shape = RoundedRectangle(cornerRadius: outerRadius, style: .continuous)
         let selectionShape = RoundedRectangle(cornerRadius: DSRadii.md, style: .continuous)
 
-        HStack(spacing: 0) {
+        let content = HStack(spacing: 0) {
             // Off pill (dot) — left
             Button {
                 guard isOn else { return }
@@ -63,14 +65,38 @@ public struct DSPillToggle: View {
                 .offset(x: isOn ? pillSize : 0)
         }
         .padding(padding)
-        .background(shape.fill(Color.surface))
-        .overlay(shape.stroke(Color.border, lineWidth: 1))
-        .sensoryFeedback(.selection, trigger: isOn)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(resolvedAccessibilityLabel)
-        .accessibilityValue(isOn ? "On" : "Off")
-        .accessibilityAddTraits(.isButton)
-        .accessibilityAction { isOn.toggle() }
+        .background(shape.fill(usesGlass ? Color.clear : Color.surface))
+
+        let styled = Group {
+            if usesGlass {
+                if #available(iOS 26.0, *) {
+                    let glass = Glass.regular.tint(DesignSystem.tokens.glass.tint).interactive()
+                    content
+                        .glassEffect(glass, in: .rect(cornerRadius: outerRadius))
+                } else {
+                    content.glassSurface(
+                        cornerRadius: outerRadius,
+                        tint: DesignSystem.tokens.glass.tint,
+                        borderColor: Color.border,
+                        shadow: DSShadows.soft,
+                        isInteractive: true
+                    )
+                    .clipShape(shape)
+                }
+            } else {
+                content.overlay(
+                    shape.stroke(Color.border, lineWidth: 1)
+                )
+            }
+        }
+
+        return styled
+            .sensoryFeedback(.selection, trigger: isOn)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(resolvedAccessibilityLabel)
+            .accessibilityValue(isOn ? "On" : "Off")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { isOn.toggle() }
     }
 
     private var resolvedAccessibilityLabel: String {

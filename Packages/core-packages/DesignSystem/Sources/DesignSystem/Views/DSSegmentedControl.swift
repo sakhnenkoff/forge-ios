@@ -1,36 +1,58 @@
 import SwiftUI
 
-/// A SwiftUI-native segmented control with animated selection indicator.
+/// A custom segmented control that matches the design system.
+///
+/// Features an underline indicator that animates between segments.
 public struct DSSegmentedControl<T: Hashable>: View {
     let items: [T]
     @Binding var selection: T
     let labelProvider: (T) -> String
+    let usesGlass: Bool
 
     @Namespace private var namespace
 
     public init(
         items: [T],
         selection: Binding<T>,
+        usesGlass: Bool = true,
         labelProvider: @escaping (T) -> String
     ) {
         self.items = items
         self._selection = selection
+        self.usesGlass = usesGlass
         self.labelProvider = labelProvider
     }
 
     public var body: some View {
+        let padding = DSSpacing.sm
         let outerRadius = DSRadii.lg
         let shape = RoundedRectangle(cornerRadius: outerRadius, style: .continuous)
-
-        HStack(spacing: 0) {
+        let base = HStack(spacing: 0) {
             ForEach(items, id: \.self) { item in
                 segmentButton(for: item)
             }
         }
-        .padding(DSSpacing.sm)
-        .background(shape.fill(Color.surface))
-        .overlay(shape.stroke(Color.border, lineWidth: 1))
+        .padding(padding)
+        .background(shape.fill(usesGlass ? Color.clear : Color.surface))
         .clipShape(shape)
+
+        Group {
+            if usesGlass {
+                if #available(iOS 26.0, *) {
+                    let glass = Glass.regular.tint(DesignSystem.tokens.glass.tint).interactive()
+                    base
+                        .glassEffect(glass, in: .rect(cornerRadius: outerRadius))
+                } else {
+                    base
+                        .background(shape.fill(Color.surface))
+                        .overlay(shape.stroke(Color.border, lineWidth: 1))
+                        .shadow(color: DSShadows.soft.color, radius: DSShadows.soft.radius, x: 0, y: DSShadows.soft.y)
+                }
+            } else {
+                base
+                    .overlay(shape.stroke(Color.border, lineWidth: 1))
+            }
+        }
         .sensoryFeedback(.selection, trigger: selection)
     }
 
@@ -63,8 +85,8 @@ public struct DSSegmentedControl<T: Hashable>: View {
 // MARK: - String Convenience
 
 public extension DSSegmentedControl where T == String {
-    init(items: [String], selection: Binding<String>) {
-        self.init(items: items, selection: selection) { $0 }
+    init(items: [String], selection: Binding<String>, usesGlass: Bool = true) {
+        self.init(items: items, selection: selection, usesGlass: usesGlass) { $0 }
     }
 }
 
@@ -78,6 +100,9 @@ public extension DSSegmentedControl where T == String {
                     items: ["Daily", "Weekly", "Monthly"],
                     selection: $selection
                 )
+                Text("Selected: \(selection)")
+                    .font(.bodyMedium())
+                    .foregroundStyle(Color.textSecondary)
             }
             .padding()
             .background(Color.backgroundPrimary)

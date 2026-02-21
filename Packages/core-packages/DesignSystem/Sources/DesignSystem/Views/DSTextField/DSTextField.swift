@@ -17,6 +17,8 @@ public struct DSTextField: View {
     let keyboardType: UIKeyboardType
     let autocapitalization: TextInputAutocapitalization
     let isSecure: Bool
+    let isError: Bool
+    let errorMessage: String?
     let style: DSTextFieldStyle
 
     @FocusState private var isFocused: Bool
@@ -28,6 +30,8 @@ public struct DSTextField: View {
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization = .sentences,
         isSecure: Bool = false,
+        isError: Bool = false,
+        errorMessage: String? = nil,
         style: DSTextFieldStyle = .bordered
     ) {
         self.placeholder = placeholder
@@ -36,6 +40,8 @@ public struct DSTextField: View {
         self.keyboardType = keyboardType
         self.autocapitalization = autocapitalization
         self.isSecure = isSecure
+        self.isError = isError
+        self.errorMessage = errorMessage
         self.style = style
     }
 
@@ -73,18 +79,35 @@ public struct DSTextField: View {
         .tint(Color.themePrimary)
     }
 
+    private var borderColor: Color {
+        if isError { return .error }
+        if isFocused { return .themePrimary }
+        return .border
+    }
+
     private var borderedStyle: some View {
         let shape = RoundedRectangle(cornerRadius: DSSpacing.smd, style: .continuous)
 
-        return fieldContent
-            .padding(.horizontal, DSSpacing.md)
-            .padding(.vertical, DSSpacing.smd)
-            .frame(minHeight: 48)
-            .background(Color.surface)
-            .overlay(
-                shape.stroke(Color.border, lineWidth: 1)
-            )
-            .clipShape(shape)
+        return VStack(alignment: .leading, spacing: DSSpacing.xs) {
+            fieldContent
+                .padding(.horizontal, DSSpacing.md)
+                .padding(.vertical, DSSpacing.smd)
+                .frame(minHeight: 48)
+                .background(isFocused ? Color.themePrimary.opacity(0.03) : Color.surface)
+                .overlay(
+                    shape.stroke(borderColor, lineWidth: isFocused || isError ? 1.5 : 1)
+                )
+                .clipShape(shape)
+                .animation(.easeInOut(duration: 0.15), value: isFocused)
+                .animation(.easeInOut(duration: 0.15), value: isError)
+
+            if let errorMessage, isError {
+                Text(errorMessage)
+                    .font(.captionLarge())
+                    .foregroundStyle(Color.error)
+                    .padding(.leading, DSSpacing.xs)
+            }
+        }
     }
 
     private var isActive: Bool {

@@ -19,7 +19,6 @@ final class PaywallViewModel {
     var isProcessingPurchase = false
     var errorMessage: String?
     var didUnlockPremium = false
-    var showPremiumUnlocked = false
     var toast: Toast?
 
     func loadProducts(services: AppServices) async {
@@ -78,7 +77,7 @@ final class PaywallViewModel {
             let entitlements = try await purchaseManager.purchaseProduct(productId: productId)
             applyEntitlements(entitlements, session: session)
             services.logManager.trackEvent(event: Event.purchaseSuccess(productId: productId))
-            showPremiumUnlocked = true
+            toast = .success("You're all set! Premium is unlocked.")
         } catch {
             toast = .error(error.localizedDescription)
             services.logManager.trackEvent(event: Event.purchaseFail(productId: productId, error: error))
@@ -107,7 +106,7 @@ final class PaywallViewModel {
                 didUnlockPremium = true
                 session.updatePremiumStatus(entitlements: services.purchaseManager?.entitlements ?? [])
                 services.logManager.trackEvent(event: Event.storeKitSuccess(product: anyProduct))
-                showPremiumUnlocked = true
+                toast = .success("You're all set! Premium is unlocked.")
             case .pending:
                 services.logManager.trackEvent(event: Event.storeKitPending(product: anyProduct))
                 toast = .info("Purchase pending approval.")

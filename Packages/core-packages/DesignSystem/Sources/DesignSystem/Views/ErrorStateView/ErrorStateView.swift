@@ -47,11 +47,16 @@ public struct ErrorStateView: View {
     }
 
     public var body: some View {
-        VStack(spacing: DSSpacing.md) {
-            Image(systemName: icon)
-                .font(.system(size: 44, weight: .light))
-                .foregroundStyle(Color.error)
-                .accessibilityHidden(true)
+        VStack(spacing: DSSpacing.lg) {
+            ZStack {
+                Circle()
+                    .fill(Color.error.opacity(0.08))
+                    .frame(width: 56, height: 56)
+                Image(systemName: icon)
+                    .font(.system(size: 24, weight: .medium))
+                    .foregroundStyle(Color.error)
+            }
+            .accessibilityHidden(true)
 
             VStack(spacing: DSSpacing.sm) {
                 Text(title)

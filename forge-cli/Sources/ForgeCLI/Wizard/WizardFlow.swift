@@ -4,7 +4,6 @@ struct WizardFlow {
 
     enum Step: Int, CaseIterable {
         case preset          // "Preset or manual?"
-        case archetype       // "What are you building?"
         case projectName
         case bundleId
         case authProviders
@@ -26,7 +25,6 @@ struct WizardFlow {
     /// Returns nil if user cancels at the review step.
     mutating func collect() throws -> GenerationConfig? {
         // Answers store
-        var archetypeId: String? = prefilledFlags.archetype ?? nil
         var projectName: String? = prefilledFlags.projectName
         var bundleId: String? = prefilledFlags.bundleId
         var authProviders: [GenerationConfig.AuthProvider]? = prefilledFlags.authProviders.map { list in
@@ -78,35 +76,9 @@ struct WizardFlow {
                         currentStep = .review
                         continue stepLoop
                     } else {
-                        currentStep = .archetype
+                        currentStep = .projectName
                         continue stepLoop
                     }
-                }
-
-            case .archetype:
-                if archetypeId != nil {
-                    currentStep = Step(rawValue: currentStep.rawValue + 1)!
-                    continue
-                }
-                // Load available archetypes
-                let templateRoot = try ProjectGenerator.findTemplateRoot()
-                let archetypes = try ArchetypeRegistry.loadAll(templateRoot: templateRoot)
-                if archetypes.isEmpty {
-                    archetypeId = "blank"
-                    currentStep = .projectName
-                    continue stepLoop
-                }
-                let options: [(label: String, value: String)] = archetypes.map {
-                    ("\($0.displayName) — \($0.description)", $0.id)
-                }
-                let result = Prompts.singleSelect(prompt: "What are you building?", options: options)
-                switch result {
-                case .back:
-                    currentStep = .preset
-                case .value(let v):
-                    archetypeId = v
-                    currentStep = .projectName
-                    continue stepLoop
                 }
 
             case .projectName:
@@ -295,10 +267,8 @@ struct WizardFlow {
 
         print()
         Console.printHeader("Review Your Configuration")
-        let selectedArchetype = archetypeId ?? "blank"
         print("  App Name:      \(Console.bold(name))")
         print("  Bundle ID:     \(bid)")
-        print("  Archetype:     \(selectedArchetype)")
         print("  Output:        \(outputDirURL!.path)")
         print("  Auth:          \(auth.map(\.displayName).joined(separator: ", "))")
         print("  Monetization:  \(monetization.displayName)")
@@ -329,7 +299,6 @@ struct WizardFlow {
             analyticsFeatureIds: finalAnalytics,
             featureModuleIds: finalModules,
             resolvedFeatureIds: resolvedIds ?? [],
-            archetypeId: archetypeId ?? "blank",
             outputDir: outputDirURL!
         )
     }

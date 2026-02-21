@@ -98,7 +98,7 @@ struct OnboardingView: View {
                 }
 
                 if isSaving {
-                    ProgressView("Setting up your workspace...")
+                    ProgressView("Setting up your account...")
                         .font(.bodySmall())
                         .foregroundStyle(Color.textSecondary)
                         .multilineTextAlignment(.center)
@@ -174,15 +174,15 @@ struct OnboardingView: View {
     private var goalsCard: some View {
         DSCard(tint: Color.surfaceVariant.opacity(0.7)) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
-                Text("Choose your focus")
+                Text("Choose your goal")
                     .font(.headlineMedium())
                     .foregroundStyle(Color.textPrimary)
 
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: DSSpacing.sm) {
-                    goalButton(title: "Launch", id: "launch")
-                    goalButton(title: "Monetize", id: "monetize")
-                    goalButton(title: "Growth", id: "measure")
-                    goalButton(title: "Community", id: "community")
+                    goalButton(title: "Save more", id: "save")
+                    goalButton(title: "Pay off debt", id: "debt")
+                    goalButton(title: "Track spending", id: "track")
+                    goalButton(title: "Build budget", id: "budget")
                 }
             }
         }
@@ -196,9 +196,9 @@ struct OnboardingView: View {
                     .font(.headlineMedium())
                     .foregroundStyle(Color.textPrimary)
 
-                permissionsBullet(icon: "bell.fill", text: "Timely reminders to keep you on track")
-                permissionsBullet(icon: "star.fill", text: "Updates on new features and content")
-                permissionsBullet(icon: "chart.line.uptrend.xyaxis", text: "Weekly progress highlights")
+                permissionsBullet(icon: "bell.fill", text: "Bill due date reminders")
+                permissionsBullet(icon: "exclamationmark.circle.fill", text: "Budget limit alerts")
+                permissionsBullet(icon: "chart.line.uptrend.xyaxis", text: "Weekly spending summaries")
             }
         }
         .frame(maxWidth: DSLayout.cardCompactWidth)
@@ -229,7 +229,7 @@ struct OnboardingView: View {
                     text: $controller.userName
                 )
 
-                Text("We use this to personalize your demo.")
+                Text("We'll use this to personalize your dashboard.")
                     .font(.captionLarge())
                     .foregroundStyle(Color.textSecondary)
             }

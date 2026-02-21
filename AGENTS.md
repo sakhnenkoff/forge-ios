@@ -22,30 +22,6 @@ Use direct `xcodebuild` (do not use MCP).
 
 ---
 
-## Documentation Structure
-
-All detailed documentation is in `.claude/docs/`:
-
-| File | Purpose |
-|------|---------|
-| `rule-loading.md` | Which docs to load for each task (progressive disclosure) |
-| `project-structure.md` | Architecture overview, folder structure |
-| `mvvm-architecture.md` | MVVM rules, UI guidelines |
-| `commit-guidelines.md` | Commit message format |
-| `package-dependencies.md` | Direct SDK + package integration |
-| `package-quick-reference.md` | Quick snippets and common patterns |
-| `design-system-usage.md` | DSButton, EmptyStateView, colors, typography |
-| `design-system-recipes.md` | Design system examples and patterns |
-| `testing-guide.md` | ViewModel testing, accessibility identifiers |
-| `concurrency-guide.md` | Concurrency defaults, isolation rules, migration guardrails |
-| `localization-guide.md` | String Catalog workflow |
-| `action-create-screen.md` | How to create new MVVM features |
-| `action-create-component.md` | How to create reusable components |
-| `action-create-manager.md` | How to create new managers |
-| `action-create-model.md` | How to create data models |
-
----
-
 ## Quick Summary
 
 - **Architecture**: MVVM + AppRouter (TabView + NavigationStack + sheets)
@@ -83,12 +59,6 @@ All detailed documentation is in `.claude/docs/`:
 ---
 
 ## Critical Rules
-
-### Rule Loading (Progressive Disclosure)
-- Always load `.claude/docs/rule-loading.md` first.
-- Then load only the documents relevant to the task; avoid loading all docs by default.
-- When switching task type (for example: feature work → testing), refresh loaded docs using `rule-loading.md`.
-- If new patterns are introduced, update the relevant rule/doc file in the same change.
 
 ### File Creation (ALWAYS use Write/Edit tools)
 - This project uses Xcode 15+ File System Synchronization
@@ -145,6 +115,145 @@ Use Mock for 90% of development.
 - **Components**: `/Forge/Components/Views/`
 - **Extensions**: `/Forge/Extensions/`
 - **SPM Packages**: `Packages/core-packages/` (Core, CoreMock, DesignSystem)
+
+---
+
+## How to Add a New Feature
+
+1. **Create files**: Add `FeatureView.swift` and `FeatureViewModel.swift` in `Forge/Features/YourFeature/`.
+2. **ViewModel**: Mark with `@MainActor @Observable`. Add analytics events following the `Event: LoggableEvent` pattern (see `HomeViewModel` for example).
+3. **View**: Use `DSScreen(title:)` as the root. Inject `@Environment(AppServices.self)` and `@Environment(AppSession.self)` as needed. Use `@State private var viewModel = FeatureViewModel()`.
+4. **Wire navigation**: Add a case to the appropriate navigation enum:
+   - **New tab**: Add case to `AppTab` in `Forge/App/Navigation/AppTab.swift`, implement `icon`, `title`, and `makeContentView()`.
+   - **Push destination**: Add case to `AppRoute` in `Forge/App/Navigation/AppRoute.swift`. Navigate with `router.navigate(to: .yourRoute)`.
+   - **Sheet/modal**: Add case to `AppSheet` in `Forge/App/Navigation/AppSheet.swift`. Present with `router.presentSheet(.yourSheet)`.
+5. **Use DS components**: `DSButton`, `DSCard`, `DSSection`, `DSListCard`, `DSListRow`, `DSTextField`, `EmptyStateView`, `ErrorStateView`.
+
+---
+
+## How to Customize HomeView
+
+The home screen (`Forge/Features/Home/HomeView.swift`) ships as a personal finance dashboard with demo data. To replace with real content:
+
+1. **Update `HomeViewModel`**: Replace `stats`, `recentItems` (transactions), and `budgetCategories` arrays with real data from your managers/services. The `BudgetCategory` model includes `name`, `icon`, `spent`, `limit`, computed `progress`, and formatted strings.
+2. **Update view sections**: The view has five sections — `welcomeSection`, `statsRow`, `budgetProgressSection`, `recentActivitySection` (transactions), `quickActionsSection`. Replace or remove sections to match your domain.
+3. **Connect actions**: The "Add Transaction" and "View Budget" buttons in `quickActionsSection` have TODO placeholders. Wire them to `router.navigate(to:)` or `router.presentSheet(_:)`.
+4. **Keep analytics**: The `onAppear` event tracking is already wired. Add domain-specific events to the `Event` enum.
+
+---
+
+## How to Customize the Paywall
+
+Files: `Forge/Features/Paywall/PaywallView.swift`, `CustomPaywallView.swift`, `PaywallViewModel.swift`.
+
+- **Value props**: Edit the `heroCard` in `PaywallView.swift` — change the `featureBullet` entries to match your app's premium features.
+- **Pricing copy**: Product titles/subtitles come from your StoreKit configuration or App Store Connect. The template reads them from `AnyProduct`.
+- **Plan toggle**: Uses `DSSegmentedControl` for Monthly/Annual. Modify `intervals` array in `CustomPaywallView` to change options.
+- **Product IDs**: Defined in `EntitlementOption`. Update product IDs to match your App Store Connect configuration.
+- **Post-purchase**: On successful purchase, a toast is shown and the paywall dismisses. Customize the toast message in `PaywallViewModel.purchase()`.
+
+---
+
+## How to Customize Onboarding
+
+File: `Forge/Features/Onboarding/OnboardingStep.swift`
+
+- **Add/remove steps**: Add or remove cases from the `OnboardingStep` enum. Each case defines `title`, `icon`, `introHeadline` (for text-intro screens), `headlineLeading/Highlight/Trailing` (for data-gathering screens), `subtitle`, and `ctaTitle`.
+- **Text-intro screens** (`isTextIntro == true`): Full-screen centered text with icon. Good for value prop screens.
+- **Data-gathering screens**: Have a headline with highlighted word, subtitle, and interactive content (goals selection, permission request, name input).
+- **Reorder**: Cases are displayed in declaration order. Simply reorder the enum cases.
+- **Controller**: `OnboardingController.swift` handles state, validation, and analytics. The `userName` property is persisted and available via `session.currentUser?.displayNameCalculated`.
+
+---
+
+## DS Component Reference
+
+### Tokens
+- **Spacing**: `DSSpacing.xs` (4), `.sm` (8), `.smd` (12), `.md` (16), `.mlg` (20), `.lg` (24), `.xl` (32), `.xxl` (40), `.xxlg` (48)
+- **Radii**: `DSRadii.sm` (8), `.md` (12), `.lg` (16), `.xl` (20)
+- **Colors**: `Color.themePrimary`, `.textPrimary`, `.textSecondary`, `.textTertiary`, `.textOnPrimary`, `.surface`, `.surfaceVariant`, `.backgroundPrimary`, `.border`, `.error`, `.divider`
+- **Typography**: `.titleLarge()`, `.titleMedium()`, `.titleSmall()`, `.headlineMedium()`, `.headlineSmall()`, `.bodyMedium()`, `.bodySmall()`, `.captionLarge()`, `.buttonSmall()`, `.buttonMedium()`, `.buttonLarge()`
+
+### Components
+
+| Component | Location | Usage |
+|-----------|----------|-------|
+| `DSButton` | DesignSystem | `.primary`, `.secondary`, `.tertiary`, `.destructive` styles. Use `.cta()` for full-width primary. Primary/destructive have colored shadows. |
+| `DSIconButton` | DesignSystem | Icon-only button with optional circle background. |
+| `DSCard` | DesignSystem | Surface container with depth: `.flat` (subtle shadow + border), `.raised` (default), `.elevated`. All depths show border. |
+| `DSSection` | DesignSystem | Title + optional trailing action + content. |
+| `DSSegmentedControl` | DesignSystem | Animated pill toggle with primary-tinted shadow on selected pill. |
+| `DSTextField` | DesignSystem | Styled text field with focus tint. Convenience: `.email()`, `.password()`, `.name()`. Styles: `.bordered` (default), `.underline`. |
+| `DSScreen` | DesignSystem | Scrollable screen wrapper with optional title and consistent padding. |
+| `EmptyStateView` | DesignSystem | Tinted circle icon bg + title + message + optional action. Convenience: `.noSearchResults()`, `.emptyList()`. |
+| `ErrorStateView` | DesignSystem | Error circle icon bg + title + message + retry. Convenience: `.networkError()`, `.serverError()`. |
+| `ToastView` | DesignSystem | Auto-dismissing notification with leading color accent bar. Create via `Toast.success()`, `.error()`, `.warning()`, `.info()`. |
+| `DSListCard` | Components | Card container for list rows with dividers. |
+| `DSListRow` | Components | Compact row with leading icon, title, subtitle, trailing view. |
+
+---
+
+## Navigation Patterns
+
+The app uses [AppRouter](https://github.com/Dimillian/AppRouter) for navigation.
+
+### AppTab (TabView)
+Each tab is a case in `AppTab` enum. To add a tab:
+```swift
+// In AppTab.swift
+case myTab
+
+var icon: String { "star" }
+var title: String { "My Tab" }
+
+@MainActor @ViewBuilder
+func makeContentView() -> some View {
+    MyTabView()
+}
+```
+
+### AppRoute (NavigationStack push)
+Push destinations within a tab's NavigationStack:
+```swift
+// In AppRoute.swift — add a case
+case myDetail
+
+// Navigate from any view with router access
+router.navigate(to: .myDetail)
+```
+
+### AppSheet (Modal presentation)
+Bottom sheets and full-screen covers:
+```swift
+// In AppSheet.swift — add a case
+case myModal
+
+// Present from any view with router access
+router.presentSheet(.myModal)
+```
+
+---
+
+## Adding a Data Model
+
+1. **Create model**: In `Forge/Managers/[ManagerName]/Models/YourModel.swift`.
+2. **Required conformances**: `StringIdentifiable, Codable, Sendable`.
+3. **CodingKeys**: Use `snake_case` raw values.
+4. **Example**:
+```swift
+struct Item: StringIdentifiable, Codable, Sendable {
+    let id: String
+    let title: String
+    let createdAt: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case createdAt = "created_at"
+    }
+}
+```
+5. **Create a manager**: Service managers use protocol + Mock/Prod pattern. See `Forge/Managers/` for examples.
 
 ---
 

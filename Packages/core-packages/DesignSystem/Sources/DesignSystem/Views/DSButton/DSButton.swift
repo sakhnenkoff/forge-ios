@@ -59,7 +59,7 @@ public struct DSButton: View {
     private var buttonLabel: some View {
         let shape = RoundedRectangle(cornerRadius: size.cornerRadius, style: .continuous)
 
-        HStack(spacing: DSSpacing.sm) {
+        let content = HStack(spacing: DSSpacing.sm) {
             if isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
@@ -67,24 +67,41 @@ public struct DSButton: View {
                     .scaleEffect(0.8)
             } else {
                 if let icon {
-                    Image(systemName: icon)
-                        .font(.system(size: size.iconSize, weight: .medium))
+                    SketchIcon(systemName: icon, size: size.iconSize, color: style.foregroundColor)
                 }
 
                 Text(title)
                     .font(size.font)
             }
         }
-        .foregroundStyle(style.foregroundColor)
-        .padding(.horizontal, size.horizontalPadding)
-        .padding(.vertical, size.verticalPadding)
-        .frame(maxWidth: isFullWidth ? .infinity : nil)
-        .frame(minHeight: size.height)
-        .background(shape.fill(style.backgroundStyle))
-        .overlay(
-            shape.strokeBorder(style.borderColor, lineWidth: style.borderWidth)
-        )
-        .shadow(color: style.glowColor, radius: style.glowRadius, x: 0, y: style.glowYOffset)
+            .foregroundStyle(style.foregroundColor)
+            .padding(.horizontal, size.horizontalPadding)
+            .padding(.vertical, size.verticalPadding)
+            .frame(maxWidth: isFullWidth ? .infinity : nil)
+            .frame(minHeight: size.height)
+
+        if style.usesGlass {
+            if #available(iOS 26.0, *) {
+                let glass = Glass.regular.tint(style.glassTint).interactive()
+                content
+                    .background(shape.fill(style.backgroundColor))
+                    .glassEffect(glass, in: .rect(cornerRadius: size.cornerRadius))
+            } else {
+                content
+                    .background(shape.fill(style.backgroundStyle))
+                    .overlay(
+                        shape.strokeBorder(style.borderColor, lineWidth: style.borderWidth)
+                    )
+                    .shadow(color: style.glowColor, radius: style.glowRadius, x: 0, y: style.glowYOffset)
+            }
+        } else {
+            content
+                .background(shape.fill(style.backgroundStyle))
+                .overlay(
+                    shape.strokeBorder(style.borderColor, lineWidth: style.borderWidth)
+                )
+                .shadow(color: style.glowColor, radius: style.glowRadius, x: 0, y: style.glowYOffset)
+        }
     }
 }
 
@@ -103,6 +120,15 @@ public enum DSButtonStyle {
     /// Filled button with error color for destructive actions
     case destructive
 
+    var backgroundColor: Color {
+        switch self {
+        case .primary:     return .themePrimary
+        case .secondary:   return .surface
+        case .tertiary:    return .clear
+        case .destructive: return .error
+        }
+    }
+
     var foregroundColor: Color {
         switch self {
         case .primary:     return .textOnPrimary
@@ -114,8 +140,10 @@ public enum DSButtonStyle {
 
     var borderColor: Color {
         switch self {
-        case .secondary: return .themePrimary.opacity(0.35)
-        default:         return .clear
+        case .primary:     return .clear
+        case .secondary:   return .themePrimary.opacity(0.35)
+        case .tertiary:    return .clear
+        case .destructive: return .clear
         }
     }
 
@@ -156,6 +184,22 @@ public enum DSButtonStyle {
         default:                     return 0
         }
     }
+
+    var usesGlass: Bool {
+        switch self {
+        case .primary: return true
+        default:       return false
+        }
+    }
+
+    var glassTint: Color {
+        switch self {
+        case .primary:     return Color.themePrimary.opacity(0.3)
+        case .secondary:   return DesignSystem.tokens.glass.tint
+        case .tertiary:    return Color.textPrimary.opacity(0.02)
+        case .destructive: return Color.error.opacity(0.25)
+        }
+    }
 }
 
 // MARK: - Button Press Style
@@ -170,17 +214,17 @@ private struct DSButtonPressStyle: ButtonStyle {
             .scaleEffect(pressScale(isPressed: configuration.isPressed))
             .overlay(
                 Group {
-                    if style == .secondary || style == .destructive {
+                    if shouldShowFill {
                         shape.fill(pressFill(isPressed: configuration.isPressed))
                     }
                 }
             )
             .overlay(
                 Group {
-                    if style == .secondary {
+                    if shouldShowBorder {
                         shape.strokeBorder(
                             pressBorder(isPressed: configuration.isPressed),
-                            lineWidth: configuration.isPressed ? 1.0 : 0
+                            lineWidth: pressBorderWidth(isPressed: configuration.isPressed)
                         )
                     }
                 }
@@ -188,12 +232,23 @@ private struct DSButtonPressStyle: ButtonStyle {
             .animation(.spring(response: 0.22, dampingFraction: 0.72), value: configuration.isPressed)
     }
 
+    private var shouldShowFill: Bool {
+        switch style {
+        case .primary, .tertiary: return false
+        case .secondary, .destructive: return true
+        }
+    }
+
+    private var shouldShowBorder: Bool {
+        style == .secondary
+    }
+
     private func pressScale(isPressed: Bool) -> CGFloat {
         guard isPressed else { return 1.0 }
         switch style {
-        case .primary:               return 1.02
+        case .primary:              return 1.02
         case .secondary, .destructive: return 0.99
-        case .tertiary:              return 0.98
+        case .tertiary:             return 0.98
         }
     }
 
@@ -210,14 +265,17 @@ private struct DSButtonPressStyle: ButtonStyle {
         guard isPressed, style == .secondary else { return .clear }
         return Color.themePrimary.opacity(0.55)
     }
+
+    private func pressBorderWidth(isPressed: Bool) -> CGFloat {
+        guard isPressed, style == .secondary else { return 0 }
+        return 1.0
+    }
 }
 
 // MARK: - Button Size
 
 public enum DSButtonSize {
-    case small
-    case medium
-    case large
+    case small, medium, large
 
     var iconSize: CGFloat {
         switch self {
@@ -271,7 +329,6 @@ public enum DSButtonSize {
 // MARK: - Convenience Initializers
 
 public extension DSButton {
-    /// Creates a primary full-width CTA button.
     static func cta(
         title: String,
         icon: String? = nil,
@@ -279,57 +336,37 @@ public extension DSButton {
         isEnabled: Bool = true,
         action: @escaping () -> Void
     ) -> DSButton {
-        DSButton(
-            title: title,
-            icon: icon,
-            style: .primary,
-            size: .medium,
-            isLoading: isLoading,
-            isEnabled: isEnabled,
-            isFullWidth: true,
-            action: action
-        )
+        DSButton(title: title, icon: icon, style: .primary, size: .medium,
+                 isLoading: isLoading, isEnabled: isEnabled, isFullWidth: true, action: action)
     }
 
-    /// Creates a destructive action button.
     static func destructive(
         title: String,
         icon: String? = "trash",
         isLoading: Bool = false,
         action: @escaping () -> Void
     ) -> DSButton {
-        DSButton(
-            title: title,
-            icon: icon,
-            style: .destructive,
-            size: .medium,
-            isLoading: isLoading,
-            action: action
-        )
+        DSButton(title: title, icon: icon, style: .destructive, size: .medium,
+                 isLoading: isLoading, action: action)
     }
 
-    /// Creates a text-only link-style button.
     static func link(
         title: String,
         action: @escaping () -> Void
     ) -> DSButton {
-        DSButton(
-            title: title,
-            style: .tertiary,
-            size: .medium,
-            action: action
-        )
+        DSButton(title: title, style: .tertiary, size: .medium, action: action)
     }
 }
 
 // MARK: - Icon-Only Button
 
-/// A button that displays only an icon without text.
 public struct DSIconButton: View {
     let icon: String
     let style: DSButtonStyle
     let size: DSIconButtonSize
+    let usesGlass: Bool
     let showsBackground: Bool
+    let glassTint: Color?
     let accessibilityLabel: String?
     let action: (() -> Void)?
 
@@ -337,16 +374,18 @@ public struct DSIconButton: View {
         icon: String,
         style: DSButtonStyle = .tertiary,
         size: DSIconButtonSize = .medium,
-        usesGlass: Bool = false,
+        usesGlass: Bool = true,
         showsBackground: Bool = true,
-        glassTint: Color? = nil,
+        glassTint: Color? = DesignSystem.tokens.glass.tint,
         accessibilityLabel: String? = nil,
         action: (() -> Void)? = nil
     ) {
         self.icon = icon
         self.style = style
         self.size = size
+        self.usesGlass = usesGlass
         self.showsBackground = showsBackground
+        self.glassTint = glassTint
         self.accessibilityLabel = accessibilityLabel
         self.action = action
     }
@@ -385,23 +424,21 @@ public struct DSIconButton: View {
     @ViewBuilder
     private var iconContent: some View {
         if showsBackground {
-            Image(systemName: icon)
-                .font(.system(size: size.iconSize, weight: .medium))
-                .foregroundStyle(iconTint)
-                .frame(width: size.dimension, height: size.dimension)
-                .background(
-                    RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                        .fill(iconBackground)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                        .stroke(style == .tertiary ? Color.clear : Color.border.opacity(0.6), lineWidth: 1)
-                )
-                .shadow(color: DSShadows.soft.color, radius: DSShadows.soft.radius, x: 0, y: DSShadows.soft.y)
+            IconTileSurface(
+                size: size.dimension,
+                cornerRadius: size.dimension / 2,
+                fill: iconBackground,
+                borderColor: style == .tertiary ? .clear : Color.border,
+                borderWidth: style == .tertiary ? 0 : 1,
+                shadow: DSShadows.soft,
+                glassTint: glassTint,
+                usesGlass: usesGlass,
+                isInteractive: action != nil
+            ) {
+                SketchIcon(systemName: icon, size: size.iconSize, color: iconTint)
+            }
         } else {
-            Image(systemName: icon)
-                .font(.system(size: size.iconSize, weight: .medium))
-                .foregroundStyle(iconTint)
+            SketchIcon(systemName: icon, size: size.iconSize, color: iconTint)
                 .frame(width: size.dimension, height: size.dimension)
                 .contentShape(.rect)
         }
@@ -409,9 +446,7 @@ public struct DSIconButton: View {
 }
 
 public enum DSIconButtonSize {
-    case small
-    case medium
-    case large
+    case small, medium, large
 
     var iconSize: CGFloat {
         switch self {
@@ -435,9 +470,12 @@ public enum DSIconButtonSize {
 #Preview("Buttons") {
     VStack(spacing: DSSpacing.md) {
         DSButton(title: "Primary") {}
+        DSButton(title: "With Icon", icon: "arrow.right") {}
         DSButton(title: "Secondary", style: .secondary) {}
         DSButton(title: "Tertiary", style: .tertiary) {}
         DSButton.cta(title: "Get Started") {}
+        DSButton.cta(title: "Loading...", isLoading: true) {}
+        DSButton.cta(title: "Disabled", isEnabled: false) {}
         DSButton.destructive(title: "Delete", action: {})
     }
     .padding()
@@ -448,7 +486,8 @@ public enum DSIconButtonSize {
     HStack(spacing: DSSpacing.md) {
         DSIconButton(icon: "heart.fill", style: .primary, size: .small) {}
         DSIconButton(icon: "plus", style: .secondary) {}
-        DSIconButton(icon: "xmark", style: .tertiary) {}
+        DSIconButton(icon: "xmark", style: .tertiary, showsBackground: false) {}
+        DSIconButton(icon: "trash", style: .destructive) {}
     }
     .padding()
     .background(Color.backgroundPrimary)

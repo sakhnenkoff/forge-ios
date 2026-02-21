@@ -53,9 +53,7 @@ public struct DSListRow<Trailing: View>: View {
     public var body: some View {
         let rowContent = HStack(spacing: DSSpacing.smd) {
             if let leadingIcon {
-                Image(systemName: leadingIcon)
-                    .font(.system(size: DSLayout.iconSmall, weight: .medium))
-                    .foregroundStyle(leadingTint)
+                SketchIcon(systemName: leadingIcon, size: DSLayout.iconSmall, color: leadingTint)
             }
 
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
@@ -92,21 +90,24 @@ public struct DSListRow<Trailing: View>: View {
 }
 
 #Preview("Rows") {
-    DSCard {
-        VStack(spacing: 0) {
-            DSListRow(
-                title: "Notifications",
-                subtitle: "Set a time for daily memories",
-                leadingIcon: "bell"
-            )
-            Divider()
-            DSListRow(
-                title: "Restore",
-                subtitle: "Have full access?",
-                leadingIcon: "arrow.counterclockwise"
-            )
+    VStack(spacing: 0) {
+        DSListRow(
+            title: "Notifications",
+            subtitle: "Set a time for daily memories",
+            leadingIcon: "bell"
+        ) {
+            TimePill(title: "17:00")
+        }
+        Divider()
+        DSListRow(
+            title: "Restore",
+            subtitle: "Have full access?",
+            leadingIcon: "arrow.counterclockwise"
+        ) {
+            IconTileButton(systemName: "tray.and.arrow.down")
         }
     }
+    .cardSurface(cornerRadius: DSRadii.lg)
     .padding()
     .background(Color.backgroundPrimary)
 }

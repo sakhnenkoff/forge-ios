@@ -49,7 +49,7 @@ struct AuthView: View {
             Text("Sign in")
                 .font(.titleLarge())
                 .foregroundStyle(Color.textPrimary)
-            Text("Sync your progress and unlock premium features.")
+            Text("Sync your finances across devices and unlock premium insights.")
                 .font(.bodyMedium())
                 .foregroundStyle(Color.textSecondary)
         }
@@ -60,24 +60,24 @@ struct AuthView: View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
             featureRow(
                 icon: "lock.shield.fill",
-                title: "Privacy-first",
-                message: "We only collect what you explicitly share."
+                title: "Bank-grade security",
+                message: "Your financial data is encrypted and never shared."
             )
             featureRow(
-                icon: "sparkles",
-                title: "Production-ready flows",
-                message: "Onboarding, analytics, and paywalls are ready to ship."
+                icon: "icloud.fill",
+                title: "Sync everywhere",
+                message: "Access your budget on iPhone, iPad, and Mac."
             )
             featureRow(
-                icon: "chart.line.uptrend.xyaxis",
-                title: "Growth visibility",
-                message: "Understand engagement with built-in tracking hooks."
+                icon: "chart.bar.fill",
+                title: "Smart insights",
+                message: "AI-powered spending analysis tailored to your habits."
             )
         }
         .padding(DSSpacing.md)
         .background(
             RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                .fill(Color.surface)
+                .fill(Color.themePrimary.opacity(0.03))
         )
         .overlay(
             RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
@@ -100,7 +100,7 @@ struct AuthView: View {
                 if viewModel.availableProviders.contains(.apple) {
                     DSListRow(
                         title: "Sign in with Apple",
-                        subtitle: "Private and secure",
+                        subtitle: "Private relay available",
                         leadingIcon: "apple.logo"
                     ) {
                         viewModel.signInApple(services: services, session: session)
@@ -130,7 +130,7 @@ struct AuthView: View {
                     }
                     DSListRow(
                         title: "Explore as guest",
-                        subtitle: "Skip sign-in for now",
+                        subtitle: "Try the app first",
                         leadingIcon: "person"
                     ) {
                         viewModel.signInAnonymously(services: services, session: session)

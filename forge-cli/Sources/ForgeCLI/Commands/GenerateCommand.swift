@@ -58,9 +58,6 @@ struct GenerateCommand: AsyncParsableCommand {
     )
     var preset: String?
 
-    @Option(name: [.customLong("archetype")], help: "App archetype: blank, finance (default: interactive selection).")
-    var archetype: String?
-
     @Option(name: [.customLong("outputDir")], help: "Output directory (default: ../ProjectName).")
     var outputDir: String?
 
@@ -137,27 +134,7 @@ struct GenerateCommand: AsyncParsableCommand {
             try generator.removeStalePackageResolved(in: config.outputDir, projectName: config.projectName)
             Console.printDone("Package references configured")
 
-            // Section 5: Inject archetype
-            if config.archetypeId != "blank" {
-                Console.printStep("Injecting \(config.archetypeId) archetype")
-                if let manifest = try ArchetypeRegistry.find(id: config.archetypeId, templateRoot: templateRoot) {
-                    let archetypeDir = templateRoot
-                        .appendingPathComponent("Archetypes")
-                        .appendingPathComponent(config.archetypeId)
-                    let injector = ArchetypeInjector(
-                        manifest: manifest,
-                        archetypeDir: archetypeDir,
-                        outputDir: config.outputDir,
-                        projectName: config.projectName
-                    )
-                    try injector.inject()
-                    Console.printDone("Archetype injected")
-                } else {
-                    Console.printDone("Archetype '\(config.archetypeId)' not found, using blank")
-                }
-            }
-
-            // Section 6: Configure features
+            // Section 5: Configure features
             Console.printStep("Configuring features")
             try FeatureFlagWriter.apply(
                 selectedFeatureIds: Set(config.resolvedFeatureIds),

@@ -6,6 +6,7 @@ public struct DesignTokens: Sendable {
     public let spacing: SpacingScale
     public let radii: RadiiScale
     public let shadows: ShadowScale
+    public let glass: GlassTokens
     public let layout: LayoutScale
 
     public init(
@@ -14,6 +15,7 @@ public struct DesignTokens: Sendable {
         spacing: SpacingScale,
         radii: RadiiScale,
         shadows: ShadowScale,
+        glass: GlassTokens = GlassTokens(),
         layout: LayoutScale = LayoutScale()
     ) {
         self.colors = colors
@@ -21,7 +23,27 @@ public struct DesignTokens: Sendable {
         self.spacing = spacing
         self.radii = radii
         self.shadows = shadows
+        self.glass = glass
         self.layout = layout
+    }
+}
+
+public struct GlassTokens: Sendable {
+    public let tint: Color
+    public let strongTint: Color
+    public let border: Color
+    public let shadow: ShadowToken
+
+    public init(
+        tint: Color = Color.white.opacity(0.10),
+        strongTint: Color = Color.white.opacity(0.18),
+        border: Color = Color.white.opacity(0.40),
+        shadow: ShadowToken = ShadowToken(color: .black.opacity(0.08), radius: 10, y: 4)
+    ) {
+        self.tint = tint
+        self.strongTint = strongTint
+        self.border = border
+        self.shadow = shadow
     }
 }
 

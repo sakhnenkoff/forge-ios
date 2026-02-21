@@ -94,15 +94,13 @@ public struct ToastView: View {
         .padding(.vertical, DSSpacing.md)
         .contentShape(.rect)
         .allowsHitTesting(true)
-        .background(
-            RoundedRectangle(cornerRadius: DSRadii.md, style: .continuous)
-                .fill(Color.surface)
+        .glassSurface(
+            cornerRadius: DSRadii.md,
+            tint: toast.style.backgroundColor.opacity(0.08),
+            borderColor: toast.style.backgroundColor.opacity(0.15),
+            shadow: DSShadows.card,
+            isInteractive: false
         )
-        .overlay(
-            RoundedRectangle(cornerRadius: DSRadii.md, style: .continuous)
-                .stroke(toast.style.backgroundColor.opacity(0.15), lineWidth: 1)
-        )
-        .shadow(color: DSShadows.card.color, radius: DSShadows.card.radius, x: 0, y: DSShadows.card.y)
         .padding(.horizontal, DSSpacing.md)
     }
 }

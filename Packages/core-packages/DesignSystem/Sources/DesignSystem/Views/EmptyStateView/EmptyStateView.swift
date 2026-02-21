@@ -24,12 +24,17 @@ public struct EmptyStateView: View {
     }
 
     public var body: some View {
-        VStack(spacing: DSSpacing.md) {
+        VStack(spacing: DSSpacing.lg) {
             if let icon {
-                Image(systemName: icon)
-                    .font(.system(size: 44, weight: .light))
-                    .foregroundStyle(Color.textTertiary)
-                    .accessibilityHidden(true)
+                ZStack {
+                    Circle()
+                        .fill(Color.themePrimary.opacity(0.08))
+                        .frame(width: 56, height: 56)
+                    Image(systemName: icon)
+                        .font(.system(size: 24, weight: .medium))
+                        .foregroundStyle(Color.themePrimary.opacity(0.7))
+                }
+                .accessibilityHidden(true)
             }
 
             VStack(spacing: DSSpacing.sm) {

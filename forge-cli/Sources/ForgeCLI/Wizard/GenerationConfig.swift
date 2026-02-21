@@ -10,7 +10,6 @@ struct GenerationConfig: Sendable {
     let analyticsFeatureIds: [String]   // IDs from registry: "firebase-analytics", "mixpanel", "crashlytics"
     let featureModuleIds: [String]      // IDs from registry: "onboarding", "push-notifications", etc.
     let resolvedFeatureIds: [String]    // All features in dependency order (from DependencyResolver)
-    let archetypeId: String             // Archetype to inject (e.g. "blank", "finance")
     let outputDir: URL
 
     enum AuthProvider: String, CaseIterable, Sendable {

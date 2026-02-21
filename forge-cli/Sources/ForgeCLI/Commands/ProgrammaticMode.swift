@@ -17,8 +17,6 @@ struct ProgrammaticInput: Decodable {
     let analyticsServices: [String]?
     /// Feature modules (CLI shorthand accepted): "onboarding", "push", "abtesting", "imageupload"
     let features: [String]?
-    /// App archetype: "blank", "finance". Default: "blank"
-    let archetype: String?
     /// Output directory. Default: ../projectName relative to CWD
     let outputDir: String?
 }
@@ -264,7 +262,6 @@ extension GenerateCommand {
             analyticsFeatureIds: normalizedAnalytics,
             featureModuleIds: normalizedFeatures,
             resolvedFeatureIds: resolution.resolved,
-            archetypeId: input.archetype ?? "blank",
             outputDir: outputDirURL
         )
 

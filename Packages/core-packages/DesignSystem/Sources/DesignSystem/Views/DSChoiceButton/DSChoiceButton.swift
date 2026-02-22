@@ -8,6 +8,7 @@ public struct DSChoiceButton: View {
     let isSelected: Bool
     let action: () -> Void
 
+    @Environment(\.isEnabled) private var isEnabled
     @State private var tapCount = 0
 
     public init(
@@ -63,6 +64,7 @@ public struct DSChoiceButton: View {
             )
         }
         .buttonStyle(.plain)
+        .opacity(isEnabled ? 1.0 : 0.4)
         .accessibilityValue(Text(String(localized: isSelected ? "Selected" : "Not selected", bundle: .module)))
         .sensoryFeedback(.selection, trigger: tapCount)
         .animation(.easeInOut(duration: 0.2), value: isSelected)

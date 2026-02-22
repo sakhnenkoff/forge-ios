@@ -58,7 +58,7 @@ struct ABTestManagerTests {
         let logSpy = SpyLogService()
         let logManager = LogManager(services: [logSpy])
         let service = ThrowingABTestService()
-        let _ = ABTestManager(service: service, logManager: logManager)
+        _ = ABTestManager(service: service, logManager: logManager)
 
         // Wait for configure() Task to fail
         try await Task.sleep(for: .milliseconds(100))

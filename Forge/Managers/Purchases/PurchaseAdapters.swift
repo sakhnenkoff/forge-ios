@@ -283,12 +283,12 @@ final class RevenueCatPurchaseService: PurchaseService {
     }
 
     func getProducts(productIds: [String]) async throws -> [AnyProduct] {
-        let products = try await Purchases.shared.products(productIds)
+        let products = await Purchases.shared.products(productIds)
         return products.map { AnyProduct(revenueCatProduct: $0) }
     }
 
     func purchase(productId: String) async throws -> [PurchasedEntitlement] {
-        let storeProducts = try await Purchases.shared.products([productId])
+        let storeProducts = await Purchases.shared.products([productId])
         guard let storeProduct = storeProducts.first else {
             throw PurchaseError.productNotFound
         }
@@ -335,7 +335,6 @@ final class RevenueCatPurchaseService: PurchaseService {
             throw PurchaseError.revenueCatError(underlying: error)
         }
     }
-
 
     private func purchase(storeProduct: StoreProduct) async throws -> CustomerInfo {
         let (_, info, userCancelled) = try await Purchases.shared.purchase(product: storeProduct)

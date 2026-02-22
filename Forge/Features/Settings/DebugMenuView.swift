@@ -157,7 +157,6 @@ struct DebugMenuView: View {
         }
     }
 
-
     private func debugBadge(text: String, tint: Color = .textSecondary) -> some View {
         Text(text)
             .font(.captionLarge())

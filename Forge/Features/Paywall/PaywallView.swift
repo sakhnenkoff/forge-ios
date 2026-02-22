@@ -24,7 +24,7 @@ struct PaywallView: View {
 
     var body: some View {
         NavigationStack {
-            DSScreen(title: "Forge Pro", background: { AmbientBackground(intensity: 0.18) }) {
+            DSScreen(title: "Forge Pro", background: { AmbientBackground(intensity: 0.18) }, content: {
                 VStack(spacing: DSSpacing.lg) {
                     heroCard
 
@@ -54,7 +54,7 @@ struct PaywallView: View {
                         .foregroundStyle(Color.textTertiary)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
-            }
+            })
             .safeAreaInset(edge: .bottom) {
                 if FeatureFlags.enablePurchases && !viewModel.products.isEmpty && viewModel.errorMessage == nil {
                     DSButton.cta(

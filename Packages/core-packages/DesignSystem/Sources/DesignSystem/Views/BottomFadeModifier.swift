@@ -10,19 +10,23 @@ public struct BottomFadeModifier: ViewModifier {
     }
 
     public func body(content: Content) -> some View {
-        content
-            .background(alignment: .bottom) {
-                LinearGradient(
-                    colors: [
-                        Color.backgroundPrimary,
-                        Color.backgroundPrimary.opacity(0)
-                    ],
-                    startPoint: .bottom,
-                    endPoint: .top
-                )
-                .frame(height: height)
-                .ignoresSafeArea()
-            }
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [
+                    Color.backgroundPrimary.opacity(0),
+                    Color.backgroundPrimary
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: height)
+
+            content
+                .padding(.vertical, DSSpacing.sm)
+                .frame(maxWidth: .infinity)
+                .background(Color.backgroundPrimary)
+        }
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 

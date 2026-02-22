@@ -47,6 +47,10 @@ final class PaywallViewModel {
         services.logManager.trackEvent(event: Event.loadProductsStart)
         do {
             products = try await purchaseManager.getProducts(productIds: productIds)
+            if selectedProductId == nil {
+                selectedProductId = subscriptionProducts.first { $0.id == EntitlementOption.annual.productId }?.id
+                    ?? subscriptionProducts.first?.id
+            }
         } catch {
             errorMessage = error.localizedDescription
             services.logManager.trackEvent(event: Event.loadProductsFail(error: error))

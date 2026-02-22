@@ -53,13 +53,6 @@ struct CustomPaywallView: View {
             //     lifetimeDivider
             //     lifetimeSection(lifetimeProduct)
             // }
-
-        }
-        .onAppear {
-            if selectedProductId == nil {
-                selectedProductId = subscriptionProducts.first { $0.id == EntitlementOption.annual.productId }?.id
-                    ?? subscriptionProducts.first?.id
-            }
         }
     }
 

@@ -8,14 +8,20 @@
 import Testing
 @testable import Forge
 
+struct TrackedEvent {
+    let name: String
+    let parameters: [String: Any]?
+    let type: LogType
+}
+
 @MainActor
 final class SpyLogService: LogService {
-    var trackedEvents: [(name: String, parameters: [String: Any]?, type: LogType)] = []
+    var trackedEvents: [TrackedEvent] = []
     var userPropertiesUpdates: [(properties: [String: Any], isHighPriority: Bool)] = []
     var deleteProfileCallCount = 0
 
     func trackEvent(name: String, parameters: [String: Any]?, type: LogType) {
-        trackedEvents.append((name: name, parameters: parameters, type: type))
+        trackedEvents.append(TrackedEvent(name: name, parameters: parameters, type: type))
     }
 
     func addUserProperties(_ properties: [String: Any], isHighPriority: Bool) {
@@ -36,7 +42,7 @@ final class SpyLogService: LogService {
         trackedEvents.filter { $0.name == name }.count
     }
 
-    func lastEvent() -> (name: String, parameters: [String: Any]?, type: LogType)? {
+    func lastEvent() -> TrackedEvent? {
         trackedEvents.last
     }
 }

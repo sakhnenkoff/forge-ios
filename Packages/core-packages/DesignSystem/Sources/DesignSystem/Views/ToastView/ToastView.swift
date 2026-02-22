@@ -101,7 +101,6 @@ public struct ToastView: View {
             shadow: DSShadows.card,
             isInteractive: false
         )
-        .padding(.horizontal, DSSpacing.md)
     }
 }
 

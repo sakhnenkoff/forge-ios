@@ -9,10 +9,12 @@ public extension View {
 struct ToastViewModifier: ViewModifier {
     @Binding var toast: Toast?
     @State private var workItem: DispatchWorkItem?
+    private let horizontalPadding: CGFloat = DSSpacing.mlg
+    private let bottomSpacing: CGFloat = DSSpacing.md
 
     func body(content: Content) -> some View {
         content
-            .overlay(alignment: .bottom) {
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 if let toast = toast {
                     ToastView(toast: toast) {
                         dismissToast()
@@ -21,8 +23,8 @@ struct ToastViewModifier: ViewModifier {
                         insertion: .scale(scale: 0.92).combined(with: .move(edge: .bottom)).combined(with: .opacity),
                         removal: .scale(scale: 0.92).combined(with: .opacity)
                     ))
-                    .padding(.horizontal, DSSpacing.mlg)
-                    .padding(.bottom, DSSpacing.sm)
+                    .padding(.horizontal, horizontalPadding)
+                    .padding(.bottom, bottomSpacing)
                 }
             }
             .animation(.spring(response: 0.4, dampingFraction: 0.75), value: toast)

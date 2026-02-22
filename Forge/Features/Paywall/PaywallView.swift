@@ -73,8 +73,7 @@ struct PaywallView: View {
                         }
                     }
                     .padding(.horizontal, DSSpacing.xl)
-                    .padding(.vertical, DSSpacing.sm)
-                    .bottomFade()
+                    .bottomFade(height: 60)
                 }
             }
             .toolbar {
@@ -139,7 +138,9 @@ struct PaywallView: View {
         DSHeroCard(usesGlass: true) {
             VStack(alignment: .leading, spacing: DSSpacing.md) {
                 HStack(alignment: .top) {
-                    HeroIcon(systemName: "sparkles", size: DSLayout.avatarSmall, tint: Color.themePrimary, usesGlass: true)
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 24, weight: .medium))
+                        .foregroundStyle(Color.themePrimary)
                     Spacer()
                     TagBadge(text: "Pro", tint: Color.themePrimary)
                 }

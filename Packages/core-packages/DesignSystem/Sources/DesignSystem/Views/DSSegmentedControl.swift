@@ -31,28 +31,32 @@ public struct DSSegmentedControl<T: Hashable>: View {
     public var body: some View {
         let outerRadius = DSRadii.lg
         let shape = RoundedRectangle(cornerRadius: outerRadius, style: .continuous)
-        let base = HStack(spacing: 0) {
+        let content = HStack(spacing: 0) {
             ForEach(items, id: \.self) { item in
                 segmentButton(for: item)
             }
         }
         .padding(DSSpacing.sm)
-        .background(shape.fill(usesGlass ? Color.clear : Color.surface))
-        .clipShape(shape)
 
         Group {
             if usesGlass {
                 if #available(iOS 26.0, *) {
                     let glass = Glass.regular.tint(DesignSystem.tokens.glass.tint).interactive()
-                    base.glassEffect(glass, in: .rect(cornerRadius: outerRadius))
+                    content
+                        .clipShape(shape)
+                        .compositingGroup()
+                        .glassEffect(glass, in: .rect(cornerRadius: outerRadius))
                 } else {
-                    base
+                    content
                         .background(shape.fill(Color.surface))
+                        .clipShape(shape)
                         .overlay(shape.stroke(Color.border, lineWidth: 1))
                         .shadow(color: DSShadows.soft.color, radius: DSShadows.soft.radius, x: 0, y: DSShadows.soft.y)
                 }
             } else {
-                base
+                content
+                    .background(shape.fill(Color.surface))
+                    .clipShape(shape)
                     .overlay(shape.stroke(Color.border, lineWidth: 1))
             }
         }

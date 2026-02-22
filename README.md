@@ -138,7 +138,7 @@ echo '{"projectName":"MyApp","bundleId":"com.me.myapp","authProviders":["apple"]
 
 ## Claude Code Skills
 
-Five AI-powered skills for working with Forge projects, available from a single marketplace:
+Seven AI-powered skills for working with Forge projects, available from a single marketplace:
 
 ```bash
 claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
@@ -148,11 +148,13 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 |-------|---------|---------|
 | `forge-app` | `claude plugin install forge-app@forge-marketplace` | Build an entire app from an idea |
 | `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Quality pipeline — scaffold, build, polish, verify |
+| `forge-wire` | `claude plugin install forge-wire@forge-marketplace` | Connect to backend (Firebase, Supabase, REST, etc.) |
+| `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | App Store pre-flight audit + submission prep |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Set up the template — rename, brand, configure features |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold architecture-correct feature screens |
 | `swiftui-craft` | `claude plugin install swiftui-craft@forge-marketplace` | Premium SwiftUI design polish |
 
-**Workflow**: `forge-workspace` (setup) → `forge-app` (build entire app) → or use `forge-feature` / `forge-screens` + `swiftui-craft` individually
+**Full pipeline**: `forge-workspace` (setup) → `forge-app` (build) → `forge-wire` (connect backend) → `forge-ship` (submit)
 
 ### Optional Enhancements
 

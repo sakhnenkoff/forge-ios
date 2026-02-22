@@ -73,6 +73,8 @@ All installable from the forge marketplace:
 |-------|---------|---------|
 | `forge-app` | Build a complete app from an idea — blueprint + execution | `/forge:app` |
 | `forge-feature` | Quality pipeline — scaffold, build, polish, verify | `/forge:feature` or `/forge:quick` |
+| `forge-wire` | Connect to backend services (Firebase, Supabase, REST, etc.) | `/forge:wire` |
+| `forge-ship` | App Store pre-flight audit, Axiom scan, auto-fixes | `/forge:ship` |
 | `forge-workspace` | Rename, brand, and configure the template for your app | "Set up Forge for [app]" |
 | `forge-screens` | Scaffold architecture-correct feature screens | "Create a screen for [feature]" |
 | `swiftui-craft` | Premium SwiftUI design polish | "Polish this UI" |
@@ -380,6 +382,8 @@ Or build an entire app at once: `/forge:app` — describe your idea, get a runni
 Other available skills from the same marketplace:
 - `forge-app` — build a complete app from an idea (`claude plugin install forge-app@forge-marketplace`)
 - `forge-feature` — quality pipeline: scaffold, build, polish, verify (`claude plugin install forge-feature@forge-marketplace`)
+- `forge-wire` — connect to backend services (`claude plugin install forge-wire@forge-marketplace`)
+- `forge-ship` — App Store pre-flight audit and submission prep (`claude plugin install forge-ship@forge-marketplace`)
 - `forge-screens` — scaffold architecture-correct feature screens (`claude plugin install forge-screens@forge-marketplace`)
 - `swiftui-craft` — premium SwiftUI design polish (`claude plugin install swiftui-craft@forge-marketplace`)
 

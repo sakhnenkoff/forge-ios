@@ -54,6 +54,7 @@ public struct DSListRow<Trailing: View>: View {
         let rowContent = HStack(spacing: DSSpacing.smd) {
             if let leadingIcon {
                 SketchIcon(systemName: leadingIcon, size: DSLayout.iconSmall, color: leadingTint)
+                    .frame(width: DSLayout.iconSmall + 4, height: DSLayout.iconSmall + 4)
             }
 
             VStack(alignment: .leading, spacing: DSSpacing.xs) {

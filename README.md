@@ -141,7 +141,7 @@ echo '{"projectName":"MyApp","bundleId":"com.me.myapp","authProviders":["apple"]
 Three AI-powered skills for working with Forge projects, available from a single marketplace:
 
 ```bash
-claude plugin marketplace add sakhnenkoff/forge-marketplace
+claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 ```
 
 | Skill | Install | Purpose |

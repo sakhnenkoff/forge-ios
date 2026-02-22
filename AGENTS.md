@@ -16,7 +16,7 @@ Forge is a production-ready iOS app template built with SwiftUI, MVVM architectu
 
 1. **Rename the template** for your app. Install the `forge-workspace` skill:
    ```bash
-   claude plugin marketplace add sakhnenkoff/forge-marketplace
+   claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
    claude plugin install forge-workspace@forge-marketplace
    ```
    Then say: "Set up Forge for [my app name]" — it walks you through renaming, branding, feature flags, and content customization.
@@ -67,7 +67,7 @@ The typical workflow for adding features:
 
 ### Available Skills
 
-All installable from `sakhnenkoff/forge-marketplace`:
+All installable from the forge marketplace:
 
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
@@ -110,7 +110,7 @@ Use direct `xcodebuild` (do not use MCP).
 1. Create a SwiftUI View + ViewModel under `/Features/[FeatureName]/`
 2. Wire navigation in `AppRoute`/`AppSheet` if needed
 3. Follow the steps in ACTION 1 documentation
-4. **Screen scaffolding**: Use the `forge-screens` skill to generate architecture-correct View + ViewModel pairs wired into the AppRouter navigation pattern (`claude plugin marketplace add sakhnenkoff/forge-marketplace && claude plugin install forge-screens@forge-marketplace`).
+4. **Screen scaffolding**: Use the `forge-screens` skill to generate architecture-correct View + ViewModel pairs wired into the AppRouter navigation pattern (`claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace && claude plugin install forge-screens@forge-marketplace`).
 5. **Design craft**: Use the `swiftui-craft` skill for premium, Apple-native design — researching real award-winning apps for inspiration, applying six craft dimensions (typography, color, composition, motion, material, micro-interactions), and detecting the project's design system to use its tokens (`claude plugin install swiftui-craft@forge-marketplace`).
 
 ### For New Components
@@ -367,7 +367,7 @@ struct Item: StringIdentifiable, Codable, Sendable {
 To transform this Forge template into your own app, install skills from the Forge marketplace:
 
 ```bash
-claude plugin marketplace add sakhnenkoff/forge-marketplace
+claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 claude plugin install forge-workspace@forge-marketplace
 ```
 

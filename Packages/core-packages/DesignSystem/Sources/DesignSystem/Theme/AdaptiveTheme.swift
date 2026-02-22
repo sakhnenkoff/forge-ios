@@ -9,10 +9,10 @@ import SwiftUI
 public struct AdaptiveTheme: Theme, Sendable {
     public let tokens: DesignTokens
 
-    public init(brandColor: Color = .indigo) {
+    public init(brandColor: Color = Color(light: Color(hex: "6B3FA0"), dark: Color(hex: "8B5CF6"))) {
         let colors = ColorPalette(
             primary: brandColor,
-            secondary: brandColor.opacity(0.7),
+            secondary: Color(light: Color(hex: "9B6FCF"), dark: Color(hex: "A78BFA")),
             accent: brandColor,
             success: Color(light: Color(hex: "34C759"), dark: Color(hex: "30D158")),
             warning: Color(light: Color(hex: "FF9500"), dark: Color(hex: "FF9F0A")),
@@ -32,20 +32,21 @@ public struct AdaptiveTheme: Theme, Sendable {
         )
 
         let typography = TypographyScale(
-            titleLarge:     TextStyle(size: 26, weight: .semibold, design: .default),
-            titleMedium:    TextStyle(size: 22, weight: .semibold, design: .default),
-            titleSmall:     TextStyle(size: 18, weight: .semibold, design: .default),
+            display:        TextStyle(size: 34, weight: .bold,     design: .rounded),
+            titleLarge:     TextStyle(size: 28, weight: .semibold, design: .rounded),
+            titleMedium:    TextStyle(size: 22, weight: .semibold, design: .rounded),
+            titleSmall:     TextStyle(size: 20, weight: .semibold, design: .default),
             headlineLarge:  TextStyle(size: 17, weight: .semibold, design: .default),
             headlineMedium: TextStyle(size: 15, weight: .semibold, design: .default),
             headlineSmall:  TextStyle(size: 13, weight: .semibold, design: .default),
-            bodyLarge:      TextStyle(size: 15, weight: .regular,  design: .default),
-            bodyMedium:     TextStyle(size: 13, weight: .regular,  design: .default),
-            bodySmall:      TextStyle(size: 12, weight: .regular,  design: .default),
-            captionLarge:   TextStyle(size: 11, weight: .regular,  design: .default),
-            captionSmall:   TextStyle(size: 10, weight: .regular,  design: .default),
-            buttonLarge:    TextStyle(size: 14, weight: .semibold, design: .default),
-            buttonMedium:   TextStyle(size: 13, weight: .semibold, design: .default),
-            buttonSmall:    TextStyle(size: 12, weight: .semibold, design: .default)
+            bodyLarge:      TextStyle(size: 17, weight: .regular,  design: .default),
+            bodyMedium:     TextStyle(size: 15, weight: .regular,  design: .default),
+            bodySmall:      TextStyle(size: 13, weight: .regular,  design: .default),
+            captionLarge:   TextStyle(size: 12, weight: .regular,  design: .default),
+            captionSmall:   TextStyle(size: 11, weight: .regular,  design: .default),
+            buttonLarge:    TextStyle(size: 17, weight: .semibold, design: .default),
+            buttonMedium:   TextStyle(size: 15, weight: .semibold, design: .default),
+            buttonSmall:    TextStyle(size: 13, weight: .semibold, design: .default)
         )
 
         let radii = RadiiScale(
@@ -58,9 +59,9 @@ public struct AdaptiveTheme: Theme, Sendable {
         )
 
         let shadows = ShadowScale(
-            soft:   ShadowToken(color: .black.opacity(0.04), radius: 6,  y: 3),
-            card:   ShadowToken(color: .black.opacity(0.08), radius: 12, y: 6),
-            lifted: ShadowToken(color: .black.opacity(0.12), radius: 18, y: 9)
+            soft:   ShadowToken(color: brandColor.opacity(0.04), radius: 6,  y: 3),
+            card:   ShadowToken(color: brandColor.opacity(0.06), radius: 8,  y: 4),
+            lifted: ShadowToken(color: brandColor.opacity(0.10), radius: 14, y: 7)
         )
 
         let glass = GlassTokens(

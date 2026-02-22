@@ -198,7 +198,7 @@ public extension Color {
 
 extension Color {
     /// Creates an adaptive color that changes based on light/dark mode
-    init(light: Color, dark: Color) {
+    public init(light: Color, dark: Color) {
         self.init(uiColor: UIColor(dynamicProvider: { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
         }))

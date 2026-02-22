@@ -23,16 +23,18 @@ struct HomeView: View {
     @State private var showSkeleton = true
 
     var body: some View {
-        DSScreen(title: "Design System") {
+        DSScreen(title: "Home") {
             VStack(alignment: .leading, spacing: DSSpacing.xl) {
-                buttonsSection
-                controlsSection
-                inputsSection
-                cardsSection
-                selectionSection
-                listRowsSection
-                statesSection
-                emptyErrorSection
+                DSSegmentedControl(
+                    items: HomeViewModel.homeTabs,
+                    selection: $viewModel.selectedHomeTab
+                )
+
+                if viewModel.selectedHomeTab == "Dashboard" {
+                    dashboardContent
+                } else {
+                    componentsContent
+                }
             }
         }
         .toolbar {
@@ -48,10 +50,129 @@ struct HomeView: View {
         }
     }
 
+    // MARK: - Dashboard
+
+    private var dashboardContent: some View {
+        VStack(alignment: .leading, spacing: DSSpacing.xl) {
+            greetingHeader
+            heroStatCard
+            quickStatsRow
+            activityList
+        }
+    }
+
+    private var greetingHeader: some View {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                Text(viewModel.greeting(for: session))
+                    .font(.display())
+                    .foregroundStyle(Color.textPrimary)
+                Text(viewModel.currentDateString)
+                    .font(.bodyMedium())
+                    .foregroundStyle(Color.textSecondary)
+            }
+            Spacer()
+            Image(systemName: "person.crop.circle.fill")
+                .font(.system(size: 36))
+                .foregroundStyle(Color.themePrimary.opacity(0.3))
+        }
+    }
+
+    private var heroStatCard: some View {
+        DSHeroCard(usesGlass: true) {
+            VStack(alignment: .leading, spacing: DSSpacing.sm) {
+                HStack {
+                    HeroIcon(systemName: "flame.fill", size: DSLayout.avatarSmall, tint: Color.themePrimary, usesGlass: true)
+                    Spacer()
+                    TagBadge(text: "Today", tint: Color.themePrimary)
+                }
+                Text("12")
+                    .font(.display())
+                    .foregroundStyle(Color.textPrimary)
+                Text("Active items")
+                    .font(.bodyMedium())
+                    .foregroundStyle(Color.textSecondary)
+            }
+        }
+    }
+
+    private var quickStatsRow: some View {
+        HStack(spacing: DSSpacing.smd) {
+            DSInfoCard(
+                title: "3 Pending",
+                message: "Awaiting review",
+                icon: "clock.fill",
+                tint: .info
+            )
+            DSInfoCard(
+                title: "7 Complete",
+                message: "This week",
+                icon: "checkmark.circle.fill",
+                tint: .success
+            )
+        }
+    }
+
+    private var activityList: some View {
+        DSSection(title: "Recent Activity") {
+            DSListCard {
+                DSListRow(
+                    title: "Design review",
+                    subtitle: "Updated the component library",
+                    leadingIcon: "paintbrush.fill"
+                ) {
+                    TimePill(title: "2h ago")
+                }
+                Divider()
+                DSListRow(
+                    title: "New feature",
+                    subtitle: "Added onboarding flow",
+                    leadingIcon: "sparkles"
+                ) {
+                    TimePill(title: "5h ago")
+                }
+                Divider()
+                DSListRow(
+                    title: "Bug fix",
+                    subtitle: "Resolved auth redirect",
+                    leadingIcon: "ladybug.fill"
+                ) {
+                    TimePill(title: "1d ago")
+                }
+                Divider()
+                DSListRow(
+                    title: "Release prep",
+                    subtitle: "Finalized v1.0 build",
+                    leadingIcon: "shippingbox.fill"
+                ) {
+                    TimePill(title: "2d ago")
+                }
+            }
+        }
+    }
+
+    // MARK: - Components Gallery
+
+    private var componentsContent: some View {
+        VStack(alignment: .leading, spacing: DSSpacing.xl) {
+            buttonsSection
+            controlsSection
+            inputsSection
+            cardsSection
+            selectionSection
+            listRowsSection
+            statesSection
+            emptyErrorSection
+        }
+    }
+
     // MARK: - Buttons
 
     private var buttonsSection: some View {
         DSSection(title: "Buttons") {
+            Text("Primary, secondary, tertiary, and destructive button styles with icon variants.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 HStack(spacing: DSSpacing.sm) {
                     DSButton(title: "Primary") { }
@@ -76,6 +197,9 @@ struct HomeView: View {
 
     private var controlsSection: some View {
         DSSection(title: "Controls") {
+            Text("Segmented controls, glass toggles, and time pickers.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 DSSegmentedControl(items: ["Daily", "Weekly", "Monthly"], selection: $selectedSegment)
                 HStack(spacing: DSSpacing.sm) {
@@ -90,6 +214,9 @@ struct HomeView: View {
 
     private var inputsSection: some View {
         DSSection(title: "Inputs") {
+            Text("Text fields with icons, focus states, and validation.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             DSTextField(
                 placeholder: "Your name",
                 text: $nameField,
@@ -103,6 +230,9 @@ struct HomeView: View {
 
     private var cardsSection: some View {
         DSSection(title: "Cards") {
+            Text("Hero cards with glass effects, info cards, and warning cards.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             VStack(alignment: .leading, spacing: DSSpacing.md) {
                 DSHeroCard {
                     VStack(alignment: .leading, spacing: DSSpacing.sm) {
@@ -141,6 +271,9 @@ struct HomeView: View {
 
     private var selectionSection: some View {
         DSSection(title: "Selection") {
+            Text("Choice buttons for multi-select options.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 DSChoiceButton(
                     title: "Save more",
@@ -173,6 +306,9 @@ struct HomeView: View {
 
     private var listRowsSection: some View {
         DSSection(title: "List rows") {
+            Text("Compact rows with leading icons, trailing views, and dividers.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             DSListCard {
                 DSListRow(
                     title: "Balance",
@@ -203,6 +339,9 @@ struct HomeView: View {
 
     private var statesSection: some View {
         DSSection(title: "States") {
+            Text("Shimmer loading states and toast notifications.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 HStack(spacing: DSSpacing.sm) {
                     Circle()
@@ -235,6 +374,9 @@ struct HomeView: View {
 
     private var emptyErrorSection: some View {
         DSSection(title: "Empty & error") {
+            Text("Placeholder states for empty content and error recovery.")
+                .font(.bodySmall())
+                .foregroundStyle(Color.textSecondary)
             VStack(alignment: .leading, spacing: DSSpacing.md) {
                 EmptyStateView(
                     icon: "tray",

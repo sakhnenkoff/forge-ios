@@ -31,6 +31,10 @@ public struct TextStyle: Sendable {
 /// Typography scale with all text styles
 public struct TypographyScale: Sendable {
 
+    // MARK: - Display Style
+
+    public let display: TextStyle
+
     // MARK: - Title Styles
 
     public let titleLarge: TextStyle
@@ -63,6 +67,7 @@ public struct TypographyScale: Sendable {
     // MARK: - Init
 
     public init(
+        display: TextStyle,
         titleLarge: TextStyle,
         titleMedium: TextStyle,
         titleSmall: TextStyle,
@@ -78,6 +83,7 @@ public struct TypographyScale: Sendable {
         buttonMedium: TextStyle,
         buttonSmall: TextStyle
     ) {
+        self.display = display
         self.titleLarge = titleLarge
         self.titleMedium = titleMedium
         self.titleSmall = titleSmall

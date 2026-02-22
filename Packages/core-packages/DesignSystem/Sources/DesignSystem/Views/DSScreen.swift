@@ -19,7 +19,7 @@ public struct DSScreen<Content: View, Background: View>: View {
         showsIndicators: Bool = false,
         bounceBehavior: ScrollBounceBehavior = .basedOnSize,
         scrollDismissesKeyboard: ScrollDismissesKeyboardMode? = nil,
-        @ViewBuilder background: () -> Background = { Color.backgroundPrimary },
+        @ViewBuilder background: () -> Background = { AmbientBackground() },
         @ViewBuilder content: () -> Content
     ) {
         self.title = title

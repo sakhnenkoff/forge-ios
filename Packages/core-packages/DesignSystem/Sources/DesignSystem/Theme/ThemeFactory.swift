@@ -37,20 +37,21 @@ enum ThemeFactory {
         bodyWeight: Font.Weight = .regular
     ) -> TypographyScale {
         TypographyScale(
-            titleLarge: TextStyle(size: 26, weight: .semibold, design: titleDesign),
+            display: TextStyle(size: 34, weight: .bold, design: titleDesign),
+            titleLarge: TextStyle(size: 28, weight: .semibold, design: titleDesign),
             titleMedium: TextStyle(size: 22, weight: .semibold, design: titleDesign),
-            titleSmall: TextStyle(size: 18, weight: .semibold, design: titleDesign),
+            titleSmall: TextStyle(size: 20, weight: .semibold, design: titleDesign),
             headlineLarge: TextStyle(size: 17, weight: .semibold, design: headlineDesign),
             headlineMedium: TextStyle(size: 15, weight: .semibold, design: headlineDesign),
             headlineSmall: TextStyle(size: 13, weight: .semibold, design: headlineDesign),
-            bodyLarge: TextStyle(size: 15, weight: bodyWeight, design: bodyDesign),
-            bodyMedium: TextStyle(size: 13, weight: bodyWeight, design: bodyDesign),
-            bodySmall: TextStyle(size: 12, weight: bodyWeight, design: bodyDesign),
-            captionLarge: TextStyle(size: 11, weight: .regular, design: .monospaced),
-            captionSmall: TextStyle(size: 10, weight: .regular, design: .monospaced),
-            buttonLarge: TextStyle(size: 14, weight: .semibold, design: .monospaced),
-            buttonMedium: TextStyle(size: 13, weight: .semibold, design: .monospaced),
-            buttonSmall: TextStyle(size: 12, weight: .semibold, design: .monospaced)
+            bodyLarge: TextStyle(size: 17, weight: bodyWeight, design: bodyDesign),
+            bodyMedium: TextStyle(size: 15, weight: bodyWeight, design: bodyDesign),
+            bodySmall: TextStyle(size: 13, weight: bodyWeight, design: bodyDesign),
+            captionLarge: TextStyle(size: 12, weight: .regular, design: .monospaced),
+            captionSmall: TextStyle(size: 11, weight: .regular, design: .monospaced),
+            buttonLarge: TextStyle(size: 17, weight: .semibold, design: .monospaced),
+            buttonMedium: TextStyle(size: 15, weight: .semibold, design: .monospaced),
+            buttonSmall: TextStyle(size: 13, weight: .semibold, design: .monospaced)
         )
     }
 }

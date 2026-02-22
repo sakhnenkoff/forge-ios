@@ -2,6 +2,12 @@ import SwiftUI
 
 public extension Font {
 
+    // MARK: - Display Font
+
+    static func display() -> Font {
+        DesignSystem.typography.display.font
+    }
+
     // MARK: - Title Fonts
 
     static func titleLarge() -> Font {

@@ -39,7 +39,7 @@ struct OnboardingView: View {
             }
             .animation(.smooth(duration: 0.5), value: controller.currentStep)
         }
-        .background(Color.backgroundPrimary)
+        .background(AmbientBackground())
         .safeAreaInset(edge: .bottom) {
             ctaBar
         }
@@ -59,10 +59,11 @@ struct OnboardingView: View {
             Spacer()
 
             Text(controller.currentStep.introHeadline)
-                .font(.titleLarge())
+                .font(.display())
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.textPrimary)
                 .lineSpacing(DSSpacing.sm)
+                .lineByLineTransition()
 
             Spacer()
         }
@@ -115,14 +116,14 @@ struct OnboardingView: View {
     }
 
     private var heroIcon: some View {
-        Image(systemName: controller.currentStep.icon)
-            .font(.system(size: DSLayout.iconLarge, weight: .medium))
-            .foregroundStyle(Color.themePrimary)
-            .padding(DSSpacing.md)
-            .background(
-                RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                    .fill(Color.surfaceVariant.opacity(0.5))
-            )
+        DSIconBadge(
+            systemName: controller.currentStep.icon,
+            size: 56,
+            cornerRadius: DSRadii.lg,
+            backgroundColor: Color.themePrimary.opacity(0.10),
+            foregroundColor: Color.themePrimary,
+            font: .system(size: DSLayout.iconLarge, weight: .medium)
+        )
     }
 
     private var headlineView: some View {
@@ -261,7 +262,7 @@ struct OnboardingView: View {
         .padding(.horizontal, DSSpacing.xl)
         .padding(.top, DSSpacing.sm)
         .padding(.bottom, DSSpacing.lg)
-        .background(Color.backgroundPrimary)
+        .background(.ultraThinMaterial)
     }
 
     private func onContinue() {

@@ -13,7 +13,7 @@ public struct AmbientBackground: View {
 
             RadialGradient(
                 colors: [
-                    Color.surfaceVariant.opacity(intensity),
+                    Color.themePrimary.opacity(intensity),
                     Color.clear
                 ],
                 center: .topLeading,
@@ -23,7 +23,7 @@ public struct AmbientBackground: View {
 
             RadialGradient(
                 colors: [
-                    Color.surfaceVariant.opacity(intensity * 0.5),
+                    Color.themePrimary.opacity(intensity * 0.5),
                     Color.clear
                 ],
                 center: .bottomTrailing,
@@ -33,7 +33,7 @@ public struct AmbientBackground: View {
 
             LinearGradient(
                 colors: [
-                    Color.backgroundTertiary.opacity(intensity * 0.45),
+                    Color.themePrimary.opacity(intensity * 0.3),
                     Color.clear
                 ],
                 startPoint: .top,

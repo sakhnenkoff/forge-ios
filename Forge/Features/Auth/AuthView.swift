@@ -47,7 +47,7 @@ struct AuthView: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
             Text("Sign in")
-                .font(.titleLarge())
+                .font(.display())
                 .foregroundStyle(Color.textPrimary)
             Text("Sync your finances across devices and unlock premium insights.")
                 .font(.bodyMedium())
@@ -57,32 +57,25 @@ struct AuthView: View {
     }
 
     private var valueProps: some View {
-        VStack(alignment: .leading, spacing: DSSpacing.sm) {
-            featureRow(
-                icon: "lock.shield.fill",
-                title: "Bank-grade security",
-                message: "Your financial data is encrypted and never shared."
-            )
-            featureRow(
-                icon: "icloud.fill",
-                title: "Sync everywhere",
-                message: "Access your budget on iPhone, iPad, and Mac."
-            )
-            featureRow(
-                icon: "chart.bar.fill",
-                title: "Smart insights",
-                message: "AI-powered spending analysis tailored to your habits."
-            )
+        DSCard(tint: Color.themePrimary.opacity(0.03)) {
+            VStack(alignment: .leading, spacing: DSSpacing.sm) {
+                featureRow(
+                    icon: "lock.shield.fill",
+                    title: "Bank-grade security",
+                    message: "Your financial data is encrypted and never shared."
+                )
+                featureRow(
+                    icon: "icloud.fill",
+                    title: "Sync everywhere",
+                    message: "Access your budget on iPhone, iPad, and Mac."
+                )
+                featureRow(
+                    icon: "chart.bar.fill",
+                    title: "Smart insights",
+                    message: "AI-powered spending analysis tailored to your habits."
+                )
+            }
         }
-        .padding(DSSpacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                .fill(Color.themePrimary.opacity(0.03))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
-                .stroke(Color.border, lineWidth: 1)
-        )
     }
 
     @ViewBuilder
@@ -96,51 +89,65 @@ struct AuthView: View {
                 action: { viewModel.refreshProviders() }
             )
         } else {
-            DSListCard {
+            VStack(spacing: DSSpacing.sm) {
                 if viewModel.availableProviders.contains(.apple) {
-                    DSListRow(
+                    providerCard(
+                        icon: "apple.logo",
                         title: "Sign in with Apple",
-                        subtitle: "Private relay available",
-                        leadingIcon: "apple.logo"
+                        description: "Private relay available"
                     ) {
                         viewModel.signInApple(services: services, session: session)
-                    } trailing: {
-                        DSIconButton(icon: "chevron.right", style: .secondary, size: .small)
                     }
                 }
 
                 if viewModel.availableProviders.contains(.google) {
-                    if viewModel.availableProviders.contains(.apple) {
-                        Divider()
-                    }
-                    DSListRow(
+                    providerCard(
+                        icon: "g.circle.fill",
                         title: "Sign in with Google",
-                        subtitle: "Continue with your Google account",
-                        leadingIcon: "g.circle.fill"
+                        description: "Continue with your Google account"
                     ) {
                         viewModel.signInGoogle(services: services, session: session)
-                    } trailing: {
-                        DSIconButton(icon: "chevron.right", style: .secondary, size: .small)
                     }
                 }
 
                 if viewModel.availableProviders.contains(.guest) {
-                    if viewModel.availableProviders.contains(.apple) || viewModel.availableProviders.contains(.google) {
-                        Divider()
-                    }
-                    DSListRow(
+                    providerCard(
+                        icon: "person",
                         title: "Explore as guest",
-                        subtitle: "Try the app first",
-                        leadingIcon: "person"
+                        description: "Try the app first"
                     ) {
                         viewModel.signInAnonymously(services: services, session: session)
-                    } trailing: {
-                        DSIconButton(icon: "chevron.right", style: .secondary, size: .small)
                     }
                 }
             }
             .disabled(viewModel.isLoading)
         }
+    }
+
+    private func providerCard(icon: String, title: String, description: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            DSCard {
+                HStack(spacing: DSSpacing.smd) {
+                    DSIconBadge(
+                        systemName: icon,
+                        size: 40,
+                        cornerRadius: DSRadii.sm,
+                        backgroundColor: Color.themePrimary.opacity(0.08),
+                        foregroundColor: Color.themePrimary
+                    )
+                    VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                        Text(title)
+                            .font(.headlineMedium())
+                            .foregroundStyle(Color.textPrimary)
+                        Text(description)
+                            .font(.bodySmall())
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                    Spacer()
+                }
+            }
+        }
+        .buttonStyle(.plain)
     }
 
     private var footerNote: some View {

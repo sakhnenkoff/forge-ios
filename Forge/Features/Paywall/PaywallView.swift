@@ -24,7 +24,7 @@ struct PaywallView: View {
 
     var body: some View {
         NavigationStack {
-            DSScreen(title: "Forge Pro") {
+            DSScreen(title: "Forge Pro", background: { AmbientBackground(intensity: 0.18) }) {
                 VStack(spacing: DSSpacing.lg) {
                     heroCard
 
@@ -123,30 +123,23 @@ struct PaywallView: View {
     }
 
     private var heroCard: some View {
-        DSCard(tint: Color.themePrimary.opacity(0.04)) {
+        DSHeroCard(usesGlass: true) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 HStack(alignment: .top) {
-                    Image(systemName: "sparkles")
-                        .font(.system(size: DSLayout.iconMedium, weight: .medium))
-                        .foregroundStyle(Color.themePrimary)
+                    HeroIcon(systemName: "sparkles", size: DSLayout.avatarSmall, tint: Color.themePrimary, usesGlass: true)
                     Spacer()
-                    Text("Pro")
-                        .font(.captionLarge())
-                        .foregroundStyle(Color.themePrimary)
-                        .padding(.horizontal, DSSpacing.sm)
-                        .padding(.vertical, DSSpacing.xs)
-                        .background(Color.themePrimary.opacity(0.12), in: Capsule())
+                    TagBadge(text: "Pro", tint: Color.themePrimary)
                 }
 
                 Text("Forge Pro")
-                    .font(.headlineMedium())
+                    .font(.display())
                     .foregroundStyle(Color.themePrimary)
 
                 Text("Unlock unlimited budgets, advanced analytics, and priority support.")
-                    .font(.bodySmall())
+                    .font(.bodyMedium())
                     .foregroundStyle(Color.textSecondary)
 
-                VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                VStack(alignment: .leading, spacing: DSSpacing.sm) {
                     featureBullet(icon: "infinity", text: "Unlimited budgets & categories")
                     featureBullet(icon: "chart.bar.xaxis", text: "Advanced spending analytics")
                     featureBullet(icon: "headphones", text: "Priority support")
@@ -159,12 +152,16 @@ struct PaywallView: View {
 
     private func featureBullet(icon: String, text: String) -> some View {
         HStack(spacing: DSSpacing.sm) {
-            Image(systemName: icon)
-                .foregroundStyle(Color.themePrimary)
-                .frame(width: DSLayout.iconSmall)
-                .font(.system(size: 13))
+            DSIconBadge(
+                systemName: icon,
+                size: 28,
+                cornerRadius: 7,
+                backgroundColor: Color.themePrimary.opacity(0.10),
+                foregroundColor: Color.themePrimary,
+                font: .system(size: 12, weight: .medium)
+            )
             Text(text)
-                .font(.bodySmall())
+                .font(.bodyMedium())
                 .foregroundStyle(Color.textSecondary)
             Spacer()
         }

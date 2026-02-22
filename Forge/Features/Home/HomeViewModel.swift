@@ -11,16 +11,31 @@ import DesignSystem
 @Observable
 final class HomeViewModel {
     var toast: Toast?
+    var selectedHomeTab: String = "Dashboard"
 
     private var hasLoaded = false
+
+    static let homeTabs = ["Dashboard", "Components"]
 
     // MARK: - Lifecycle
 
     func greeting(for session: AppSession) -> String {
-        if let name = session.currentUser?.displayNameCalculated {
-            return "Welcome, \(name)"
+        let hour = Calendar.current.component(.hour, from: Date())
+        let timeGreeting: String
+        switch hour {
+        case 5..<12: timeGreeting = "Good morning"
+        case 12..<17: timeGreeting = "Good afternoon"
+        default: timeGreeting = "Good evening"
         }
-        return "Welcome"
+
+        if let name = session.currentUser?.displayNameCalculated {
+            return "\(timeGreeting), \(name)"
+        }
+        return timeGreeting
+    }
+
+    var currentDateString: String {
+        Date().formatted(.dateTime.weekday(.wide).month(.wide).day())
     }
 
     func onAppear(services: AppServices, session: AppSession) {

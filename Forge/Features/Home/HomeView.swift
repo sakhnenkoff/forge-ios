@@ -53,44 +53,43 @@ struct HomeView: View {
     // MARK: - Dashboard
 
     private var dashboardContent: some View {
-        VStack(alignment: .leading, spacing: DSSpacing.xl) {
+        StaggeredVStack(alignment: .leading, spacing: DSSpacing.xl) {
             greetingHeader
+                .staggeredAppearance(index: 0)
             heroStatCard
+                .staggeredAppearance(index: 1)
             quickStatsRow
+                .staggeredAppearance(index: 2)
             activityList
+                .staggeredAppearance(index: 3)
         }
     }
 
     private var greetingHeader: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                Text(viewModel.greeting(for: session))
-                    .font(.display())
-                    .foregroundStyle(Color.textPrimary)
-                Text(viewModel.currentDateString)
-                    .font(.bodyMedium())
-                    .foregroundStyle(Color.textSecondary)
-            }
-            Spacer()
-            Image(systemName: "person.crop.circle.fill")
-                .font(.system(size: 36))
-                .foregroundStyle(Color.themePrimary.opacity(0.3))
+        VStack(alignment: .leading, spacing: DSSpacing.xs) {
+            Text(viewModel.greeting(for: session))
+                .font(.display())
+                .foregroundStyle(Color.textPrimary)
+            Text(viewModel.currentDateString)
+                .font(.bodyMedium())
+                .foregroundStyle(Color.textSecondary)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var heroStatCard: some View {
         DSHeroCard(usesGlass: true) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 HStack {
-                    HeroIcon(systemName: "flame.fill", size: DSLayout.avatarSmall, tint: Color.themePrimary, usesGlass: true)
+                    HeroIcon(systemName: "flame.fill", size: 28, tint: Color.themePrimary, usesGlass: true)
                     Spacer()
                     TagBadge(text: "Today", tint: Color.themePrimary)
                 }
                 Text("12")
-                    .font(.display())
+                    .font(.system(size: 52, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.textPrimary)
                 Text("Active items")
-                    .font(.bodyMedium())
+                    .font(.bodyLarge())
                     .foregroundStyle(Color.textSecondary)
             }
         }
@@ -98,18 +97,25 @@ struct HomeView: View {
 
     private var quickStatsRow: some View {
         HStack(spacing: DSSpacing.smd) {
-            DSInfoCard(
-                title: "3 Pending",
-                message: "Awaiting review",
-                icon: "clock.fill",
-                tint: .info
-            )
-            DSInfoCard(
-                title: "7 Complete",
-                message: "This week",
-                icon: "checkmark.circle.fill",
-                tint: .success
-            )
+            statPill(icon: "clock.fill", value: "3", label: "Pending", tint: .info)
+            statPill(icon: "checkmark.circle.fill", value: "7", label: "Complete", tint: .success)
+        }
+    }
+
+    private func statPill(icon: String, value: String, label: String, tint: Color) -> some View {
+        DSCard(depth: .raised) {
+            VStack(spacing: DSSpacing.sm) {
+                Image(systemName: icon)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(tint)
+                Text(value)
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.textPrimary)
+                Text(label)
+                    .font(.captionLarge())
+                    .foregroundStyle(Color.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 

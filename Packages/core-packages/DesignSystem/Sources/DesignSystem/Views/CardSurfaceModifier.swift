@@ -64,7 +64,6 @@ public struct CardSurfaceModifier: ViewModifier {
         } else {
             content
                 .background(shape.fill(tint))
-                .overlay(shape.stroke(borderColor, lineWidth: 1))
                 .shadow(color: shadowColor, radius: shadowRadius, x: 0, y: shadowYOffset)
         }
     }

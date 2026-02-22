@@ -3,7 +3,7 @@ import SwiftUI
 public struct AmbientBackground: View {
     private let intensity: CGFloat
 
-    public init(intensity: CGFloat = 0.06) {
+    public init(intensity: CGFloat = 0.10) {
         self.intensity = intensity
     }
 
@@ -45,7 +45,7 @@ public struct AmbientBackground: View {
 }
 
 public extension View {
-    func ambientBackground(intensity: CGFloat = 0.12) -> some View {
+    func ambientBackground(intensity: CGFloat = 0.15) -> some View {
         background(AmbientBackground(intensity: intensity))
     }
 }

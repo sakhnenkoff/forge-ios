@@ -8,6 +8,7 @@ public struct LayoutScale: Sendable {
     public let mediaHeight: CGFloat
     public let avatarLarge: CGFloat
     public let avatarSmall: CGFloat
+    public let iconXS: CGFloat
     public let iconSmall: CGFloat
     public let iconMedium: CGFloat
     public let iconLarge: CGFloat
@@ -20,6 +21,7 @@ public struct LayoutScale: Sendable {
         mediaHeight: CGFloat = 160,
         avatarLarge: CGFloat = 68,
         avatarSmall: CGFloat = 44,
+        iconXS: CGFloat = 16,
         iconSmall: CGFloat = 20,
         iconMedium: CGFloat = 22,
         iconLarge: CGFloat = 28,
@@ -31,6 +33,7 @@ public struct LayoutScale: Sendable {
         self.mediaHeight = mediaHeight
         self.avatarLarge = avatarLarge
         self.avatarSmall = avatarSmall
+        self.iconXS = iconXS
         self.iconSmall = iconSmall
         self.iconMedium = iconMedium
         self.iconLarge = iconLarge

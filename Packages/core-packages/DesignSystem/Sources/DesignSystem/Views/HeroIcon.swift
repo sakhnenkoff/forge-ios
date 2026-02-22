@@ -21,15 +21,21 @@ public struct HeroIcon: View {
         self.usesGlass = usesGlass
     }
 
+    /// Corner radius scales with tile size — keeps proportional rounded-square look.
+    private var cornerRadius: CGFloat {
+        let tileSize = size + DSSpacing.md * 2
+        return min(tileSize * 0.25, DSRadii.lg)
+    }
+
     public var body: some View {
-        let shape = RoundedRectangle(cornerRadius: DSRadii.lg, style: .continuous)
+        let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
         let base = SketchIcon(systemName: systemName, size: size, color: tint)
             .padding(DSSpacing.md)
             .background(shape.fill(backgroundTint))
 
         if usesGlass {
             base.glassSurface(
-                cornerRadius: DSRadii.lg,
+                cornerRadius: cornerRadius,
                 tint: DesignSystem.tokens.glass.tint,
                 borderColor: Color.border,
                 shadow: DSShadows.soft,

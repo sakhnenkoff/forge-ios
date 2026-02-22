@@ -59,7 +59,7 @@ struct CustomPaywallView: View {
             }
 
             Spacer()
-                .frame(height: DSSpacing.sm)
+                .frame(height: DSSpacing.lg)
 
             DSButton.cta(
                 title: "Start Pro",
@@ -143,7 +143,7 @@ struct CustomPaywallView: View {
         } label: {
             DSCard(
                 tint: isSelected ? Color.themePrimary.opacity(0.06) : Color.surface,
-                depth: .raised
+                depth: isSelected ? .elevated : .raised
             ) {
                 VStack(alignment: .leading, spacing: DSSpacing.smd) {
                     HStack(alignment: .top) {
@@ -162,7 +162,7 @@ struct CustomPaywallView: View {
                     }
 
                     Text(product.priceStringWithDuration)
-                        .font(.titleMedium())
+                        .font(.titleLarge())
                         .foregroundStyle(Color.themePrimary)
                 }
             }
@@ -170,6 +170,9 @@ struct CustomPaywallView: View {
                 RoundedRectangle(cornerRadius: DSRadii.xl, style: .continuous)
                     .stroke(isSelected ? Color.themePrimary : Color.clear, lineWidth: 2)
             )
+            .scaleEffect(isSelected ? 1.02 : 1.0)
+            .opacity(isSelected ? 1.0 : 0.7)
+            .animation(.smooth(duration: 0.25), value: isSelected)
         }
         .buttonStyle(.plain)
     }

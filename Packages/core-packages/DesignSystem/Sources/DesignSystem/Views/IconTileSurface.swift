@@ -41,8 +41,6 @@ public struct IconTileSurface<Content: View>: View {
     }
 
     public var body: some View {
-        let tile = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-
         if usesGlass {
             let resolvedTint = glassTint ?? .clear
             if #available(iOS 26.0, *) {
@@ -58,17 +56,26 @@ public struct IconTileSurface<Content: View>: View {
                         .glassEffect(finalGlass, in: .rect(cornerRadius: cornerRadius))
                 }
             } else {
-                content
-                    .frame(width: size, height: size)
-                    .background(tile.fill(fill))
-                    .overlay(tile.stroke(borderColor.opacity(0.6), lineWidth: borderWidth))
-                    .shadow(color: shadow.color, radius: shadow.radius, x: shadow.x, y: shadow.y)
+                tileContent
             }
         } else {
+            tileContent
+        }
+    }
+
+    @ViewBuilder
+    private var tileContent: some View {
+        if isCircular {
+            content
+                .frame(width: size, height: size)
+                .background(Circle().fill(fill))
+                .clipShape(Circle())
+                .shadow(color: shadow.color, radius: shadow.radius, x: shadow.x, y: shadow.y)
+        } else {
+            let tile = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
             content
                 .frame(width: size, height: size)
                 .background(tile.fill(fill))
-                .overlay(tile.stroke(borderColor.opacity(borderWidth == 0 ? 0 : 0.6), lineWidth: borderWidth))
                 .shadow(color: shadow.color, radius: shadow.radius, x: shadow.x, y: shadow.y)
         }
     }

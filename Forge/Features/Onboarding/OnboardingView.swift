@@ -75,14 +75,18 @@ struct OnboardingView: View {
 
     private var dataGatheringContent: some View {
         ScrollView {
-            VStack(alignment: .center, spacing: DSSpacing.xl) {
+            StaggeredVStack(alignment: .center, spacing: DSSpacing.xl) {
                 heroIcon
+                    .staggeredAppearance(index: 0)
 
                 headlineView
+                    .staggeredAppearance(index: 1)
 
                 subtitleView
+                    .staggeredAppearance(index: 2)
 
                 cardContent
+                    .staggeredAppearance(index: 3)
 
                 if let errorMessage = errorMessage {
                     ErrorStateView(
@@ -134,15 +138,15 @@ struct OnboardingView: View {
 
     private var headlineAttributedString: AttributedString {
         var leading = AttributedString(controller.currentStep.headlineLeading)
-        leading.font = .titleLarge()
+        leading.font = .display()
         leading.foregroundColor = Color.textPrimary
 
         var highlight = AttributedString(controller.currentStep.headlineHighlight)
-        highlight.font = .titleLarge()
+        highlight.font = .display()
         highlight.foregroundColor = Color.themePrimary
 
         var trailing = AttributedString(controller.currentStep.headlineTrailing)
-        trailing.font = .titleLarge()
+        trailing.font = .display()
         trailing.foregroundColor = Color.textPrimary
 
         leading.append(highlight)
@@ -173,7 +177,7 @@ struct OnboardingView: View {
     }
 
     private var goalsCard: some View {
-        DSCard(tint: Color.surfaceVariant.opacity(0.7)) {
+        DSCard(tint: Color.themePrimary.opacity(0.04)) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 Text("Choose your goal")
                     .font(.headlineMedium())
@@ -191,7 +195,7 @@ struct OnboardingView: View {
     }
 
     private var permissionsCard: some View {
-        DSCard(tint: Color.surfaceVariant.opacity(0.7)) {
+        DSCard(tint: Color.themePrimary.opacity(0.04)) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 Text("What you'll get")
                     .font(.headlineMedium())
@@ -219,7 +223,7 @@ struct OnboardingView: View {
     }
 
     private var nameCard: some View {
-        DSCard(tint: Color.surfaceVariant.opacity(0.7)) {
+        DSCard(tint: Color.themePrimary.opacity(0.04)) {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 Text("Your name")
                     .font(.headlineMedium())
@@ -245,24 +249,15 @@ struct OnboardingView: View {
     }
 
     private var ctaBar: some View {
-        VStack(spacing: DSSpacing.sm) {
-            DSButton.cta(
-                title: controller.currentStep.ctaTitle,
-                isLoading: isSaving,
-                isEnabled: controller.canContinue
-            ) {
-                onContinue()
-            }
-
-            if !controller.isLastStep {
-                DSButton.link(title: "Skip", action: skipOnboarding)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }
+        DSButton.cta(
+            title: controller.currentStep.ctaTitle,
+            isLoading: isSaving,
+            isEnabled: controller.canContinue
+        ) {
+            onContinue()
         }
         .padding(.horizontal, DSSpacing.xl)
-        .padding(.top, DSSpacing.sm)
         .padding(.bottom, DSSpacing.lg)
-        .background(.ultraThinMaterial)
     }
 
     private func onContinue() {
@@ -285,11 +280,6 @@ struct OnboardingView: View {
                 completeOnboarding()
             }
         }
-    }
-
-    private func skipOnboarding() {
-        trackEvent(.flowComplete(result: controller.flowResult))
-        session.setOnboardingComplete()
     }
 
     private func completeOnboarding() {

@@ -126,12 +126,12 @@ struct AuthView: View {
 
     private func providerCard(icon: String, title: String, description: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            DSCard {
+            DSCard(depth: .elevated) {
                 HStack(spacing: DSSpacing.smd) {
                     DSIconBadge(
                         systemName: icon,
-                        size: 40,
-                        cornerRadius: DSRadii.sm,
+                        size: 48,
+                        cornerRadius: DSRadii.md,
                         backgroundColor: Color.themePrimary.opacity(0.08),
                         foregroundColor: Color.themePrimary
                     )
@@ -147,7 +147,7 @@ struct AuthView: View {
                 }
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(ProviderCardButtonStyle())
     }
 
     private var footerNote: some View {
@@ -165,11 +165,11 @@ struct AuthView: View {
     }
 
     private func featureRow(icon: String, title: String, message: String) -> some View {
-        HStack(alignment: .top, spacing: DSSpacing.sm) {
+        HStack(alignment: .top, spacing: DSSpacing.smd) {
             Image(systemName: icon)
-                .font(.system(size: DSLayout.iconMedium, weight: .medium))
+                .font(.system(size: DSLayout.iconXS, weight: .medium))
                 .foregroundStyle(Color.themePrimary)
-                .padding(DSSpacing.sm)
+                .frame(width: 40, height: 40)
                 .background(
                     RoundedRectangle(cornerRadius: DSRadii.sm, style: .continuous)
                         .fill(Color.surface)
@@ -185,6 +185,14 @@ struct AuthView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+}
+
+private struct ProviderCardButtonStyle: ButtonStyle {
+    func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.smooth(duration: 0.15), value: configuration.isPressed)
     }
 }
 

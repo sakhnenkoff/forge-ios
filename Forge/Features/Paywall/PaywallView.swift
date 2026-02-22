@@ -124,7 +124,7 @@ struct PaywallView: View {
 
     private var heroCard: some View {
         DSHeroCard(usesGlass: true) {
-            VStack(alignment: .leading, spacing: DSSpacing.sm) {
+            VStack(alignment: .leading, spacing: DSSpacing.md) {
                 HStack(alignment: .top) {
                     HeroIcon(systemName: "sparkles", size: DSLayout.avatarSmall, tint: Color.themePrimary, usesGlass: true)
                     Spacer()
@@ -139,7 +139,7 @@ struct PaywallView: View {
                     .font(.bodyMedium())
                     .foregroundStyle(Color.textSecondary)
 
-                VStack(alignment: .leading, spacing: DSSpacing.sm) {
+                VStack(alignment: .leading, spacing: DSSpacing.md) {
                     featureBullet(icon: "infinity", text: "Unlimited budgets & categories")
                     featureBullet(icon: "chart.bar.xaxis", text: "Advanced spending analytics")
                     featureBullet(icon: "headphones", text: "Priority support")
@@ -151,14 +151,14 @@ struct PaywallView: View {
     }
 
     private func featureBullet(icon: String, text: String) -> some View {
-        HStack(spacing: DSSpacing.sm) {
+        HStack(spacing: DSSpacing.smd) {
             DSIconBadge(
                 systemName: icon,
-                size: 28,
-                cornerRadius: 7,
+                size: 36,
+                cornerRadius: 9,
                 backgroundColor: Color.themePrimary.opacity(0.10),
                 foregroundColor: Color.themePrimary,
-                font: .system(size: 12, weight: .medium)
+                font: .system(size: 15, weight: .medium)
             )
             Text(text)
                 .font(.bodyMedium())

@@ -26,9 +26,6 @@ public struct DSCard<Content: View>: View {
             .padding(DSSpacing.lg)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(shape.fill(tint))
-            .overlay(
-                shape.stroke(Color.border.opacity(depth.borderOpacity), lineWidth: 1)
-            )
             .shadow(
                 color: depth.shadowColor,
                 radius: depth.shadowRadius,
@@ -40,42 +37,34 @@ public struct DSCard<Content: View>: View {
 
 /// Controls the visual elevation of a DSCard.
 public enum DSCardDepth {
-    /// No shadow or border. Blends into the background.
+    /// No shadow. Blends into the background.
     case flat
-    /// Soft shadow, subtle border. Default.
+    /// Soft shadow. Default.
     case raised
     /// Prominent shadow. For featured/elevated content.
     case elevated
 
     var shadowColor: Color {
         switch self {
-        case .flat:     return .black.opacity(0.03)
-        case .raised:   return DSShadows.soft.color
+        case .flat:     return .clear
+        case .raised:   return DSShadows.card.color
         case .elevated: return DSShadows.lifted.color
         }
     }
 
     var shadowRadius: CGFloat {
         switch self {
-        case .flat:     return 4
-        case .raised:   return DSShadows.soft.radius
+        case .flat:     return 0
+        case .raised:   return DSShadows.card.radius
         case .elevated: return DSShadows.lifted.radius
         }
     }
 
     var shadowY: CGFloat {
         switch self {
-        case .flat:     return 2
-        case .raised:   return DSShadows.soft.y
+        case .flat:     return 0
+        case .raised:   return DSShadows.card.y
         case .elevated: return DSShadows.lifted.y
-        }
-    }
-
-    var borderOpacity: Double {
-        switch self {
-        case .flat:     return 0.25
-        case .raised:   return 0.4
-        case .elevated: return 0.6
         }
     }
 }

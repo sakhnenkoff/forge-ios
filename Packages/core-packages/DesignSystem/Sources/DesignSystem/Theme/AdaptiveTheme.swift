@@ -18,15 +18,15 @@ public struct AdaptiveTheme: Theme, Sendable {
             warning: Color(light: Color(hex: "FF9500"), dark: Color(hex: "FF9F0A")),
             error: Color(light: Color(hex: "FF3B30"), dark: Color(hex: "FF453A")),
             info: Color(light: Color(hex: "007AFF"), dark: Color(hex: "0A84FF")),
-            backgroundPrimary: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "000000")),
-            backgroundSecondary: Color(light: Color(hex: "F2F2F7"), dark: Color(hex: "1C1C1E")),
-            backgroundTertiary: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "2C2C2E")),
+            backgroundPrimary: Color(light: Color(hex: "FAFAFA"), dark: Color(hex: "0A0A0C")),
+            backgroundSecondary: Color(light: Color(hex: "F4F3F1"), dark: Color(hex: "161618")),
+            backgroundTertiary: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "1E1E22")),
             textPrimary: Color(light: Color(hex: "000000"), dark: Color(hex: "FFFFFF")),
             textSecondary: Color(light: Color(hex: "3C3C43").opacity(0.6), dark: Color(hex: "EBEBF5").opacity(0.6)),
             textTertiary: Color(light: Color(hex: "3C3C43").opacity(0.3), dark: Color(hex: "EBEBF5").opacity(0.3)),
             textOnPrimary: Color.white,
-            surface: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "1C1C1E")),
-            surfaceVariant: Color(light: Color(hex: "F2F2F7"), dark: Color(hex: "2C2C2E")),
+            surface: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "1A1A1E")),
+            surfaceVariant: Color(light: Color(hex: "F0EFF2"), dark: Color(hex: "242428")),
             border: Color(light: Color(hex: "3C3C43").opacity(0.29), dark: Color(hex: "545458").opacity(0.65)),
             divider: Color(light: Color(hex: "3C3C43").opacity(0.18), dark: Color(hex: "545458").opacity(0.45))
         )
@@ -59,9 +59,9 @@ public struct AdaptiveTheme: Theme, Sendable {
         )
 
         let shadows = ShadowScale(
-            soft:   ShadowToken(color: brandColor.opacity(0.04), radius: 6,  y: 3),
-            card:   ShadowToken(color: brandColor.opacity(0.06), radius: 8,  y: 4),
-            lifted: ShadowToken(color: brandColor.opacity(0.10), radius: 14, y: 7)
+            soft:   ShadowToken(color: brandColor.opacity(0.06), radius: 8,  y: 3),
+            card:   ShadowToken(color: brandColor.opacity(0.08), radius: 10, y: 5),
+            lifted: ShadowToken(color: brandColor.opacity(0.14), radius: 20, y: 8)
         )
 
         let glass = GlassTokens(

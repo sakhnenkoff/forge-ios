@@ -152,7 +152,7 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 | `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | App Store pre-flight audit + submission prep |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Set up the template — rename, brand, configure features |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold architecture-correct feature screens |
-| `swiftui-craft` | `claude plugin install swiftui-craft@forge-marketplace` | Premium SwiftUI design polish |
+| `swiftui-craft` | `claude plugin install swiftui-craft@forge-marketplace` | Premium design polish + soul (personality, warmth, human touch) |
 
 **Full pipeline**: `forge-workspace` (setup) → `forge-app` (build) → `forge-wire` (connect backend) → `forge-ship` (submit)
 

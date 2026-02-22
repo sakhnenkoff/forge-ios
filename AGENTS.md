@@ -288,6 +288,19 @@ struct Item: StringIdentifiable, Codable, Sendable {
 
 ---
 
+## Setting Up a New Project from This Template
+
+To transform this Forge template into your own app, install the `forge-workspace` skill:
+
+```bash
+claude plugin marketplace add sakhnenkoff/forge-workspace
+claude plugin install forge-workspace@forge-workspace-marketplace
+```
+
+Then say "set up Forge for [my app name]" and the skill will walk you through renaming, branding, feature configuration, and content customization.
+
+---
+
 ## Additional Resources
 
 - AppRouter: https://github.com/Dimillian/AppRouter

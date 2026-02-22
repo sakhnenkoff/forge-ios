@@ -108,13 +108,13 @@ struct HomeView: View {
     }
 
     private func statPill(icon: String, value: String, label: String, tint: Color) -> some View {
-        DSCard(tint: tint.opacity(0.06), depth: .raised) {
+        GlassCard(tint: tint.opacity(0.08)) {
             VStack(spacing: DSSpacing.sm) {
                 Image(systemName: icon)
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(tint)
                     .frame(width: 40, height: 40)
-                    .background(tint.opacity(0.10), in: Circle())
+                    .background(tint.opacity(0.12), in: Circle())
 
                 Text(value)
                     .font(.system(size: 24, weight: .bold, design: .rounded))

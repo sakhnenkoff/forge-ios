@@ -40,10 +40,13 @@ struct PaywallView: View {
                         )
                     }
 
-                    if allowSkip {
-                        DSButton(title: "Not now", style: .secondary, isFullWidth: true) {
-                            session.markPaywallDismissed()
+                    if FeatureFlags.enablePurchases && !viewModel.products.isEmpty {
+                        DSButton.link(title: "Restore purchase") {
+                            Task {
+                                await viewModel.restorePurchases(services: services, session: session)
+                            }
                         }
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
 
                     Text("Cancel anytime. No questions asked.")
@@ -54,40 +57,33 @@ struct PaywallView: View {
             }
             .safeAreaInset(edge: .bottom) {
                 if FeatureFlags.enablePurchases && !viewModel.products.isEmpty && viewModel.errorMessage == nil {
-                    VStack(spacing: DSSpacing.sm) {
-                        DSButton.cta(
-                            title: "Start Pro",
-                            isLoading: viewModel.isProcessingPurchase,
-                            isEnabled: viewModel.selectedProduct != nil
-                        ) {
-                            if let product = viewModel.selectedProduct {
-                                Task {
-                                    await viewModel.purchase(
-                                        productId: product.id,
-                                        services: services,
-                                        session: session
-                                    )
-                                }
-                            }
-                        }
-
-                        DSButton.link(title: "Restore purchase") {
+                    DSButton.cta(
+                        title: "Start Pro",
+                        isLoading: viewModel.isProcessingPurchase,
+                        isEnabled: viewModel.selectedProduct != nil
+                    ) {
+                        if let product = viewModel.selectedProduct {
                             Task {
-                                await viewModel.restorePurchases(services: services, session: session)
+                                await viewModel.purchase(
+                                    productId: product.id,
+                                    services: services,
+                                    session: session
+                                )
                             }
                         }
-                        .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .padding(.horizontal, DSSpacing.xl)
-                    .padding(.bottom, DSSpacing.sm)
+                    .padding(.vertical, DSSpacing.sm)
+                    .bottomFade()
                 }
             }
             .toolbar {
-                if showCloseButton {
-                    ToolbarItem(placement: .topBarLeading) {
-                        DSIconButton(icon: "xmark", style: .tertiary, size: .small, showsBackground: false, accessibilityLabel: "Close") {
-                            dismiss()
+                ToolbarItem(placement: .topBarTrailing) {
+                    DSIconButton(icon: "xmark", style: .tertiary, size: .small, showsBackground: false, accessibilityLabel: "Close") {
+                        if allowSkip {
+                            session.markPaywallDismissed()
                         }
+                        dismiss()
                     }
                 }
             }

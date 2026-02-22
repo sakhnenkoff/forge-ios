@@ -4,6 +4,79 @@ This file provides guidance to AI coding agents when working with this repositor
 
 ---
 
+## Getting Started
+
+If a user is new to Forge or asks "how does this project work", "what can I do", "help me get started", or similar — walk them through this section interactively.
+
+### What is Forge?
+
+Forge is a production-ready iOS app template built with SwiftUI, MVVM architecture, and AppRouter navigation. It ships with authentication, in-app purchases, analytics, onboarding, a paywall, and a full design system — so you skip boilerplate and start building features immediately.
+
+### First-Time Setup
+
+1. **Rename the template** for your app. Install the `forge-workspace` skill:
+   ```bash
+   claude plugin marketplace add sakhnenkoff/forge-marketplace
+   claude plugin install forge-workspace@forge-marketplace
+   ```
+   Then say: "Set up Forge for [my app name]" — it walks you through renaming, branding, feature flags, and content customization.
+
+2. **Build** using the Mock scheme (no Firebase needed):
+   ```bash
+   xcodebuild -project Forge.xcodeproj -scheme "Forge - Mock" -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' build
+   ```
+
+### What's Included
+
+| Area | What You Get |
+|------|-------------|
+| **Architecture** | MVVM + AppRouter (TabView + NavigationStack + sheets) |
+| **Design System** | Full token system (spacing, colors, typography, shadows) + 20+ reusable components (`DSButton`, `DSCard`, `DSHeroCard`, `DSTextField`, etc.) |
+| **Auth** | Sign-in flow with Google Sign-In, Apple Sign-In (toggle via feature flags) |
+| **Purchases** | RevenueCat integration with paywall, entitlements, subscription management |
+| **Analytics** | Mixpanel + Firebase Analytics with `LoggableEvent` pattern |
+| **Onboarding** | Multi-step onboarding with goals, permissions, name input |
+| **Build Configs** | Mock (no Firebase), Dev, Prod — switch schemes in Xcode |
+
+### How to Build Features
+
+The typical workflow for adding features:
+
+1. **Scaffold**: Use `forge-screens` to generate View + ViewModel with correct architecture
+   ```bash
+   claude plugin install forge-screens@forge-marketplace
+   ```
+   Then say: "Create a screen for [feature]" — it generates files, wires navigation, and verifies the build.
+
+2. **Polish**: Use `swiftui-craft` to make UI feel premium
+   ```bash
+   claude plugin install swiftui-craft@forge-marketplace
+   ```
+   Then say: "Polish this screen" or "Make this feel like [reference app]".
+
+3. **Or manually**: Create `{App}/Features/{Feature}/{Feature}View.swift` and `{Feature}ViewModel.swift` following the patterns in the Quick Start Guide below.
+
+### Key Concepts
+
+- **AppServices** — injected via `@Environment`, provides access to all managers (auth, purchases, logging)
+- **AppSession** — user state (signed in, current user, display name)
+- **Router** — navigation via `router.navigate(to:)` (push), `router.presentSheet(_:)` (modal), `router.selectedTab` (tab)
+- **DS components** — never build raw UI — use `DSButton`, `DSCard`, `DSSection`, `DSListCard`, `DSListRow`, `DSTextField`, etc.
+- **Feature flags** — toggle Firebase, analytics, purchases, auth in `FeatureFlags.swift`
+- **Mock scheme** — develop without any backend services configured
+
+### Available Skills
+
+All installable from `sakhnenkoff/forge-marketplace`:
+
+| Skill | Purpose | Trigger |
+|-------|---------|---------|
+| `forge-workspace` | Rename, brand, and configure the template for your app | "Set up Forge for [app]" |
+| `forge-screens` | Scaffold architecture-correct feature screens | "Create a screen for [feature]" |
+| `swiftui-craft` | Premium SwiftUI design polish | "Polish this UI" |
+
+---
+
 ## Building the Project
 
 Use direct `xcodebuild` (do not use MCP).
@@ -37,7 +110,8 @@ Use direct `xcodebuild` (do not use MCP).
 1. Create a SwiftUI View + ViewModel under `/Features/[FeatureName]/`
 2. Wire navigation in `AppRoute`/`AppSheet` if needed
 3. Follow the steps in ACTION 1 documentation
-4. **Design craft**: When building or refining UI, use the `swiftui-craft` skill (`claude plugin marketplace add sakhnenkoff/swiftui-craft && claude plugin install swiftui-craft@swiftui-craft-marketplace`). It guides premium, Apple-native design — researching real award-winning apps for inspiration, applying six craft dimensions (typography, color, composition, motion, material, micro-interactions), and detecting the project's design system to use its tokens.
+4. **Screen scaffolding**: Use the `forge-screens` skill to generate architecture-correct View + ViewModel pairs wired into the AppRouter navigation pattern (`claude plugin marketplace add sakhnenkoff/forge-marketplace && claude plugin install forge-screens@forge-marketplace`).
+5. **Design craft**: Use the `swiftui-craft` skill for premium, Apple-native design — researching real award-winning apps for inspiration, applying six craft dimensions (typography, color, composition, motion, material, micro-interactions), and detecting the project's design system to use its tokens (`claude plugin install swiftui-craft@forge-marketplace`).
 
 ### For New Components
 - Always create in `/Components/Views/` (or `/Components/Modals/` for modals)
@@ -290,14 +364,18 @@ struct Item: StringIdentifiable, Codable, Sendable {
 
 ## Setting Up a New Project from This Template
 
-To transform this Forge template into your own app, install the `forge-workspace` skill:
+To transform this Forge template into your own app, install skills from the Forge marketplace:
 
 ```bash
-claude plugin marketplace add sakhnenkoff/forge-workspace
-claude plugin install forge-workspace@forge-workspace-marketplace
+claude plugin marketplace add sakhnenkoff/forge-marketplace
+claude plugin install forge-workspace@forge-marketplace
 ```
 
 Then say "set up Forge for [my app name]" and the skill will walk you through renaming, branding, feature configuration, and content customization.
+
+Other available skills from the same marketplace:
+- `forge-screens` — scaffold architecture-correct feature screens (`claude plugin install forge-screens@forge-marketplace`)
+- `swiftui-craft` — premium SwiftUI design polish (`claude plugin install swiftui-craft@forge-marketplace`)
 
 ---
 

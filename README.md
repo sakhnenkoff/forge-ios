@@ -138,7 +138,7 @@ echo '{"projectName":"MyApp","bundleId":"com.me.myapp","authProviders":["apple"]
 
 ## Claude Code Skills
 
-Three AI-powered skills for working with Forge projects, available from a single marketplace:
+Four AI-powered skills for working with Forge projects, available from a single marketplace:
 
 ```bash
 claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
@@ -146,11 +146,21 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 
 | Skill | Install | Purpose |
 |-------|---------|---------|
+| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Quality pipeline — scaffold, build, polish, verify |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Set up the template — rename, brand, configure features |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold architecture-correct feature screens |
 | `swiftui-craft` | `claude plugin install swiftui-craft@forge-marketplace` | Premium SwiftUI design polish |
 
-**Workflow**: `forge-workspace` (setup) → `forge-screens` (build features) → `swiftui-craft` (polish UI)
+**Workflow**: `forge-workspace` (setup) → `forge-feature` (build features with quality pipeline) → or use `forge-screens` + `swiftui-craft` individually
+
+### Optional Enhancements
+
+These free plugins improve the pipeline but are NOT required:
+
+| Plugin | Install | What it adds |
+|--------|---------|-------------|
+| Superpowers | `claude plugin install superpowers@claude-plugins-official` | Structured brainstorming, planning, and code review |
+| Ralph Loop | `claude plugin install ralph-loop@claude-plugins-official` | Continuous build-test-fix iteration |
 
 ---
 

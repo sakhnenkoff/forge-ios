@@ -391,16 +391,24 @@ public struct DSIconButton: View {
     }
 
     public var body: some View {
-        let content = iconContent
-
         if let action {
-            Button(action: action) {
-                content
+            if !showsBackground, #available(iOS 26.0, *) {
+                // iOS 26: render a native Button with just an Image.
+                // The system toolbar applies perfect circular Liquid Glass automatically.
+                // No custom frame, no buttonStyle, no manual glass — let the system own it.
+                Button(action: action) {
+                    Image(systemName: icon)
+                }
+                .accessibilityLabel(Text(accessibilityLabel ?? icon))
+            } else {
+                Button(action: action) {
+                    iconContent
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text(accessibilityLabel ?? icon))
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel(Text(accessibilityLabel ?? icon))
         } else {
-            content
+            iconContent
                 .accessibilityHidden(true)
         }
     }
@@ -440,7 +448,7 @@ public struct DSIconButton: View {
         } else {
             SketchIcon(systemName: icon, size: size.iconSize, color: iconTint)
                 .frame(width: size.dimension, height: size.dimension)
-                .contentShape(.rect)
+                .contentShape(Circle())
         }
     }
 }

@@ -1,10 +1,16 @@
 import SwiftUI
 
 public struct AmbientBackground: View {
+    @Environment(\.colorScheme) private var colorScheme
     private let intensity: CGFloat
 
     public init(intensity: CGFloat = 0.10) {
         self.intensity = intensity
+    }
+
+    /// Light mode needs stronger opacity to read against near-white backgrounds.
+    private var effectiveIntensity: CGFloat {
+        colorScheme == .light ? intensity * 2.8 : intensity * 2.0
     }
 
     public var body: some View {
@@ -13,7 +19,7 @@ public struct AmbientBackground: View {
 
             RadialGradient(
                 colors: [
-                    Color.themePrimary.opacity(intensity),
+                    Color.themePrimary.opacity(effectiveIntensity),
                     Color.clear
                 ],
                 center: .topLeading,
@@ -23,7 +29,7 @@ public struct AmbientBackground: View {
 
             RadialGradient(
                 colors: [
-                    Color.themePrimary.opacity(intensity * 0.5),
+                    Color.themePrimary.opacity(effectiveIntensity * 0.5),
                     Color.clear
                 ],
                 center: .bottomTrailing,
@@ -33,7 +39,7 @@ public struct AmbientBackground: View {
 
             LinearGradient(
                 colors: [
-                    Color.themePrimary.opacity(intensity * 0.3),
+                    Color.themePrimary.opacity(effectiveIntensity * 0.3),
                     Color.clear
                 ],
                 startPoint: .top,

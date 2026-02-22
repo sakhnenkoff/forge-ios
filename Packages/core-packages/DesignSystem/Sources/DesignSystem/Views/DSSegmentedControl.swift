@@ -23,8 +23,12 @@ public struct DSSegmentedControl<T: Hashable>: View {
         self.labelProvider = labelProvider
     }
 
+    /// Concentric inner radius: outerRadius - padding between outer edge and inner pill.
+    private static var innerRadius: CGFloat {
+        max(DSRadii.lg - DSSpacing.sm, 0)
+    }
+
     public var body: some View {
-        let padding = DSSpacing.sm
         let outerRadius = DSRadii.lg
         let shape = RoundedRectangle(cornerRadius: outerRadius, style: .continuous)
         let base = HStack(spacing: 0) {
@@ -32,7 +36,7 @@ public struct DSSegmentedControl<T: Hashable>: View {
                 segmentButton(for: item)
             }
         }
-        .padding(padding)
+        .padding(DSSpacing.sm)
         .background(shape.fill(usesGlass ? Color.clear : Color.surface))
         .clipShape(shape)
 
@@ -40,8 +44,7 @@ public struct DSSegmentedControl<T: Hashable>: View {
             if usesGlass {
                 if #available(iOS 26.0, *) {
                     let glass = Glass.regular.tint(DesignSystem.tokens.glass.tint).interactive()
-                    base
-                        .glassEffect(glass, in: .rect(cornerRadius: outerRadius))
+                    base.glassEffect(glass, in: .rect(cornerRadius: outerRadius))
                 } else {
                     base
                         .background(shape.fill(Color.surface))
@@ -58,10 +61,11 @@ public struct DSSegmentedControl<T: Hashable>: View {
 
     private func segmentButton(for item: T) -> some View {
         let isSelected = selection == item
+        let pillShape = RoundedRectangle(cornerRadius: Self.innerRadius, style: .continuous)
 
         return Button {
             guard selection != item else { return }
-            withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
+            withAnimation(.smooth(duration: 0.35)) {
                 selection = item
             }
         } label: {
@@ -72,7 +76,7 @@ public struct DSSegmentedControl<T: Hashable>: View {
                 .padding(.vertical, DSSpacing.smd)
                 .background {
                     if isSelected {
-                        RoundedRectangle(cornerRadius: DSRadii.md)
+                        pillShape
                             .fill(Color.themePrimary)
                             .matchedGeometryEffect(id: "indicator", in: namespace)
                     }

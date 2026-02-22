@@ -131,9 +131,7 @@ public struct TimePill: View {
             } else {
                 textContent
                     .background(Capsule().fill(isHighlighted ? Color.surface : Color.surfaceVariant))
-                    .overlay(
-                        Capsule().stroke(Color.themePrimary.opacity(0.2), lineWidth: 1)
-                    )
+                    .overlay(Capsule().stroke(Color.divider, lineWidth: 1))
             }
         }
     }

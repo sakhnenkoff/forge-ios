@@ -28,9 +28,11 @@ public struct DSInfoCard: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top, spacing: DSSpacing.sm) {
+        HStack(alignment: .center, spacing: DSSpacing.smd) {
             if let icon {
-                HeroIcon(systemName: icon, size: DSLayout.iconSmall, tint: tint)
+                Image(systemName: icon)
+                    .font(.system(size: DSLayout.iconSmall, weight: .semibold))
+                    .foregroundStyle(tint)
             }
 
             VStack(alignment: .leading, spacing: DSSpacing.xs) {

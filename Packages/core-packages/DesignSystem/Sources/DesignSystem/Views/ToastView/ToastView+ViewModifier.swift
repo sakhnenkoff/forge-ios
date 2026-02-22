@@ -12,7 +12,6 @@ struct ToastViewModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottom) {
                 if let toast = toast {
                     ToastView(toast: toast) {
@@ -22,8 +21,8 @@ struct ToastViewModifier: ViewModifier {
                         insertion: .scale(scale: 0.92).combined(with: .move(edge: .bottom)).combined(with: .opacity),
                         removal: .scale(scale: 0.92).combined(with: .opacity)
                     ))
-                    .padding(.horizontal, DSSpacing.lg)
-                    .padding(.bottom, DSSpacing.md)
+                    .padding(.horizontal, DSSpacing.mlg)
+                    .padding(.bottom, DSSpacing.sm)
                 }
             }
             .animation(.spring(response: 0.4, dampingFraction: 0.75), value: toast)

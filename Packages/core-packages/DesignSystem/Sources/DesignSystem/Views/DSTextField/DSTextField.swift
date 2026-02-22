@@ -93,7 +93,7 @@ public struct DSTextField: View {
                 .padding(.horizontal, DSSpacing.md)
                 .padding(.vertical, DSSpacing.smd)
                 .frame(minHeight: 48)
-                .background(isFocused ? Color.themePrimary.opacity(0.04) : Color.surfaceVariant.opacity(0.5))
+                .background(isFocused ? Color.themePrimary.opacity(0.06) : Color.surfaceVariant)
                 .clipShape(shape)
                 .shadow(
                     color: isFocused ? Color.themePrimary.opacity(0.12) : .clear,

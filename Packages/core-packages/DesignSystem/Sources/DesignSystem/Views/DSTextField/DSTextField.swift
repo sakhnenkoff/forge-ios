@@ -54,13 +54,19 @@ public struct DSTextField: View {
         }
     }
 
+    private var iconColor: Color {
+        if isError { return .error }
+        if isFocused { return .themePrimary }
+        return .textTertiary
+    }
+
     private var fieldContent: some View {
         HStack(spacing: DSSpacing.smd) {
             if let icon {
                 Image(systemName: icon)
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(Color.textSecondary)
-                    .frame(width: 24)
+                    .font(.system(size: DSLayout.iconXS, weight: .medium))
+                    .foregroundStyle(iconColor)
+                    .frame(width: 20)
             }
 
             if isSecure {
@@ -79,33 +85,34 @@ public struct DSTextField: View {
         .tint(Color.themePrimary)
     }
 
-    private var borderColor: Color {
-        if isError { return .error }
-        if isFocused { return .themePrimary }
-        return .border
-    }
-
     private var borderedStyle: some View {
-        let shape = RoundedRectangle(cornerRadius: DSSpacing.smd, style: .continuous)
+        let shape = RoundedRectangle(cornerRadius: DSRadii.md, style: .continuous)
 
         return VStack(alignment: .leading, spacing: DSSpacing.xs) {
             fieldContent
                 .padding(.horizontal, DSSpacing.md)
                 .padding(.vertical, DSSpacing.smd)
                 .frame(minHeight: 48)
-                .background(isFocused ? Color.themePrimary.opacity(0.03) : Color.surface)
-                .overlay(
-                    shape.stroke(borderColor, lineWidth: isFocused || isError ? 1.5 : 1)
-                )
+                .background(isFocused ? Color.themePrimary.opacity(0.04) : Color.surfaceVariant.opacity(0.5))
                 .clipShape(shape)
-                .animation(.easeInOut(duration: 0.15), value: isFocused)
+                .shadow(
+                    color: isFocused ? Color.themePrimary.opacity(0.12) : .clear,
+                    radius: 8,
+                    x: 0,
+                    y: 2
+                )
+                .animation(.easeInOut(duration: 0.2), value: isFocused)
                 .animation(.easeInOut(duration: 0.15), value: isError)
 
             if let errorMessage, isError {
-                Text(errorMessage)
-                    .font(.captionLarge())
-                    .foregroundStyle(Color.error)
-                    .padding(.leading, DSSpacing.xs)
+                HStack(spacing: DSSpacing.xs) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                        .font(.system(size: 12, weight: .medium))
+                    Text(errorMessage)
+                        .font(.captionLarge())
+                }
+                .foregroundStyle(Color.error)
+                .padding(.leading, DSSpacing.xs)
             }
         }
     }

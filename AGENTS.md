@@ -37,6 +37,7 @@ Use direct `xcodebuild` (do not use MCP).
 1. Create a SwiftUI View + ViewModel under `/Features/[FeatureName]/`
 2. Wire navigation in `AppRoute`/`AppSheet` if needed
 3. Follow the steps in ACTION 1 documentation
+4. **Design craft**: When building or refining UI, use the `swiftui-craft` skill (`claude plugin marketplace add sakhnenkoff/swiftui-craft && claude plugin install swiftui-craft@swiftui-craft-marketplace`). It guides premium, Apple-native design — researching real award-winning apps for inspiration, applying six craft dimensions (typography, color, composition, motion, material, micro-interactions), and detecting the project's design system to use its tokens.
 
 ### For New Components
 - Always create in `/Components/Views/` (or `/Components/Modals/` for modals)

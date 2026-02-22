@@ -128,22 +128,22 @@ final class AppSession {
 
     func markPaywallDismissed() {
         hasDismissedPaywall = true
-        keychain.save("true", for: paywallDismissedKey)
+        _ = keychain.save("true", for: paywallDismissedKey)
     }
 
     func markAuthDismissed() {
         hasDismissedAuth = true
-        keychain.save("true", for: authDismissedKey)
+        _ = keychain.save("true", for: authDismissedKey)
     }
 
     func resetPaywallDismissal() {
         hasDismissedPaywall = false
-        keychain.remove(for: paywallDismissedKey)
+        _ = keychain.remove(for: paywallDismissedKey)
     }
 
     func resetAuthDismissal() {
         hasDismissedAuth = false
-        keychain.remove(for: authDismissedKey)
+        _ = keychain.remove(for: authDismissedKey)
     }
 
     func resetOnboarding() {
@@ -153,7 +153,7 @@ final class AppSession {
 
     func updatePremiumStatus(entitlements: [PurchasedEntitlement]) {
         isPremium = entitlements.hasActiveEntitlement
-        keychain.save(isPremium ? "true" : "false", for: premiumKey)
+        _ = keychain.save(isPremium ? "true" : "false", for: premiumKey)
     }
 
     func updateAuth(user: UserAuthInfo, currentUser: UserModel?) {
@@ -171,9 +171,9 @@ final class AppSession {
         auth = nil
         currentUser = nil
         isPremium = false
-        keychain.remove(for: premiumKey)
+        _ = keychain.remove(for: premiumKey)
         hasDismissedPaywall = false
-        keychain.remove(for: paywallDismissedKey)
+        _ = keychain.remove(for: paywallDismissedKey)
         lastErrorMessage = nil
 
         if clearOnboarding {

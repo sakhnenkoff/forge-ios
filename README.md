@@ -138,7 +138,7 @@ echo '{"projectName":"MyApp","bundleId":"com.me.myapp","authProviders":["apple"]
 
 ## Claude Code Skills
 
-Four AI-powered skills for working with Forge projects, available from a single marketplace:
+Five AI-powered skills for working with Forge projects, available from a single marketplace:
 
 ```bash
 claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
@@ -146,12 +146,13 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 
 | Skill | Install | Purpose |
 |-------|---------|---------|
+| `forge-app` | `claude plugin install forge-app@forge-marketplace` | Build an entire app from an idea |
 | `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Quality pipeline — scaffold, build, polish, verify |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Set up the template — rename, brand, configure features |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold architecture-correct feature screens |
 | `swiftui-craft` | `claude plugin install swiftui-craft@forge-marketplace` | Premium SwiftUI design polish |
 
-**Workflow**: `forge-workspace` (setup) → `forge-feature` (build features with quality pipeline) → or use `forge-screens` + `swiftui-craft` individually
+**Workflow**: `forge-workspace` (setup) → `forge-app` (build entire app) → or use `forge-feature` / `forge-screens` + `swiftui-craft` individually
 
 ### Optional Enhancements
 

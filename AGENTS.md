@@ -38,18 +38,17 @@ Forge is a production-ready iOS app template built with SwiftUI, MVVM architectu
 | **Onboarding** | Multi-step onboarding with goals, permissions, name input |
 | **Build Configs** | Mock (no Firebase), Dev, Prod — switch schemes in Xcode |
 
-### How to Build Features
+### How to Build
 
-Use the `forge-feature` pipeline for consistent, high-quality output:
+**Build an entire app:** `/forge:app` — describe your idea, get a running polished app
+```bash
+claude plugin install forge-app@forge-marketplace
+```
 
+**Build individual features:** `/forge:feature` or `/forge:quick`
 - **Most features:** `/forge:quick` — scaffold, build, polish, verify (default)
 - **Major features:** `/forge:feature` — full pipeline with brainstorming, planning, and review
 - **Multi-session work:** Automatically escalates to GSD when complexity warrants it
-
-Install:
-```bash
-claude plugin install forge-feature@forge-marketplace
-```
 
 Or build features manually with individual skills:
 
@@ -72,6 +71,7 @@ All installable from the forge marketplace:
 
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
+| `forge-app` | Build a complete app from an idea — blueprint + execution | `/forge:app` |
 | `forge-feature` | Quality pipeline — scaffold, build, polish, verify | `/forge:feature` or `/forge:quick` |
 | `forge-workspace` | Rename, brand, and configure the template for your app | "Set up Forge for [app]" |
 | `forge-screens` | Scaffold architecture-correct feature screens | "Create a screen for [feature]" |
@@ -375,7 +375,10 @@ claude plugin install forge-workspace@forge-marketplace
 
 Then say "set up Forge for [my app name]" and the skill will walk you through renaming, branding, feature configuration, and content customization.
 
+Or build an entire app at once: `/forge:app` — describe your idea, get a running polished app (`claude plugin install forge-app@forge-marketplace`)
+
 Other available skills from the same marketplace:
+- `forge-app` — build a complete app from an idea (`claude plugin install forge-app@forge-marketplace`)
 - `forge-feature` — quality pipeline: scaffold, build, polish, verify (`claude plugin install forge-feature@forge-marketplace`)
 - `forge-screens` — scaffold architecture-correct feature screens (`claude plugin install forge-screens@forge-marketplace`)
 - `swiftui-craft` — premium SwiftUI design polish (`claude plugin install swiftui-craft@forge-marketplace`)

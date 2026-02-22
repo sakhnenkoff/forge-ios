@@ -26,7 +26,7 @@ struct OnboardingView: View {
                 }
             )
 
-            ZStack {
+            ZStack(alignment: .top) {
                 if controller.currentStep.isTextIntro {
                     textIntroContent
                         .id(controller.currentStep)
@@ -37,6 +37,7 @@ struct OnboardingView: View {
                         .transition(.opacity.combined(with: .scale(scale: 0.98)))
                 }
             }
+            .frame(maxHeight: .infinity, alignment: .top)
             .animation(.smooth(duration: 0.5), value: controller.currentStep)
         }
         .background(AmbientBackground())
@@ -177,18 +178,18 @@ struct OnboardingView: View {
     }
 
     private var goalsCard: some View {
-        DSCard(tint: Color.themePrimary.opacity(0.04)) {
-            VStack(alignment: .leading, spacing: DSSpacing.sm) {
-                Text("Choose your goal")
-                    .font(.headlineMedium())
-                    .foregroundStyle(Color.textPrimary)
-
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: DSSpacing.sm) {
-                    goalButton(title: "Save more", id: "save")
-                    goalButton(title: "Pay off debt", id: "debt")
-                    goalButton(title: "Track spending", id: "track")
-                    goalButton(title: "Build budget", id: "budget")
-                }
+        VStack(alignment: .leading, spacing: DSSpacing.sm) {
+            DSChoiceButton(title: "Save more", icon: "banknote", isSelected: controller.selectedGoals.contains("save")) {
+                controller.toggleGoal("save")
+            }
+            DSChoiceButton(title: "Pay off debt", icon: "creditcard.fill", isSelected: controller.selectedGoals.contains("debt")) {
+                controller.toggleGoal("debt")
+            }
+            DSChoiceButton(title: "Track spending", icon: "chart.line.uptrend.xyaxis", isSelected: controller.selectedGoals.contains("track")) {
+                controller.toggleGoal("track")
+            }
+            DSChoiceButton(title: "Build budget", icon: "list.clipboard.fill", isSelected: controller.selectedGoals.contains("budget")) {
+                controller.toggleGoal("budget")
             }
         }
         .frame(maxWidth: DSLayout.cardCompactWidth)
@@ -223,29 +224,17 @@ struct OnboardingView: View {
     }
 
     private var nameCard: some View {
-        DSCard(tint: Color.themePrimary.opacity(0.04)) {
-            VStack(alignment: .leading, spacing: DSSpacing.sm) {
-                Text("Your name")
-                    .font(.headlineMedium())
-                    .foregroundStyle(Color.textPrimary)
+        VStack(alignment: .leading, spacing: DSSpacing.smd) {
+            DSTextField.name(
+                placeholder: "Type your name",
+                text: $controller.userName
+            )
 
-                DSTextField.name(
-                    placeholder: "Type your name",
-                    text: $controller.userName
-                )
-
-                Text("We'll use this to personalize your dashboard.")
-                    .font(.captionLarge())
-                    .foregroundStyle(Color.textSecondary)
-            }
+            Text("We'll use this to personalize your dashboard.")
+                .font(.captionLarge())
+                .foregroundStyle(Color.textSecondary)
         }
         .frame(maxWidth: DSLayout.cardCompactWidth)
-    }
-
-    private func goalButton(title: String, id: String) -> some View {
-        DSChoiceButton(title: title, isSelected: controller.selectedGoals.contains(id)) {
-            controller.toggleGoal(id)
-        }
     }
 
     private var ctaBar: some View {

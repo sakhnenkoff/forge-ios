@@ -30,39 +30,37 @@ public struct DSChoiceButton: View {
             let shape = RoundedRectangle(cornerRadius: DSRadii.md, style: .continuous)
 
             HStack(spacing: DSSpacing.smd) {
-                // Leading icon with sketch style
                 if let icon {
-                    SketchIcon(
-                        systemName: icon,
-                        size: 18,
-                        color: isSelected ? Color.themePrimary : Color.textSecondary
-                    )
-                    .frame(width: 24)
+                    Image(systemName: icon)
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(isSelected ? Color.themePrimary : Color.textSecondary)
+                        .frame(width: 36, height: 36)
+                        .background(
+                            (isSelected ? Color.themePrimary.opacity(0.12) : Color.surfaceVariant)
+                        , in: RoundedRectangle(cornerRadius: DSRadii.xs, style: .continuous))
                 }
 
-                // Title
                 Text(title)
                     .font(.bodyMedium())
                     .foregroundStyle(isSelected ? Color.textPrimary : Color.textSecondary)
 
                 Spacer(minLength: DSSpacing.sm)
 
-                // Selection indicator - simple dot
-                Circle()
-                    .fill(isSelected ? Color.themePrimary : Color.border)
-                    .frame(width: 8, height: 8)
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(isSelected ? Color.themePrimary : Color.border)
             }
             .padding(.horizontal, DSSpacing.md)
             .padding(.vertical, DSSpacing.smd)
             .frame(minHeight: DSLayout.listRowMinHeight)
-            .background(isSelected ? Color.themePrimary.opacity(0.08) : Color.surface)
-            .overlay(
-                shape.stroke(
-                    isSelected ? Color.themePrimary.opacity(0.3) : Color.border,
-                    lineWidth: 1
-                )
-            )
+            .background(isSelected ? Color.themePrimary.opacity(0.05) : Color.surface)
             .clipShape(shape)
+            .shadow(
+                color: isSelected ? DSShadows.soft.color : .clear,
+                radius: DSShadows.soft.radius,
+                x: 0,
+                y: DSShadows.soft.y
+            )
         }
         .buttonStyle(.plain)
         .accessibilityValue(Text(String(localized: isSelected ? "Selected" : "Not selected", bundle: .module)))

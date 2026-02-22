@@ -15,11 +15,24 @@ final class PaywallViewModel {
     let productIds = EntitlementOption.allProductIds
 
     var products: [AnyProduct] = []
+    var selectedProductId: String?
     var isLoadingProducts = false
     var isProcessingPurchase = false
     var errorMessage: String?
     var didUnlockPremium = false
     var toast: Toast?
+
+    var subscriptionProducts: [AnyProduct] {
+        products.filter { product in
+            product.id == EntitlementOption.monthly.productId
+                || product.id == EntitlementOption.annual.productId
+        }
+    }
+
+    var selectedProduct: AnyProduct? {
+        guard let selectedProductId else { return subscriptionProducts.last }
+        return subscriptionProducts.first { $0.id == selectedProductId }
+    }
 
     func loadProducts(services: AppServices) async {
         guard FeatureFlags.enablePurchases else { return }

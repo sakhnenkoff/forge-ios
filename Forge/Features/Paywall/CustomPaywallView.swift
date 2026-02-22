@@ -10,21 +10,16 @@ import DesignSystem
 struct CustomPaywallView: View {
     let products: [AnyProduct]
     let isProcessing: Bool
-    let onRestorePurchasePressed: () -> Void
-    let onPurchaseProductPressed: (AnyProduct) -> Void
-
-    @State private var selectedProductId: String?
+    @Binding var selectedProductId: String?
 
     init(
         products: [AnyProduct] = [],
         isProcessing: Bool = false,
-        onRestorePurchasePressed: @escaping () -> Void = { },
-        onPurchaseProductPressed: @escaping (AnyProduct) -> Void = { _ in }
+        selectedProductId: Binding<String?>
     ) {
         self.products = products
         self.isProcessing = isProcessing
-        self.onRestorePurchasePressed = onRestorePurchasePressed
-        self.onPurchaseProductPressed = onPurchaseProductPressed
+        self._selectedProductId = selectedProductId
     }
 
     // MARK: - Computed Product Grouping
@@ -53,26 +48,12 @@ struct CustomPaywallView: View {
                 subscriptionSection
             }
 
-            if let lifetimeProduct {
-                lifetimeDivider
-                lifetimeSection(lifetimeProduct)
-            }
+            // Lifetime section hidden for now
+            // if let lifetimeProduct {
+            //     lifetimeDivider
+            //     lifetimeSection(lifetimeProduct)
+            // }
 
-            Spacer()
-                .frame(height: DSSpacing.lg)
-
-            DSButton.cta(
-                title: "Start Pro",
-                isLoading: isProcessing,
-                isEnabled: selectedProduct != nil
-            ) {
-                if let product = selectedProduct {
-                    onPurchaseProductPressed(product)
-                }
-            }
-
-            DSButton.link(title: "Restore purchase", action: onRestorePurchasePressed)
-                .frame(maxWidth: .infinity, alignment: .center)
         }
         .onAppear {
             if selectedProductId == nil {
@@ -121,14 +102,6 @@ struct CustomPaywallView: View {
     private func lifetimeSection(_ product: AnyProduct) -> some View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
             planCard(product, isFeatured: false)
-
-            DSButton.cta(
-                title: "Get lifetime access",
-                isLoading: isProcessing,
-                isEnabled: !isProcessing
-            ) {
-                onPurchaseProductPressed(product)
-            }
         }
         .disabled(isProcessing)
     }
@@ -206,5 +179,6 @@ struct CustomPaywallView: View {
 }
 
 #Preview {
-    CustomPaywallView(products: AnyProduct.mocks)
+    @Previewable @State var selectedId: String?
+    CustomPaywallView(products: AnyProduct.mocks, selectedProductId: $selectedId)
 }

@@ -52,6 +52,36 @@ struct PaywallView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
+            .safeAreaInset(edge: .bottom) {
+                if FeatureFlags.enablePurchases && !viewModel.products.isEmpty && viewModel.errorMessage == nil {
+                    VStack(spacing: DSSpacing.sm) {
+                        DSButton.cta(
+                            title: "Start Pro",
+                            isLoading: viewModel.isProcessingPurchase,
+                            isEnabled: viewModel.selectedProduct != nil
+                        ) {
+                            if let product = viewModel.selectedProduct {
+                                Task {
+                                    await viewModel.purchase(
+                                        productId: product.id,
+                                        services: services,
+                                        session: session
+                                    )
+                                }
+                            }
+                        }
+
+                        DSButton.link(title: "Restore purchase") {
+                            Task {
+                                await viewModel.restorePurchases(services: services, session: session)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    .padding(.horizontal, DSSpacing.xl)
+                    .padding(.bottom, DSSpacing.sm)
+                }
+            }
             .toolbar {
                 if showCloseButton {
                     ToolbarItem(placement: .topBarLeading) {
@@ -104,20 +134,7 @@ struct PaywallView: View {
             CustomPaywallView(
                 products: viewModel.products,
                 isProcessing: viewModel.isProcessingPurchase,
-                onRestorePurchasePressed: {
-                    Task {
-                        await viewModel.restorePurchases(services: services, session: session)
-                    }
-                },
-                onPurchaseProductPressed: { product in
-                    Task {
-                        await viewModel.purchase(
-                            productId: product.id,
-                            services: services,
-                            session: session
-                        )
-                    }
-                }
+                selectedProductId: $viewModel.selectedProductId
             )
         }
     }

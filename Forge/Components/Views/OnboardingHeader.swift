@@ -24,7 +24,7 @@ struct OnboardingHeader: View {
     }
 
     var body: some View {
-        HStack(spacing: DSSpacing.sm) {
+        HStack(spacing: DSSpacing.smd) {
             if showBackButton {
                 DSIconButton(
                     icon: "chevron.left",
@@ -33,9 +33,6 @@ struct OnboardingHeader: View {
                     accessibilityLabel: "Back",
                     action: onBack
                 )
-            } else {
-                Color.clear
-                    .frame(width: DSLayout.avatarSmall, height: DSLayout.avatarSmall)
             }
 
             ProgressView(value: progress)
@@ -45,11 +42,8 @@ struct OnboardingHeader: View {
                 .background(Color.surfaceVariant.opacity(0.6))
                 .clipShape(Capsule())
                 .animation(.easeInOut(duration: 0.3), value: progress)
-
-            Color.clear
-                .frame(width: DSLayout.avatarSmall, height: DSLayout.avatarSmall)
         }
-        .padding(.horizontal, DSSpacing.xl)
+        .padding(.horizontal, DSSpacing.lg)
         .padding(.vertical, DSSpacing.md)
     }
 }

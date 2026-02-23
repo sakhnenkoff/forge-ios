@@ -76,9 +76,18 @@ final class AppSession {
     //     in Configurations/FeatureFlags.swift
     //   - Always show paywall after onboarding: remove the `hasDismissedPaywall` check
     //     in the `shouldShowPaywall` computed property above
+    /// Launch with `SKIP_ALL_GATES` argument to bypass onboarding, auth, and paywall.
+    /// Useful for AI agents and developers who need direct access to the main app.
+    private var skipAllGates: Bool {
+        ProcessInfo.processInfo.arguments.contains("SKIP_ALL_GATES")
+    }
+
     var rootState: RootState {
         if isLoading {
             return .loading
+        }
+        if skipAllGates {
+            return .app
         }
         if !isOnboardingComplete {
             return .onboarding

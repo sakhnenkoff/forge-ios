@@ -112,6 +112,30 @@
   3. A `SKIP_ALL_GATES` launch argument that goes straight to the tab bar
   4. XcodeBuildMCP UI automation (tap through gates automatically)
 
+### D. swiftui-craft "premium" bias produces generic output
+**Problem:** The swiftui-craft skill uses "premium" as the universal goal — "premium iOS design", "award-winning quality", "premium feel." This biases every output toward one specific aesthetic: oversized numbers, uppercase tracked headers, shadow-only cards, elaborate animations. The result is Dribbble-bait, not design that serves the app's actual personality.
+**Evidence from Ledgr build:**
+  - 46pt bold rounded currency number (skill says "48-52pt bold rounded numbers create confidence")
+  - Uppercase tracked section headers (skill says "positive tracking on all-caps labels creates quiet authority")
+  - Warm cream card tint with brand-tinted shadows (skill's shadow guidance)
+  - These rules were applied mechanically without asking "does this serve Ledgr's users?"
+**Root cause:** "Premium" is subjective. What one person considers premium is different for another. The skill should help discover what aesthetic fits THIS app, not push everything toward one flavor.
+**Fix needed:** Replace "make it premium" with "what should this app feel like?" throughout swiftui-craft. The skill should:
+  1. Ask about mood/feeling, not just "aesthetic register"
+  2. Research what works in the app's specific domain with Playwright (actually look at screenshots, not just read blog posts)
+  3. Let the user's vision drive design, not a preset "premium" formula
+  4. Remove or soften prescriptive rules like "48-52pt for hero stats" — these should be suggestions, not defaults
+**Status:** OPEN — requires swiftui-craft skill rewrite
+
+### E. AI cannot iterate visually without seeing results
+**Problem:** The build-screenshot-evaluate cycle is too slow and coarse. By the time I see a screenshot, all the code is written. Real design requires seeing → judging → tweaking → seeing again, rapidly. Writing 200 lines of SwiftUI and then checking one screenshot is not iteration.
+**Possible solutions:**
+  1. Xcode Previews as the iteration target (faster feedback, no simulator needed)
+  2. XcodeBuildMCP's RenderPreview tool for in-conversation preview rendering
+  3. Tighter loops: write one component, screenshot, adjust, write next
+  4. The human reviews screenshots and gives specific visual feedback ("too much spacing", "make the number smaller")
+**Status:** OPEN — fundamental to design quality
+
 ---
 
 ## Items to Revisit
@@ -127,4 +151,7 @@
 - [ ] Remove Home tab, keep only Dashboard (Issue #9)
 - [ ] Add post-rename verification step that checks all "Forge" references are gone
 - [ ] Evaluate whether skill content should be embedded in AGENTS.md (Systemic A)
-- [ ] Build visual verification into the pipeline (Systemic B)
+- [ ] Build visual verification into the pipeline (Systemic C)
+- [ ] Rewrite swiftui-craft to remove "premium" bias, make it mood/personality-driven (Systemic D) — CRITICAL
+- [ ] Build visual iteration loop — Xcode Previews or tighter screenshot cycles (Systemic E)
+- [ ] Actually use Playwright to browse design references (Dribbble, Mobbin, Behance) instead of just searching

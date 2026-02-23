@@ -92,7 +92,18 @@
   3. Accept that the orchestrator session is the only place skills chain, and manage context accordingly
   4. Build the skill logic into AGENTS.md so it's always available regardless of skill invocation
 
-### B. No visual verification loop in the pipeline
+### B. Design system needs "template vs custom" decision point
+**Problem:** Every Forge app looks identical because DS components (DSHeroCard, DSListCard, DSListRow) have baked-in visual identity. Changing brand color doesn't change component aesthetics — shadows, radii, card styles, typography personality all stay the same. Users don't want their app to look like the template.
+**Impact:** The product's value proposition is undermined — "premium unique app" becomes "purple template but blue."
+**Solution:** Add a decision point in forge-app after workspace setup:
+  1. Ask: "Template components or custom visual identity?"
+  2. If template: proceed with DS components as-is (fast, good enough for MVPs)
+  3. If custom: retheme DS token values (shadows, radii, surface tones, typography weights) AND build app-specific view components where needed, using DS tokens for spacing/color but with custom layouts
+  4. The DS infrastructure stays (token system, DSScreen, DSButton API, .toast, .cardSurface) — only the visual expression changes
+  5. swiftui-craft's research step should drive the custom component design — research real apps in the domain, then build components that match that aesthetic
+**Status:** OPEN — needs implementation in forge-app and potentially a new forge-marketplace skill
+
+### C. No visual verification loop in the pipeline
 **Problem:** The pipeline builds screens but has no built-in way to visually verify them. Taking screenshots requires bypassing auth/onboarding/paywall gates. swiftui-craft needs to SEE the screen to polish it.
 **Impact:** Design polish is blind — swiftui-craft would refine code without seeing the result.
 **Possible solutions:**
@@ -111,7 +122,8 @@
 - [ ] Implement brand color application in forge-app execution (Issue #4)
 - [ ] Fix orchestration: invoke forge-feature as skill, not raw subagent (Issue #5) — CRITICAL
 - [ ] Build AI screen router / debug deep links (Issue #6)
-- [ ] Design system customization per-app beyond brand color (Issue #7)
+- [ ] Design system customization per-app beyond brand color (Issue #7, Systemic B)
+- [ ] Add "template vs custom" decision point to forge-app pipeline (Systemic B)
 - [ ] Remove Home tab, keep only Dashboard (Issue #9)
 - [ ] Add post-rename verification step that checks all "Forge" references are gone
 - [ ] Evaluate whether skill content should be embedded in AGENTS.md (Systemic A)

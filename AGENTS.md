@@ -372,22 +372,42 @@ struct Item: StringIdentifiable, Codable, Sendable {
 
 ## Setting Up a New Project from This Template
 
-To transform this Forge template into your own app, install skills from the Forge marketplace:
+<IMPORTANT>
+NEVER manually copy the template with `cp -R`, `rsync`, or similar. ALWAYS use one of the methods below, which handle renaming, bundle ID, and configuration correctly.
+</IMPORTANT>
+
+### Method 1: CLI tool (recommended for project creation)
+
+```bash
+./scripts/new-app.sh MyAppName ~/Documents/Developer/Apps com.myapp.id "My App"
+```
+
+This copies the template, renames everything (xcodeproj, imports, directories, bundle ID), and produces a ready-to-open Xcode project. Then `cd` into the new directory and run `forge-workspace` for branding and content customization.
+
+### Method 2: forge-app (recommended for building a complete app)
 
 ```bash
 claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
+claude plugin install forge-app@forge-marketplace
+```
+
+Then say `/forge:app` from the template directory. The orchestrator handles project creation via the CLI tool, workspace setup via forge-workspace, and builds all screens.
+
+### Method 3: forge-workspace only (setup without building)
+
+```bash
 claude plugin install forge-workspace@forge-marketplace
 ```
 
-Then say "set up Forge for [my app name]" and the skill will walk you through renaming, branding, feature configuration, and content customization.
+Then say "set up Forge for [my app name]". This handles renaming, branding, feature flags, and content customization.
 
-Or build an entire app at once: `/forge:app` — describe your idea, get a running polished app (`claude plugin install forge-app@forge-marketplace`)
+### All available skills
 
-Other available skills from the same marketplace:
 - `forge-app` — build a complete app from an idea (`claude plugin install forge-app@forge-marketplace`)
 - `forge-feature` — quality pipeline: scaffold, build, polish, verify (`claude plugin install forge-feature@forge-marketplace`)
 - `forge-wire` — connect to backend services (`claude plugin install forge-wire@forge-marketplace`)
 - `forge-ship` — App Store pre-flight audit and submission prep (`claude plugin install forge-ship@forge-marketplace`)
+- `forge-workspace` — rename, brand, configure the template (`claude plugin install forge-workspace@forge-marketplace`)
 - `forge-screens` — scaffold architecture-correct feature screens (`claude plugin install forge-screens@forge-marketplace`)
 - `swiftui-craft` — premium design polish + soul (`claude plugin install swiftui-craft@forge-marketplace`)
 

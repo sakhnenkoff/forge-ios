@@ -24,21 +24,36 @@ The **Mock build** runs without any Firebase or RevenueCat credentials. It uses 
 
 > **What Mock mode does:** Replaces Firebase Auth with a pre-signed-in local mock, replaces Firestore with in-memory data, and replaces RevenueCat with mock purchase results. All feature flows are exercisable without a single real credential.
 
-## Step 2: Rename the Project
+## Step 2: Create Your App from the Template
 
-Use the provided rename script to update the project name, bundle ID, and display name:
+> **Important:** Never manually copy the template with `cp -R` or `rsync`. Always use one of the methods below — they handle renaming, bundle ID, imports, and directory structure correctly.
+
+### Option A: CLI tool (recommended)
+
+```bash
+./scripts/new-app.sh YourAppName ~/Documents/Developer/Apps com.yourcompany.yourapp "Your App"
+```
+
+This copies the template to the destination, renames everything, and produces a ready-to-open project.
+
+### Option B: AI-assisted (Claude Code)
+
+```bash
+claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
+claude plugin install forge-app@forge-marketplace
+```
+
+Then say `/forge:app` — it handles project creation, setup, and builds all your screens.
+
+### Option C: Rename in place
+
+If you've already cloned the template and want to rename it:
 
 ```bash
 ./rename_project.sh YourAppName --bundle-id com.yourcompany.yourapp --display-name "Your App"
 ```
 
-Or use the combined setup script to copy and rename in one step:
-
-```bash
-./scripts/new-app.sh YourAppName --bundle-id com.yourcompany.yourapp
-```
-
-After renaming:
+After creating your project:
 - Update the app icon and launch screen
 - Update `DemoContent.swift` with your app's copy (navigation titles, section headers, placeholder text)
 

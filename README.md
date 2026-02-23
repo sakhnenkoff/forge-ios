@@ -8,22 +8,36 @@ Forge is a monorepo scaffolding product that generates production-ready iOS apps
 
 ## Quick Start
 
+### Create a new app from the template
+
+```bash
+./scripts/new-app.sh MyAppName ~/Documents/Developer/Apps com.mycompany.myapp "My App"
+cd ~/Documents/Developer/Apps/MyAppName
+open *.xcodeproj
+```
+
+This creates a fully renamed, ready-to-build project. Select the **Mock** scheme and run.
+
+> **Never manually copy the template** with `cp -R` or `rsync`. The CLI tool handles renaming the project, bundle ID, imports, and directory structure correctly.
+
+### Or use Claude Code to build the entire app
+
+```bash
+claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
+claude plugin install forge-app@forge-marketplace
+```
+
+Then say `/forge:app` — describe your idea and get a running polished app.
+
+### Or use the interactive CLI wizard
+
 ```bash
 cd forge-cli
 swift build
 .build/debug/forge
 ```
 
-The interactive wizard walks you through:
-1. **Archetype** — What are you building? (Blank, Finance Tracker, more coming)
-2. **Project name** — Your app's name
-3. **Bundle ID** — Reverse-domain identifier
-4. **Auth providers** — Apple, Google, Email, Anonymous
-5. **Monetization** — Subscription, One-Time, Free
-6. **Analytics** — Firebase, Mixpanel, Crashlytics
-7. **Features** — Onboarding, Push, A/B Testing, Image Upload
-
-Generated project opens in Xcode, builds immediately.
+The wizard walks you through archetype, project name, bundle ID, auth, monetization, analytics, and features.
 
 ---
 

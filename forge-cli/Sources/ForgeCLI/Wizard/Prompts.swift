@@ -34,7 +34,8 @@ struct Prompts {
             fflush(stdout)
 
             guard let input = readLine()?.trimmingCharacters(in: .whitespaces) else {
-                continue
+                // stdin closed (EOF) — exit to avoid busy-wait
+                return .back
             }
 
             if input.lowercased() == "back" {
@@ -112,7 +113,7 @@ struct Prompts {
                 clearRenderedLines(count: options.count + 2)
                 print("\(Console.bold(prompt)): \(Console.green(options[activeIndex].label))")
                 return .value(options[activeIndex].value)
-            case .escape, .charB:
+            case .escape, .charB, .eof:
                 clearRenderedLines(count: options.count + 2)
                 return .back
             default:
@@ -174,7 +175,7 @@ struct Prompts {
                 let selectedLabels = selected.sorted().map { options[$0] }.joined(separator: ", ")
                 print("\(Console.bold(prompt)): \(Console.green(selectedLabels.isEmpty ? "none" : selectedLabels))")
                 return .value(selected)
-            case .escape, .charB:
+            case .escape, .charB, .eof:
                 clearRenderedLines(count: options.count + 2)
                 return .back
             default:
@@ -217,13 +218,13 @@ struct Prompts {
     // MARK: - Key Reading
 
     private enum Key {
-        case arrowUp, arrowDown, enter, space, escape, charB, other
+        case arrowUp, arrowDown, enter, space, escape, charB, eof, other
     }
 
     private static func readKey() -> Key {
         var buf = [UInt8](repeating: 0, count: 3)
         let count = read(STDIN_FILENO, &buf, 3)
-        guard count > 0 else { return .other }
+        guard count > 0 else { return .eof }
 
         if count == 1 {
             switch buf[0] {

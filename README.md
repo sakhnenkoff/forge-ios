@@ -40,10 +40,12 @@ Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
      Spec Conversation
      ├── What does it do?
      ├── Who is it for?
+     ├── How does it make money?
      ├── What should it feel like?
-     └── Visual references?
+     ├── Visual references?
+     └── Then: screens, data, flows (informed by above)
 
-     Blueprint → Approved
+     Blueprint → Approved (provisional — revised by research)
 
      Step 1: Project Setup ─────── forge-workspace
      Step 2: Feature Design ────── forge-ux
@@ -111,7 +113,7 @@ forge/
 │   └── new-app.sh            # Create new project from template
 ├── AGENTS.md                 # All architecture conventions
 ├── .forge/                   # Project state (created during build)
-│   ├── blueprint.md          # Approved blueprint
+│   ├── blueprint.md          # Blueprint (revised by research)
 │   ├── mood.md               # Design mood + direction
 │   ├── feature-specs/        # Feature specs from forge-ux
 │   ├── voice-guide.md        # Voice from forge-voice

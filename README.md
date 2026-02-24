@@ -1,14 +1,26 @@
 # Forge
 
-**Generate polished, domain-specific iOS apps in minutes.**
+**Build unique iOS apps from an idea — not from a template that looks like a template.**
 
-Forge is a monorepo scaffolding product that generates production-ready iOS apps with SwiftUI, Firebase, RevenueCat, and a clean design system. Choose an archetype, configure your features, and get a $50K-looking app from the CLI.
+Forge is an iOS app template with a Claude Code skill pipeline that takes you from "I have an app idea" to a running, polished app with its own visual identity, voice, and feature design. 10 skills handle everything: feature UX, design system customization, content strategy, screen building, backend connection, App Store listing, and submission.
 
----
+The template provides Swift architecture (MVVM, navigation, design system tokens, component structure). The pipeline researches what your specific app needs and customizes everything — tokens, components, backgrounds, copy, interactions — so the result looks like YOUR app, not like every other Forge project.
 
 ## Quick Start
 
-### Create a new app from the template
+### With Claude Code (recommended)
+
+```bash
+# Add the Forge skill marketplace
+claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
+
+# Install the orchestrator
+claude plugin install forge-app@forge-marketplace
+```
+
+Then say `/forge:app` — describe your app and the pipeline handles the rest.
+
+### Manual setup
 
 ```bash
 ./scripts/new-app.sh MyAppName ~/Documents/Developer/Apps com.mycompany.myapp "My App"
@@ -16,143 +28,41 @@ cd ~/Documents/Developer/Apps/MyAppName
 open *.xcodeproj
 ```
 
-This creates a fully renamed, ready-to-build project. Select the **Mock** scheme and run.
+Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
 
-> **Never manually copy the template** with `cp -R` or `rsync`. The CLI tool handles renaming the project, bundle ID, imports, and directory structure correctly.
+> **Never manually copy the template** with `cp -R`. The script handles renaming the project, bundle ID, imports, and directory structure.
 
-### Or use Claude Code to build the entire app
-
-```bash
-claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
-claude plugin install forge-app@forge-marketplace
-```
-
-Then say `/forge:app` — describe your idea and get a running polished app.
-
-### Or use the interactive CLI wizard
-
-```bash
-cd forge-cli
-swift build
-.build/debug/forge
-```
-
-The wizard walks you through archetype, project name, bundle ID, auth, monetization, analytics, and features.
-
----
-
-## Archetypes
-
-| Archetype | Screens | Description |
-|-----------|---------|-------------|
-| **Blank** | Home, Settings | Clean shell with auth, onboarding, paywall |
-| **Finance Tracker** | Dashboard, Transactions, Budgets, Reports | SwiftData + Swift Charts finance app |
-
-### Creating Your Own Archetype
-
-1. Create `Archetypes/{id}/manifest.json` with tabs, routes, screens, models
-2. Add Swift files under `Archetypes/{id}/files/` mirroring the app structure
-3. Run `forge --archetype {id}` to test
-
-See `Archetypes/finance/manifest.json` for a complete example.
-
----
-
-## Architecture
+## The Pipeline
 
 ```
-forge/
-├── Forge/                    # iOS app template (SwiftUI, MVVM)
-│   ├── App/                  # Entry point, navigation, dependencies
-│   ├── Features/             # Home, Auth, Onboarding, Paywall, Settings
-│   ├── Managers/             # Auth, Purchases, Push, Logs, User, Data
-│   ├── Components/           # Reusable UI components
-│   ├── Extensions/           # Swift extensions
-│   └── Utilities/            # Config, feature flags, constants
-├── ForgeUnitTests/           # Unit tests
-├── Packages/core-packages/   # SPM: DesignSystem, Core, CoreMock
-├── Archetypes/               # Domain-specific app archetypes
-│   ├── blank/                # Default clean shell
-│   └── finance/              # Finance Tracker archetype
-├── forge-cli/                # CLI tool for project generation
-│   └── Sources/ForgeCLI/
-│       ├── Commands/         # GenerateCommand, ProgrammaticMode
-│       ├── Generator/        # ProjectGenerator, TemplateEngine
-│       ├── Archetypes/       # ArchetypeManifest, Injector, Registry
-│       ├── Wizard/           # Interactive wizard flow
-│       ├── Registry/         # Feature manifests, dependency resolver
-│       └── Output/           # Console formatting, next steps
-└── Forge.xcodeproj           # Xcode project (3 schemes)
+/forge:app → Describe your idea
+
+     Spec Conversation
+     ├── What does it do?
+     ├── Who is it for?
+     ├── What should it feel like?
+     └── Visual references?
+
+     Blueprint → Approved
+
+     Step 1: Project Setup ─────── forge-workspace
+     Step 2: Feature Design ────── forge-ux
+     Step 3: Design System ─────── forge-craft + forge-eye
+     Step 4: Voice & Content ───── forge-voice
+     Step 5: Data Models
+     Step 6: Screen Execution ──── forge-feature (per screen)
+     Step 7: Navigation Wiring
+     Step 8: Final Verification
+
+     Post-build:
+     ├── forge-wire ──── Connect to backend
+     ├── forge-storefront ── App Store listing
+     └── forge-ship ──── Submission prep
 ```
 
-### Build Configurations
+## Skills (10 plugins)
 
-| Config | Use Case |
-|--------|----------|
-| **Mock** | Fast development, no Firebase, mock services |
-| **Development** | Real Firebase with dev credentials |
-| **Production** | Real Firebase with production credentials |
-
----
-
-## Design System (v2)
-
-15 core components, one adaptive theme, no gimmicks.
-
-### Components
-
-| Component | Purpose |
-|-----------|---------|
-| `DSButton` | Primary, secondary, tertiary, destructive styles |
-| `DSIconButton` | Icon-only buttons with optional background |
-| `DSTextField` | Styled text input |
-| `DSScreen` | Scrollable screen container with navigation title |
-| `DSCard` | Clean card container |
-| `DSListCard` | Card optimized for list rows |
-| `DSListRow` | Compact list row with icon and trailing control |
-| `DSSection` | Section with title header |
-| `DSSectionHeader` | Standalone section header |
-| `DSChoiceButton` | Selectable choice for surveys/onboarding |
-| `DSSegmentedControl` | Animated segment picker |
-| `DSPillToggle` | Custom boolean toggle |
-| `EmptyStateView` | Empty state with icon, title, action |
-| `ErrorStateView` | Error state with retry |
-| `LoadingView` | Loading indicator |
-| `ToastView` | Success/error/warning/info toasts |
-
-### Theme
-
-```swift
-// In your app's init:
-DesignSystem.configure(theme: AdaptiveTheme(brandColor: .indigo))
-```
-
-All colors derive from the single `brandColor`. Token system: `ColorPalette`, `TypographyScale`, `SpacingScale`, `RadiiScale`, `ShadowScale`, `LayoutScale`.
-
----
-
-## CLI Usage
-
-### Interactive Mode
-```bash
-forge
-```
-
-### Flag Mode (partial or full)
-```bash
-forge --projectName MyApp --preset standard --archetype finance
-```
-
-### Programmatic Mode (for AI agents)
-```bash
-echo '{"projectName":"MyApp","bundleId":"com.me.myapp","authProviders":["apple"],"monetizationModel":"subscription","analyticsServices":["firebase"],"features":["onboarding"],"archetype":"finance"}' | forge --programmatic
-```
-
----
-
-## Claude Code Skills
-
-Seven AI-powered skills for working with Forge projects, available from a single marketplace:
+All installable from the [Forge Marketplace](https://github.com/sakhnenkoff/forge-marketplace):
 
 ```bash
 claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
@@ -160,26 +70,67 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 
 | Skill | Install | Purpose |
 |-------|---------|---------|
-| `forge-app` | `claude plugin install forge-app@forge-marketplace` | Build an entire app from an idea |
-| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Quality pipeline — scaffold, build, polish, verify |
-| `forge-wire` | `claude plugin install forge-wire@forge-marketplace` | Connect to backend (Firebase, Supabase, REST, etc.) |
-| `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | App Store pre-flight audit + submission prep |
-| `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Set up the template — rename, brand, configure features |
-| `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold architecture-correct feature screens |
-| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven design polish — 7 craft dimensions with visual iteration |
+| `forge-app` | `claude plugin install forge-app@forge-marketplace` | Orchestrator: idea → running app |
+| `forge-ux` | `claude plugin install forge-ux@forge-marketplace` | Feature experience design — user journeys, states, aha moment |
+| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, Playwright research |
+| `forge-voice` | `claude plugin install forge-voice@forge-marketplace` | Content strategy — app voice, all copy, tonal consistency |
+| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build, polish, verify |
+| `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold View + ViewModel pairs |
+| `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Project setup — rename, brand, configure |
+| `forge-storefront` | `claude plugin install forge-storefront@forge-marketplace` | App Store listing — screenshots, description, keywords |
+| `forge-wire` | `claude plugin install forge-wire@forge-marketplace` | Backend — Firebase, Supabase, REST, GraphQL, CloudKit |
+| `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | Submission prep — privacy, accessibility, metadata |
 
-**Full pipeline**: `forge-workspace` (setup) → `forge-app` (build) → `forge-wire` (connect backend) → `forge-ship` (submit)
+## Optional Enhancements
 
-### Optional Enhancements
+Auto-detected and integrated when installed. Not required — the pipeline has inline fallbacks.
 
-These free plugins improve the pipeline but are NOT required:
-
-| Plugin | Install | What it adds |
+| Plugin | Install | What It Adds |
 |--------|---------|-------------|
-| Superpowers | `claude plugin install superpowers@claude-plugins-official` | Structured brainstorming, planning, and code review |
-| Ralph Loop | `claude plugin install ralph-loop@claude-plugins-official` | Continuous build-test-fix iteration |
+| **Superpowers** | `claude plugin install superpowers@claude-plugins-official` | Brainstorming, planning, code review |
+| **Ralph Loop** | `claude plugin install ralph-loop@claude-plugins-official` | Continuous build-test-fix iteration |
+| **Axiom** | Available via Claude Code | Deep iOS auditing (accessibility, security, memory, energy) |
+| **Playwright** | `claude plugin install playwright@claude-plugins-official` | Visual design research (Mobbin, Dribbble, Behance) |
+| **Marketing Skills** | [Install guide](https://github.com/coreyhaines31/marketingskills) | 29 marketing skills — pricing, CRO, copywriting, launch strategy, SEO |
 
----
+Marketing Skills are auto-detected by forge-app (pricing), forge-feature (paywall/onboarding CRO), forge-voice (copywriting), and forge-storefront (launch strategy).
+
+## Architecture
+
+```
+forge/
+├── Forge/                    # iOS app (SwiftUI, MVVM)
+│   ├── App/                  # Entry point, navigation, dependencies
+│   ├── Features/             # Screen pairs (View + ViewModel)
+│   ├── Managers/             # Auth, Purchases, Push, Logs, User, Data
+│   ├── Components/           # Reusable UI components
+│   └── Configurations/       # Mock/Dev/Prod xcconfig, feature flags
+├── Packages/core-packages/
+│   └── DesignSystem/         # Tokens, components, theme
+├── scripts/
+│   └── new-app.sh            # Create new project from template
+├── AGENTS.md                 # All architecture conventions
+└── Forge.xcodeproj           # 3 schemes: Mock, Development, Production
+```
+
+### Design System
+
+The DS provides code architecture — token system, component APIs, modifier patterns. The visual output is customized per app in Step 3 (Design System) based on mood and research.
+
+```swift
+// Brand color drives the entire token system
+DesignSystem.configure(theme: AdaptiveTheme(brandColor: .indigo))
+```
+
+Token groups: `ColorPalette`, `TypographyScale`, `SpacingScale`, `RadiiScale`, `ShadowScale`, `GlassTokens`. All customizable in `AdaptiveTheme.swift`. Components (`DSButton`, `DSCard`, `DSScreen`, etc.) read from tokens — change the tokens, change everything.
+
+### Build Configurations
+
+| Config | Use Case |
+|--------|----------|
+| **Mock** | Development — no Firebase, mock services |
+| **Development** | Real Firebase with dev credentials |
+| **Production** | Real Firebase with production credentials |
 
 ## Tech Stack
 
@@ -187,11 +138,9 @@ These free plugins improve the pipeline but are NOT required:
 - **Auth**: Firebase Auth, Sign in with Apple, Google Sign-In
 - **Payments**: RevenueCat
 - **Analytics**: Firebase Analytics, Mixpanel, Crashlytics
-- **Navigation**: [AppRouter](https://github.com/Dimillian/AppRouter)
-- **Design**: Custom design system with adaptive theming
-- **Data**: SwiftData (archetypes), Firestore (sync)
-
----
+- **Navigation**: AppRouter
+- **Design**: Adaptive theme system with Liquid Glass support (iOS 26+)
+- **Data**: SwiftData, Firestore
 
 ## License
 

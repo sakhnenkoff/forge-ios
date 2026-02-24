@@ -65,7 +65,7 @@ Or build features manually with individual skills:
 - **AppServices** — injected via `@Environment`, provides access to all managers (auth, purchases, logging)
 - **AppSession** — user state (signed in, current user, display name)
 - **Router** — navigation via `router.navigate(to:)` (push), `router.presentSheet(_:)` (modal), `router.selectedTab` (tab)
-- **DS components** — never build raw UI — use `DSButton`, `DSCard`, `DSSection`, `DSListCard`, `DSListRow`, `DSTextField`, etc.
+- **DS components** — use the DS component system (`DSButton`, `DSCard`, `DSSection`, etc.) rather than raw SwiftUI primitives. The components handle styling, accessibility, and analytics consistently. Their visual appearance should be customized per-app (Step 2) — the architecture stays, the look changes.
 - **Feature flags** — toggle Firebase, analytics, purchases, auth in `FeatureFlags.swift`
 - **Mock scheme** — develop without any backend services configured
 

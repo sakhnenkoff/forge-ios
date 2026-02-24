@@ -149,7 +149,7 @@ update_bundle_ids() {
 echo "🔄 Renaming project from '${OLD_NAME}' to '${NEW_NAME}'..."
 echo ""
 
-echo "📝 Step 1/5: Updating file contents..."
+echo "📝 Step 1/6: Updating file contents..."
 
 find . -type f \( \
     -name "*.swift" \
@@ -171,7 +171,7 @@ find . -type f \( \
 done
 
 echo ""
-echo "📋 Step 2/5: Renaming scheme files..."
+echo "📋 Step 2/6: Renaming scheme files..."
 
 SCHEMES_DIR="${OLD_NAME}.xcodeproj/xcshareddata/xcschemes"
 if [ -d "$SCHEMES_DIR" ]; then
@@ -186,7 +186,7 @@ if [ -d "$SCHEMES_DIR" ]; then
 fi
 
 echo ""
-echo "🗂️ Step 3/5: Renaming files..."
+echo "🗂️ Step 3/6: Renaming files..."
 
 find . -type f -name "*${OLD_NAME}*" ! -path "./.git/*" ! -path "./rename_project.sh" ! -path "./${OLD_NAME}.xcodeproj/*" -print0 | while IFS= read -r -d '' file; do
     file_dir=$(dirname "$file")
@@ -197,7 +197,7 @@ find . -type f -name "*${OLD_NAME}*" ! -path "./.git/*" ! -path "./rename_projec
 done
 
 echo ""
-echo "📁 Step 4/5: Renaming directories..."
+echo "📁 Step 4/6: Renaming directories..."
 
 if [ -d "${OLD_NAME}UITests" ]; then
     mv "${OLD_NAME}UITests" "${NEW_NAME}UITests"
@@ -215,7 +215,7 @@ if [ -d "${OLD_NAME}" ]; then
 fi
 
 echo ""
-echo "📦 Step 5/5: Renaming Xcode project..."
+echo "📦 Step 5/6: Renaming Xcode project..."
 
 if [ -d "${OLD_NAME}.xcodeproj" ]; then
     mv "${OLD_NAME}.xcodeproj" "${NEW_NAME}.xcodeproj"
@@ -233,6 +233,36 @@ fi
 
 if [ -n "$BUNDLE_ID" ]; then
     update_bundle_ids "$NEW_NAME" "$BUNDLE_ID" "${NEW_NAME}.xcodeproj/project.pbxproj"
+fi
+
+echo ""
+echo "🔍 Step 6/6: Verifying no remaining '${OLD_NAME}' references..."
+
+REMAINING=$(grep -rl "${OLD_NAME}" . \
+    --include="*.swift" \
+    --include="*.pbxproj" \
+    --include="*.xcscheme" \
+    --include="*.xcconfig" \
+    --include="*.plist" \
+    --include="*.entitlements" \
+    --include="*.storyboard" \
+    --include="*.xib" \
+    --include="*.strings" \
+    --exclude-dir=".git" \
+    --exclude-dir="Packages" \
+    --exclude-dir=".build" \
+    2>/dev/null || true)
+
+if [ -n "$REMAINING" ]; then
+    echo "   ⚠️  Found remaining '${OLD_NAME}' references in:"
+    echo "$REMAINING" | while IFS= read -r file; do
+        echo "      - $file"
+    done
+    echo ""
+    echo "   These may be in comments, strings, or generated code."
+    echo "   Review and update manually if needed."
+else
+    echo "   ✓ No remaining '${OLD_NAME}' references found"
 fi
 
 echo ""

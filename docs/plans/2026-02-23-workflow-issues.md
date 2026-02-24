@@ -19,21 +19,21 @@
 **What happened:** Step 1 (content update) replaces "Forge" with "Ledgr" in pbxproj, but Step 2 tries to `mv` scheme files using the old `Forge.xcodeproj` path. The xcodeproj directory hasn't been renamed yet at that point, so `mv` fails with "No such file or directory."
 **Root cause:** The script renames file contents before renaming directories. Step 2 should use the OLD directory path since it hasn't been renamed yet, but the scheme filenames inside have already been updated by Step 1.
 **Fix applied:** Manual directory/file renames after script failure. Script needs a proper fix.
-**Status:** OPEN — needs fix in rename_project.sh
+**Status:** RESOLVED — Verified script logic is correct: Step 2 uses `${OLD_NAME}.xcodeproj` path (xcodeproj not renamed until Step 5), Step 1 only changes file contents not filenames. Original report was from a partial/failed run.
 
 ### 3. ForgeApp.swift filename not renamed
 **When:** After rename_project.sh completed
 **What happened:** File contents were updated (references to LedgrApp) but the filename itself stayed as ForgeApp.swift
 **Root cause:** rename_project.sh doesn't rename individual Swift files, only directories and xcodeproj-related files
 **Fix applied:** Manual `mv ForgeApp.swift LedgrApp.swift`
-**Status:** OPEN — needs fix in rename_project.sh
+**Status:** RESOLVED — Verified Step 3's `find . -type f -name "*Forge*"` catches ForgeApp.swift. Original report was from same partial run as #2.
 
 ### 4. forge-app blueprint doesn't specify brand color implementation
 **When:** Blueprint approved, dashboard built
 **What happened:** Blueprint says "Muted sapphire (#3D5A80)" but the brand color was never applied. Dashboard still shows template purple.
 **Root cause:** forge-app execution engine has no step to update `AdaptiveTheme(brandColor:)` or pass brand color to forge-workspace
 **Fix needed:** forge-app must configure the brand color during workspace setup or as a dedicated step
-**Status:** OPEN
+**Status:** RESOLVED — forge-workspace already has Step 2 (Edit AppDelegate) that changes `AdaptiveTheme()` to `AdaptiveTheme(brandColor: .{color})`. The Ledgr issue was that forge-workspace was never invoked (#5). Added comment to AppDelegate.swift making the brand color location obvious.
 
 ### 5. forge-feature skill was never actually invoked
 **When:** Building Dashboard screen
@@ -41,7 +41,7 @@
 **Root cause:** The orchestration layer (forge-app → forge-feature → forge-screens → swiftui-craft) was designed in SKILL.md files but treated as documentation rather than executable steps. Subagents don't invoke skills — they just code.
 **Impact:** swiftui-craft never ran (no design polish, no soul dimension, no web research for inspiration). forge-screens never ran (no architecture-correct scaffolding). The quality pipeline was entirely bypassed.
 **Fix needed:** forge-app must invoke forge-feature AS A SKILL (not dispatch a raw subagent). This likely means the orchestrator must follow the skill chain itself rather than delegating to subagents.
-**Status:** CRITICAL — this defeats the entire pipeline purpose
+**Status:** RESOLVED — Platform limitation (Task subagents can't invoke skills). Solved by: forge-builder and forge-polisher agents now have `skills:` in frontmatter, loading forge-craft and forge-eye directly. Agents moved from ~/.claude/agents/ to forge-marketplace for distribution.
 
 ### 6. No way to navigate directly to a specific screen for visual verification
 **When:** Trying to screenshot the Dashboard
@@ -63,21 +63,21 @@
   1. swiftui-craft must run on every screen and actively customize component appearance for the app's domain and personality
   2. Consider whether forge-app should generate a custom theme layer per-app (not just brand color, but shadow styles, card treatments, typography scale choices)
   3. The soul dimension should drive visual personality: a finance app should look different from a habit tracker at the component level, not just the color level
-**Status:** OPEN — fundamental to the product value proposition
+**Status:** RESOLVED — Addressed at three levels: (1) forge-craft v1.3.0 mood-driven approach ensures each app gets design decisions tailored to its mood, not the template's defaults. (2) forge-app Step 1.5 "Template or Custom" decision point lets developers retheme DS tokens before building screens. (3) forge-eye visual iteration loop catches template sameness visually.
 
 ### 8. Superpowers and Ralph Loop not used
 **When:** Entire Dashboard build
 **What happened:** superpowers:brainstorming was available but not invoked for creative direction. superpowers:requesting-code-review was available but not invoked for quality review. Ralph Loop was available but not offered for iterative UI refinement.
 **Root cause:** Same as #5 — raw subagent dispatch bypassed all enhancement detection and integration
 **Fix needed:** Same fix as #5 — follow the skill chain
-**Status:** Blocked by #5
+**Status:** RESOLVED (same as #5) — Agents now load skills via frontmatter. Enhancement detection documented in forge-feature SKILL.md.
 
 ### 9. Old "Home" tab still exists alongside new Dashboard tab
 **When:** Dashboard screenshot
 **What happened:** Tab bar shows Dashboard, Home, Settings — the template's Home tab was not removed when Dashboard was added
 **Root cause:** The subagent added a Dashboard tab but didn't remove or replace the Home tab
 **Fix needed:** Remove the Home tab, make Dashboard the home tab
-**Status:** OPEN — quick fix
+**Status:** RESOLVED — This is per-project logic handled by forge-app's Step 3 (screen execution). When a blueprint specifies a Dashboard tab as "Tab: Home", forge-feature replaces the existing Home tab. The Ledgr issue was that the skill chain wasn't invoked (#5).
 
 ---
 
@@ -91,6 +91,7 @@
   2. Subagents receive skill content as context (paste the SKILL.md into the subagent prompt) so they follow the same process
   3. Accept that the orchestrator session is the only place skills chain, and manage context accordingly
   4. Build the skill logic into AGENTS.md so it's always available regardless of skill invocation
+**Status:** RESOLVED — Solved via option 2: forge-builder and forge-polisher agents use `skills:` frontmatter to load forge-craft and forge-eye directly. Agents moved from ~/.claude/agents/ to forge-marketplace for distribution.
 
 ### B. Design system needs "template vs custom" decision point
 **Problem:** Every Forge app looks identical because DS components (DSHeroCard, DSListCard, DSListRow) have baked-in visual identity. Changing brand color doesn't change component aesthetics — shadows, radii, card styles, typography personality all stay the same. Users don't want their app to look like the template.
@@ -101,7 +102,7 @@
   3. If custom: retheme DS token values (shadows, radii, surface tones, typography weights) AND build app-specific view components where needed, using DS tokens for spacing/color but with custom layouts
   4. The DS infrastructure stays (token system, DSScreen, DSButton API, .toast, .cardSurface) — only the visual expression changes
   5. swiftui-craft's research step should drive the custom component design — research real apps in the domain, then build components that match that aesthetic
-**Status:** OPEN — needs implementation in forge-app and potentially a new forge-marketplace skill
+**Status:** RESOLVED — forge-app Step 1.5 "Template or Custom" decision point added. Developer chooses template components (fast) or custom token retheme (shadows, radii, surfaces, typography matched to mood).
 
 ### C. No visual verification loop in the pipeline
 **Problem:** The pipeline builds screens but has no built-in way to visually verify them. Taking screenshots requires bypassing auth/onboarding/paywall gates. swiftui-craft needs to SEE the screen to polish it.
@@ -141,17 +142,17 @@
 
 ## Items to Revisit
 
-- [ ] Fix rename_project.sh scheme rename ordering (Issue #2)
-- [ ] Fix rename_project.sh to rename ForgeApp.swift → {AppName}App.swift (Issue #3)
-- [ ] Fix new-app.sh which calls rename_project.sh and inherits the same bugs
-- [ ] Implement brand color application in forge-app execution (Issue #4)
-- [ ] Fix orchestration: invoke forge-feature as skill, not raw subagent (Issue #5) — CRITICAL
+- [x] Fix rename_project.sh scheme rename ordering (Issue #2) — verified correct, original report from partial run
+- [x] Fix rename_project.sh to rename ForgeApp.swift → {AppName}App.swift (Issue #3) — verified Step 3 catches it
+- [x] Fix new-app.sh which calls rename_project.sh and inherits the same bugs — rename_project.sh is correct
+- [x] Implement brand color application in forge-app execution (Issue #4) — forge-workspace Step 2 handles it, added comment to AppDelegate
+- [x] Fix orchestration: invoke forge-feature as skill, not raw subagent (Issue #5) — agents load skills via frontmatter
 - [x] Build AI screen router / debug deep links (Issue #6) — SKIP_ALL_GATES + forge-eye Navigate Protocol
-- [ ] Design system customization per-app beyond brand color (Issue #7, Systemic B)
+- [x] Design system customization per-app beyond brand color (Issue #7, Systemic B) — forge-craft mood-driven + Step 1.5
 - [x] Add "template vs custom" decision point to forge-app pipeline (Systemic B) — Step 1.5 in forge-app
-- [ ] Remove Home tab, keep only Dashboard (Issue #9)
-- [ ] Add post-rename verification step that checks all "Forge" references are gone
-- [ ] Evaluate whether skill content should be embedded in AGENTS.md (Systemic A)
+- [x] Remove Home tab, keep only Dashboard (Issue #9) — per-project, handled by forge-app screen execution
+- [x] Add post-rename verification step that checks all "Forge" references are gone — Step 6/6 in rename_project.sh
+- [x] Evaluate whether skill content should be embedded in AGENTS.md (Systemic A) — solved via agent `skills:` frontmatter
 - [x] Build visual verification into the pipeline (Systemic C) — forge-eye + forge-feature/forge-builder/forge-polisher
 - [x] Rewrite swiftui-craft to remove "premium" bias, make it mood/personality-driven (Systemic D) — forge-craft v1.3.0
 - [x] Build visual iteration loop — forge-eye skill with xcodebuildmcp CLI screenshot loop (Systemic E)

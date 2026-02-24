@@ -125,7 +125,7 @@
   2. Research what works in the app's specific domain with Playwright (actually look at screenshots, not just read blog posts)
   3. Let the user's vision drive design, not a preset "premium" formula
   4. Remove or soften prescriptive rules like "48-52pt for hero stats" — these should be suggestions, not defaults
-**Status:** OPEN — requires swiftui-craft skill rewrite
+**Status:** RESOLVED — swiftui-craft rewritten as forge-craft v1.3.0 with mood-driven philosophy. Renamed to forge-craft for consistent forge-* naming. Key changes: mood discovery step replaces "aesthetic register", Playwright visual browsing for research, prescriptive rules softened, soul dimension serves the mood, user-provided references take priority. forge-app and forge-feature updated to pass mood through the pipeline.
 
 ### E. AI cannot iterate visually without seeing results
 **Problem:** The build-screenshot-evaluate cycle is too slow and coarse. By the time I see a screenshot, all the code is written. Real design requires seeing → judging → tweaking → seeing again, rapidly. Writing 200 lines of SwiftUI and then checking one screenshot is not iteration.
@@ -134,7 +134,7 @@
   2. XcodeBuildMCP's RenderPreview tool for in-conversation preview rendering
   3. Tighter loops: write one component, screenshot, adjust, write next
   4. The human reviews screenshots and gives specific visual feedback ("too much spacing", "make the number smaller")
-**Status:** OPEN — fundamental to design quality
+**Status:** RESOLVED — forge-eye skill created with visual iteration protocol using xcodebuildmcp CLI. Tight loop: build-sim → stop-app → launch-app with SKIP_ALL_GATES → screenshot → read → evaluate → iterate (max 3 rounds). Includes Navigate Protocol (snapshot-ui → tap) for reaching specific screens. forge-builder and forge-polisher agents updated with visual check and iteration steps. forge-feature polish step includes visual iteration.
 
 ---
 
@@ -152,6 +152,6 @@
 - [ ] Add post-rename verification step that checks all "Forge" references are gone
 - [ ] Evaluate whether skill content should be embedded in AGENTS.md (Systemic A)
 - [ ] Build visual verification into the pipeline (Systemic C)
-- [ ] Rewrite swiftui-craft to remove "premium" bias, make it mood/personality-driven (Systemic D) — CRITICAL
-- [ ] Build visual iteration loop — Xcode Previews or tighter screenshot cycles (Systemic E)
-- [ ] Actually use Playwright to browse design references (Dribbble, Mobbin, Behance) instead of just searching
+- [x] Rewrite swiftui-craft to remove "premium" bias, make it mood/personality-driven (Systemic D) — forge-craft v1.3.0
+- [x] Build visual iteration loop — forge-eye skill with xcodebuildmcp CLI screenshot loop (Systemic E)
+- [x] Actually use Playwright to browse design references (Dribbble, Mobbin, Behance) — forge-craft research step

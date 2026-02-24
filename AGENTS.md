@@ -120,7 +120,7 @@ Use direct `xcodebuild` (do not use MCP).
 2. Wire navigation in `AppRoute`/`AppSheet` if needed
 3. Follow the steps in ACTION 1 documentation
 4. **Screen scaffolding**: Use the `forge-screens` skill to generate architecture-correct View + ViewModel pairs wired into the AppRouter navigation pattern (`claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace && claude plugin install forge-screens@forge-marketplace`).
-5. **Design craft**: Use the `swiftui-craft` skill for premium, Apple-native design — researching real award-winning apps for inspiration, applying six craft dimensions (typography, color, composition, motion, material, micro-interactions), and detecting the project's design system to use its tokens (`claude plugin install swiftui-craft@forge-marketplace`).
+5. **Design craft**: Use the `forge-craft` skill for mood-driven design — researching real apps for visual inspiration, applying seven craft dimensions (typography, color, composition, motion, material, micro-interactions, soul), and using the project's design system tokens. The DS is a blueprint — customize its tokens and components to match the app's unique identity (`claude plugin install forge-craft@forge-marketplace`).
 
 ### For New Components
 - Always create in `/Components/Views/` (or `/Components/Modals/` for modals)
@@ -256,17 +256,18 @@ File: `Forge/Features/Onboarding/OnboardingStep.swift`
 - **Spacing**: `DSSpacing.xs` (4), `.sm` (8), `.smd` (12), `.md` (16), `.mlg` (20), `.lg` (24), `.xl` (32), `.xxl` (40), `.xxlg` (48)
 - **Radii**: `DSRadii.xs` (8), `.sm` (12), `.md` (12), `.lg` (16), `.xl` (20)
 - **Layout**: `DSLayout.iconXS` (16), `.iconSmall` (20), `.iconMedium` (22), `.iconLarge` (28), `.avatarSmall` (44), `.avatarLarge` (68), `.cardMaxWidth` (360), `.cardCompactWidth` (340)
-- **Colors**: Warm-tinted neutrals. Light: `backgroundPrimary` (#FAFAFA), `backgroundSecondary` (#F4F3F1), `surface` (#FFFFFF), `surfaceVariant` (#F0EFF2). Dark: `backgroundPrimary` (#0A0A0C), `surface` (#1A1A1E), `surfaceVariant` (#242428). Semantic: `Color.themePrimary`, `.textPrimary`, `.textSecondary`, `.textTertiary`, `.textOnPrimary`, `.border`, `.error`, `.divider`
-- **Typography**: `.display()` (34pt bold rounded), `.titleLarge()` (28pt semibold rounded), `.titleMedium()`, `.titleSmall()`, `.headlineMedium()`, `.headlineSmall()`, `.bodyLarge()`, `.bodyMedium()`, `.bodySmall()`, `.captionLarge()`, `.buttonSmall()`, `.buttonMedium()`, `.buttonLarge()`
-- **Shadows**: Three tiers — `DSShadows.soft` (subtle), `.card` (default cards), `.lifted` (elevated/hero content). Brand-tinted purple shadows, not neutral black.
+- **Colors** (defaults — customize in `AdaptiveTheme.swift`): Light: `backgroundPrimary` (#FAFAFA), `backgroundSecondary` (#F4F3F1), `surface` (#FFFFFF), `surfaceVariant` (#F0EFF2). Dark: `backgroundPrimary` (#0A0A0C), `surface` (#1A1A1E), `surfaceVariant` (#242428). Semantic: `Color.themePrimary`, `.textPrimary`, `.textSecondary`, `.textTertiary`, `.textOnPrimary`, `.border`, `.error`, `.divider`
+- **Typography** (defaults — customize in `AdaptiveTheme.swift`): `.display()` (34pt bold rounded), `.titleLarge()` (28pt semibold rounded), `.titleMedium()`, `.titleSmall()`, `.headlineMedium()`, `.headlineSmall()`, `.bodyLarge()`, `.bodyMedium()`, `.bodySmall()`, `.captionLarge()`, `.buttonSmall()`, `.buttonMedium()`, `.buttonLarge()`
+- **Shadows** (defaults — customize in `AdaptiveTheme.swift`): Three tiers — `DSShadows.soft` (subtle), `.card` (default cards), `.lifted` (elevated/hero content). Default is brand-tinted — change color, intensity, and spread to match the app's mood.
 
 ### Design Principles
 
-- **Borderless surfaces**: Cards and surfaces use shadow-only depth — no border strokes. Borders create a template feel. Premium apps (Flighty, Things 3) use shadow differentiation.
-- **Warm neutrals**: Backgrounds use warm-tinted off-whites/off-blacks, not sterile pure white/black.
-- **Ambient gradient**: `AmbientBackground` provides a subtle plum warmth tint. Color-scheme-aware — light mode gets stronger intensity.
-- **Shadow-only depth**: Three tiers — `.flat` (no shadow), `.raised` (card shadow), `.elevated` (lifted shadow). No borders on any tier.
-- **Glass by default**: `DSHeroCard` uses Liquid Glass on iOS 26+ by default. Hero content is the Floating layer.
+These are the template's defaults. Customize them in Step 2 (Design System) based on the app's mood and research.
+
+- **Surface depth**: Default is shadow-only (no border strokes). Three tiers: `.flat`, `.raised`, `.elevated`. Change the depth strategy, shadow colors, or add borders if the app's mood calls for it.
+- **Background**: Default is `AmbientBackground` (brand-tinted radial gradient). Change to flat, textured, cool-toned, or remove the gradient entirely based on the app's visual direction.
+- **Neutrals**: Default is warm-tinted off-whites/off-blacks. Change the temperature (warm/cool/pure) to match the mood.
+- **Glass**: `DSHeroCard` uses Liquid Glass on iOS 26+ by default. Glass usage should follow Apple's navigation-vs-content layer guidance — see `axiom-liquid-glass` for details.
 - **Concentric corners**: Inner pill radius = outer radius - padding. For segmented controls and nested rounded rects.
 
 ### Components
@@ -275,34 +276,36 @@ File: `Forge/Features/Onboarding/OnboardingStep.swift`
 |-----------|----------|-------|
 | `DSButton` | DesignSystem | `.primary`, `.secondary`, `.tertiary`, `.destructive` styles. Use `.cta()` for full-width primary. Primary/destructive have colored shadows. |
 | `DSIconButton` | DesignSystem | Icon-only button with optional circle background. On iOS 26 with `showsBackground: false`, renders native `Button { Image }` for proper toolbar Liquid Glass. |
-| `DSCard` | DesignSystem | Borderless surface container with shadow depth: `.flat` (no shadow), `.raised` (card shadow, default), `.elevated` (lifted shadow). |
-| `DSHeroCard` | DesignSystem | Glass-by-default hero surface. Uses Liquid Glass on iOS 26+, `.ultraThinMaterial` fallback. |
-| `GlassCard` | DesignSystem | Glass card with `.lifted` depth. Good for stat pills and featured content. |
+| `DSCard` | DesignSystem | Surface container with configurable depth (`.flat`, `.raised`, `.elevated`), tint, glass support. Customize appearance via tokens. |
+| `DSHeroCard` | DesignSystem | Hero surface container. Supports glass (`usesGlass`), tilt, configurable tint. Wraps `GlassCard`. |
+| `GlassCard` | DesignSystem | Card with glass support. Configurable corner radius, tint, `usesGlass`, tilt. Uses `.cardSurface()` internally. |
 | `DSSection` | DesignSystem | Title + optional trailing action + content. |
 | `DSSegmentedControl` | DesignSystem | Animated pill toggle with concentric inner radius. Uses `.compositingGroup()` before glass to prevent flicker. |
 | `DSChoiceButton` | DesignSystem | Selectable button with icon badge, checkmark indicator, tinted selected state. Shadow on selection. Supports disabled state (40% opacity). |
-| `DSTextField` | DesignSystem | Filled background text field (no border). Focus state shows plum tint + purple shadow glow. Icon color transitions between states. Convenience: `.email()`, `.password()`, `.name()`. Styles: `.bordered` (filled, default), `.underline`. |
+| `DSTextField` | DesignSystem | Text field with configurable style (`.bordered`, `.underline`). Icon color transitions between states. Convenience: `.email()`, `.password()`, `.name()`. Customize focus treatment per app. |
 | `DSInfoCard` | DesignSystem | Center-aligned icon + text compact card with semantic tint background. |
 | `DSScreen` | DesignSystem | Scrollable screen wrapper with optional title and consistent padding. |
-| `AmbientBackground` | DesignSystem | Radial plum gradient background. Color-scheme-aware intensity (light 2.8x, dark 2.0x multiplier). |
+| `AmbientBackground` | DesignSystem | Default: radial brand-tinted gradient. Color-scheme-aware intensity. Customize or replace based on the app's visual direction. |
 | `BottomFadeModifier` | DesignSystem | `.bottomFade()` modifier for pinned bottom bars. Gradient dissolve + solid fill through safe area. |
 | `HeroIcon` | DesignSystem | Icon with rounded-square background. Corner radius scales proportionally (25% of tile size). |
-| `IconTileSurface` | DesignSystem | Uses `Circle()` for circular shapes (not squircle). Borderless on non-glass path. |
+| `IconTileSurface` | DesignSystem | Icon tile with configurable shape. Uses `Circle()` for circular shapes (not squircle). |
 | `StaggeredVStack` | DesignSystem | Container with cascading fade-in entrance animation. Use `.staggeredAppearance(index:)` on children. |
 | `EmptyStateView` | DesignSystem | Tinted circle icon bg + title + message + optional action. |
 | `ErrorStateView` | DesignSystem | Error circle icon bg + title + message + retry. |
 | `ToastView` | DesignSystem | Auto-dismissing notification. Create via `Toast.success()`, `.error()`, `.warning()`, `.info()`. |
-| `DSListCard` | Components | Card container for list rows with dividers. Borderless, shadow-only. |
+| `DSListCard` | Components | Card container for list rows with dividers. Uses `DSCard` internally — appearance follows DS tokens. |
 | `DSListRow` | Components | Compact row with leading icon, title, subtitle, trailing view. |
 
 ### Craft Patterns
 
+These are available patterns, not requirements. Use what serves the app's mood and research direction.
+
 - **Floating CTAs**: Use `safeAreaInset(edge: .bottom)` + `.bottomFade()` for pinned action buttons. Content dissolves cleanly beneath.
-- **Staggered entrances**: Wrap dashboard sections in `StaggeredVStack` with `.staggeredAppearance(index:)` for cascading reveal.
-- **Hero stats**: Oversized numbers (48-52pt bold rounded) for primary metrics. "Flighty energy" — bold, confident.
-- **Stat pills**: Centered vertical layout (icon → number → label) with tinted `GlassCard` backgrounds.
+- **Staggered entrances**: `StaggeredVStack` with `.staggeredAppearance(index:)` for cascading reveal. Use when the mood calls for choreographed entrances.
+- **Hero stats**: Size and treatment should come from the mood and research. A fitness dashboard might use large bold numbers; a medical app might use precise, smaller ones.
+- **Stat pills**: Centered vertical layout (icon → number → label) — one option for secondary metrics.
 - **Layout stability**: Use opacity control to hide optional elements (like back buttons) instead of conditional rendering. Reserve space with invisible spacers for symmetric padding.
-- **Toolbar buttons (iOS 26)**: Don't fight the system. `DSIconButton` with `showsBackground: false` renders a native button that gets perfect circular Liquid Glass automatically.
+- **Toolbar buttons (iOS 26)**: `DSIconButton` with `showsBackground: false` renders a native button that gets system Liquid Glass automatically.
 - **Glass containers with animation**: Use `.compositingGroup()` before `.glassEffect()` when animated content lives inside glass. Prevents flicker.
 
 ---
@@ -410,7 +413,7 @@ Then say "set up Forge for [my app name]". This handles renaming, branding, feat
 - `forge-ship` — App Store pre-flight audit and submission prep (`claude plugin install forge-ship@forge-marketplace`)
 - `forge-workspace` — rename, brand, configure the template (`claude plugin install forge-workspace@forge-marketplace`)
 - `forge-screens` — scaffold architecture-correct feature screens (`claude plugin install forge-screens@forge-marketplace`)
-- `swiftui-craft` — premium design polish + soul (`claude plugin install swiftui-craft@forge-marketplace`)
+- `forge-craft` — mood-driven design + visual iteration (`claude plugin install forge-craft@forge-marketplace`)
 
 ---
 

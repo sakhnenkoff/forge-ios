@@ -57,7 +57,7 @@ claude plugin install forge-app@forge-marketplace
 Or build features manually with individual skills:
 
 1. **Scaffold**: `forge-screens` generates View + ViewModel with correct architecture. Say: "Create a screen for [feature]".
-2. **Polish**: `swiftui-craft` makes UI feel premium. Say: "Polish this screen".
+2. **Polish**: `forge-craft` refines UI with mood-driven design. Say: "Polish this screen".
 3. **Or manually**: Create `{App}/Features/{Feature}/{Feature}View.swift` and `{Feature}ViewModel.swift` following the patterns in the Quick Start Guide below.
 
 ### Key Concepts
@@ -81,7 +81,8 @@ All installable from the forge marketplace:
 | `forge-ship` | App Store pre-flight audit, Axiom scan, auto-fixes | `/forge:ship` |
 | `forge-workspace` | Rename, brand, and configure the template for your app | "Set up Forge for [app]" |
 | `forge-screens` | Scaffold architecture-correct feature screens | "Create a screen for [feature]" |
-| `swiftui-craft` | Premium design polish + soul (personality, warmth, human touch) | "Polish this UI" |
+| `forge-craft` | Mood-driven design polish — discover the right aesthetic, then execute across 7 craft dimensions | "Polish this UI" |
+| `forge-eye` | Visual iteration protocol — build, screenshot, evaluate, iterate using xcodebuildmcp CLI | Referenced by forge-builder and forge-polisher |
 
 ---
 

@@ -53,7 +53,7 @@
   - Debug launch argument: `SKIP_ALL_GATES` that goes straight to tabs
   - Xcode Preview-based verification instead of simulator
   - SwiftUI Preview snapshots for swiftui-craft to analyze
-**Status:** OPEN — high priority for the polish workflow
+**Status:** RESOLVED — SKIP_ALL_GATES already implemented in template. forge-eye uses it with `launch-app-sim --json '{"args": ["SKIP_ALL_GATES"]}'`. forge-eye Navigate Protocol uses `snapshot-ui` + `tap` to reach specific screens.
 
 ### 7. UI looks identical to every other Forge app
 **When:** Dashboard screenshot review
@@ -111,6 +111,7 @@
   2. SwiftUI Preview snapshots as verification artifacts
   3. A `SKIP_ALL_GATES` launch argument that goes straight to the tab bar
   4. XcodeBuildMCP UI automation (tap through gates automatically)
+**Status:** RESOLVED — forge-eye skill provides the visual iteration protocol using xcodebuildmcp CLI. SKIP_ALL_GATES bypasses gates, snapshot-ui + tap navigates to specific screens. forge-builder, forge-polisher, and forge-feature all reference forge-eye in their polish steps.
 
 ### D. swiftui-craft "premium" bias produces generic output
 **Problem:** The swiftui-craft skill uses "premium" as the universal goal — "premium iOS design", "award-winning quality", "premium feel." This biases every output toward one specific aesthetic: oversized numbers, uppercase tracked headers, shadow-only cards, elaborate animations. The result is Dribbble-bait, not design that serves the app's actual personality.
@@ -145,13 +146,13 @@
 - [ ] Fix new-app.sh which calls rename_project.sh and inherits the same bugs
 - [ ] Implement brand color application in forge-app execution (Issue #4)
 - [ ] Fix orchestration: invoke forge-feature as skill, not raw subagent (Issue #5) — CRITICAL
-- [ ] Build AI screen router / debug deep links (Issue #6)
+- [x] Build AI screen router / debug deep links (Issue #6) — SKIP_ALL_GATES + forge-eye Navigate Protocol
 - [ ] Design system customization per-app beyond brand color (Issue #7, Systemic B)
-- [ ] Add "template vs custom" decision point to forge-app pipeline (Systemic B)
+- [x] Add "template vs custom" decision point to forge-app pipeline (Systemic B) — Step 1.5 in forge-app
 - [ ] Remove Home tab, keep only Dashboard (Issue #9)
 - [ ] Add post-rename verification step that checks all "Forge" references are gone
 - [ ] Evaluate whether skill content should be embedded in AGENTS.md (Systemic A)
-- [ ] Build visual verification into the pipeline (Systemic C)
+- [x] Build visual verification into the pipeline (Systemic C) — forge-eye + forge-feature/forge-builder/forge-polisher
 - [x] Rewrite swiftui-craft to remove "premium" bias, make it mood/personality-driven (Systemic D) — forge-craft v1.3.0
 - [x] Build visual iteration loop — forge-eye skill with xcodebuildmcp CLI screenshot loop (Systemic E)
 - [x] Actually use Playwright to browse design references (Dribbble, Mobbin, Behance) — forge-craft research step

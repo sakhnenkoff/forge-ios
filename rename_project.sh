@@ -177,9 +177,10 @@ SCHEMES_DIR="${OLD_NAME}.xcodeproj/xcshareddata/xcschemes"
 if [ -d "$SCHEMES_DIR" ]; then
     for scheme in "$SCHEMES_DIR"/*"${OLD_NAME}"*; do
         if [ -f "$scheme" ]; then
-            new_scheme=$(echo "$scheme" | sed "s/${OLD_NAME}/${NEW_NAME}/g")
-            mv "$scheme" "$new_scheme"
-            echo "   ✓ Renamed: $(basename "$scheme") → $(basename "$new_scheme")"
+            scheme_base=$(basename "$scheme")
+            new_base=$(echo "$scheme_base" | sed "s/${OLD_NAME}/${NEW_NAME}/g")
+            mv "$scheme" "$SCHEMES_DIR/$new_base"
+            echo "   ✓ Renamed: $scheme_base → $new_base"
         fi
     done
 fi
@@ -188,9 +189,11 @@ echo ""
 echo "🗂️ Step 3/5: Renaming files..."
 
 find . -type f -name "*${OLD_NAME}*" ! -path "./.git/*" ! -path "./rename_project.sh" ! -path "./${OLD_NAME}.xcodeproj/*" -print0 | while IFS= read -r -d '' file; do
-    new_file=$(echo "$file" | sed "s/${OLD_NAME}/${NEW_NAME}/g")
-    mv "$file" "$new_file"
-    echo "   ✓ Renamed: $file → $new_file"
+    file_dir=$(dirname "$file")
+    file_base=$(basename "$file")
+    new_base=$(echo "$file_base" | sed "s/${OLD_NAME}/${NEW_NAME}/g")
+    mv "$file" "$file_dir/$new_base"
+    echo "   ✓ Renamed: $file → $file_dir/$new_base"
 done
 
 echo ""

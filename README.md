@@ -110,8 +110,17 @@ forge/
 ├── scripts/
 │   └── new-app.sh            # Create new project from template
 ├── AGENTS.md                 # All architecture conventions
+├── .forge/                   # Project state (created during build)
+│   ├── blueprint.md          # Approved blueprint
+│   ├── mood.md               # Design mood + direction
+│   ├── feature-specs/        # Feature specs from forge-ux
+│   ├── voice-guide.md        # Voice from forge-voice
+│   ├── design-system.md      # DS decisions
+│   └── progress.md           # Status + issues log
 └── Forge.xcodeproj           # 3 schemes: Mock, Development, Production
 ```
+
+The `.forge/` directory is created during the build and preserves all decisions across sessions. `progress.md` includes an issues log that tracks build failures, user feedback, and design changes — patterns across builds drive pipeline improvements.
 
 ### Design System
 

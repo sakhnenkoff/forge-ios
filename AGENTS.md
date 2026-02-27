@@ -62,6 +62,64 @@ View → ViewModel → Services/Managers
 
 ---
 
+## Patterns
+
+### Adding a Feature
+
+1. Create `{App}/Features/{Feature}/{Feature}View.swift` + `{Feature}ViewModel.swift`
+2. ViewModel: `@MainActor @Observable`, `toast`, `hasLoaded`, `Event` enum (see View/ViewModel Rules)
+3. View: `DSScreen` root, environment injections, `.toast()`, `.onAppear()`
+4. Wire navigation: add case to `AppTab`/`AppRoute`/`AppSheet`, wire destination view
+5. Read `.forge/design-system.md` for Component Strategy and Screen Blueprints before choosing components
+
+### Manager Pattern (protocol + Mock/Prod)
+
+Services use protocol-based dependency injection. Each manager has a protocol, a Mock implementation (used in Mock scheme), and optionally a Prod implementation:
+
+```swift
+// Protocol
+protocol ItemManagerProtocol: Sendable {
+    func fetchItems() async throws -> [Item]
+    func createItem(_ item: Item) async throws
+}
+
+// Mock (returns static data, no network)
+final class MockItemManager: ItemManagerProtocol { ... }
+
+// Prod (real backend)
+final class ProdItemManager: ItemManagerProtocol { ... }
+```
+
+Register in `AppServices` — the active implementation is selected by build configuration.
+Access in ViewModel via `services.itemManager`.
+
+### Component Creation
+
+When creating reusable components in `{App}/Components/Views/`:
+- All data properties optional for flexibility
+- No business logic — components are pure UI
+- All actions are closures (`onTap: () -> Void`)
+- Follow existing DS component naming and structure patterns
+
+### AppServices Dependency Injection
+
+```swift
+// In View — inject from environment
+@Environment(AppServices.self) private var services
+@Environment(AppSession.self) private var session
+
+// In onAppear — pass to ViewModel
+viewModel.onAppear(services: services, session: session)
+
+// In ViewModel — use services
+func onAppear(services: AppServices, session: AppSession) {
+    services.logManager.trackEvent(event: Event.onAppear)
+    // Access any manager: services.authManager, services.purchaseManager, etc.
+}
+```
+
+---
+
 ## File Locations
 
 ```

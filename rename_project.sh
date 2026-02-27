@@ -96,7 +96,7 @@ update_display_names() {
     fi
 
     if [ -f "$pbxproj" ]; then
-        perl -i '' -pe '
+        perl -i'' -pe '
             if (/baseConfigurationReferenceRelativePath = Configurations\/(Mock|Development|Production)\.xcconfig;/) {
                 $config = $1;
             }
@@ -131,7 +131,7 @@ update_bundle_ids() {
     fi
 
     if [ -f "$pbxproj" ]; then
-        perl -i '' -pe '
+        perl -i'' -pe '
             if (/PRODUCT_BUNDLE_IDENTIFIER = ([^;]+);/) {
                 $value = $1;
                 my $new;

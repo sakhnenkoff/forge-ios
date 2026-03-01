@@ -117,7 +117,8 @@ forge/
 │   ├── mood.md               # Design mood + direction
 │   ├── feature-specs/        # Feature specs from forge-ux
 │   ├── voice-guide.md        # Voice from forge-voice
-│   ├── design-system.md      # DS decisions
+│   ├── design-system.md      # DS decisions (synthesis, blueprints, departures)
+│   ├── design-references/    # Screenshots from reference apps + index.md
 │   └── progress.md           # Status + issues log
 └── Forge.xcodeproj           # 3 schemes: Mock, Development, Production
 ```

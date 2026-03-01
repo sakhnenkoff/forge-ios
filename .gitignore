@@ -54,5 +54,8 @@ fastlane/report.json
 .env
 .env.*
 
+# XcodeBuildMCP local config (contains simulator UUIDs)
+.xcodebuildmcp/
+
 # Local configuration with secrets (NEVER commit these)
 *.xcconfig.local

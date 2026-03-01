@@ -1,25 +1,48 @@
 # Forge Publish
 
-Sync plugin changes from marketplace to cache, update docs, commit, and push.
+Sync plugin changes from marketplace to cache, update docs, commit and push BOTH repos.
+
+## Repos
+
+There are TWO separate git repos to manage:
+
+1. **Marketplace repo** (`~/.claude/plugins/marketplaces/forge-marketplace/`) — the source of truth for all plugin skills and agents. This is a standalone git repo pushed to its own remote.
+2. **Forge repo** (current working directory) — the template repo with README.md, AGENTS.md, CLAUDE.md, and `.claude/commands/`.
+
+Both may have changes that need committing and pushing.
 
 ## Paths
 
 ```
-MARKETPLACE=~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins
+MARKETPLACE_REPO=~/.claude/plugins/marketplaces/forge-marketplace
+MARKETPLACE=$MARKETPLACE_REPO/.claude-plugin/plugins
 CACHE=~/.claude/plugins/cache/forge-marketplace
 ```
 
-## Step 1: Detect changes
+## Step 1: Detect changes in BOTH repos
 
-For each plugin in `$MARKETPLACE/`, compare against `$CACHE/{plugin}/{version}/` using the version from `$MARKETPLACE/{plugin}/claude-code.json`.
+### 1a. Marketplace repo git status
 
-Run a diff (ignoring .DS_Store) between marketplace and cache for each plugin. Report which plugins have changes and what files changed.
+Run `git -C $MARKETPLACE_REPO status` to see what's changed in the marketplace repo. This catches:
+- Modified skills/agents
+- New/deleted skill directories
+- Modified manifests (claude-code.json)
 
-If nothing changed, say so and stop.
+Report all changes.
+
+### 1b. Marketplace vs cache diff
+
+For each plugin in `$MARKETPLACE/`, compare against `$CACHE/{plugin}/{version}/` using the version from `$MARKETPLACE/{plugin}/claude-code.json`. Report which plugins are out of sync with cache.
+
+### 1c. Forge repo git status
+
+Run `git status` in the current working directory (forge repo). Report any changes to README.md, AGENTS.md, `.claude/commands/`, etc.
+
+If NOTHING changed in either repo, say so and stop.
 
 ## Step 2: Sync marketplace to cache
 
-For each changed plugin:
+For each plugin where marketplace differs from cache:
 1. Read the version from `$MARKETPLACE/{plugin}/claude-code.json`
 2. Sync all changed files from `$MARKETPLACE/{plugin}/` to `$CACHE/{plugin}/{version}/`
    - Skills: `skills/{skill_name}/SKILL.md`
@@ -32,7 +55,7 @@ Report what was synced.
 
 ## Step 3: Update claude-code.json manifests
 
-If skills were added or removed from a plugin, update that plugin's `claude-code.json` in BOTH marketplace and cache:
+If skills were added or removed from a plugin (new/deleted skill directories), update that plugin's `claude-code.json` in BOTH marketplace and cache:
 - Add new skill entries to the `skills` array
 - Remove deleted skill entries
 - Keep existing entries unchanged
@@ -58,18 +81,27 @@ Ask the user (using AskUserQuestion with multiSelect):
 - Update any skill/agent listings to reflect additions/removals
 - Keep existing structure, just update the relevant entries
 
-## Step 6: Commit
+## Step 6: Commit BOTH repos
 
-Stage all changed files (marketplace + cache + docs). Generate a commit message that describes what changed:
+### 6a. Commit marketplace repo
+
+Run `git -C $MARKETPLACE_REPO add` + `git -C $MARKETPLACE_REPO commit` with a descriptive message covering:
 - Which plugins were updated
 - What skills were added/removed/modified
-- What docs were updated
 
-Format: `feat: {summary}` or `fix: {summary}` or `refactor: {summary}`
+### 6b. Commit forge repo
 
-## Step 7: Push
+If the forge repo has changes (README, AGENTS.md, commands, etc.), stage and commit with a message covering what docs changed.
 
-Ask confirmation, then push to the current branch.
+Use the same commit message format for both: `feat: {summary}` or `fix: {summary}` or `refactor: {summary}`
+
+## Step 7: Push BOTH repos
+
+Ask confirmation once, then push both:
+1. `git -C $MARKETPLACE_REPO push origin main`
+2. `git push origin main` (forge repo, only if it had changes)
+
+Report both push results.
 
 ## Arguments
 

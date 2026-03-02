@@ -2,105 +2,22 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Transform Forge pipeline output from "beautiful shell with mock arrays" to "functional app with backend-agnostic data layer, proper loading/error states, and wired services."
+**Goal:** Transform Forge pipeline output from "beautiful shell with mock arrays" to "functional app with backend-agnostic data layer, skeleton loading, and wired services."
 
-**Architecture:** Stay MVVM. Add LoadPhase utility to the template. Update builder/orchestrator prompts to create feature managers and use state tiers. No backend choice — mock implementations only, forge-wire swaps later.
+**Architecture:** Stay MVVM. Update builder/orchestrator prompts to create feature managers and use skeleton loading with `.redacted`. No backend choice — mock implementations only, forge-wire swaps later.
 
 **Tech Stack:** SwiftUI, Swift 6, @Observable, AppServices DI, Manager Pattern (protocol + Mock)
 
 ---
 
-### Task 1: Update AGENTS.md with state management patterns and feature manager rules
+### Task 1: Update AGENTS.md — feature manager pattern and loading rules
 
 **Files:**
-- Modify: `AGENTS.md` (ViewModel Rules section + Patterns section)
+- Modify: `AGENTS.md`
 
-**Step 1: Add ViewModel State Management section after the existing ViewModel Rules**
+**Step 1: Add feature manager rules to the Patterns section**
 
-Insert after line 62 (after the ViewModel Rules closing `---`), before the `## Patterns` section:
-
-```markdown
-### ViewModel State Tiers
-
-Choose the tier based on the screen's data source. Feature spec drives state requirements — when no spec exists, use these defaults.
-
-**Tier 1 — Local data (SwiftData, in-memory, UserDefaults):**
-No LoadPhase needed. Data is always available.
-```swift
-@Observable class HabitListViewModel {
-    var habits: [Habit] = []
-    var isEmpty: Bool { habits.isEmpty }
-}
-```
-
-**Tier 2 — API-fetched / async data:**
-Use `LoadPhase` + separate data array. Data survives refresh.
-```swift
-@Observable class FeedViewModel {
-    var phase: LoadPhase = .idle
-    var posts: [Post] = []
-    var isEmpty: Bool { phase != .loading && posts.isEmpty }
-
-    func load(services: AppServices) async {
-        phase = .loading
-        do {
-            posts = try await services.feedManager.fetchAll()
-            phase = .idle
-        } catch {
-            phase = .error(error.localizedDescription)
-        }
-    }
-
-    func refresh(services: AppServices) async {
-        phase = .refreshing  // keeps posts visible
-        do {
-            posts = try await services.feedManager.fetchAll()
-            phase = .idle
-        } catch {
-            phase = .error(error.localizedDescription)
-        }
-    }
-}
-```
-View pattern: content always visible, loading/error/empty as overlays.
-```swift
-List(viewModel.posts) { post in ... }
-    .overlay { if viewModel.phase == .loading { ProgressView() } }
-    .overlay { if viewModel.isEmpty { ContentUnavailableView("No posts", systemImage: "tray") } }
-    .overlay { if let msg = viewModel.phase.errorMessage { ErrorBanner(msg) } }
-    .refreshable { await viewModel.refresh(services: services) }
-    .task { await viewModel.load(services: services) }
-```
-
-**Tier 3 — Static/computed:**
-Just properties. No state machine, no LoadPhase.
-```swift
-@Observable class AboutViewModel {
-    let appVersion = Bundle.main.appVersion
-}
-```
-
-**Default tier by screen type:**
-| Screen type | Default tier |
-|------------|-------------|
-| List/collection with domain data | Tier 1 (local) or Tier 2 (API) based on manager |
-| Dashboard/summary | Tier 1 or 2 based on data source |
-| Detail (passed from parent) | Tier 3 (data already loaded) |
-| Form/input | Tier 1 (save locally) |
-| Settings, About, Onboarding, Paywall | Tier 3 |
-
-### Loading Patterns
-
-- Use `.redacted(reason: .placeholder)` for skeleton loading — not full-screen spinners
-- Use `ContentUnavailableView` for empty states (Apple's built-in)
-- Use `.refreshable { }` for pull-to-refresh
-- Use `.task { }` for initial data load
-- Use `.task(id: value)` for reactive reloads when a dependency changes
-```
-
-**Step 2: Add feature manager creation rules to the Patterns section**
-
-In the existing `### Adding a Feature` pattern (line 67), add a new step between scaffolding and navigation wiring:
+After the existing `### Adding a Feature` pattern, add:
 
 ```markdown
 ### Adding a Feature Manager
@@ -108,12 +25,12 @@ In the existing `### Adding a Feature` pattern (line 67), add a new step between
 When a feature reads/writes domain data, create a manager BEFORE the ViewModel:
 
 1. Create protocol: `{App}/Managers/{Feature}/{Feature}Manager.swift`
-2. Create mock: `{App}/Managers/{Feature}/Mock{Feature}Manager.swift`
+2. Create mock: in the same file or `Mock{Feature}Manager.swift`
 3. Register in `AppServices` — add protocol property and mock initializer
 4. ViewModel accesses via `services.{feature}Manager`
 
 ```swift
-// {App}/Managers/Habits/HabitManager.swift
+// Protocol — backend-agnostic contract
 protocol HabitManagerProtocol: Sendable {
     func fetchAll() async throws -> [Habit]
     func create(_ habit: Habit) async throws
@@ -121,11 +38,10 @@ protocol HabitManagerProtocol: Sendable {
     func delete(_ id: String) async throws
 }
 
-// {App}/Managers/Habits/MockHabitManager.swift
+// Mock — in-memory, works immediately
 final class MockHabitManager: HabitManagerProtocol, @unchecked Sendable {
     // SAFETY: Only mutated from @MainActor callers via async methods
     private var habits: [Habit] = Habit.mockList
-
     func fetchAll() async throws -> [Habit] { habits }
     func create(_ habit: Habit) async throws { habits.append(habit) }
     func update(_ habit: Habit) async throws {
@@ -141,94 +57,138 @@ final class MockHabitManager: HabitManagerProtocol, @unchecked Sendable {
 - Screens that list/create/edit/delete domain objects → YES
 - Settings, About, Onboarding, Paywall → NO (static content)
 - Dashboard aggregating from existing managers → uses existing managers, no new one
-
-**Mock data rules:**
-- List screens: 5-8 items with realistic, varied content
-- Include edge cases: long strings, zero values, past/future dates
-- Add static `mockList` and `mockSingle` to the Model for easy access
+- Detail view receiving data from parent → NO (data already loaded)
 ```
 
-**Step 3: Verify AGENTS.md is valid markdown**
+**Step 2: Add loading and state rules to ViewModel Rules section**
 
-Read the file back and confirm the new sections are properly formatted and don't break existing content.
+After the existing ViewModel Rules, add:
 
-**Step 4: Commit**
+```markdown
+### Loading & States
+
+**Skeleton loading (screens with data):**
+ViewModels with loadable data initialize with placeholder items. The View renders
+the same layout in both loading and loaded states — `.redacted(reason: .placeholder)`
+toggles the skeleton appearance. No full-screen spinners.
+
+```swift
+// ViewModel
+@Observable class HabitListViewModel {
+    var habits: [Habit] = Habit.placeholders  // placeholder data for skeleton
+    var isLoading = true
+    var isEmpty: Bool { !isLoading && habits.isEmpty }
+
+    func load(services: AppServices) async {
+        do {
+            habits = try await services.habitManager.fetchAll()
+        } catch {
+            toast = .error(error.localizedDescription)
+        }
+        isLoading = false
+    }
+}
+
+// View
+List(viewModel.habits) { habit in
+    HabitRow(habit: habit)
+}
+.redacted(reason: viewModel.isLoading ? .placeholder : [])
+.overlay { if viewModel.isEmpty { ContentUnavailableView("No habits", systemImage: "tray") } }
+.refreshable { await viewModel.load(services: services) }
+.task { await viewModel.load(services: services) }
+```
+
+**Empty states:** Use `ContentUnavailableView` with voice-guide copy.
+**Errors:** Use `Toast.error()` — don't replace content with an error screen.
+**Refresh:** `.refreshable { }` — existing content stays visible during refresh.
+**Static screens** (Settings, About, Onboarding, Paywall): No loading, no states — just properties.
+
+### Mock Data on Models
+
+Every model used by a manager must have static placeholder and mock data:
+
+```swift
+extension Habit {
+    static let placeholders: [Habit] = (0..<4).map {
+        Habit(id: "\($0)", name: "Placeholder", streak: 0, createdAt: .now)
+    }
+    static let mockList: [Habit] = [
+        Habit(id: "1", name: "Morning Run", streak: 12, createdAt: ...),
+        Habit(id: "2", name: "Read for 30 minutes before bed", streak: 5, ...),
+        // 5-8 items, varied content, realistic data
+        // Include: one long name, one with nil optional fields, varied dates
+    ]
+    static let mockSingle: Habit = mockList[0]
+}
+```
+
+`placeholders` — used for skeleton loading (same shape, dummy content).
+`mockList` — used by MockManager (realistic data for development).
+```
+
+**Step 3: Commit**
 
 ```bash
 git add AGENTS.md
-git commit -m "feat: add state management tiers, LoadPhase docs, feature manager pattern to AGENTS.md"
+git commit -m "feat: add feature manager pattern, skeleton loading, mock data rules to AGENTS.md"
 ```
 
 ---
 
-### Task 2: Update forge-builder agent — add manager creation and state tier selection
+### Task 2: Update forge-builder — manager creation and skeleton loading
 
 **Files:**
 - Modify: `~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-feature/agents/forge-builder.md`
 
-**Step 1: Add a new Step 3b between Step 3 (Scaffold) and Step 4 (Build)**
+**Step 1: Add Step 3b — Create feature manager**
 
-Insert after the existing Step 3 (Scaffold):
+Insert after Step 3 (Scaffold):
 
 ```markdown
 ### Step 3b: Create feature manager (if this screen has domain data)
 
-Determine if this screen reads/writes domain data (habits, transactions, posts, etc.):
-- Does the blueprint describe this screen listing, creating, editing, or deleting objects? → YES
-- Is this Settings, About, Onboarding, or Paywall? → NO (skip to Step 4)
-- Is this a detail view that receives data from a parent? → NO (data already loaded)
+Does the blueprint describe this screen listing, creating, editing, or deleting domain objects?
+- YES → create a feature manager following AGENTS.md "Adding a Feature Manager"
+- NO (Settings, About, Onboarding, Paywall, detail view receiving data) → skip to Step 4
 
-If YES, create a feature manager following AGENTS.md "Adding a Feature Manager":
-
-1. **Create protocol** at `{App}/Managers/{Feature}/{Feature}Manager.swift`
-   - CRUD methods matching this screen's needs (don't add methods you won't use)
+If YES:
+1. Create manager protocol at `{App}/Managers/{Feature}/{Feature}Manager.swift`
+   - Only methods this screen actually needs (don't add unused CRUD methods)
    - Conform to `Sendable`
-
-2. **Create mock implementation** at `{App}/Managers/{Feature}/Mock{Feature}Manager.swift`
-   - In-memory array with realistic mock data (5-8 items for lists)
-   - Include edge cases: one very long name, one with empty optional fields, varied dates
-   - Add `static let mockList: [Model]` and `static let mockSingle: Model` to the Model file
-
-3. **Register in AppServices**
-   - Add `let {feature}Manager: any {Feature}ManagerProtocol` to AppServices
-   - Initialize with `Mock{Feature}Manager()` in the mock initializer
-
-4. **Report:** List the manager protocol, mock, and AppServices registration in your output.
+2. Create mock implementation in the same file
+   - Uses `Model.mockList` for initial data (created in Step 5 Data Models)
+3. Register in `AppServices` — add protocol property, initialize with mock
 ```
 
-**Step 2: Update Step 4 (Build) to use state tiers and managers**
+**Step 2: Update Step 4 (Build) — wire manager and implement skeleton loading**
 
-Find the existing Step 4 section and add at the beginning, before the current build instructions:
+Add at the beginning of Step 4:
 
 ```markdown
-**Determine the ViewModel tier** (see AGENTS.md "ViewModel State Tiers"):
-- If you created a manager in Step 3b that calls an API → Tier 2 (LoadPhase + separate data)
-- If you created a manager in Step 3b that's local-only → Tier 1 (properties, no LoadPhase)
-- If no manager (static screen) → Tier 3 (plain properties)
+**Wire the manager** (if created in Step 3b):
+- ViewModel calls `services.{feature}Manager` — NEVER hardcode mock arrays in ViewModel
+- Initialize ViewModel data with `Model.placeholders` for skeleton loading
+- Add `var isLoading = true` and set to `false` after first load completes
 
-**Wire the manager to the ViewModel:**
-- Store `services` reference from `onAppear(services:session:)`
-- Call manager methods via `services.{feature}Manager`
-- Never hardcode mock data arrays in the ViewModel — always go through the manager
+**Loading pattern** (screens with data):
+- View renders the SAME list/content in both loading and loaded states
+- Use `.redacted(reason: viewModel.isLoading ? .placeholder : [])` for skeleton shimmer
+- Use `ContentUnavailableView` with voice-guide copy for empty state
+- Use `Toast.error()` for errors — don't replace content
+- Use `.refreshable { }` for pull-to-refresh
+- Use `.task { }` for initial data load
 
-**Implement appropriate states:**
-- Check the feature spec (`.forge/feature-specs/{screen_name}.md`) for defined states
-- If no feature spec, use AGENTS.md "Default tier by screen type" table
-- Tier 2 screens MUST implement: `.task { }` for initial load, `.refreshable { }` for refresh,
-  loading overlay, error overlay (use `ErrorStateView` or error banner), empty state overlay
-  (use `ContentUnavailableView` with voice-guide copy)
-- Tier 1 screens MUST implement: empty state (use `ContentUnavailableView`)
-- Tier 3 screens: no state management needed
+**Static screens** (no manager): skip all loading/state logic — just render content.
 ```
 
-**Step 3: Update the REQUIRED OUTPUT FORMAT**
+**Step 3: Update REQUIRED OUTPUT FORMAT**
 
-Add after the existing output items:
+Add:
 
 ```markdown
-   7. MANAGER CREATED: [protocol name + mock name, or "N/A — static screen"]
-   8. STATE TIER: [Tier 1/2/3 — with justification]
-   9. STATES IMPLEMENTED: [list: populated, empty, loading, error, refreshing — which ones]
+   7. MANAGER CREATED: [protocol name + mock, or "N/A — static screen"]
+   8. LOADING PATTERN: [skeleton/none — which approach and why]
 ```
 
 **Step 4: Sync to cache**
@@ -243,160 +203,137 @@ cp ~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge
 ```bash
 cd ~/.claude/plugins/marketplaces/forge-marketplace
 git add .claude-plugin/plugins/forge-feature/agents/forge-builder.md
-git commit -m "feat: forge-builder creates feature managers, uses state tiers"
+git commit -m "feat: forge-builder creates feature managers, uses skeleton loading"
 ```
 
 ---
 
-### Task 3: Update forge-app orchestrator — Build Agent prompt with data layer instructions
+### Task 3: Update forge-app orchestrator — Build Agent prompt
 
 **Files:**
 - Modify: `~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md`
 
-**Step 1: Update the Build Agent Task prompt (around line 663)**
+**Step 1: Update Build Agent Task prompt**
 
-Find the Build Agent prompt that starts with `Task(subagent_type: "general-purpose", description: "Build {screen_name} screen")`.
-
-In the instruction body, after the line about reading `.forge/` files and before `Follow AGENTS.md MVVM conventions`, add:
+Find the Build Agent prompt (around line 663). After the `.forge/` reading instructions and before `Follow AGENTS.md MVVM conventions`, add:
 
 ```markdown
    FEATURE MANAGER — Before implementing the ViewModel:
-   Determine if this screen reads/writes domain data. If yes:
-   1. Create manager protocol at {AppName}/Managers/{Feature}/{Feature}Manager.swift
-   2. Create MockManager with 5-8 realistic items (see AGENTS.md "Adding a Feature Manager")
-   3. Register in AppServices
-   4. ViewModel calls services.{feature}Manager — NEVER hardcode mock arrays in ViewModel
+   Does this screen list/create/edit/delete domain objects? If yes:
+   1. Create manager protocol + mock at {AppName}/Managers/{Feature}/
+   2. Register in AppServices
+   3. ViewModel calls services.{feature}Manager — NEVER hardcode mock arrays
+   If no (Settings, About, Onboarding, Paywall, detail receiving data): skip.
 
-   STATE MANAGEMENT — Choose the ViewModel tier (see AGENTS.md "ViewModel State Tiers"):
-   - API data → Tier 2: use LoadPhase enum, implement .task/.refreshable/overlays
-   - Local data → Tier 1: direct properties, implement empty state
-   - Static screen → Tier 3: plain properties, no state management
-   If a feature spec exists for this screen, it defines which states to implement.
-   If no feature spec, use the default tier table in AGENTS.md.
+   LOADING — Screens with data use skeleton loading:
+   - Initialize ViewModel data with Model.placeholders
+   - View uses .redacted(reason: viewModel.isLoading ? .placeholder : [])
+   - Empty state: ContentUnavailableView with voice-guide copy
+   - Errors: Toast.error(), don't replace content
+   - Static screens: no loading logic needed
 ```
 
-**Step 2: Update the Build Agent REQUIRED OUTPUT FORMAT**
+**Step 2: Update Build Agent REQUIRED OUTPUT FORMAT**
 
-Add to the existing output format list:
+Add:
 
 ```markdown
    7. MANAGER CREATED: [protocol + mock names, or "N/A"]
-   8. STATE TIER: [1/2/3]
-   9. STATES IMPLEMENTED: [populated/empty/loading/error/refreshing — which ones]
+   8. LOADING PATTERN: [skeleton/none]
 ```
 
-**Step 3: Update the Orchestrator verification after Build Agent**
+**Step 3: Update Orchestrator verification after Build Agent**
 
-In the section "Orchestrator verification after Build Agent completes", add:
+Add to verification checks:
 
 ```markdown
-- Does MANAGER CREATED list a protocol and mock? (Skip check for static screens like Settings/About)
-- Does STATE TIER match the screen type? (Tier 2 for API screens, Tier 1 for local data, Tier 3 for static)
-- Does STATES IMPLEMENTED include at least "populated" and "empty" for data screens?
+- Does MANAGER CREATED list a protocol and mock? (Skip for static screens)
+- Does LOADING PATTERN say "skeleton" for data screens? If it says "none" for a list screen, flag it.
 ```
 
-**Step 4: Update the Polish Agent REQUIRED OUTPUT FORMAT**
+**Step 4: Update Polish Agent REQUIRED OUTPUT FORMAT**
 
-Add to the existing polish output format:
+Add:
 
 ```markdown
-   12. LOADING/ERROR UX: [For Tier 2 screens: does the loading state use skeleton/redacted instead of full-screen spinner? Does error show a banner/toast, not replace content?]
+   12. LOADING UX: [Does loading use skeleton shimmer, not full-screen spinner? Does empty state use ContentUnavailableView?]
 ```
 
-**Step 5: Sync to cache**
+**Step 5: Sync to cache and commit marketplace**
 
 ```bash
 cp ~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md \
    ~/.claude/plugins/cache/forge-marketplace/forge-app/1.0.0/skills/forge-app/SKILL.md
-```
 
-**Step 6: Commit marketplace**
-
-```bash
 cd ~/.claude/plugins/marketplaces/forge-marketplace
 git add .claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md
-git commit -m "feat: forge-app Build Agent creates managers, selects state tiers"
+git commit -m "feat: forge-app Build Agent creates managers, skeleton loading"
 ```
 
 ---
 
-### Task 4: Update forge-app Step 5 (Data Models) to include mock data helpers
+### Task 4: Update forge-app Step 5 (Data Models) — mock + placeholder data
 
 **Files:**
 - Modify: `~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md`
 
-**Step 1: Update the Step 5 Data Models Task prompt**
+**Step 1: Update Step 5 Data Models Task prompt**
 
-Find the existing Step 5 Data Models section. Update the Task prompt to include mock data generation:
+Find existing Step 5. Add to the rules list:
 
 ```markdown
-   Create Swift model files at {AppName}/Models/ for each model in the blueprint.
-   Rules:
-   - Conform to StringIdentifiable, Codable, Sendable
-   - Use snake_case for CodingKeys raw values
-   - Include id: String as first field, createdAt: Date as last
-   - Create enums in the same file if the model has enum fields
-   - Add static mock data helpers for each model:
+   - Add static mock and placeholder data for each model:
      ```swift
      extension Habit {
-         static let mockSingle = Habit(id: "1", name: "Morning Run", ...)
+         /// Placeholder items for skeleton loading — same shape, dummy content
+         static let placeholders: [Habit] = (0..<4).map {
+             Habit(id: "\($0)", name: "Placeholder", streak: 0, createdAt: .now)
+         }
+         /// Realistic mock data for MockManagers in Step 6
          static let mockList: [Habit] = [
-             Habit(id: "1", name: "Morning Run", ...),
-             Habit(id: "2", name: "Read for 30 minutes", ...),
-             // 5-8 items with varied content, realistic data
+             Habit(id: "1", name: "Morning Run", streak: 12, ...),
+             Habit(id: "2", name: "Read for 30 minutes before bed", streak: 5, ...),
+             // 5-8 items with varied content
              // Include: one long name, one with nil optional fields, varied dates
          ]
+         static let mockSingle: Habit = mockList[0]
      }
      ```
-   This mock data is consumed by MockManagers in Step 6.
+   Placeholders are consumed by ViewModels for skeleton loading.
+   mockList is consumed by MockManagers for development data.
 ```
 
-**Step 2: Sync to cache**
+**Step 2: Sync to cache and commit marketplace**
 
 ```bash
 cp ~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md \
    ~/.claude/plugins/cache/forge-marketplace/forge-app/1.0.0/skills/forge-app/SKILL.md
-```
 
-**Step 3: Commit marketplace**
-
-```bash
 cd ~/.claude/plugins/marketplaces/forge-marketplace
 git add .claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md
-git commit -m "feat: Step 5 Data Models generates static mock data helpers"
+git commit -m "feat: Step 5 Data Models generates placeholders + mock data"
 ```
 
 ---
 
-### Task 5: Verify the full pipeline integration
+### Task 5: Verify cross-references and publish
 
-**Step 1: Read all modified files and verify cross-references**
+**Step 1: Verify all files reference the same patterns**
 
-Verify that:
-- AGENTS.md documents the `LoadPhase` pattern (builder creates inline when needed, no template file)
-- forge-builder references AGENTS.md sections by name ("ViewModel State Tiers", "Adding a Feature Manager")
-- forge-app Build Agent prompt references the same section names
-- Output format items are numbered consistently (no duplicate numbers)
-- forge-app polish output includes the new loading/error UX check
+Read all modified files and check:
+- AGENTS.md "Adding a Feature Manager" matches what forge-builder Step 3b describes
+- AGENTS.md "Loading & States" matches what forge-builder Step 4 describes
+- forge-app Build Agent prompt matches forge-builder instructions
+- Output format numbering is consistent (no duplicates, no gaps)
+- Polish Agent checks skeleton loading, not spinner
 
-**Step 2: Verify AGENTS.md, forge-builder, and forge-app are internally consistent**
+**Step 2: Run `/forge-publish`**
 
-Check:
-- Manager pattern description matches in all three files
-- State tier definitions match in all three files
-- Default tier table matches in AGENTS.md and forge-builder
-
-**Step 3: Run `/forge-publish` to sync and push both repos**
-
-```bash
-/forge-publish
-```
-
-This syncs marketplace → cache, commits both repos, and pushes.
+Syncs marketplace → cache, commits both repos, pushes both.
 
 ---
 
-### Task 6: Update MEMORY.md and design doc status
+### Task 6: Update MEMORY.md and design doc
 
 **Files:**
 - Modify: `~/.claude/projects/-Users-matvii-Documents-Developer-Templates-forge/memory/MEMORY.md`
@@ -404,15 +341,15 @@ This syncs marketplace → cache, commits both repos, and pushes.
 
 **Step 1: Update MEMORY.md**
 
-Add to the Pipeline Enforcement section:
+Add to Pipeline Enforcement section:
 
 ```markdown
-- **Phase 1 Functional Core (2026-03-02)** — builders create backend-agnostic feature managers (protocol + mock), use 3-tier ViewModel state management (local/API/static), implement LoadPhase for async screens. Template has LoadPhase.swift utility. Mock data helpers on Models via static properties.
+- **Phase 1 Functional Core (2026-03-02)** — builders create backend-agnostic feature managers (protocol + mock), use skeleton loading (.redacted + placeholders) instead of spinners, ContentUnavailableView for empty states, Toast for errors. Models have static placeholders + mockList. No LoadPhase enum — just isLoading bool + data array.
 ```
 
-**Step 2: Mark Phase 1 as implemented in the design doc**
+**Step 2: Add status tracker to design doc**
 
-Add at the top of the design doc:
+Insert after the title:
 
 ```markdown
 ## Status
@@ -422,7 +359,7 @@ Add at the top of the design doc:
 - [ ] Phase 4: Speed & Quality
 ```
 
-**Step 3: Commit**
+**Step 3: Commit forge repo**
 
 ```bash
 git add docs/plans/2026-03-02-pipeline-quality-upgrade-design.md

@@ -10,76 +10,7 @@
 
 ---
 
-### Task 1: Add LoadPhase enum to the Forge template
-
-**Files:**
-- Create: `Forge/Utilities/LoadPhase.swift`
-
-**Step 1: Create the LoadPhase utility file**
-
-```swift
-//
-//  LoadPhase.swift
-//  Forge
-//
-//  Lightweight phase tracking for screens that fetch data asynchronously.
-//  Use alongside a separate data property — phase tracks lifecycle,
-//  data persists across phase transitions (e.g., refresh doesn't nuke the list).
-//
-//  Usage in ViewModel:
-//    var phase: LoadPhase = .idle
-//    var items: [Item] = []
-//    var isEmpty: Bool { phase != .loading && items.isEmpty }
-//
-
-import Foundation
-
-enum LoadPhase: Equatable {
-    case idle
-    case loading
-    case refreshing
-    case error(String)
-
-    var isLoading: Bool {
-        self == .loading || self == .refreshing
-    }
-
-    var errorMessage: String? {
-        if case .error(let message) = self { return message }
-        return nil
-    }
-
-    static func == (lhs: LoadPhase, rhs: LoadPhase) -> Bool {
-        switch (lhs, rhs) {
-        case (.idle, .idle), (.loading, .loading), (.refreshing, .refreshing):
-            return true
-        case (.error(let a), .error(let b)):
-            return a == b
-        default:
-            return false
-        }
-    }
-}
-```
-
-**Step 2: Verify it compiles**
-
-```bash
-xcodebuildmcp simulator build-sim --scheme "Forge - Mock" --project-path ./Forge.xcodeproj
-```
-
-Expected: Build Succeeded
-
-**Step 3: Commit**
-
-```bash
-git add Forge/Utilities/LoadPhase.swift
-git commit -m "feat: add LoadPhase enum for async screen state management"
-```
-
----
-
-### Task 2: Update AGENTS.md with state management patterns and feature manager rules
+### Task 1: Update AGENTS.md with state management patterns and feature manager rules
 
 **Files:**
 - Modify: `AGENTS.md` (ViewModel Rules section + Patterns section)
@@ -230,7 +161,7 @@ git commit -m "feat: add state management tiers, LoadPhase docs, feature manager
 
 ---
 
-### Task 3: Update forge-builder agent — add manager creation and state tier selection
+### Task 2: Update forge-builder agent — add manager creation and state tier selection
 
 **Files:**
 - Modify: `~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-feature/agents/forge-builder.md`
@@ -317,7 +248,7 @@ git commit -m "feat: forge-builder creates feature managers, uses state tiers"
 
 ---
 
-### Task 4: Update forge-app orchestrator — Build Agent prompt with data layer instructions
+### Task 3: Update forge-app orchestrator — Build Agent prompt with data layer instructions
 
 **Files:**
 - Modify: `~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md`
@@ -389,7 +320,7 @@ git commit -m "feat: forge-app Build Agent creates managers, selects state tiers
 
 ---
 
-### Task 5: Update forge-app Step 5 (Data Models) to include mock data helpers
+### Task 4: Update forge-app Step 5 (Data Models) to include mock data helpers
 
 **Files:**
 - Modify: `~/.claude/plugins/marketplaces/forge-marketplace/.claude-plugin/plugins/forge-app/skills/forge-app/SKILL.md`
@@ -437,12 +368,12 @@ git commit -m "feat: Step 5 Data Models generates static mock data helpers"
 
 ---
 
-### Task 6: Verify the full pipeline integration
+### Task 5: Verify the full pipeline integration
 
 **Step 1: Read all modified files and verify cross-references**
 
 Verify that:
-- AGENTS.md references `LoadPhase` (which exists at `Forge/Utilities/LoadPhase.swift`)
+- AGENTS.md documents the `LoadPhase` pattern (builder creates inline when needed, no template file)
 - forge-builder references AGENTS.md sections by name ("ViewModel State Tiers", "Adding a Feature Manager")
 - forge-app Build Agent prompt references the same section names
 - Output format items are numbered consistently (no duplicate numbers)
@@ -465,7 +396,7 @@ This syncs marketplace → cache, commits both repos, and pushes.
 
 ---
 
-### Task 7: Update MEMORY.md and design doc status
+### Task 6: Update MEMORY.md and design doc status
 
 **Files:**
 - Modify: `~/.claude/projects/-Users-matvii-Documents-Developer-Templates-forge/memory/MEMORY.md`

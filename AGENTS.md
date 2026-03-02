@@ -60,6 +60,69 @@ View → ViewModel → Services/Managers
 - `Event` enum conforming to `LoggableEvent` — track `onAppear` + key actions
 - Track events via `services.logManager.trackEvent(event:)`
 
+### Loading & States
+
+**Skeleton loading** for screens with loadable data. ViewModels initialize with placeholder items.
+The View renders the same layout in both states — `.redacted(reason: .placeholder)` toggles skeleton.
+No full-screen spinners.
+
+```swift
+// ViewModel
+@Observable class HabitListViewModel {
+    var habits: [Habit] = Habit.placeholders  // placeholder data for skeleton
+    var isLoading = true
+    var isEmpty: Bool { !isLoading && habits.isEmpty }
+
+    func load(services: AppServices) async {
+        do {
+            habits = try await services.habitManager.fetchAll()
+        } catch {
+            toast = .error(error.localizedDescription)
+        }
+        isLoading = false
+    }
+}
+
+// View
+List(viewModel.habits) { habit in
+    HabitRow(habit: habit)
+}
+.redacted(reason: viewModel.isLoading ? .placeholder : [])
+.overlay { if viewModel.isEmpty { ContentUnavailableView("No habits", systemImage: "tray") } }
+.refreshable { await viewModel.load(services: services) }
+.task { await viewModel.load(services: services) }
+```
+
+**When to use:**
+- Screens that load data from a manager → skeleton loading + empty state + error toast
+- Static screens (Settings, About, Onboarding, Paywall) → no loading, no states
+- Detail views receiving data from parent → no loading (data already available)
+
+**Empty states:** `ContentUnavailableView` with voice-guide copy from `.forge/voice-guide.md`.
+**Errors:** `Toast.error()` — never replace content with an error screen.
+**Refresh:** `.refreshable { }` — existing content stays visible during refresh.
+
+### Mock Data on Models
+
+Every model used by a manager must have static placeholder and mock data:
+
+```swift
+extension Habit {
+    /// Placeholder items for skeleton loading — same shape, dummy content
+    static let placeholders: [Habit] = (0..<4).map {
+        Habit(id: "\($0)", name: "Placeholder", streak: 0, createdAt: .now)
+    }
+    /// Realistic mock data for MockManagers
+    static let mockList: [Habit] = [
+        Habit(id: "1", name: "Morning Run", streak: 12, createdAt: ...),
+        Habit(id: "2", name: "Read for 30 minutes before bed", streak: 5, ...),
+        // 5-8 items, varied content, realistic data
+        // Include: one long name, one with nil optional fields, varied dates
+    ]
+    static let mockSingle: Habit = mockList[0]
+}
+```
+
 ---
 
 ## Patterns
@@ -67,31 +130,57 @@ View → ViewModel → Services/Managers
 ### Adding a Feature
 
 1. Create `{App}/Features/{Feature}/{Feature}View.swift` + `{Feature}ViewModel.swift`
-2. ViewModel: `@MainActor @Observable`, `toast`, `hasLoaded`, `Event` enum (see View/ViewModel Rules)
-3. View: `DSScreen` root, environment injections, `.toast()`, `.onAppear()`
-4. Wire navigation: add case to `AppTab`/`AppRoute`/`AppSheet`, wire destination view
-5. Read `.forge/design-system.md` for Component Strategy and Screen Blueprints before choosing components
+2. If this screen reads/writes domain data → create a Feature Manager first (see below)
+3. ViewModel: `@MainActor @Observable`, `toast`, `hasLoaded`, `Event` enum (see View/ViewModel Rules)
+4. If manager exists → wire ViewModel to `services.{feature}Manager`, use skeleton loading pattern
+5. View: `DSScreen` root, environment injections, `.toast()`, `.onAppear()`
+6. Wire navigation: add case to `AppTab`/`AppRoute`/`AppSheet`, wire destination view
+7. Read `.forge/design-system.md` for Component Strategy and Screen Blueprints before choosing components
 
-### Manager Pattern (protocol + Mock/Prod)
+### Adding a Feature Manager
 
-Services use protocol-based dependency injection. Each manager has a protocol, a Mock implementation (used in Mock scheme), and optionally a Prod implementation:
+When a feature reads/writes domain data, create a manager BEFORE the ViewModel:
+
+1. Create protocol: `{App}/Managers/{Feature}/{Feature}Manager.swift`
+2. Create mock implementation in the same file
+3. Register in `AppServices` — add protocol property and mock initializer
+4. ViewModel accesses via `services.{feature}Manager`
 
 ```swift
-// Protocol
-protocol ItemManagerProtocol: Sendable {
-    func fetchItems() async throws -> [Item]
-    func createItem(_ item: Item) async throws
+// Protocol — backend-agnostic contract
+// No Sendable needed: app target defaults to @MainActor, so protocol
+// inherits MainActor isolation. When forge-wire adds a real backend
+// that runs off MainActor, the protocol may need @Sendable or become
+// an actor — but for mock builds, MainActor isolation is correct.
+protocol HabitManagerProtocol {
+    func fetchAll() async throws -> [Habit]
+    func create(_ habit: Habit) async throws
+    func update(_ habit: Habit) async throws
+    func delete(_ id: String) async throws
 }
 
-// Mock (returns static data, no network)
-final class MockItemManager: ItemManagerProtocol { ... }
-
-// Prod (real backend)
-final class ProdItemManager: ItemManagerProtocol { ... }
+// Mock — in-memory, implicitly @MainActor (app target default)
+final class MockHabitManager: HabitManagerProtocol {
+    private var habits: [Habit] = Habit.mockList
+    func fetchAll() async throws -> [Habit] { habits }
+    func create(_ habit: Habit) async throws { habits.append(habit) }
+    func update(_ habit: Habit) async throws {
+        if let i = habits.firstIndex(where: { $0.id == habit.id }) { habits[i] = habit }
+    }
+    func delete(_ id: String) async throws {
+        habits.removeAll { $0.id == id }
+    }
+}
 ```
 
+**Which screens get managers:**
+- Screens that list/create/edit/delete domain objects → YES
+- Settings, About, Onboarding, Paywall → NO (static content)
+- Dashboard aggregating from existing managers → uses existing managers, no new one
+- Detail view receiving data from parent → NO (data already loaded)
+
 Register in `AppServices` — the active implementation is selected by build configuration.
-Access in ViewModel via `services.itemManager`.
+Access in ViewModel via `services.{feature}Manager`.
 
 ### Component Creation
 

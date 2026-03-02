@@ -102,6 +102,37 @@ List(viewModel.habits) { habit in
 **Errors:** `Toast.error()` — never replace content with an error screen.
 **Refresh:** `.refreshable { }` — existing content stays visible during refresh.
 
+### Error Handling
+
+Standardized error handling in ViewModels — errors show as toasts, never replace content:
+
+```swift
+func load(services: AppServices) async {
+    do {
+        habits = try await services.habitManager.fetchAll()
+    } catch {
+        toast = .error(error.localizedDescription)
+    }
+    isLoading = false
+}
+
+func delete(_ habit: Habit) async {
+    do {
+        try await services.habitManager.delete(habit.id)
+        habits.removeAll { $0.id == habit.id }
+    } catch {
+        toast = .error("Couldn't delete. Try again.")
+    }
+}
+```
+
+**Rules:**
+- Network/persistence errors → `Toast.error()` with user-friendly message
+- Validation errors → inline field errors (not toast)
+- Save failures → toast with retry guidance
+- Never show raw error messages (`error.localizedDescription` only for debug)
+- Use voice-guide error copy when available
+
 ### Mock Data on Models
 
 Every model used by a manager must have static placeholder and mock data:
@@ -115,9 +146,13 @@ extension Habit {
     /// Realistic mock data for MockManagers
     static let mockList: [Habit] = [
         Habit(id: "1", name: "Morning Run", streak: 12, createdAt: ...),
-        Habit(id: "2", name: "Read for 30 minutes before bed", streak: 5, ...),
-        // 5-8 items, varied content, realistic data
-        // Include: one long name, one with nil optional fields, varied dates
+        Habit(id: "2", name: "Read for 30 minutes before bed with a very long name that tests truncation", streak: 5, ...),
+        // 5-8 items with edge cases:
+        // - One very long name (tests text truncation)
+        // - One with nil optional fields (tests optional handling)
+        // - Dates spanning past/today/future
+        // - Zero and high numeric values
+        // - Empty string fields where applicable
     ]
     static let mockSingle: Habit = mockList[0]
 }

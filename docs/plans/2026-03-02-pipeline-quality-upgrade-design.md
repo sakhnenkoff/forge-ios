@@ -4,30 +4,29 @@
 
 **Goal:** Transform the Forge pipeline from producing "beautiful shell with mock data" to producing functional, robust, App Store-ready apps.
 
-**Key insight:** The Forge template already has a sophisticated data layer (`DocumentManagerSync`, protocol-based DI, offline cache with pending writes). The pipeline just doesn't USE it — builders create ViewModels with hardcoded mock arrays instead of wiring the existing infrastructure.
+**Key insight:** The Forge template already has a Manager Pattern (protocol + Mock/Prod) documented in AGENTS.md, plus `AppServices` environment injection. But builders ignore it — they create ViewModels with hardcoded mock arrays instead of creating feature managers. The existing `DocumentManagerSync` is Firestore-specific (user profile sync) and NOT what we use for domain data. We need simple, backend-agnostic manager protocols per feature.
 
 ---
 
 ## Current State Assessment
 
 ### What the template already provides
-- `DocumentManagerSync<Model>` — offline-first sync with local cache, remote service, pending writes, lifecycle management
-- Protocol-based DI: `RemoteDocumentService`, `LocalDocumentPersistence`, `DMDocumentServices`
-- `DocumentCache<Model>` with schema version compatibility
-- Manager pattern (protocol + Mock/Prod) documented in AGENTS.md
-- `AppServices` environment injection
-- `ErrorStateView`, `EmptyStateView`, `ToastView` components
+- Manager Pattern (protocol + Mock/Prod) documented in AGENTS.md lines 77-93
+- `AppServices` environment injection with scheme-based implementation selection
+- `DocumentManagerSync` — Firestore-specific user profile sync (NOT for domain data)
+- `ErrorStateView`, `EmptyStateView`, `ToastView` UI components
+- Mock/Dev/Prod build configurations
 
 ### What the pipeline does NOT use
 - Builders create `@Observable class ViewModel` with `var items: [Item] = [mockItem1, mockItem2]`
-- No manager/repository is created per feature
+- No manager protocol is created per feature — the pattern exists in AGENTS.md but builders don't follow it
 - No `LoadPhase` or loading states
 - No error handling (happy path only)
 - No tests
-- No connection between ViewModel and the existing data layer
+- ViewModels are self-contained islands with no connection to services
 
 ### The gap
-The template provides the tools. The builder prompts don't tell agents to use them.
+The template documents the Manager Pattern. The builder prompts don't tell agents to follow it for domain data. `DocumentManagerSync` is a Firestore sync tool — it's NOT the pattern to generalize. We need simple, backend-agnostic manager protocols per feature.
 
 ---
 
@@ -75,15 +74,45 @@ Applies to: settings, about, onboarding steps, paywall.
 **Optimistic updates** (from IceCubesApp pattern) for quick user actions:
 Set expected state immediately, API call in background, revert on failure. No spinner for toggle/like/pin/delete actions. Applies when forge-wire connects a backend.
 
-### 1B. Wire the Existing Data Layer
+### 1B. Feature Managers (Backend-Agnostic)
 
-For each screen that reads/writes data, the builder creates:
-1. Manager protocol in `{App}/Managers/{Feature}/` (following existing Manager Pattern)
-2. Mock implementation (returns realistic static data)
-3. Wire to `AppServices`
-4. ViewModel calls `services.{featureManager}` instead of holding mock arrays
+For each screen that reads/writes domain data, the builder creates a manager following the existing AGENTS.md Manager Pattern:
 
-This uses the template's existing patterns — no new architecture. Just telling the builder to follow what AGENTS.md already documents.
+```swift
+// Protocol — backend-agnostic contract
+protocol HabitManagerProtocol: Sendable {
+    func fetchAll() async throws -> [Habit]
+    func create(_ habit: Habit) async throws
+    func update(_ habit: Habit) async throws
+    func delete(_ habit: Habit) async throws
+}
+
+// Mock — in-memory, no persistence, works immediately
+final class MockHabitManager: HabitManagerProtocol {
+    private var habits: [Habit] = Habit.mockList  // realistic mock data
+
+    func fetchAll() async throws -> [Habit] { habits }
+    func create(_ habit: Habit) async throws { habits.append(habit) }
+    // ...
+}
+```
+
+Wire to `AppServices`, ViewModel calls `services.habitManager.fetchAll()` instead of holding `var habits = [mockHabit1]`.
+
+**What this enables:**
+- Mock scheme works immediately with realistic in-memory data
+- forge-wire later swaps `MockHabitManager` for `SwiftDataHabitManager`, `FirestoreHabitManager`, `RESTHabitManager`, etc. — no ViewModel changes
+- The app's data contract is defined once, backend choice is deferred
+
+**What the builder does NOT do:**
+- Does NOT choose SwiftData vs Firestore vs REST — that's forge-wire's job
+- Does NOT use `DocumentManagerSync` — that's Firestore-specific user profile sync
+- Does NOT create persistence layer — mock is in-memory only
+
+**Which screens get managers:**
+- Screens that list/create/edit/delete domain objects → YES (create manager)
+- Settings, About, Onboarding, Paywall → NO (static content, no domain data)
+- Dashboard aggregating data from other managers → uses existing managers, no new one
 
 ### 1C. Loading Patterns (from Dimillian's skill)
 
@@ -175,10 +204,9 @@ After all screens built, launch the app and tap through the main user flow (onbo
 ### Phase 1 (Functional Core)
 | File | Change |
 |------|--------|
-| `forge-feature/agents/forge-builder.md` | Update build instructions: create managers, wire to AppServices, use LoadPhase pattern, implement appropriate states per tier |
-| `forge-app/skills/forge-app/SKILL.md` | Update Build Agent prompt with data layer instructions |
-| `AGENTS.md` | Add ViewModel state management tiers, LoadPhase pattern, loading patterns reference |
-| Template: `Forge/Managers/` | Ensure existing DataManager patterns are well-documented for builders |
+| `forge-feature/agents/forge-builder.md` | Update build instructions: create feature managers (protocol + mock), wire to AppServices, use LoadPhase for API screens, implement appropriate states per tier |
+| `forge-app/skills/forge-app/SKILL.md` | Update Build Agent prompt: create managers, state tiers, loading patterns |
+| `AGENTS.md` | Add ViewModel state management tiers, LoadPhase pattern, feature manager creation rules |
 
 ### Phase 2 (Robustness)
 | File | Change |
@@ -205,7 +233,7 @@ After all screens built, launch the app and tap through the main user flow (onbo
 
 1. **Stay MVVM** — The template is built on it, AGENTS.md documents it, all agent prompts reference it. Migrating to MV (no ViewModel) would require rewriting everything for marginal benefit. Cherry-pick Ricouard's best patterns (`.task`, `.redacted`, `ContentUnavailableView`, overlay pattern) into MVVM structure.
 
-2. **Use existing `DocumentManagerSync`** — Don't reinvent the data layer. The template has a sophisticated offline-first sync manager. The builder just needs to use it.
+2. **Backend-agnostic manager protocols** — Builders create simple CRUD protocols per feature with mock implementations. `DocumentManagerSync` is Firestore-specific user sync — NOT for domain data. Backend choice (SwiftData, Firestore, REST, etc.) is deferred to forge-wire.
 
 3. **State tiers, not universal pattern** — Different screens need different state management. Feature spec drives requirements, with sensible defaults per screen type.
 

@@ -328,6 +328,27 @@ Available patterns — use what serves the app's mood (from `.forge/design-syste
 
 ---
 
+## Post-Build Checks
+
+After building a screen, code is scanned for these patterns. Violations require fixes before the screen is accepted.
+
+**Architecture (hard gate — every screen):**
+- View MUST contain: `DSScreen`, `.toast(`, `.onAppear`, `AppServices.self`
+- View MUST NOT contain: `AsyncImage`, `@StateObject`
+- ViewModel MUST contain: `@Observable`, `hasLoaded`, `LoggableEvent`, `var toast: Toast?`
+
+**Data patterns (screens with a feature manager):**
+- Manager file MUST contain: protocol definition, `Mock` implementation
+- Model MUST contain: `static let placeholders`, `static let mockList`, `StringIdentifiable`
+- View MUST contain: `.redacted(reason:`, `ContentUnavailableView`
+- ViewModel MUST contain: `toast = .error` or `Toast.error`
+
+**Component quality (warnings):**
+- No `Font.system(size:` — use DS typography (`.display()`, `.titleLarge()`, `.bodyMedium()`, etc.)
+- No `Color(red:` / `Color(#` / `Color(.sRGB` — use semantic colors (`.themePrimary`, `.textPrimary`, etc.)
+
+---
+
 ## Design System Override Priority
 
 When building screens, `.forge/design-system.md` is the design authority:

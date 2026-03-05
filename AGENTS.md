@@ -7,7 +7,7 @@ Agent-only reference for building in this project. Human docs are in README.md.
 ## Build
 
 ```bash
-xcodebuild -project Forge.xcodeproj -scheme "Forge - Mock" -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' build
+xcodebuild -project Forge.xcodeproj -scheme "Forge - Mock" -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest' build
 ```
 
 - Warnings from app code are blockers — fix before finishing.

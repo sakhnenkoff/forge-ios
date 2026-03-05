@@ -7,7 +7,7 @@ Agent-only reference for building in this project. Human docs are in README.md.
 ## Build
 
 ```bash
-xcodebuild -project Forge.xcodeproj -scheme "Forge - Mock" -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.2' build
+xcodebuild -project Forge.xcodeproj -scheme "Forge - Mock" -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' build
 ```
 
 - Warnings from app code are blockers — fix before finishing.
@@ -45,7 +45,7 @@ View → ViewModel → Services/Managers
 
 - `DSScreen(title:)` as root container
 - `.toast($viewModel.toast)` modifier on every screen
-- `.onAppear { viewModel.onAppear(services:session:) }` on every screen
+- `.onAppear { viewModel.onAppear(services:session:) }` — include `session` when the screen uses user/auth data, `onAppear(services:)` otherwise
 - `@State` ONLY for UI animation flags (`isAnimating`, `showSheet`) — all data in ViewModel
 - No business logic in `body` — all logic in ViewModel
 - All component data injected via `init`, all actions are closures
@@ -281,7 +281,7 @@ Uses [AppRouter](https://github.com/Dimillian/AppRouter).
 
 ## DS Component Reference
 
-These are the TEMPLATE defaults. When `.forge/design-system.md` Component Strategy says MODIFY or REPLACE a component, that decision overrides what's listed here.
+These are the TEMPLATE defaults. When `.forge/design-system.md` Component Strategy says COMPOSE or CREATE a component, that decision overrides what's listed here.
 
 ### Tokens
 
@@ -413,7 +413,7 @@ Key patterns to preserve: value hierarchy, plan selection pattern, purchase flow
 
 When building screens, `.forge/design-system.md` is the design authority:
 
-1. **Component Strategy** (KEEP/MODIFY/REPLACE) overrides the component table above
+1. **Component Strategy** (KEEP/COMPOSE/CREATE) overrides the component table above
 2. **Screen Blueprints** override generic layout patterns
 3. **Design Synthesis** overrides default token values
 4. **Template Departures** list what NOT to do from the defaults above

@@ -75,7 +75,7 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 |-------|---------|---------|
 | `forge-app` | `claude plugin install forge-app@forge-marketplace` | Orchestrator: idea → running app |
 | `forge-ux` | `claude plugin install forge-ux@forge-marketplace` | Feature experience design — user journeys, states, aha moment |
-| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, Playwright + Stitch research |
+| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, forge-browse agent + Stitch research |
 | `forge-voice` | `claude plugin install forge-voice@forge-marketplace` | Content strategy — app voice, all copy, tonal consistency |
 | `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build, verify |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold View + ViewModel pairs |

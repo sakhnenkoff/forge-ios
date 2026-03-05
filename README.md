@@ -2,7 +2,7 @@
 
 **Build unique iOS apps from an idea — not from a template that looks like a template.**
 
-Forge is an iOS app template with a Claude Code skill pipeline that takes you from "I have an app idea" to a running, polished app with its own visual identity, voice, and feature design. 10 skills handle everything: feature UX, design system customization, content strategy, screen building, backend connection, App Store listing, and submission.
+Forge is an iOS app template with a Claude Code skill pipeline that takes you from "I have an app idea" to a running, polished app with its own visual identity, voice, and feature design. 11 skills handle everything: feature UX, design system customization, content strategy, screen building, backend connection, App Store listing, submission, and pipeline health checks.
 
 The template provides Swift architecture (MVVM, navigation, design system tokens, component structure). The pipeline researches what your specific app needs and customizes everything — tokens, components, backgrounds, copy, interactions — so the result looks like YOUR app, not like every other Forge project.
 
@@ -59,10 +59,11 @@ Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
      Post-build:
      ├── forge-wire ──── Connect to backend
      ├── forge-storefront ── App Store listing
-     └── forge-ship ──── Submission prep
+     ├── forge-ship ──── Submission prep
+     └── forge-health ── Pipeline health audit
 ```
 
-## Skills (10 plugins)
+## Skills (11 plugins)
 
 All installable from the [Forge Marketplace](https://github.com/sakhnenkoff/forge-marketplace):
 
@@ -76,12 +77,13 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 | `forge-ux` | `claude plugin install forge-ux@forge-marketplace` | Feature experience design — user journeys, states, aha moment |
 | `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, Playwright + Stitch research |
 | `forge-voice` | `claude plugin install forge-voice@forge-marketplace` | Content strategy — app voice, all copy, tonal consistency |
-| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build, polish, verify |
+| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build, verify |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold View + ViewModel pairs |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Project setup — rename, brand, configure |
 | `forge-storefront` | `claude plugin install forge-storefront@forge-marketplace` | App Store listing — screenshots, description, keywords |
 | `forge-wire` | `claude plugin install forge-wire@forge-marketplace` | Backend — Firebase, Supabase, REST, GraphQL, CloudKit |
 | `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | Submission prep — privacy, accessibility, metadata |
+| `forge-health` | `claude plugin install forge-health@forge-marketplace` | Pipeline health — contradictions, stale refs, drift |
 
 ## Optional Enhancements
 

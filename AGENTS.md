@@ -349,6 +349,66 @@ After building a screen, code is scanned for these patterns. Violations require 
 
 ---
 
+## Quality Floor vs Style Freedom
+
+### Quality Floor (Non-Negotiable — ensures professional quality)
+- DS typography tokens — `.display()`, `.titleLarge()`, etc., never `Font.system(size:)`
+- Semantic colors — `Color.themePrimary`, `.textPrimary`, etc., never `Color.green`/`Color.black`
+- DS components — `DSButton`, `DSCard`, `DSScreen`, etc., never raw `Button()`/`TextField()`
+- Entrance animation — some intentional entrance (`StaggeredVStack`, matched geometry, custom transitions — whatever the blueprint specifies)
+- Visual hierarchy — one dominant element per screen, at least 3 text sizes
+- Spacing rhythm — spacing varies between sections, not uniform padding everywhere
+- Depth variation — multiple surface levels, not everything flat
+- Error handling — `Toast` for errors, `ContentUnavailableView` for empty states
+
+### Style Freedom (Comes from the Blueprint — differs per app)
+These are NOT enforced as rules. They come from the human-approved `design-system.md`:
+- Background treatment (AmbientBackground, solid, gradient, image — blueprint decides)
+- Surface style (borderless, bordered, glass, shadow — blueprint decides)
+- Color temperature (warm, cool, neutral — blueprint decides)
+- Animation personality (bouncy, smooth, snappy — blueprint decides)
+- CTA placement (floating, inline, bottom bar — blueprint decides)
+- Component emphasis (which components to use where — blueprint decides)
+
+---
+
+## Template Screens as Quality Reference
+
+The template has polished screens (Onboarding, Home, Settings, Paywall).
+READ them to understand the QUALITY BAR (animation timing, component usage,
+state management, transitions). Then REPLACE the template's style choices
+with your blueprint's style choices. The template shows HOW WELL to build.
+The blueprint shows WHAT to build.
+
+### How to Customize Onboarding
+The template onboarding at `{App}/Features/Onboarding/` demonstrates the quality bar:
+- `OnboardingView.swift` — flow container with entrance animation
+- `OnboardingStep.swift` — individual step rendering with DS components
+- `OnboardingController.swift` — flow state machine with proper state management
+Read these files to understand the QUALITY of implementation. Then implement your
+blueprint's specific design (different animations, components, layout are fine).
+Key patterns to preserve: flow state machine, DS component usage, toast support.
+
+### How to Customize Home/Dashboard
+The template home at `{App}/Features/Home/` demonstrates:
+- `HomeView.swift` — section-based layout with hero element
+- `HomeViewModel.swift` — skeleton loading, mock data wiring, analytics events
+Key patterns to preserve: section rhythm, skeleton loading, DS component usage.
+
+### How to Customize Settings
+The template settings at `{App}/Features/Settings/` demonstrates:
+- `SettingsView.swift` — grouped list with `DSListCard` + `DSListRow`
+- Destructive actions with confirmation, version display
+Key patterns to preserve: grouped row structure, destructive action handling.
+
+### How to Customize Paywall
+The template paywall at `{App}/Features/Paywall/` demonstrates:
+- `PaywallView.swift` — value props, plan selection, CTA placement
+- `PaywallViewModel.swift` — purchase flow state management
+Key patterns to preserve: value hierarchy, plan selection pattern, purchase flow.
+
+---
+
 ## Design System Override Priority
 
 When building screens, `.forge/design-system.md` is the design authority:

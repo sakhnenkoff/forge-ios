@@ -74,7 +74,7 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 |-------|---------|---------|
 | `forge-app` | `claude plugin install forge-app@forge-marketplace` | Orchestrator: idea → running app |
 | `forge-ux` | `claude plugin install forge-ux@forge-marketplace` | Feature experience design — user journeys, states, aha moment |
-| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, Playwright research |
+| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, Playwright + Stitch research |
 | `forge-voice` | `claude plugin install forge-voice@forge-marketplace` | Content strategy — app voice, all copy, tonal consistency |
 | `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build, polish, verify |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold View + ViewModel pairs |
@@ -93,6 +93,7 @@ Auto-detected and integrated when installed. Not required — the pipeline has i
 | **Ralph Loop** | `claude plugin install ralph-loop@claude-plugins-official` | Continuous build-test-fix iteration |
 | **Axiom** | Available via Claude Code | Deep iOS auditing (accessibility, security, memory, energy) |
 | **Playwright** | `claude plugin install playwright@claude-plugins-official` | Visual design research (Mobbin, Dribbble, Behance) |
+| **Stitch MCP** | [stitch-mcp-auto](https://github.com/GreenSheep01201/stitch-mcp-auto) | AI-generated iOS mockups from text prompts — complements Playwright |
 | **Marketing Skills** | [Install guide](https://github.com/coreyhaines31/marketingskills) | 29 marketing skills — pricing, CRO, copywriting, launch strategy, SEO |
 
 Marketing Skills are auto-detected by forge-app (pricing), forge-feature (paywall/onboarding CRO), forge-voice (copywriting), and forge-storefront (launch strategy).

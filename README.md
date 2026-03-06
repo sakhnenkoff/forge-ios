@@ -47,12 +47,14 @@ Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
 
      Blueprint → Approved (provisional — revised by research)
 
-     Step 1: Project Setup ─────── forge-workspace
-     Step 2: Feature Design ────── forge-ux
-     Step 3: Design System ─────── forge-craft + forge-eye
-     Step 4: Voice & Content ───── forge-voice
+     Step 1: Project Setup ──────── forge-workspace
+     Step 2: Feature Design ─────── forge-ux
+     Step 3a: Design Research ───── forge-craft (explore directions with user)
+     Step 3b: Design System ─────── forge-craft (write blueprints after approval)
+     Step 3c: Apply Theme
+     Step 4: Voice & Content ────── forge-voice
      Step 5: Data Models
-     Step 6: Screen Execution ──── forge-feature (per screen)
+     Step 6: Screen Execution ───── forge-feature (per screen)
      Step 7: Navigation Wiring
      Step 8: Final Verification
 
@@ -75,9 +77,9 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 |-------|---------|---------|
 | `forge-app` | `claude plugin install forge-app@forge-marketplace` | Orchestrator: idea → running app |
 | `forge-ux` | `claude plugin install forge-ux@forge-marketplace` | Feature experience design — user journeys, states, aha moment |
-| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Mood-driven visual design — 7 craft dimensions, forge-browse agent + Stitch research |
+| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Design research (Phase A: direction variants) + design system (Phase B: blueprints) |
 | `forge-voice` | `claude plugin install forge-voice@forge-marketplace` | Content strategy — app voice, all copy, tonal consistency |
-| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build, verify |
+| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build & verify, Impeccable auto-critique |
 | `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold View + ViewModel pairs |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Project setup — rename, brand, configure |
 | `forge-storefront` | `claude plugin install forge-storefront@forge-marketplace` | App Store listing — screenshots, description, keywords |
@@ -95,7 +97,8 @@ Auto-detected and integrated when installed. Not required — the pipeline has i
 | **Ralph Loop** | `claude plugin install ralph-loop@claude-plugins-official` | Continuous build-test-fix iteration |
 | **Axiom** | Available via Claude Code | Deep iOS auditing (accessibility, security, memory, energy) |
 | **Playwright** | `claude plugin install playwright@claude-plugins-official` | Visual design research (Mobbin, Dribbble, Behance) |
-| **Stitch MCP** | [stitch-mcp-auto](https://github.com/GreenSheep01201/stitch-mcp-auto) | AI-generated iOS mockups from text prompts — complements Playwright |
+| **Stitch MCP** | [stitch-mcp-auto](https://github.com/GreenSheep01201/stitch-mcp-auto) | AI-generated direction variants + iOS mockups — complements Playwright |
+| **Impeccable** | `claude plugin install impeccable@claude-plugins-official` | Automated design critique + polish — auto-fixes spacing, hierarchy, consistency |
 | **Marketing Skills** | [Install guide](https://github.com/coreyhaines31/marketingskills) | 29 marketing skills — pricing, CRO, copywriting, launch strategy, SEO |
 
 Marketing Skills are auto-detected by forge-app (pricing), forge-feature (paywall/onboarding CRO), forge-voice (copywriting), and forge-storefront (launch strategy).
@@ -121,8 +124,9 @@ forge/
 │   ├── feature-specs/        # Feature specs from forge-ux
 │   ├── voice-guide.md        # Voice from forge-voice
 │   ├── design-system.md      # DS decisions (synthesis, blueprints, departures)
+│   ├── design-decisions.md   # Phase A summary (direction chosen, why, what rejected)
 │   ├── design-references/    # Screenshots from reference apps + index.md
-│   └── progress.md           # Status + issues log
+│   └── progress.md           # Status + issues log (includes Build Config)
 └── Forge.xcodeproj           # 3 schemes: Mock, Development, Production
 ```
 

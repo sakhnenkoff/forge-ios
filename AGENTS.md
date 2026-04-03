@@ -98,7 +98,7 @@ List(viewModel.habits) { habit in
 - Static screens (Settings, About, Onboarding, Paywall) → no loading, no states
 - Detail views receiving data from parent → no loading (data already available)
 
-**Empty states:** `ContentUnavailableView` with voice-guide copy from `.forge/voice-guide.md`.
+**Empty states:** `ContentUnavailableView` with copy from `.forge/DESIGN.md` (Section 8 — Voice & Copy).
 **Errors:** `Toast.error()` — never replace content with an error screen.
 **Refresh:** `.refreshable { }` — existing content stays visible during refresh.
 
@@ -170,7 +170,7 @@ extension Habit {
 4. If manager exists → wire ViewModel to `services.{feature}Manager`, use skeleton loading pattern
 5. View: `DSScreen` root, environment injections, `.toast()`, `.onAppear()`
 6. Wire navigation: add case to `AppTab`/`AppRoute`/`AppSheet`, wire destination view
-7. Read `.forge/design-system.md` for Component Strategy and Screen Blueprints before choosing components
+7. Read `.forge/DESIGN.md` for Component Strategy and Screen Blueprints before choosing components
 
 ### Adding a Feature Manager
 
@@ -281,7 +281,7 @@ Uses [AppRouter](https://github.com/Dimillian/AppRouter).
 
 ## DS Component Reference
 
-These are the TEMPLATE defaults. When `.forge/design-system.md` Component Strategy says COMPOSE or CREATE a component, that decision overrides what's listed here.
+These are the TEMPLATE defaults. When `.forge/DESIGN.md` Component Strategy says COMPOSE or CREATE a component, that decision overrides what's listed here.
 
 ### Tokens
 
@@ -317,7 +317,7 @@ These are the TEMPLATE defaults. When `.forge/design-system.md` Component Strate
 
 ### Craft Patterns
 
-Available patterns — use what serves the app's mood (from `.forge/design-system.md`):
+Available patterns — use what serves the app's mood (from `.forge/DESIGN.md`):
 
 - **Floating CTAs**: `safeAreaInset(edge: .bottom)` + `.bottomFade()`
 - **Staggered entrances**: `StaggeredVStack` with `.staggeredAppearance(index:)`
@@ -362,7 +362,7 @@ After building a screen, code is scanned for these patterns. Violations require 
 - Error handling — `Toast` for errors, `ContentUnavailableView` for empty states
 
 ### Style Freedom (Comes from the Blueprint — differs per app)
-These are NOT enforced as rules. They come from the human-approved `design-system.md`:
+These are NOT enforced as rules. They come from the human-approved `DESIGN.md`:
 - Background treatment (AmbientBackground, solid, gradient, image — blueprint decides)
 - Surface style (borderless, bordered, glass, shadow — blueprint decides)
 - Color temperature (warm, cool, neutral — blueprint decides)
@@ -411,11 +411,11 @@ Key patterns to preserve: value hierarchy, plan selection pattern, purchase flow
 
 ## Design System Override Priority
 
-When building screens, `.forge/design-system.md` is the design authority:
+When building screens, `.forge/DESIGN.md` is the design authority:
 
 1. **Component Strategy** (KEEP/COMPOSE/CREATE) overrides the component table above
 2. **Screen Blueprints** override generic layout patterns
 3. **Design Synthesis** overrides default token values
 4. **Template Departures** list what NOT to do from the defaults above
 
-This file provides architecture. `.forge/design-system.md` provides design. When they conflict, design-system.md wins.
+This file provides architecture. `.forge/DESIGN.md` provides design. When they conflict, DESIGN.md wins.

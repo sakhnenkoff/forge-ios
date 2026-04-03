@@ -2,9 +2,9 @@
 
 **Build unique iOS apps from an idea — not from a template that looks like a template.**
 
-Forge is an iOS app template with a Claude Code skill pipeline that takes you from "I have an app idea" to a running, polished app with its own visual identity, voice, and feature design. 11 skills handle everything: feature UX, design system customization, content strategy, screen building, backend connection, App Store listing, submission, and pipeline health checks.
+Forge is an iOS app template with a Claude Code skill pipeline that takes you from "I have an app idea" to a running, polished app with its own visual identity and design. 6 skills handle everything: spec conversation, design contract, screen building with quality evaluation, backend connection, App Store listing, and submission prep.
 
-The template provides Swift architecture (MVVM, navigation, design system tokens, component structure). The pipeline researches what your specific app needs and customizes everything — tokens, components, backgrounds, copy, interactions — so the result looks like YOUR app, not like every other Forge project.
+The template provides Swift architecture (MVVM, navigation, design system tokens, component structure). The pipeline produces a spec (`spec.json`) and design contract (`DESIGN.md`), then builds each feature through a Generator + Judge loop — so the result looks like YOUR app, not like every other Forge project.
 
 ## Quick Start
 
@@ -37,35 +37,35 @@ Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
 ```
 /forge:app → Describe your idea
 
-     Spec Conversation
-     ├── What does it do?
-     ├── Who is it for?
-     ├── How does it make money?
-     ├── What should it feel like?
-     ├── Visual references?
-     └── Then: screens, data, flows (informed by above)
+     Spec Conversation (5 adaptive questions)
+     ├── Pitch + target
+     ├── Monetization  
+     ├── Reference apps
+     ├── Core screens + flows
+     └── Brand direction
 
-     Blueprint → Approved (provisional — revised by research)
+     Contract Generation
+     ├── spec.json (features, models, navigation)
+     └── DESIGN.md (design contract — colors, typography, components, copy)
 
-     Step 1: Project Setup ──────── forge-workspace
-     Step 2: Feature Design ─────── forge-ux
-     Step 3a: Design Research ───── forge-craft (explore directions with user)
-     Step 3b: Design System ─────── forge-craft (write blueprints after approval)
-     Step 3c: Apply Theme
-     Step 4: Voice & Content ────── forge-voice
-     Step 5: Data Models
-     Step 6: Screen Execution ───── forge-feature (per screen)
-     Step 7: Navigation Wiring
-     Step 8: Final Verification
+     Sprint Loop (per feature)
+     ├── Generator builds screen from DESIGN.md
+     ├── Judge evaluates (Design Quality, Originality, Craft, Architecture)
+     ├── Fix loop (if Judge fails, max 2 rounds)
+     └── Human approves screenshot
+
+     Finalization
+     ├── Cross-screen consistency check
+     ├── Navigation wiring verification
+     └── Completion report
 
      Post-build:
      ├── forge-wire ──── Connect to backend
      ├── forge-storefront ── App Store listing
-     ├── forge-ship ──── Submission prep
-     └── forge-health ── Pipeline health audit
+     └── forge-ship ──── Submission prep
 ```
 
-## Skills (11 plugins)
+## Skills (6 plugins)
 
 All installable from the [Forge Marketplace](https://github.com/sakhnenkoff/forge-marketplace):
 
@@ -75,17 +75,12 @@ claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
 
 | Skill | Install | Purpose |
 |-------|---------|---------|
-| `forge-app` | `claude plugin install forge-app@forge-marketplace` | Orchestrator: idea → running app |
-| `forge-ux` | `claude plugin install forge-ux@forge-marketplace` | Feature experience design — user journeys, states, aha moment |
-| `forge-craft` | `claude plugin install forge-craft@forge-marketplace` | Design research (Phase A: direction variants) + design system (Phase B: blueprints) |
-| `forge-voice` | `claude plugin install forge-voice@forge-marketplace` | Content strategy — app voice, all copy, tonal consistency |
-| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Per-screen pipeline — scaffold, build & verify, Impeccable auto-critique |
-| `forge-screens` | `claude plugin install forge-screens@forge-marketplace` | Scaffold View + ViewModel pairs |
+| `forge-app` | `claude plugin install forge-app@forge-marketplace` | Planner — idea → spec.json + DESIGN.md → sprint orchestration |
+| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Feature pipeline with forge-build (Generator) + forge-judge (Evaluator) |
 | `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Project setup — rename, brand, configure |
-| `forge-storefront` | `claude plugin install forge-storefront@forge-marketplace` | App Store listing — screenshots, description, keywords |
 | `forge-wire` | `claude plugin install forge-wire@forge-marketplace` | Backend — Firebase, Supabase, REST, GraphQL, CloudKit |
 | `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | Submission prep — privacy, accessibility, metadata |
-| `forge-health` | `claude plugin install forge-health@forge-marketplace` | Pipeline health — contradictions, stale refs, drift |
+| `forge-storefront` | `claude plugin install forge-storefront@forge-marketplace` | App Store listing — screenshots, description, keywords |
 
 ## Optional Enhancements
 
@@ -94,14 +89,12 @@ Auto-detected and integrated when installed. Not required — the pipeline has i
 | Plugin | Install | What It Adds |
 |--------|---------|-------------|
 | **Superpowers** | `claude plugin install superpowers@claude-plugins-official` | Brainstorming, planning, code review |
-| **Ralph Loop** | `claude plugin install ralph-loop@claude-plugins-official` | Continuous build-test-fix iteration |
 | **Axiom** | Available via Claude Code | Deep iOS auditing (accessibility, security, memory, energy) |
 | **Playwright** | `claude plugin install playwright@claude-plugins-official` | Visual design research (Mobbin, Dribbble, Behance) |
-| **Stitch MCP** | [stitch-mcp-auto](https://github.com/GreenSheep01201/stitch-mcp-auto) | AI-generated direction variants + iOS mockups — complements Playwright |
 | **Impeccable** | `claude plugin install impeccable@claude-plugins-official` | Automated design critique + polish — auto-fixes spacing, hierarchy, consistency |
 | **Marketing Skills** | [Install guide](https://github.com/coreyhaines31/marketingskills) | 29 marketing skills — pricing, CRO, copywriting, launch strategy, SEO |
 
-Marketing Skills are auto-detected by forge-app (pricing), forge-feature (paywall/onboarding CRO), forge-voice (copywriting), and forge-storefront (launch strategy).
+Marketing Skills are auto-detected by forge-app (pricing), forge-feature (paywall/onboarding CRO), and forge-storefront (launch strategy).
 
 ## Architecture
 
@@ -118,23 +111,17 @@ forge/
 ├── scripts/
 │   └── new-app.sh            # Create new project from template
 ├── AGENTS.md                 # All architecture conventions
-├── .forge/                   # Project state (created during build)
-│   ├── blueprint.md          # Blueprint (revised by research)
-│   ├── mood.md               # Design mood + direction
-│   ├── feature-specs/        # Feature specs from forge-ux
-│   ├── voice-guide.md        # Voice from forge-voice
-│   ├── design-system.md      # DS decisions (synthesis, blueprints, departures)
-│   ├── design-decisions.md   # Phase A summary (direction chosen, why, what rejected)
-│   ├── design-references/    # Screenshots from reference apps + index.md
-│   └── progress.md           # Status + issues log (includes Build Config)
+├── .forge/
+│   ├── spec.json             # What to build (features, models, navigation, status)
+│   └── DESIGN.md             # How it should look (design contract — colors, typography, components, do's/don'ts, copy)
 └── Forge.xcodeproj           # 3 schemes: Mock, Development, Production
 ```
 
-The `.forge/` directory is created during the build and preserves all decisions across sessions. `progress.md` includes an issues log that tracks build failures, user feedback, and design changes — patterns across builds drive pipeline improvements.
+The `.forge/` directory is created during the build and preserves all decisions across sessions.
 
 ### Design System
 
-The DS provides code architecture — token system, component APIs, modifier patterns. The visual output is customized per app in Step 3 (Design System) based on mood and research.
+The DS provides code architecture — token system, component APIs, modifier patterns. The visual output is customized per app based on the design contract in `.forge/DESIGN.md`.
 
 ```swift
 // Brand color drives the entire token system

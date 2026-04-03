@@ -131,7 +131,7 @@ func delete(_ habit: Habit) async {
 - Validation errors → inline field errors (not toast)
 - Save failures → toast with retry guidance
 - Never show raw error messages (`error.localizedDescription` only for debug)
-- Use voice-guide error copy when available
+- Use DESIGN.md Section 8 (Voice & Copy) error copy when available
 
 ### Mock Data on Models
 
@@ -413,7 +413,7 @@ Key patterns to preserve: value hierarchy, plan selection pattern, purchase flow
 
 When building screens, `.forge/DESIGN.md` is the design authority:
 
-1. **Component Strategy** (KEEP/COMPOSE/CREATE) overrides the component table above
+1. **Component Strategy** (KEEP/COMPOSE/CREATE/SKIP) overrides the component table above
 2. **Screen Blueprints** override generic layout patterns
 3. **Design Synthesis** overrides default token values
 4. **Template Departures** list what NOT to do from the defaults above

@@ -1,5 +1,7 @@
 # Forge Pipeline Redesign: Planner-Generator-Evaluator Architecture
 
+> **Note (2026-04-04):** This spec describes the v2 architecture. See `2026-04-04-pipeline-visual-design-phase-design.md` for the v3 evolution which adds: forge-design skill (required visual design phase), code-only Generator, 7-criteria Judge, centralized build verification, agent teams, and `/forge:continue` session handoff.
+
 ## Problem Statement
 
 The current Forge pipeline has 11 skills totaling 7,000+ lines, 10 sequential steps, and triple-layer agent delegation. It produces mediocre iOS apps while burning excessive tokens. Research across Anthropic, Lovable, Bolt, v0, Microsoft, and Google identifies three root causes:
@@ -8,27 +10,29 @@ The current Forge pipeline has 11 skills totaling 7,000+ lines, 10 sequential st
 2. **Context rot** — Agent coherence degrades after 20-30 turns. A 10-step sequential pipeline with 7,000 lines of instructions drowns signal in noise.
 3. **No independent critic** — Single agents are sycophantic. The pipeline has no skeptical evaluator, so mediocre output passes every gate.
 
-## Architecture: Three Skills + One Contract
+## Architecture: Three Skills + One Contract (v2)
 
 ```
 Current (11 skills, ~7,000 lines):
   forge-app → general-purpose → forge-ux/craft/voice/screens → forge-browse/craft-agent/verifier
 
 New (3 core skills, ~900 lines + DESIGN.md contract):
-  forge-app (Planner)     ~400 lines
+  forge-app (Orchestrator)     ~400 lines
   forge-build (Generator) ~300 lines  
   forge-judge (Evaluator) ~200 lines
   DESIGN.md format        ~100 lines (format spec, not a skill)
 ```
 
+> **v3 update:** This has been superseded by a 4-skill architecture. See the v3 spec for details.
+
 ### What Happens to the Other Skills
 
 | Old Skill | Lines | Fate | Rationale |
 |-----------|-------|------|-----------|
-| forge-app | 1,162 | **Rewrite** → Planner | Streamlined: spec conversation + DESIGN.md generation + sprint orchestration |
-| forge-ux | 286 | **Absorbed** → Planner | Feature design is part of spec creation, not a separate step |
-| forge-craft | 1,093 | **Split** → Planner + DESIGN.md | Research/direction → Planner. Build instructions → DESIGN.md contract. No separate skill. |
-| forge-voice | 274 | **Absorbed** → Planner | Voice/copy goes directly into DESIGN.md voice section |
+| forge-app | 1,162 | **Rewrite** → Orchestrator | Streamlined: spec conversation + DESIGN.md generation + sprint orchestration |
+| forge-ux | 286 | **Absorbed** → Orchestrator | Feature design is part of spec creation, not a separate step |
+| forge-craft | 1,093 | **Split** → Orchestrator + DESIGN.md | Research/direction → Orchestrator. Build instructions → DESIGN.md contract. No separate skill. |
+| forge-voice | 274 | **Absorbed** → Orchestrator | Voice/copy goes directly into DESIGN.md voice section |
 | forge-screens | 351 | **Absorbed** → Generator | Scaffolding is part of building, not a separate step |
 | forge-feature | 515 | **Replaced** by Generator + Judge loop | The sprint loop replaces the pipeline |
 | forge-craft-agent | 215 | **Replaced** by Generator | Simplified mechanical builder |
@@ -53,7 +57,7 @@ forge-app (orchestrator context)
 
 **New:** One layer of delegation per screen build.
 ```
-forge-app (Planner — runs in main context)
+forge-app (Orchestrator — runs in main context)
   ├─ Task(forge-build) — reads AGENTS.md + DESIGN.md + spec.json feature entry
   └─ Task(forge-judge) — reads DESIGN.md + screenshot + created files
 ```
@@ -62,26 +66,26 @@ No intermediate general-purpose agents. No skill-within-skill invocation. Direct
 
 ---
 
-## Skill 1: The Planner (forge-app)
+## Skill 1: The Orchestrator (forge-app)
 
 ### Purpose
 Takes an app idea → produces a complete build contract (spec.json + DESIGN.md) through conversation with the user. Then orchestrates the sprint loop.
 
 ### Phase 1: Spec Conversation (~5 questions, adaptive)
 
-The Planner asks questions to understand the app. Unlike the current 8-question sequence + pre-blueprint research + blueprint generation, this is streamlined:
+The Orchestrator asks questions to understand the app. Unlike the current 8-question sequence + pre-blueprint research + blueprint generation, this is streamlined:
 
 1. **Pitch + Target** — "What does your app do and who is it for?"
 2. **Monetization** — "How does it make money?" (Free / Freemium / Subscription)
 3. **Reference apps** — "Name 1-2 apps whose feel you want to match."
-4. **Core screens + flows** — Planner proposes screens based on answers. User confirms/adjusts.
-5. **Brand direction** — Planner suggests brand color + mood based on domain and references. User confirms.
+4. **Core screens + flows** — Orchestrator proposes screens based on answers. User confirms/adjusts.
+5. **Brand direction** — Orchestrator suggests brand color + mood based on domain and references. User confirms.
 
 If the user provides all context upfront, skip to spec generation. No re-asking what's already answered.
 
 ### Phase 2: Contract Generation
 
-The Planner produces two artifacts:
+The Orchestrator produces two artifacts:
 
 **`spec.json`** — The technical contract:
 ```json
@@ -143,7 +147,7 @@ After all features are built:
 3. Final build verification
 4. Completion report
 
-### What the Planner Does NOT Do
+### What the Orchestrator Does NOT Do
 - No browsing (forge-browse is an optional tool, not part of the core pipeline)
 - No Stitch mockup generation
 - No UI Pro Max queries
@@ -153,12 +157,12 @@ These tools can optionally inform the DESIGN.md during Phase 2 if available, but
 
 ### Optional Enhancements (detected, not required)
 
-If available, the Planner uses these during Phase 2 to inform DESIGN.md:
+If available, the Orchestrator uses these during Phase 2 to inform DESIGN.md:
 - **Playwright** — browse 2-3 reference apps for visual inspiration
 - **Stitch MCP** — generate 1-2 direction mockups
 - **Marketing skills** — inform onboarding/paywall copy in DESIGN.md
 
-If none are available, the Planner writes DESIGN.md from the spec conversation alone.
+If none are available, the Orchestrator writes DESIGN.md from the spec conversation alone.
 
 ---
 
@@ -343,7 +347,7 @@ Independent skeptical evaluator. Runs in a SEPARATE context from the Generator. 
 
 ### What It Reads
 - `.forge/DESIGN.md` — the contract to grade against
-- Screenshot of the built screen (provided by Planner from Generator's output)
+- Screenshot of the built screen (provided by Orchestrator from Generator's output)
 - The View and ViewModel files that were created/modified
 
 ### Grading Criteria
@@ -412,7 +416,7 @@ FIXES REQUIRED (if FAIL):
 This is how the three skills work together for each feature:
 
 ```
-Planner (main context):
+Orchestrator (main context):
   for each feature in spec.json where status == "pending":
     
     1. GENERATE
@@ -476,7 +480,7 @@ Dependent features must be sequential (e.g., detail screen depends on list scree
 
 | Agent | Reads | Does NOT Read | Estimated Context |
 |-------|-------|---------------|-------------------|
-| Planner | User conversation, spec.json | Code files, AGENTS.md | ~2K tokens |
+| Orchestrator | User conversation, spec.json | Code files, AGENTS.md | ~2K tokens |
 | Generator | AGENTS.md (~400 lines relevant), DESIGN.md (~150 lines), spec.json feature (~20 lines), existing files being modified (~200 lines) | Other features, design references, progress history | ~4K tokens |
 | Judge | DESIGN.md (~150 lines), screenshot, created files (~300 lines) | AGENTS.md, spec.json, conversation history | ~2K tokens |
 
@@ -553,7 +557,7 @@ Everything the Generator and Judge need is in these two files. No cross-referenc
 - Replace forge-craft-agent
 - Test: build one screen with DESIGN.md + AGENTS.md, have Judge evaluate
 
-### Phase 4: The Planner (forge-app)
+### Phase 4: The Orchestrator (forge-app)
 - Rewrite the orchestrator
 - Streamlined spec conversation
 - DESIGN.md generation
@@ -576,9 +580,9 @@ Everything the Generator and Judge need is in these two files. No cross-referenc
 
 1. **Judge has NO Write/Edit tools.** The Judge diagnoses, the Generator fixes. This adds a round-trip but maintains separation of concerns. Research shows that combining generation and evaluation in the same agent causes sycophantic convergence. The round-trip cost is worth the quality gain.
 
-2. **Planner generates DESIGN.md, human approves.** The Planner generates the full DESIGN.md from the spec conversation. The human reviews and can edit any section before building starts. This is faster than having the human write from scratch, and the human gate catches bad design decisions.
+2. **Orchestrator generates DESIGN.md, human approves.** The Orchestrator generates the full DESIGN.md from the spec conversation. The human reviews and can edit any section before building starts. This is faster than having the human write from scratch, and the human gate catches bad design decisions.
 
-3. **forge-browse is killed.** The DESIGN.md contract must be self-sufficient. If the user wants visual references, they provide screenshots directly. No automated browsing step — it burned tokens for inconsistent results.
+3. **~~forge-browse is killed.~~ Visual references are REQUIRED (v3).** The v2 spec made references optional. The Kova build (2026-04-04) proved this was wrong — without visual targets, the pipeline produces generic output. In v3, forge-design runs Playwright → Mobbin as a required phase before DESIGN.md generation. The DESIGN.md contract is informed by approved mockups, not generated from text alone.
 
 4. **Impeccable is optional and runs inside the Judge.** If `impeccable:critique` is available, the Judge invokes it as part of the Craft grading criterion. If not, the Judge grades Craft using its own analysis. Impeccable supplements the Judge; it doesn't replace it.
 

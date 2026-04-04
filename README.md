@@ -37,12 +37,18 @@ Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
 ```
 /forge:app → Describe your idea
 
-     Spec Conversation (5 adaptive questions)
+     Spec Conversation (6 adaptive questions)
      ├── Pitch + target
-     ├── Monetization  
+     ├── Monetization + CRO (paywall/onboarding optimization)
      ├── Reference apps
      ├── Core screens + flows
-     └── Brand direction
+     ├── Color + mood direction
+     └── Brand confirmation
+
+     Visual Design (3 paths)
+     ├── Full: references + mockups + direction review
+     ├── References-only: gather refs, write DESIGN.md from conversation (recommended)
+     └── Conversation-only: no external tools, fastest
 
      Contract Generation
      ├── spec.json (features, models, navigation)

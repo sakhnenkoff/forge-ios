@@ -281,7 +281,10 @@ Uses [AppRouter](https://github.com/Dimillian/AppRouter).
 
 ## DS Component Reference
 
-These are the TEMPLATE defaults. When `.forge/DESIGN.md` Component Strategy says COMPOSE or CREATE a component, that decision overrides what's listed here.
+<!-- TAILORED BY PLANNER: Components with SKIP verdict in DESIGN.md are removed or marked during setup. -->
+
+These are the TEMPLATE defaults. Components listed here may be removed or marked as skipped
+when the Planner tailors AGENTS.md to match the app's DESIGN.md.
 
 ### Tokens
 
@@ -317,6 +320,8 @@ These are the TEMPLATE defaults. When `.forge/DESIGN.md` Component Strategy says
 
 ### Craft Patterns
 
+<!-- TAILORED BY PLANNER: Patterns banned in DESIGN.md Don'ts are removed during setup. -->
+
 Available patterns — use what serves the app's mood (from `.forge/DESIGN.md`):
 
 - **Floating CTAs**: `safeAreaInset(edge: .bottom)` + `.bottomFade()`
@@ -347,9 +352,13 @@ After building a screen, code is scanned for these patterns. Violations require 
 - No `Font.system(size:` — use DS typography (`.display()`, `.titleLarge()`, `.bodyMedium()`, etc.)
 - No `Color(red:` / `Color(#` / `Color(.sRGB` — use semantic colors (`.themePrimary`, `.textPrimary`, etc.)
 
+<!-- TAILORED BY PLANNER: DESIGN.md Section 6 Don'ts are appended here as additional checks during setup. -->
+
 ---
 
 ## Quality Floor vs Style Freedom
+
+<!-- TAILORED BY PLANNER: Quality Floor items that conflict with DESIGN.md are updated during setup. -->
 
 ### Quality Floor (Non-Negotiable — ensures professional quality)
 - DS typography tokens — `.display()`, `.titleLarge()`, etc., never `Font.system(size:)`
@@ -373,6 +382,8 @@ These are NOT enforced as rules. They come from the human-approved `DESIGN.md`:
 ---
 
 ## Template Screens as Quality Reference
+
+<!-- TAILORED BY PLANNER: This entire section is removed during setup. Template screens are replaced — DESIGN.md Screen Blueprints are the quality reference. -->
 
 The template has polished screens (Onboarding, Home, Settings, Paywall).
 READ them to understand the QUALITY BAR (animation timing, component usage,
@@ -410,6 +421,8 @@ Key patterns to preserve: value hierarchy, plan selection pattern, purchase flow
 ---
 
 ## Design System Override Priority
+
+<!-- TAILORED BY PLANNER: This entire section is removed during setup. After tailoring, AGENTS.md and DESIGN.md don't conflict. -->
 
 When building screens, `.forge/DESIGN.md` is the design authority:
 

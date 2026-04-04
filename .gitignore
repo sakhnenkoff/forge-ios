@@ -59,3 +59,10 @@ fastlane/report.json
 
 # Local configuration with secrets (NEVER commit these)
 *.xcconfig.local
+
+# Forge build artifacts
+.forge/
+
+# Superpowers specs and brainstorm sessions
+docs/superpowers/specs/
+.superpowers/

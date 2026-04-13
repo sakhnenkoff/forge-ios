@@ -3,12 +3,34 @@
 A DESIGN.md is a prescriptive design contract that AI build agents read to produce consistent, non-generic UI. It replaces vague design aspirations ("make it feel clean") with exact tokens, explicit bans, and greppable constraints that LLMs follow reliably.
 
 **Who reads this file:**
-- **Orchestrator (forge-app)** — generates a DESIGN.md during Phase 2d
+- **Orchestrator (forge-app)** — generates a DESIGN.md during Phase 2
 - **Visual Design (forge-design)** — informs mockup generation and design DNA extraction
 - **Generator (forge-build)** — reads DESIGN.md before writing every screen
 - **Judge (forge-judge)** — grades output against DESIGN.md rules
 
 **Key principle:** Constraints beat aspirations. "Don't use StaggeredVStack" works. "Make the entrance feel natural" doesn't. Every rule in a DESIGN.md must be machine-verifiable — greppable in code, visible in screenshots, or checkable against a token list.
+
+---
+
+## Stitch-to-Forge Translation Mapping
+
+awesome-design-md (via `npx getdesign`) produces web-native DESIGN.md files in the **Stitch 9-section format**. forge-design translates these into the **Forge 9-section format** for iOS. The mapping:
+
+| # | Forge Section (Output) | Stitch Section (Input) | Translation |
+|---|----------------------|----------------------|-------------|
+| 1 | Mood | Visual Theme & Atmosphere | Condense to 2 lines max. Extract mood + reference apps. |
+| 2 | Color Palette | Color Palette & Roles | Map hex values to DS semantic tokens. Add light+dark pairs. |
+| 3 | Typography | Typography Rules | Map web fonts → SF Pro variants. Map sizes → DS text styles. |
+| 4 | Component Rules | Component Stylings | Map web components → DS components with KEEP/COMPOSE/CREATE/SKIP verdicts. |
+| 5 | Layout Principles | Layout Principles | Map CSS spacing → DSSpacing tokens. Map border-radius → DSRadii. |
+| 6 | Depth & Elevation | Depth & Elevation | Map CSS shadows → DSShadows tokens. Declare elevation strategy. |
+| 7 | Do's and Don'ts | Do's and Don'ts | Adapt web patterns to iOS. Make every Don't greppable. |
+| 8 | Screen Blueprints | *(no equivalent)* | Forge-native. One blueprint per screen from spec.json. |
+| 9 | Voice & Copy | *(no equivalent)* | Forge-native. Every user-facing string. |
+
+**Dropped Stitch sections:**
+- "Responsive Behavior" — not relevant for iOS (single device at a time)
+- "Agent Prompt Guide" — the entire DESIGN.md IS the agent guide
 
 ---
 
@@ -223,7 +245,33 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 | `DSRadii.lg` | 16pt |
 | `DSRadii.xl` | 20pt |
 
-**Available DS shadows:**
+**Rules:**
+- Maximum 5 bullets
+- Every bullet must reference a DS spacing token by name AND numeric value
+- No custom spacing values — use only DSSpacing tokens
+- If the mood calls for tight density, prefer smaller tokens (xs, sm, smd); if airy, prefer larger (lg, xl, xxl)
+- See Section 6 for shadow and elevation tokens
+
+---
+
+## Section 6: Depth & Elevation
+
+**Purpose:** Define the shadow and elevation strategy for the app. Maps web reference depth systems (e.g., Revolut's zero-shadow philosophy, Linear's luminance stepping) to DS shadow tokens. Prevents inconsistent elevation across screens.
+
+**Format:**
+
+```markdown
+## Depth & Elevation
+
+| Level | Treatment | Token | Use |
+|-------|-----------|-------|-----|
+| Flat | No shadow | — | Backgrounds, flat lists, resting surfaces |
+| Subtle | Soft drop shadow | DSShadows.soft | Resting cards, text inputs |
+| Card | Medium elevation | DSShadows.card | Interactive cards, elevated buttons |
+| Lifted | High elevation | DSShadows.lifted | Modals, popovers, floating sheets |
+```
+
+**Available DS shadow tokens:**
 
 | Token | Effect |
 |-------|--------|
@@ -232,14 +280,18 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 | `DSShadows.lifted` | High elevation for modals, popovers |
 
 **Rules:**
-- Maximum 5 bullets
-- Every bullet must reference a DS spacing token by name AND numeric value
-- No custom spacing values — use only DSSpacing tokens
-- If the mood calls for tight density, prefer smaller tokens (xs, sm, smd); if airy, prefer larger (lg, xl, xxl)
+- Every app must declare which DSShadows tokens it uses and where
+- If the mood is flat (no shadows), explicitly state: "DSShadows: none used — depth through color contrast only"
+- Glass/blur effects belong here too — if GlassCard verdict is KEEP or COMPOSE in Section 4, describe the blur treatment (radius, opacity, tint)
+- Match the reference app's shadow philosophy:
+  - Zero shadows (Revolut, Streaks) → flat surfaces, depth from color contrast
+  - Luminance stepping (Linear) → background opacity gradations instead of drop shadows
+  - Elevated (Apple Notes, Reminders) → DSShadows.soft for cards, DSShadows.lifted for modals
+- The elevation table should list every distinct level used in the app — typically 2-4 levels
 
 ---
 
-## Section 6: Do's and Don'ts
+## Section 7: Do's and Don'ts
 
 **Purpose:** Prescriptive guardrails the generator must follow. Every Don't must be greppable — it names a specific pattern, component, modifier, or string that should not appear in the code.
 
@@ -260,7 +312,7 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 3. **Don't use .title font style** — use .titleLarge() DS token instead
 4. **Don't hardcode padding values** — always use DSSpacing tokens
 5. **Don't use Color.red/green/blue** — use Color.error, positive/negative semantic roles
-6. **Don't write generic empty state copy** — every empty state string comes from Section 8
+6. **Don't write generic empty state copy** — every empty state string comes from Section 9
 ```
 
 **Rules:**
@@ -273,7 +325,7 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 
 ---
 
-## Section 7: Screen Blueprints
+## Section 8: Screen Blueprints
 
 **Purpose:** For every screen in the app, define the exact layout structure. This is the single most important section — it tells the generator WHAT to build, not just which tokens to use.
 
@@ -297,7 +349,7 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 2. [Section name] — [what it contains, which DS component, layout details]
 3. [Section name] — [what it contains, which DS component, layout details]
 
-**Empty state:** "[Exact copy from Section 8]" + [CTA button label]
+**Empty state:** "[Exact copy from Section 9]" + [CTA button label]
 
 **Entrance animation:** [Specific animation — e.g., ".opacity with 0.3s delay per section" or "none"]
 
@@ -309,7 +361,7 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 - One blueprint per screen in the app
 - Hero element is required for primary and detail screens. For utility screens (Settings, About), hero is optional — use "None" if the screen is a flat utility list
 - Sections must name specific DS components (DSCard, DSListRow, DSSection, etc.) or explicit replacements if the component is CREATE or SKIP in Section 4
-- Empty state copy must match Section 8 exactly — cross-reference, don't invent
+- Empty state copy must match Section 9 exactly — cross-reference, don't invent
 - Entrance animation must be specific (modifier name, duration, delay) or explicitly "none"
 - Screen-specific Don'ts catch patterns that are fine elsewhere but wrong for this particular screen
 - Section order defines visual hierarchy — the generator renders sections in listed order
@@ -346,7 +398,7 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 
 ---
 
-## Section 8: Voice & Copy
+## Section 9: Voice & Copy
 
 **Purpose:** Define every user-facing string so the generator never invents copy. This ensures tonal consistency across all screens and states.
 
@@ -481,13 +533,15 @@ Use this checklist to verify a DESIGN.md is complete and well-formed before the 
 - [ ] **Component Rules** every COMPOSE verdict includes specific parameter values
 - [ ] **Layout Principles** has 5 or fewer bullets
 - [ ] **Layout Principles** every bullet references a DSSpacing token by name and value
+- [ ] **Depth & Elevation** declares which DSShadows tokens are used (or "none used")
+- [ ] **Depth & Elevation** glass/blur treatment is documented if GlassCard is KEEP or COMPOSE
 - [ ] **Do's** count is 4-6
 - [ ] **Don'ts** count is 6-10
 - [ ] **Don'ts** every entry names a greppable pattern (component, modifier, color, or string)
 - [ ] **Screen Blueprints** exist for every screen in the app
 - [ ] **Screen Blueprints** every primary and detail screen has a hero element (utility screens may use "None")
 - [ ] **Screen Blueprints** every screen with potential empty state has empty state copy
-- [ ] **Screen Blueprints** empty state copy matches Section 8 exactly
+- [ ] **Screen Blueprints** empty state copy matches Section 9 exactly
 - [ ] **Screen Blueprints** every blueprint has a Design Intent (describes purpose/emotion, not layout)
 - [ ] **Screen Blueprints** every blueprint has exactly ONE Craft Moment (not a list of details)
 - [ ] **Screen Blueprints** every blueprint has a Visual Reference path (or "None — derived from {screen}")
@@ -497,13 +551,14 @@ Use this checklist to verify a DESIGN.md is complete and well-formed before the 
 
 ### Consistency
 
-- [ ] Component verdicts in Section 4 are respected in Section 7 Screen Blueprints (no blueprint uses a SKIP or CREATE component without the replacement)
-- [ ] Typography tokens in Section 3 match the tokens referenced in Section 7 blueprints
-- [ ] Spacing tokens in Section 5 match the tokens referenced in Section 7 blueprints
-- [ ] Empty state copy in Section 7 matches Section 8 verbatim
+- [ ] Component verdicts in Section 4 are respected in Section 8 Screen Blueprints (no blueprint uses a SKIP or CREATE component without the replacement)
+- [ ] Typography tokens in Section 3 match the tokens referenced in Section 8 blueprints
+- [ ] Spacing tokens in Section 5 match the tokens referenced in Section 8 blueprints
+- [ ] Shadow tokens in Section 6 match the tokens referenced in Section 8 blueprints
+- [ ] Empty state copy in Section 8 matches Section 9 verbatim
 - [ ] Mood in Section 1 aligns with color temperature, typography weight, and animation choices
-- [ ] Don'ts in Section 6 are not contradicted by instructions in Section 4 or Section 7
-- [ ] Visual Reference paths in Section 7 point to files that exist in .forge/design-mockups/
+- [ ] Don'ts in Section 7 are not contradicted by instructions in Section 4 or Section 8
+- [ ] Visual Reference paths in Section 8 point to files that exist in .forge/design-mockups/
 
 ### iOS-Native Compliance
 

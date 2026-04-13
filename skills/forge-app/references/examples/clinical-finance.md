@@ -89,7 +89,7 @@ Reference: Mercury (flat numbers, monospaced confidence), Arc (editorial spacing
 6. **Don't use .rounded font variant** — this app uses .default and .monospaced only
 7. **Don't use Color.red or Color.green** — use Color.error and the custom positive semantic color
 8. **Don't hardcode padding values** — always use DSSpacing tokens
-9. **Don't use "Let's get started" or "Get started"** in empty states — use factual statements from Section 8 (e.g., "No transactions recorded")
+9. **Don't use "Let's get started" or "Get started"** in empty states — use factual statements from Section 9 (e.g., "No transactions recorded")
 10. **Don't use .font(.title)** — use .titleLarge() DS token instead
 
 ## Screen Blueprints

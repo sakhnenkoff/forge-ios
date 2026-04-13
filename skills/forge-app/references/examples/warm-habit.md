@@ -87,7 +87,7 @@ Reference: Gentler Streak (empathetic data presentation, warm tones), Streaks (s
 4. **Don't use flat/borderless cards** — every card must have DSShadows.soft and DSRadii.lg (16) minimum corner radius
 5. **Don't use Color.red or Color.green** — use Color.error and the custom positive semantic color
 6. **Don't hardcode padding values** — always use DSSpacing tokens
-7. **Don't use "No habits found" or "No items"** in empty states — use warm, encouraging language from Section 8 (e.g., "Your fresh start")
+7. **Don't use "No habits found" or "No items"** in empty states — use warm, encouraging language from Section 9 (e.g., "Your fresh start")
 8. **Don't use .font(.title)** — use .titleLarge() DS token instead
 9. **Don't use sharp corners (DSRadii.xs)** on any visible card — minimum DSRadii.sm (12) for all card surfaces
 

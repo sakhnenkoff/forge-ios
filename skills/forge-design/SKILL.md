@@ -54,9 +54,10 @@ Read from `.forge/spec.json`:
 - Map CSS border-radius to DS radii: `DSRadii.xs` (8), `.sm` (12), `.md` (16), `.lg` (20), `.xl` (28), `.pill` (999)
 - Radius axis from presets: sharp = prefer xs/sm; rounded = prefer lg/xl; mixed = sharp for controls, rounded for cards
 
-## Output: DESIGN.md (8 sections)
+## Output: DESIGN.md (9 sections)
 
 Write to `.forge/DESIGN.md`. Follow the format in `skills/forge-app/references/design-md-format.md`.
+Use the Stitch-to-Forge translation mapping at the top of that file to convert web-native references into iOS-native output.
 
 ### Section 1: Mood
 - 2-sentence feel description synthesized from references
@@ -74,7 +75,7 @@ Write to `.forge/DESIGN.md`. Follow the format in `skills/forge-app/references/d
 - Weight emphasis pattern from preset
 
 ### Section 4: Component Rules
-- YES/NO/CUSTOMIZE/SKIP table for every DS component
+- KEEP/COMPOSE/CREATE/SKIP table for every DS component
 - Surface treatment details from preset
 
 ### Section 5: Layout Principles
@@ -82,16 +83,22 @@ Write to `.forge/DESIGN.md`. Follow the format in `skills/forge-app/references/d
 - Rhythm description from preset
 - Preferred section patterns
 
-### Section 6: Do's and Don'ts
+### Section 6: Depth & Elevation
+- Map reference's shadow/depth system to DSShadows tokens (soft, card, lifted)
+- If reference uses zero shadows (e.g., Revolut), state "DSShadows: none used"
+- If reference uses luminance stepping (e.g., Linear), describe the opacity gradation pattern
+- Include glass/blur treatment if GlassCard verdict is KEEP or COMPOSE
+
+### Section 7: Do's and Don'ts
 - 4-6 DO patterns (derived from reference's design philosophy)
 - 6-10 DON'T patterns (GREPPABLE — these become floor check inputs)
 - Include iOS-native translations of web reference Don'ts
 
-### Section 7: Screen Blueprints
+### Section 8: Screen Blueprints
 - One blueprint per screen from spec.json
 - For each: Design Intent, Craft Moment, layout description, data sources, entrance animation, empty/loading/error states
 
-### Section 8: Voice & Copy
+### Section 9: Voice & Copy
 - Tone derived from reference mood
 - Exhaustive table of user-facing strings
 

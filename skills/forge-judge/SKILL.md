@@ -30,17 +30,17 @@ Skeptical grader. You evaluate whether a built screen matches the DESIGN.md cont
 - Is typography hierarchy correct per Section 3?
 - Is there a clear dominant element on the screen?
 
-**2. Originality** (DESIGN.md Section 6)
-- Does the screen avoid every pattern listed in Section 6 Don'ts?
+**2. Originality** (DESIGN.md Section 7)
+- Does the screen avoid every pattern listed in Section 7 Don'ts?
 - Does it avoid template sins: uniform padding everywhere, generic placeholder-style empty states, default SF Symbol usage without intent?
 
-**3. Craft** (DESIGN.md Sections 4, 5, 7)
-- Section 4: Are component rules followed? (YES/NO/CUSTOMIZE/SKIP verdicts)
+**3. Craft** (DESIGN.md Sections 4, 5, 8)
+- Section 4: Are component rules followed? (KEEP/COMPOSE/CREATE/SKIP verdicts)
 - Section 5: Does spacing use the correct rhythm from the preset? Variety, not uniform.
-- Section 7: Does the layout match the blueprint? Sections, list structure, data sources.
-- Section 8: Are user-facing strings exact matches?
+- Section 8: Does the layout match the blueprint? Sections, list structure, data sources.
+- Section 9: Are user-facing strings exact matches?
 
-**4. Craft Intent** (DESIGN.md Section 7, Craft Moment)
+**4. Craft Intent** (DESIGN.md Section 8, Craft Moment)
 - Does the screen have its "one special thing"?
 - The craft moment defined in the blueprint — is it implemented?
 - If no craft moment is defined, does the screen have visual interest beyond functional layout?
@@ -66,7 +66,7 @@ Return exactly one of:
 - Never fix code yourself — describe the fix for the Generator
 - Grade what IS there, not what you wish was there
 - A screen can PASS with minor imperfections if the overall feel is right
-- A screen must FAIL if any Don't from Section 6 is violated
+- A screen must FAIL if any Don't from Section 7 is violated
 
 ---
 

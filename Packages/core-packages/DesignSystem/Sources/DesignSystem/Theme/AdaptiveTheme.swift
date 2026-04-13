@@ -34,22 +34,25 @@ public struct AdaptiveTheme: Theme, Sendable {
             divider: Color(light: Color(hex: "3C3C43").opacity(0.18), dark: Color(hex: "545458").opacity(0.45))
         )
 
+        let headingWeight: Font.Weight = preset.weight == .heavy ? .bold : .semibold
+        let displayWeight: Font.Weight = preset.weight == .heavy ? .black : .bold
+
         let typography = TypographyScale(
-            display:        TextStyle(size: 34, weight: .bold,     design: .rounded),
-            titleLarge:     TextStyle(size: 28, weight: .semibold, design: .rounded),
-            titleMedium:    TextStyle(size: 22, weight: .semibold, design: .rounded),
-            titleSmall:     TextStyle(size: 20, weight: .semibold, design: .default),
-            headlineLarge:  TextStyle(size: 17, weight: .semibold, design: .default),
-            headlineMedium: TextStyle(size: 15, weight: .semibold, design: .default),
-            headlineSmall:  TextStyle(size: 13, weight: .semibold, design: .default),
-            bodyLarge:      TextStyle(size: 17, weight: .regular,  design: .default),
-            bodyMedium:     TextStyle(size: 15, weight: .regular,  design: .default),
-            bodySmall:      TextStyle(size: 13, weight: .regular,  design: .default),
-            captionLarge:   TextStyle(size: 12, weight: .regular,  design: .default),
-            captionSmall:   TextStyle(size: 11, weight: .regular,  design: .default),
-            buttonLarge:    TextStyle(size: 17, weight: .semibold, design: .default),
-            buttonMedium:   TextStyle(size: 15, weight: .semibold, design: .default),
-            buttonSmall:    TextStyle(size: 13, weight: .semibold, design: .default)
+            display:        TextStyle(size: 34, weight: displayWeight, design: .rounded),
+            titleLarge:     TextStyle(size: 28, weight: headingWeight, design: .rounded),
+            titleMedium:    TextStyle(size: 22, weight: headingWeight, design: .rounded),
+            titleSmall:     TextStyle(size: 20, weight: headingWeight, design: .default),
+            headlineLarge:  TextStyle(size: 17, weight: headingWeight, design: .default),
+            headlineMedium: TextStyle(size: 15, weight: headingWeight, design: .default),
+            headlineSmall:  TextStyle(size: 13, weight: headingWeight, design: .default),
+            bodyLarge:      TextStyle(size: 17, weight: .regular,      design: .default),
+            bodyMedium:     TextStyle(size: 15, weight: .regular,      design: .default),
+            bodySmall:      TextStyle(size: 13, weight: .regular,      design: .default),
+            captionLarge:   TextStyle(size: 12, weight: .regular,      design: .default),
+            captionSmall:   TextStyle(size: 11, weight: .regular,      design: .default),
+            buttonLarge:    TextStyle(size: 17, weight: headingWeight,  design: .default),
+            buttonMedium:   TextStyle(size: 15, weight: headingWeight,  design: .default),
+            buttonSmall:    TextStyle(size: 13, weight: headingWeight,  design: .default)
         )
 
         let spacing: SpacingScale = switch preset.spacing {

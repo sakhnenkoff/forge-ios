@@ -15,21 +15,33 @@ No live browsing. No mockup generation. Pure translation from inputs already col
 Read from `.forge/references/`:
 - `index.md` — which references are selected, how they combine, any axis overrides
 - `*.md` — awesome-design-md files (web-native DESIGN.md format, CSS values)
-- `*.png` / `*.jpg` — user-provided screenshots (describe what you see)
+- `screenshots/*.png` / `*.jpg` — reference app screenshots (describe what you see, extract feel)
 
 Read from `docs/design-reference/presets.md`:
 - Preset axis values selected during Phase 1
 
 Read from `.forge/spec.json`:
-- Feature list, screen types, navigation structure
+- Feature list, screen types, navigation structure, pitch
 
 ## Translation Rules
 
-### Colors (web → iOS)
-- Map hex values to DS semantic roles: `.themePrimary`, `.backgroundPrimary`, `.surface`, `.textPrimary`, `.textSecondary`, `.textTertiary`, `.border`, `.divider`, `.error`
-- Reference's brand/accent color → `brandColor` parameter in AdaptiveTheme
-- Background surfaces → `.backgroundPrimary`, `.backgroundSecondary`, `.surface`, `.surfaceVariant`
-- The DS derives most colors from `brandColor` — only specify overrides where the reference demands a color the DS can't derive
+### ColorStory (web → iOS)
+
+Analyze the reference apps' color DISTRIBUTION — don't just extract hex values:
+1. Which color dominates? → `brand`
+2. Which provides contrast/accent? → `contrast`
+3. Which surprises or delights? → `surprise` (optional)
+4. Which tints surfaces and backgrounds? → `surface`
+
+Map to ColorStory:
+- Reference primary/brand color → `brand` (buttons, active states, tint)
+- Reference accent/CTA color → `contrast` (charts, badges, data viz)
+- Reference highlight/special color → `surprise` (craft moments only — omit if reference uses ≤2 colors)
+- Reference background tint → `surface` (cards, secondary backgrounds)
+
+If reference uses only 2 colors (e.g., Things 3): set `contrast` to "Derived from brand" and `surprise` to "None".
+
+Semantic roles (textPrimary, border, divider, error) derive automatically from the ColorStory via AdaptiveTheme. Only specify overrides where the reference demands a color the derivation can't produce.
 
 ### Typography (web → iOS)
 - Map font families → DS design variants: `.default` (San Francisco), `.rounded`, `.monospaced`, `.serif`
@@ -50,6 +62,8 @@ Read from `.forge/spec.json`:
 - Web modals → .sheet() presentations
 - Surface axis from presets: flat = no shadows; elevated = DSShadows.soft/card/lifted; glass = .glassEffect()
 
+**CREATE Verdict Guidance:** If 3+ reference components look fundamentally different from their DS counterpart, the default verdict is CREATE, not KEEP. The DS is a floor, not a ceiling. When references demand flat borderless surfaces but DSCard has borders and shadows, verdict is CREATE with explicit replacement pattern. Don't force reference aesthetics into template shapes.
+
 ### Radius (web → iOS)
 - Map CSS border-radius to DS radii: `DSRadii.xs` (8), `.sm` (12), `.md` (16), `.lg` (20), `.xl` (28), `.pill` (999)
 - Radius axis from presets: sharp = prefer xs/sm; rounded = prefer lg/xl; mixed = sharp for controls, rounded for cards
@@ -59,15 +73,17 @@ Read from `.forge/spec.json`:
 Write to `.forge/DESIGN.md`. Follow the format in `skills/forge-app/references/design-md-format.md`.
 Use the Stitch-to-Forge translation mapping at the top of that file to convert web-native references into iOS-native output.
 
-### Section 1: Mood
-- 2-sentence feel description synthesized from references
-- List reference apps (with links if from awesome-design-md)
-- State preset axes: `spacing: tight | radius: sharp | weight: heavy | surface: flat`
+### Section 1: Design North Star
+- Mood sentence: specific sensory/emotional description
+- Visual Feel paragraph: 3-5 sentences describing the EXPERIENCE of using the app
+- Reference apps with specific aspects to take from each
+- Anti-references: what this app is NOT (2-3 adjacent genres to avoid)
 
 ### Section 2: Color Palette
-- 11+ semantic roles with DS token names
-- `brandColor` hex value (the single input to AdaptiveTheme)
-- Any overrides where the reference demands non-derived colors
+- ColorStory table: brand, contrast (optional), surprise (optional), surface — with light+dark hex values
+- Color Distribution: aspirational pixel percentages (brand ~15%, contrast ~5%, surprise <1%)
+- Semantic roles table showing derivation from ColorStory fields
+- Only override semantic roles where the reference demands non-derived colors
 
 ### Section 3: Typography
 - DS text style assignments per heading level
@@ -77,6 +93,7 @@ Use the Stitch-to-Forge translation mapping at the top of that file to convert w
 ### Section 4: Component Rules
 - KEEP/COMPOSE/CREATE/SKIP table for every DS component
 - Surface treatment details from preset
+- Lean toward CREATE when references look fundamentally different from DS defaults
 
 ### Section 5: Layout Principles
 - Spacing rules using DS token names
@@ -84,23 +101,42 @@ Use the Stitch-to-Forge translation mapping at the top of that file to convert w
 - Preferred section patterns
 
 ### Section 6: Depth & Elevation
-- Map reference's shadow/depth system to DSShadows tokens (soft, card, lifted)
-- If reference uses zero shadows (e.g., Revolut), state "DSShadows: none used"
-- If reference uses luminance stepping (e.g., Linear), describe the opacity gradation pattern
-- Include glass/blur treatment if GlassCard verdict is KEEP or COMPOSE
+- Map reference shadow/depth system to DSShadows tokens
+- Glass/blur treatment if applicable
 
 ### Section 7: Do's and Don'ts
-- 4-6 DO patterns (derived from reference's design philosophy)
-- 6-10 DON'T patterns (GREPPABLE — these become floor check inputs)
-- Include iOS-native translations of web reference Don'ts
+- 4-6 DO patterns
+- 6-10 DON'T patterns (GREPPABLE)
 
 ### Section 8: Screen Blueprints
 - One blueprint per screen from spec.json
-- For each: Design Intent, Craft Moment, layout description, data sources, entrance animation, empty/loading/error states
+- Required fields: Design Intent, Craft Moment, Visual Feel, Hierarchy (primary/secondary/tertiary), Density target, Visual Reference, Hero element, Sections, Empty state, Entrance animation, Screen-specific Don'ts
 
 ### Section 9: Voice & Copy
 - Tone derived from reference mood
 - Exhaustive table of user-facing strings
+
+## Post-Generation: Simplicity Audit
+
+After generating all blueprints, run this check:
+
+1. Count total sections across ALL screen blueprints
+2. Read the pitch from `.forge/spec.json`
+3. If the pitch implies simplicity ("one glance", "3 seconds", "single purpose", "under N seconds") but blueprints have 15+ total sections across all screens:
+   - Flag the conflict to the orchestrator
+   - Recommend specific sections to CUT or demote to tertiary
+   - Do NOT proceed until the conflict is resolved
+
+This is distinct from the Phase 1 feature count check. Phase 1 catches feature bloat. This catches section bloat within features.
+
+## Post-Generation: UX Audit
+
+Cross-reference Section 8 blueprints against the pitch:
+
+1. Identify the core promise from the pitch (e.g., "the trend line IS the app")
+2. Find that promise in the blueprints — is it the Primary element in the Hierarchy?
+3. If the core promise is one of several equal-weight sections, FAIL the blueprint
+4. Blueprints must encode hierarchy. If Primary/Secondary/Tertiary fields show equal distribution, flag it.
 
 ## Human Gate
 

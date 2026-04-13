@@ -9,7 +9,10 @@ import SwiftUI
 public struct AdaptiveTheme: Theme, Sendable {
     public let tokens: DesignTokens
 
-    public init(brandColor: Color = Color(light: Color(hex: "6B3FA0"), dark: Color(hex: "8B5CF6"))) {
+    public init(
+        brandColor: Color = Color(light: Color(hex: "6B3FA0"), dark: Color(hex: "8B5CF6")),
+        preset: PresetConfiguration = .default
+    ) {
         let colors = ColorPalette(
             primary: brandColor,
             secondary: Color(light: Color(hex: "9B6FCF"), dark: Color(hex: "A78BFA")),
@@ -49,20 +52,38 @@ public struct AdaptiveTheme: Theme, Sendable {
             buttonSmall:    TextStyle(size: 13, weight: .semibold, design: .default)
         )
 
-        let radii = RadiiScale(
-            xs: 8,
-            sm: 12,
-            md: 16,
-            lg: 20,
-            xl: 28,
-            pill: 999
-        )
+        let spacing: SpacingScale = switch preset.spacing {
+        case .tight:
+            SpacingScale(xs: 4, sm: 4, smd: 8, md: 12, mlg: 16, lg: 20, xl: 24, xxlg: 32, xxl: 40)
+        case .balanced:
+            ThemeFactory.spacing()
+        case .airy:
+            SpacingScale(xs: 8, sm: 12, smd: 16, md: 24, mlg: 28, lg: 32, xl: 40, xxlg: 52, xxl: 64)
+        }
 
-        let shadows = ShadowScale(
-            soft:   ShadowToken(color: brandColor.opacity(0.06), radius: 8,  y: 3),
-            card:   ShadowToken(color: brandColor.opacity(0.08), radius: 10, y: 5),
-            lifted: ShadowToken(color: brandColor.opacity(0.14), radius: 20, y: 8)
-        )
+        let radii: RadiiScale = switch preset.corners {
+        case .sharp:
+            RadiiScale(xs: 4, sm: 8, md: 8, lg: 12, xl: 16, pill: 999)
+        case .mixed:
+            RadiiScale(xs: 8, sm: 12, md: 16, lg: 20, xl: 28, pill: 999)
+        case .rounded:
+            RadiiScale(xs: 12, sm: 16, md: 20, lg: 28, xl: 36, pill: 999)
+        }
+
+        let shadows: ShadowScale = switch preset.surface {
+        case .flat:
+            ShadowScale(
+                soft:   ShadowToken(color: .clear, radius: 0, y: 0),
+                card:   ShadowToken(color: .clear, radius: 0, y: 0),
+                lifted: ShadowToken(color: .clear, radius: 0, y: 0)
+            )
+        case .elevated, .glass:
+            ShadowScale(
+                soft:   ShadowToken(color: brandColor.opacity(0.06), radius: 8,  y: 3),
+                card:   ShadowToken(color: brandColor.opacity(0.08), radius: 10, y: 5),
+                lifted: ShadowToken(color: brandColor.opacity(0.14), radius: 20, y: 8)
+            )
+        }
 
         let glass = GlassTokens(
             tint:       Color.white.opacity(0.10),
@@ -74,7 +95,7 @@ public struct AdaptiveTheme: Theme, Sendable {
         self.tokens = DesignTokens(
             colors: colors,
             typography: typography,
-            spacing: ThemeFactory.spacing(),
+            spacing: spacing,
             radii: radii,
             shadows: shadows,
             glass: glass,

@@ -34,11 +34,15 @@ Feature spec:
 </task>
 
 <design_contract>
+```
 {{DESIGN_BLUEPRINT}}
+```
 </design_contract>
 
 <architecture_rules>
+```
 {{AGENTS_RULES}}
+```
 </architecture_rules>
 
 <preset_tokens>
@@ -46,15 +50,24 @@ Feature spec:
 </preset_tokens>
 
 <shared_files>
+```swift
 {{SHARED_FILES}}
+```
 </shared_files>
 
 <screen_type_guidance>
 {{SCREEN_TYPE_FRAGMENT}}
 </screen_type_guidance>
 
-<verification_loop>
-Before finishing, check your output files ONCE:
+<action_safety>
+Keep changes tightly scoped to this feature.
+Do not refactor, rename, or restructure existing code unless the feature requires it.
+Append to shared files (AppRoute, AppServices) — do not reorganize them.
+</action_safety>
+
+<final_check>
+Before finishing, check the files you just wrote ONCE.
+Replace {ViewFile} and {VMFile} with the actual file paths you created.
 
 View file:
 - grep -q "DSScreen" {ViewFile} || fix it
@@ -69,12 +82,13 @@ ViewModel file:
 - grep -q "hasLoaded" {VMFile} || add the guard pattern
 
 Fix any violations. Do NOT re-check after fixing. Return your final files regardless.
-</verification_loop>
+</final_check>
 ```
+
+**Note on XML tags:** `<task>`, `<action_safety>`, and `<final_check>` are behavioral blocks following `gpt-5-4-prompting` conventions. `<design_contract>`, `<architecture_rules>`, `<preset_tokens>`, `<shared_files>`, and `<screen_type_guidance>` are data-injection tags — they carry context, not instructions. Custom names are intentional to distinguish injected content from behavioral directives.
 
 ### Blocks NOT included (rely on Codex defaults)
 
-- `<action_safety>` — Codex's default scoping behavior is sufficient
 - `<default_follow_through_policy>` — Codex keeps going by default
 - `<completeness_contract>` — the `<task>` block states "complete, compilable" which is enough
 - `<grounding_rules>` — not applicable to code generation
@@ -144,16 +158,15 @@ Separate files in `skills/forge-build/prompts/`, ~20-30 lines each. forge-app lo
 How forge-app constructs the final prompt per feature:
 
 1. Read `skills/forge-build/PROMPT.md` (base template)
-2. Read `skills/forge-build/prompts/{screen_type}.md` (fragment for this screen type)
+2. Read `skills/forge-build/prompts/{screen_type}.md` (fragment for this screen type). If the file does not exist, fail with: "No prompt fragment for screen_type '{screen_type}'. Add `skills/forge-build/prompts/{screen_type}.md` or use a supported screen type."
 3. Fill placeholders:
    - `{{FEATURE_SPEC}}` — feature entry from `.forge/spec.json`
-   - `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from `.forge/DESIGN.md`
-   - `{{AGENTS_RULES}}` — AGENTS.md "Architecture" through "Post-Build Checks" (~200 lines)
+   - `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from `.forge/DESIGN.md` (wrapped in fenced block to prevent XML injection)
+   - `{{AGENTS_RULES}}` — AGENTS.md "Architecture" through "Post-Build Checks" (~200 lines, wrapped in fenced block)
    - `{{PRESET_TOKENS}}` — concrete token values from the selected PresetConfiguration
-   - `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift, and any shared files this feature modifies
+   - `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift (wrapped in swift fenced block)
    - `{{SCREEN_TYPE_FRAGMENT}}` — the loaded fragment content
-4. Optionally extract and append `{{SKILL_KNOWLEDGE}}` from installed skills (SwiftUI UI Patterns, swift-concurrency, etc.)
-5. Send populated prompt to Codex via `codex:rescue`
+4. Send populated prompt to Codex via `codex:rescue`
 
 Total injected context target: under 4K tokens (same as spec).
 
@@ -161,7 +174,7 @@ Total injected context target: under 4K tokens (same as spec).
 
 ## Self-Check Details
 
-The `<verification_loop>` block runs **once** at the end of Codex's execution. It is NOT a retry loop.
+The `<final_check>` block runs **once** at the end of Codex's execution. It is NOT a retry loop.
 
 **What Codex checks:**
 - 5 View file patterns (DSScreen, .toast, .onAppear, no AsyncImage, no @StateObject)
@@ -191,5 +204,4 @@ The `<verification_loop>` block runs **once** at the end of Codex's execution. I
 | `skills/forge-build/prompts/onboarding.md` | Create |
 | `skills/forge-build/prompts/paywall.md` | Create |
 | `skills/forge-build/prompts/settings.md` | Create |
-
-No changes to forge-app SKILL.md — it already describes the placeholder injection and assembly flow. The `{{SCREEN_TYPE_FRAGMENT}}` placeholder is new but the assembly logic is the same pattern.
+| `skills/forge-app/SKILL.md` | Update assembly flow to load `prompts/{screen_type}.md` and inject `{{SCREEN_TYPE_FRAGMENT}}`. Fail fast if fragment file missing. Drop `{{SKILL_KNOWLEDGE}}` from assembly steps (not used in XML template). |

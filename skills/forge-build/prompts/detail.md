@@ -1,21 +1,22 @@
 # Detail Screen Guidance
 
-## Layout Pattern
-- ScrollView as container (inside DSScreen)
-- Hero image or header area at top (use AsyncImage alternative: load via manager, display with Image)
-- Title using `.titleLarge()`, subtitle using `.bodyMedium()` + `.textSecondary`
-- Metadata row (date, author, category) using `.captionLarge()` + `.textTertiary`
-- Body content using `.bodyMedium()`
-- Primary action button: DSButton(.primary, size: .large) — sticky at bottom or inline based on blueprint
-- Related items section at bottom using horizontal ScrollView of DSCard
+## Hierarchy
+- The title/header anchors the top — clear, bold, immediately readable.
+- Primary content fills the middle — the data or content the user came to see.
+- Actions (edit, delete, share) are secondary — toolbar or bottom, never competing with content.
 
-## DS Components to Prefer
+## Visual Intent
+- This screen is about ONE thing in depth. The user tapped to learn more — reward that intent with focused content.
+- Use generous spacing between sections — the user is reading, not scanning.
+- If there's a hero image or chart, let it breathe — don't crowd it with labels.
+
+## DS Components
 - `DSScreen` as root (required)
-- `DSCard` for related items
-- `DSButton` for primary action
-- `TagBadge` for categories/tags
+- `DSSection` for grouping related fields
+- `DSListRow` for metadata pairs (label: value)
+- `DSButton` for primary actions — one per screen, placed clearly
 
 ## Anti-Patterns
-- Do NOT have multiple competing primary CTAs — one primary, rest secondary/ghost
-- Do NOT forget back navigation — NavigationStack handles this, don't add a custom back button
-- Do NOT put metadata above the title — title first, metadata second
+- Do NOT pack every detail above the fold — scrolling is expected and welcome
+- Do NOT use multiple card styles on one detail screen — consistency within the screen
+- Do NOT place destructive actions prominently — use `.confirmationDialog()` behind a secondary button

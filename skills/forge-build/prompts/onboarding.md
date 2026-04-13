@@ -1,20 +1,23 @@
 # Onboarding Screen Guidance
 
-## Layout Pattern
-- TabView with `.tabViewStyle(.page)` for swipeable steps
-- Each step: large SF Symbol or illustration at top, title (`.titleLarge()`), subtitle (`.bodyMedium()` + `.textSecondary`), centered vertically
-- Progress indicator: `.indexViewStyle(.page(backgroundDisplayMode: .always))` or custom dot indicator
-- Skip button: top trailing, using `.bodyMedium()` + `.textSecondary`, always visible except on last step
-- Final step: primary CTA using DSButton(.primary, size: .large) — text should be the app's key action, not "Next" or "Done"
-- Max 4-5 steps — respect the user's time
+## Hierarchy
+- Each slide has ONE message — a headline and a supporting visual or brief description.
+- The page indicator shows progress but doesn't compete with content.
+- The CTA button is the clear next step — prominent at the bottom.
 
-## DS Components to Prefer
-- `DSButton` for final CTA
+## Visual Intent
+- Onboarding is about emotion, not information. Each slide should make the user FEEL something about the app.
+- Use the `surprise` color from ColorStory for the key visual element on at least one slide.
+- Keep text to 3-5 words per headline, 1 sentence per body. If you're writing paragraphs, you're over-explaining.
+
+## DS Components
 - `DSScreen` as root (required)
+- TabView with `.tabViewStyle(.page)` for slide navigation
+- `DSButton(.primary, size: .large)` for CTA — "Get Started" / "Continue"
+- Use `.containerRelativeFrame([.horizontal, .vertical])` on TabView when inside DSScreen's ScrollView wrapper (prevents zero-height rendering)
 
 ## Anti-Patterns
-- Do NOT use more than 5 onboarding steps — users will skip
-- Do NOT use walls of text — one title + one subtitle per step
-- Do NOT hide the skip button — users must always be able to skip
-- Do NOT use "Next" on the final step — use the app's primary action verb
-- Do NOT auto-advance steps — let the user control the pace
+- Do NOT use more than 3-4 slides — every extra slide increases drop-off
+- Do NOT use feature lists or bullet points — this isn't a product page
+- Do NOT skip the page indicator — users need to know where they are
+- Do NOT auto-advance slides — let the user control their pace

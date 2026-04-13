@@ -1,23 +1,23 @@
 # Settings Screen Guidance
 
-## Layout Pattern
-- List with grouped sections using `Section(header:)` blocks
-- Section headers using `.headlineSmall()` + `.textSecondary` + uppercase
-- Toggle rows: DSListRow with Toggle for boolean preferences
-- Navigation rows: DSListRow with chevron accessory for sub-screens (push navigation)
-- Account section at top: user name/email, avatar if available
-- Preferences section: notification toggles, appearance settings
-- Support section: help, feedback, privacy policy, terms
-- Destructive section at bottom: "Sign Out" (`.error` color), "Delete Account" (`.error` color, with confirmation alert)
-- App version at very bottom: `.captionLarge()` + `.textTertiary`, centered
+## Hierarchy
+- Settings is a utility screen — no hero element needed. "Hero: None" is correct.
+- Group related settings with clear section headers.
+- Destructive actions (delete account, clear data) are at the very bottom, visually de-emphasized.
 
-## DS Components to Prefer
-- `DSListRow` for all rows
+## Visual Intent
+- This screen is about control, not display. Every row is a toggle, picker, or navigation link.
+- Keep it flat and scannable — no cards, no elevation, no visual flourish.
+- Use system controls (Toggle, Picker, DatePicker) — don't reinvent settings UI.
+
+## DS Components
 - `DSScreen` as root (required)
-- Toggle (SwiftUI native) inside DSListRow for boolean settings
+- `DSListRow` for each setting — consistent row treatment
+- `DSSection` with headers for grouping (Account, Preferences, About, Danger Zone)
+- System `Toggle`, `Picker`, `DatePicker` for controls
 
 ## Anti-Patterns
-- Do NOT put destructive actions at the top — always at bottom
-- Do NOT mix action buttons with navigation rows — be consistent
-- Do NOT forget confirmation for destructive actions — always use `.alert()` before sign out or delete
-- Do NOT use red for non-destructive actions — reserve `.error` color for sign out and delete only
+- Do NOT use DSCard for settings rows — flat rows are correct here
+- Do NOT add visual flourish — settings should be invisible infrastructure
+- Do NOT put destructive actions in prominent positions — bottom of the last section
+- Do NOT use custom toggles or switches — system controls are expected

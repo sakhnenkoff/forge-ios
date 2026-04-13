@@ -1,22 +1,23 @@
 # Paywall Screen Guidance
 
-## Layout Pattern
-- Presented as a sheet (`.sheet()`) — must have visible close/dismiss button (top leading or trailing)
-- Value proposition section at top: 3-4 feature highlights using SF Symbols + short descriptions
-- Pricing tiers: clearly differentiate free vs paid, highlight recommended tier with DSCard + `.themePrimary` border
-- If trial available: prominent trial messaging ("Start 7-day free trial") on the primary CTA
-- Restore purchases: text button at bottom using `.bodySmall()` + `.textSecondary` — required by App Store
-- Subscribe CTA: DSButton(.primary, size: .large), full width
+## Hierarchy
+- The value proposition headline dominates — this is the ONE reason to upgrade.
+- Feature list is secondary — supporting evidence, not the main argument.
+- The CTA button is unmissable — large, brand-colored, fixed at the bottom.
 
-## DS Components to Prefer
-- `DSCard` for pricing tiers
-- `DSButton` for subscribe CTA
-- `DSListRow` for feature comparison
+## Visual Intent
+- This screen sells a feeling, not a feature list. The headline should create desire.
+- Use the `brand` color generously here — this is the one screen where brand saturation is welcome.
+- Price should be clear but not the focal point — value first, price second.
+
+## DS Components
 - `DSScreen` as root (required)
+- `DSButton(.primary, size: .large)` for CTA — full width, brand color
+- `DSListRow` or checkmark list for feature comparison
+- Use `.presentationDetents([.large])` if presented as a sheet
 
 ## Anti-Patterns
-- Do NOT hide the close/dismiss button — App Store will reject
-- Do NOT forget "Restore Purchases" — App Store will reject
-- Do NOT use aggressive language ("Don't miss out!", "Last chance!") — keep it factual
-- Do NOT auto-select the most expensive tier — let the user choose
-- Do NOT hide pricing information — always show the price clearly
+- Do NOT lead with the price — lead with what the user gets
+- Do NOT list more than 5 features — pick the 3 that matter most
+- Do NOT use "Premium" or "Pro" in the headline — use benefit-driven language
+- Do NOT hide the close/dismiss button — that gets App Store rejections

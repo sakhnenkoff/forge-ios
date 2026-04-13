@@ -20,6 +20,10 @@ Files to create:
    - Use semantic colors: `.themePrimary`, `.textPrimary`, `.textSecondary`, etc.
    - Use DS spacing tokens: `DSSpacing.xs`, `.sm`, `.smd`, `.md`, `.mlg`, `.lg`, `.xl`, `.xxlg`, `.xxl` (concrete values provided in `<preset_tokens>` below — they vary by preset)
    - Use DS radii tokens: `DSRadii.xs`, `.sm`, `.md`, `.lg`, `.xl`, `.pill` (concrete values provided in `<preset_tokens>` below — they vary by preset)
+   - Read the <visual_feel> section — this describes how the screen should FEEL to use. Match the experience described, not just the tokens.
+   - If a <mockup> is provided, build to match its layout and visual hierarchy. The mockup is the visual target.
+   - If <visual_references> contains reference app screenshots, study them. Your output should evoke the same feeling — same density, surface treatment, and typography confidence.
+   - If this is a retry after a judge FAIL, <visual_references> includes the failing screenshot. Compare your changes against it.
 
 2. **ViewModel** (`{App}/Features/{FeatureName}/{FeatureName}ViewModel.swift`)
    - `@MainActor @Observable final class {FeatureName}ViewModel`
@@ -58,6 +62,22 @@ Files to create:
 <screen_type_guidance>
 {{SCREEN_TYPE_FRAGMENT}}
 </screen_type_guidance>
+
+<visual_feel>
+{{VISUAL_FEEL}}
+</visual_feel>
+
+<visual_references>
+{{VISUAL_REFERENCES}}
+</visual_references>
+
+<mockup>
+{{MOCKUP_PATH}}
+</mockup>
+
+<skill_context>
+{{SKILL_CONTEXT}}
+</skill_context>
 
 <action_safety>
 Keep changes tightly scoped to this feature.

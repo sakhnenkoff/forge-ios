@@ -25,9 +25,8 @@ struct HomeViewModelTests {
     @Test("Initial state is empty")
     func initialStateIsEmpty() {
         let viewModel = HomeViewModel()
-        #expect(viewModel.isLoading == false)
-        #expect(viewModel.errorMessage == nil)
         #expect(viewModel.toast == nil)
+        #expect(viewModel.selectedHomeTab == "Dashboard")
     }
 
     @Test("onAppear tracks event")
@@ -38,6 +37,6 @@ struct HomeViewModelTests {
         viewModel.onAppear(services: services, session: session)
 
         // Verify no error state
-        #expect(viewModel.errorMessage == nil)
+        #expect(viewModel.toast == nil)
     }
 }

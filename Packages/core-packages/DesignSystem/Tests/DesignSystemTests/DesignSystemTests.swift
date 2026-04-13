@@ -30,53 +30,19 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(toast1, toast2)
     }
 
-    func testThemePresetResolvesToExpectedThemes() {
-        XCTAssertTrue(ThemePreset.defaultTheme.makeTheme() is CloudPetalTheme)
-        XCTAssertTrue(ThemePreset.classicMono.makeTheme() is DefaultTheme)
-        XCTAssertTrue(ThemePreset.editorialGarden.makeTheme() is EditorialGardenTheme)
-        XCTAssertTrue(ThemePreset.porcelainTech.makeTheme() is PorcelainTechTheme)
-        XCTAssertTrue(ThemePreset.botanicalLuxe.makeTheme() is BotanicalLuxeTheme)
-    }
-
-    func testConfigureWithThemePresetSetsCurrentPreset() {
-        DesignSystem.configure(themePreset: .porcelainTech)
-
-        XCTAssertEqual(DesignSystem.currentThemePreset, .porcelainTech)
-        XCTAssertTrue(DesignSystem.theme is PorcelainTechTheme)
-    }
-
-    func testDirectionalThemesUseHybridTypographyRoles() {
-        let themes: [any Theme] = [
-            CloudPetalTheme(),
-            EditorialGardenTheme(),
-            PorcelainTechTheme(),
-            BotanicalLuxeTheme()
-        ]
-
-        for theme in themes {
-            XCTAssertNotEqual(theme.typography.titleLarge.design, .monospaced)
-            XCTAssertNotEqual(theme.typography.headlineMedium.design, .monospaced)
-            XCTAssertNotEqual(theme.typography.bodyLarge.design, .monospaced)
-            XCTAssertEqual(theme.typography.captionLarge.design, .monospaced)
-            XCTAssertEqual(theme.typography.buttonMedium.design, .monospaced)
-        }
+    func testDefaultThemeIsAdaptiveTheme() {
+        XCTAssertTrue(DesignSystem.theme is AdaptiveTheme)
     }
 
     func testDebugReconfigurePostsThemeDidChangeNotification() {
-        DesignSystem.configure(themePreset: .defaultTheme)
-
         let expectation = expectation(
             forNotification: DesignSystem.themeDidChangeNotification,
             object: nil
-        ) { notification in
-            let preset = notification.userInfo?["preset"] as? String
-            return preset == ThemePreset.botanicalLuxe.rawValue
-        }
+        )
 
-        DesignSystem.reconfigureForDebug(themePreset: .botanicalLuxe)
+        DesignSystem.reconfigureForDebug(theme: AdaptiveTheme(brandColor: .blue))
 
         wait(for: [expectation], timeout: 1.0)
-        XCTAssertEqual(DesignSystem.currentThemePreset, .botanicalLuxe)
-        XCTAssertTrue(DesignSystem.theme is BotanicalLuxeTheme)
+        XCTAssertTrue(DesignSystem.theme is AdaptiveTheme)
     }
 }

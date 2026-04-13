@@ -268,3 +268,130 @@ Codex invocations: N/8
 Judge rounds: N/3
 Notes: ...
 ```
+
+## Hard Gate: All Required Features Done
+
+Before proceeding to Phase 4, verify:
+```bash
+# Parse spec.json — every feature with "required": true must have "status": "done"
+```
+
+If any required feature is `blocked`:
+```
+"The following required features are blocked: {list}.
+You must either:
+1. Fix the blocked feature (I'll retry the build loop)
+2. Mark it as non-required (scope reduction — I'll note this in progress.md)
+3. Explicitly waive the gate
+
+Which option?"
+```
+
+Do NOT proceed to Phase 4 until resolved.
+
+## Phase 4: Quality Verification
+
+Run three quality layers. Issues found get fixed and re-verified.
+
+### Layer 1: Adversarial Review (if installed)
+
+```bash
+# Check if adversarial-review skill exists
+```
+
+If available:
+```
+Skill("adversarial-review")
+```
+
+Fix any Blocker/Bug findings, re-run until clean.
+If not installed, log: "Skipping adversarial review — not installed."
+
+### Layer 2: Axiom Deep Scan (if available)
+
+Dispatch available Axiom auditors in parallel:
+```
+Agent(subagent_type: "axiom:accessibility-auditor", ...)
+Agent(subagent_type: "axiom:security-privacy-scanner", ...)
+Agent(subagent_type: "axiom:memory-auditor", ...)
+Agent(subagent_type: "axiom:concurrency-auditor", ...)
+Agent(subagent_type: "axiom:energy-auditor", ...)
+```
+
+Fix critical/high findings. Log remaining as known issues.
+
+### Layer 3: Judge Consistency Mode
+
+Dispatch forge-judge in cross-screen mode (use same dispatch mechanism resolved in Task 11):
+```
+Agent(description: "Judge cross-screen consistency", prompt: "
+  You are forge-judge. Read skills/forge-judge/SKILL.md and follow it exactly.
+  Mode: Cross-Screen Consistency
+  Screenshots: {all_screenshot_paths}
+  View files: {all_view_file_paths}
+  DESIGN.md: .forge/DESIGN.md
+  Check for drift in spacing, colors, typography, components, animations.
+  Return CONSISTENT or DRIFT DETECTED with specific fixes.
+")
+```
+
+If DRIFT DETECTED: fix the drifting screens, re-screenshot, re-judge.
+
+### Layer 4: Navigation Sweep
+
+Walk every nav_path in spec.json to verify reachability:
+```bash
+# For each feature in spec.json:
+#   1. snapshot-ui to find the navigation element
+#   2. tap to navigate
+#   3. verify the target screen appears (snapshot-ui again, check for expected elements)
+#   4. navigate back
+```
+
+Log any unreachable screens to progress.md.
+
+## Phase 5: Ship
+
+### Step 1: forge-wire
+```
+Skill("forge-wire")
+```
+
+### Step 2: Post-wire verification
+```bash
+xcodebuildmcp simulator build-sim --scheme "{AppName} - Development" --project-path ./{AppName}.xcodeproj
+xcodebuild test -project {AppName}.xcodeproj -scheme "{AppName} - Development" -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
+If Axiom available, run concurrency + security auditors on wired managers.
+
+### Step 3: forge-storefront
+```
+Skill("forge-storefront")
+```
+
+### Step 4: forge-ship
+```
+Skill("forge-ship")
+```
+
+## Completion
+
+Present final report:
+```
+# Forge Build Complete
+
+## Features
+{table of all features with status}
+
+## Quality
+- Adversarial review: {status}
+- Axiom scan: {status}
+- Consistency check: {status}
+- Navigation sweep: {status}
+
+## Next Steps
+- [ ] forge-wire: connect backend
+- [ ] forge-storefront: design listing
+- [ ] forge-ship: submission prep
+```

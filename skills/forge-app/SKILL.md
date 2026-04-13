@@ -119,3 +119,152 @@ Write `.forge/references/index.md` documenting which refs are selected and how t
 ### Human gate
 
 Present the spec.json summary to the user. Wait for approval before proceeding to Phase 2.
+
+## Phase 2: Design Contract
+
+Dispatch forge-design to translate references into an iOS-native DESIGN.md.
+
+**NOTE:** Dispatch target names below (e.g., `"forge-design"`) are local skill names. The exact dispatch mechanism (Agent subagent_type, Skill tool, or direct invocation) depends on how Claude Code discovers local `skills/` — this is resolved in Task 11 during the switchover. Use whatever format works after Task 11 verification.
+
+```
+Skill("forge-design")
+# OR if Agent dispatch is needed:
+Agent(description: "Generate DESIGN.md", prompt: "
+  You are forge-design. Read skills/forge-design/SKILL.md and follow it exactly.
+  Read .forge/references/index.md for selected references.
+  Read .forge/spec.json for feature list and preset axes.
+  Read docs/design-reference/presets.md for preset vocabulary.
+  Generate .forge/DESIGN.md following the 8-section format in skills/forge-app/references/design-md-format.md.
+")
+```
+
+After forge-design returns, present DESIGN.md to the user. Wait for approval.
+
+## Phase 3: Build Loop
+
+For each feature in spec.json with status "pending", ordered by dependencies:
+
+### State tracking
+
+Track `codex_invocations` per feature (starts at 0, max 8). This is a hard ceiling regardless of which gate triggered the retry.
+
+### Step 1: Codex Code Generation
+
+Read `skills/forge-build/PROMPT.md`. Replace placeholders:
+
+- `{{FEATURE_SPEC}}` — the feature entry from spec.json
+- `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from DESIGN.md
+- `{{AGENTS_RULES}}` — extract from AGENTS.md: "Architecture" through "Post-Build Checks" sections (~200 lines)
+- `{{PRESET_TOKENS}}` — concrete token values for the selected preset from PresetConfiguration
+- `{{SKILL_KNOWLEDGE}}` — if Build iOS Apps skills are installed, extract relevant patterns inline
+- `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift, and any other shared files the feature will modify
+
+Dispatch to Codex:
+```
+Agent(subagent_type: "codex:rescue", prompt: "<populated PROMPT.md content>")
+```
+
+Increment `codex_invocations`. If >= CODEX_CEILING, mark feature as `blocked` in spec.json, log to `.forge/progress.md`, move to next feature.
+
+### Step 2: Floor Checks
+
+Run grep checks on the generated files:
+
+**View file checks** (grep the *View.swift file):
+```bash
+grep -q "DSScreen" {ViewFile} || echo "FAIL: Missing DSScreen"
+grep -q "\.toast(" {ViewFile} || echo "FAIL: Missing .toast()"
+grep -q "\.onAppear" {ViewFile} || echo "FAIL: Missing .onAppear"
+grep -q "AsyncImage" {ViewFile} && echo "FAIL: AsyncImage banned"
+grep -q "@StateObject" {ViewFile} && echo "FAIL: @StateObject banned"
+```
+
+**ViewModel file checks** (grep the *ViewModel.swift file):
+```bash
+grep -q "@Observable" {ViewModelFile} || echo "FAIL: Missing @Observable"
+grep -q "var toast: Toast?" {ViewModelFile} || echo "FAIL: Missing toast property"
+grep -q "hasLoaded" {ViewModelFile} || echo "FAIL: Missing hasLoaded guard"
+```
+
+**DESIGN.md Don'ts check** (grep both files for banned patterns from Section 6):
+```bash
+# Read Section 6 Don'ts from DESIGN.md, grep for each banned pattern
+```
+
+If any check fails: send failures back to Codex (Step 1). Max 2 consecutive floor check failures.
+
+### Step 3: Hardened Build (if installed)
+
+```bash
+# Check if hardened-build skill exists
+```
+
+If available, dispatch:
+```
+Skill("hardened-build", args: "<changed files>")
+```
+
+If not installed, skip with warning (logged once at pipeline start).
+If fails: send fix instructions to Codex (Step 1). Max 2 consecutive failures.
+
+### Step 4: Build + Screenshot
+
+```bash
+# Discover project
+xcodebuildmcp simulator discover-projs --workspace-root .
+xcodebuildmcp simulator list-schemes --project-path ./{AppName}.xcodeproj
+
+# Build and run
+xcodebuildmcp simulator build-run-sim --scheme "{AppName} - Mock" --project-path ./{AppName}.xcodeproj --simulator-name "iPhone 17 Pro"
+
+# Navigate to the screen using nav_path from spec.json
+# Use snapshot-ui to find elements, tap to navigate
+xcodebuildmcp ui-automation snapshot-ui --simulator-id {SIMULATOR_UDID}
+xcodebuildmcp ui-automation tap --simulator-id {SIMULATOR_UDID} --x {X} --y {Y}
+
+# Screenshot
+xcodebuildmcp ui-automation screenshot --simulator-id {SIMULATOR_UDID} --return-format path
+```
+
+If build fails: send error to Codex (Step 1). Max 2 consecutive build failures.
+
+### Step 5: Taste Judge
+
+Dispatch forge-judge (use same dispatch mechanism resolved in Task 11):
+```
+Agent(description: "Judge screen taste", prompt: "
+  You are forge-judge. Read skills/forge-judge/SKILL.md and follow it exactly.
+  Mode: Single Screen
+  Screenshot: {screenshot_path}
+  View file: {view_file_path}
+  ViewModel file: {viewmodel_file_path}
+  DESIGN.md: .forge/DESIGN.md
+  Grade on 5 criteria: Design Quality, Originality, Craft, Craft Intent, Visual Target Match.
+  Return PASS or FAIL with specific fix instructions.
+")
+```
+
+If FAIL: send fix instructions to Codex (Step 1). Max 3 total judge rounds per feature.
+
+### Step 6: Human Gate
+
+Show the screenshot to the user:
+```
+"Here's the built screen for {feature_name}. [screenshot]
+Approve, or give feedback?"
+```
+
+If approved: commit files, update spec.json status to "done".
+If feedback: send feedback to Codex (Step 1). Max 2 feedback rounds.
+
+### On feature completion or block
+
+Update `.forge/spec.json` — set feature status to `done` or `blocked`.
+Log to `.forge/progress.md`:
+```
+## {feature_name}
+Status: done|blocked
+Codex invocations: N/8
+Judge rounds: N/3
+Notes: ...
+```

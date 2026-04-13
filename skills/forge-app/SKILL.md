@@ -29,15 +29,23 @@ fi
 
 **TEMPLATE_REPO** — cwd is the Forge template itself:
 1. Ask: "What's the app name?" (if not already known from context)
-2. Dispatch forge-workspace:
+2. Dispatch forge-workspace with the app name:
 ```
 Agent(description: "Set up project", prompt: "
   Read skills/forge-workspace/SKILL.md and follow it exactly.
+  The app name is: {AppName}. Use this name exactly — do not re-ask.
   Set up a new Forge project from this template.
+  When done, report the absolute path to the new project directory.
 ")
 ```
-3. `cd` to the new project directory (e.g., `~/Developer/Personal/Apps/{AppName}`)
-4. All subsequent work happens there — never write artifacts in the template repo
+3. After the agent completes, verify the project directory exists:
+```bash
+PROJECT_PATH="$HOME/Developer/Personal/Apps/{AppName}"
+[ -d "$PROJECT_PATH" ] && echo "PROJECT_OK" || echo "PROJECT_MISSING"
+```
+If PROJECT_MISSING, ask the user where the project was created.
+4. `cd` to the verified project path
+5. All subsequent work happens there — never write artifacts in the template repo
 
 **APP_PROJECT** — cwd is an existing app project:
 1. Verify: `ls {AppName}.xcodeproj AGENTS.md Packages/core-packages` must succeed
@@ -48,6 +56,10 @@ MISSING=""
 [ ! -f skills/forge-build/PROMPT.md ] && MISSING="$MISSING forge-build"
 [ ! -f skills/forge-judge/SKILL.md ] && MISSING="$MISSING forge-judge"
 [ ! -f skills/forge-design/SKILL.md ] && MISSING="$MISSING forge-design"
+[ ! -f skills/forge-workspace/SKILL.md ] && MISSING="$MISSING forge-workspace"
+[ ! -f skills/forge-wire/SKILL.md ] && MISSING="$MISSING forge-wire"
+[ ! -f skills/forge-ship/SKILL.md ] && MISSING="$MISSING forge-ship"
+[ ! -f skills/forge-storefront/SKILL.md ] && MISSING="$MISSING forge-storefront"
 if [ -n "$MISSING" ]; then
   echo "SKILLS_INCOMPLETE:$MISSING"
 fi

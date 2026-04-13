@@ -1,3 +1,5 @@
+> **ARCHIVED — Superseded by `docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md` (v4). Do not execute.**
+
 # Forge Pipeline Redesign: Planner-Generator-Evaluator Architecture
 
 ## Problem Statement

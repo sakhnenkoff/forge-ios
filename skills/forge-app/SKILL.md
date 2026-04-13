@@ -29,23 +29,24 @@ fi
 
 **TEMPLATE_REPO** — cwd is the Forge template itself:
 1. Ask: "What's the app name?" (if not already known from context)
-2. Dispatch forge-workspace with the app name:
-```
-Agent(description: "Set up project", prompt: "
-  Read skills/forge-workspace/SKILL.md and follow it exactly.
-  The app name is: {AppName}. Use this name exactly — do not re-ask.
-  Set up a new Forge project from this template.
-  When done, report the absolute path to the new project directory.
-")
-```
-3. After the agent completes, verify the project directory exists:
+2. Create the project using new-app.sh (safe copy + rename — never modifies the template):
 ```bash
-PROJECT_PATH="$HOME/Developer/Personal/Apps/{AppName}"
-[ -d "$PROJECT_PATH" ] && echo "PROJECT_OK" || echo "PROJECT_MISSING"
+DEST_DIR="$HOME/Developer/Personal/Apps"
+./scripts/new-app.sh "{AppName}" "$DEST_DIR"
 ```
-If PROJECT_MISSING, ask the user where the project was created.
-4. `cd` to the verified project path
-5. All subsequent work happens there — never write artifacts in the template repo
+This copies the template via rsync, then runs rename_project.sh on the COPY only.
+3. Verify the project was created and `cd` to it:
+```bash
+PROJECT_PATH="$DEST_DIR/{AppName}"
+if [ -d "$PROJECT_PATH" ] && ls "$PROJECT_PATH"/*.xcodeproj 1>/dev/null 2>&1; then
+  cd "$PROJECT_PATH"
+  echo "PROJECT_OK: $PROJECT_PATH"
+else
+  echo "PROJECT_MISSING"
+fi
+```
+If PROJECT_MISSING, ask the user for the correct destination and re-run.
+4. All subsequent work happens in the new project — the template repo is untouched
 
 **APP_PROJECT** — cwd is an existing app project:
 1. Verify: `ls {AppName}.xcodeproj AGENTS.md Packages/core-packages` must succeed

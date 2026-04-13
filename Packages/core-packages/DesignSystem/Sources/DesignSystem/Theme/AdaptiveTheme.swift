@@ -1,35 +1,39 @@
 import SwiftUI
 
-/// Adaptive theme that derives all colors from a single brand color.
-/// Pass any `brandColor` and the theme computes secondary, accent, and surface tones.
+/// Adaptive theme that derives all design tokens from a ColorStory.
 ///
 /// Usage:
-///   DesignSystem.configure(theme: AdaptiveTheme(brandColor: .indigo))
+///   let story = ColorStory(brand: .indigo, contrast: .teal, surface: Color(hex: "F4F3F1"))
+///   DesignSystem.configure(theme: AdaptiveTheme(colorStory: story))
 ///
 public struct AdaptiveTheme: Theme, Sendable {
     public let tokens: DesignTokens
 
     public init(
-        brandColor: Color = Color(light: Color(hex: "6B3FA0"), dark: Color(hex: "8B5CF6")),
+        colorStory: ColorStory = ColorStory(
+            brand: Color(light: Color(hex: "6B3FA0"), dark: Color(hex: "8B5CF6")),
+            surface: Color(light: Color(hex: "F4F3F1"), dark: Color(hex: "161618"))
+        ),
         preset: PresetConfiguration = .default
     ) {
+        // TODO: Derive text colors from surface luminance (currently hardcoded)
         let colors = ColorPalette(
-            primary: brandColor,
-            secondary: Color(light: Color(hex: "9B6FCF"), dark: Color(hex: "A78BFA")),
-            accent: brandColor,
+            primary: colorStory.brand,
+            secondary: colorStory.contrast,
+            accent: colorStory.surprise ?? colorStory.brand,
             success: Color(light: Color(hex: "34C759"), dark: Color(hex: "30D158")),
             warning: Color(light: Color(hex: "FF9500"), dark: Color(hex: "FF9F0A")),
             error: Color(light: Color(hex: "FF3B30"), dark: Color(hex: "FF453A")),
-            info: Color(light: Color(hex: "007AFF"), dark: Color(hex: "0A84FF")),
+            info: colorStory.contrast,
             backgroundPrimary: Color(light: Color(hex: "FAFAFA"), dark: Color(hex: "0A0A0C")),
-            backgroundSecondary: Color(light: Color(hex: "F4F3F1"), dark: Color(hex: "161618")),
+            backgroundSecondary: colorStory.surface,
             backgroundTertiary: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "1E1E22")),
             textPrimary: Color(light: Color(hex: "000000"), dark: Color(hex: "FFFFFF")),
             textSecondary: Color(light: Color(hex: "3C3C43").opacity(0.6), dark: Color(hex: "EBEBF5").opacity(0.6)),
             textTertiary: Color(light: Color(hex: "3C3C43").opacity(0.3), dark: Color(hex: "EBEBF5").opacity(0.3)),
             textOnPrimary: Color.white,
             surface: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "1A1A1E")),
-            surfaceVariant: Color(light: Color(hex: "F0EFF2"), dark: Color(hex: "242428")),
+            surfaceVariant: colorStory.surface,
             border: Color(light: Color(hex: "3C3C43").opacity(0.29), dark: Color(hex: "545458").opacity(0.65)),
             divider: Color(light: Color(hex: "3C3C43").opacity(0.18), dark: Color(hex: "545458").opacity(0.45))
         )
@@ -73,6 +77,7 @@ public struct AdaptiveTheme: Theme, Sendable {
             RadiiScale(xs: 12, sm: 16, md: 20, lg: 28, xl: 36, pill: 999)
         }
 
+        // Shadows tinted with brand color for warmth
         let shadows: ShadowScale = switch preset.surface {
         case .flat:
             ShadowScale(
@@ -82,9 +87,9 @@ public struct AdaptiveTheme: Theme, Sendable {
             )
         case .elevated, .glass:
             ShadowScale(
-                soft:   ShadowToken(color: brandColor.opacity(0.06), radius: 8,  y: 3),
-                card:   ShadowToken(color: brandColor.opacity(0.08), radius: 10, y: 5),
-                lifted: ShadowToken(color: brandColor.opacity(0.14), radius: 20, y: 8)
+                soft:   ShadowToken(color: colorStory.brand.opacity(0.06), radius: 8,  y: 3),
+                card:   ShadowToken(color: colorStory.brand.opacity(0.08), radius: 10, y: 5),
+                lifted: ShadowToken(color: colorStory.brand.opacity(0.14), radius: 20, y: 8)
             )
         }
 

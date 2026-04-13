@@ -40,7 +40,7 @@ final class DesignSystemTests: XCTestCase {
             object: nil
         )
 
-        DesignSystem.reconfigureForDebug(theme: AdaptiveTheme(brandColor: .blue))
+        DesignSystem.reconfigureForDebug(theme: AdaptiveTheme(colorStory: ColorStory(brand: .blue, surface: .gray)))
 
         wait(for: [expectation], timeout: 1.0)
         XCTAssertTrue(DesignSystem.theme is AdaptiveTheme)

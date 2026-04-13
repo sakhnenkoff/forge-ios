@@ -74,7 +74,7 @@ This determines:
 
 Map to the `AdaptiveTheme` initializer color. The brand color is set via:
 ```swift
-DesignSystem.configure(theme: AdaptiveTheme(brandColor: .{color}))
+DesignSystem.configure(theme: AdaptiveTheme(colorStory: ColorStory(brand: .{color}, surface: Color(hex: "{surface_hex}"))))
 ```
 
 Available colors: `.plum` (default), `.blue`, `.green`, `.orange`, `.red`, `.teal`, `.indigo`, `.pink`, or `Color(hex: "XXXXXX")` for custom.
@@ -122,7 +122,7 @@ The plan must cover ALL of the following:
 ### 2. Theme Configuration
 In `{App}/App/AppDelegate.swift`, update:
 ```swift
-DesignSystem.configure(theme: AdaptiveTheme(brandColor: .{color}))
+DesignSystem.configure(theme: AdaptiveTheme(colorStory: ColorStory(brand: .{color}, surface: Color(hex: "{surface_hex}"))))
 ```
 
 ### 3. Feature Flags
@@ -226,7 +226,7 @@ DesignSystem.configure(theme: AdaptiveTheme())
 ```
 To:
 ```swift
-DesignSystem.configure(theme: AdaptiveTheme(brandColor: .{color}))
+DesignSystem.configure(theme: AdaptiveTheme(colorStory: ColorStory(brand: .{color}, surface: Color(hex: "{surface_hex}"))))
 ```
 
 If the user chose the default plum color, leave as `AdaptiveTheme()` (plum is the default).

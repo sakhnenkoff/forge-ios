@@ -4,13 +4,25 @@ import SwiftUI
 
 final class PresetConfigurationTests: XCTestCase {
 
+    private let testStory = ColorStory(brand: .blue, surface: .gray)
+
+    /// Helper: compare two Colors by resolving to RGBA components
+    private func assertColorsEqual(_ a: Color, _ b: Color, file: StaticString = #file, line: UInt = #line) {
+        let env = EnvironmentValues()
+        let ra = a.resolve(in: env)
+        let rb = b.resolve(in: env)
+        XCTAssertEqual(ra.red, rb.red, accuracy: 0.01, file: file, line: line)
+        XCTAssertEqual(ra.green, rb.green, accuracy: 0.01, file: file, line: line)
+        XCTAssertEqual(ra.blue, rb.blue, accuracy: 0.01, file: file, line: line)
+        XCTAssertEqual(ra.opacity, rb.opacity, accuracy: 0.01, file: file, line: line)
+    }
+
     // MARK: - Default Preset
 
     func testDefaultPresetProducesStandardTokenValues() {
-        let theme = AdaptiveTheme(brandColor: .blue, preset: .default)
+        let theme = AdaptiveTheme(colorStory: testStory, preset: .default)
         let tokens = theme.tokens
 
-        // Spacing should match ThemeFactory defaults (balanced)
         XCTAssertEqual(tokens.spacing.xs, 4)
         XCTAssertEqual(tokens.spacing.sm, 8)
         XCTAssertEqual(tokens.spacing.md, 16)
@@ -19,7 +31,6 @@ final class PresetConfigurationTests: XCTestCase {
         XCTAssertEqual(tokens.spacing.xxlg, 40)
         XCTAssertEqual(tokens.spacing.xxl, 52)
 
-        // Radii should match mixed defaults
         XCTAssertEqual(tokens.radii.xs, 8)
         XCTAssertEqual(tokens.radii.sm, 12)
         XCTAssertEqual(tokens.radii.md, 16)
@@ -31,49 +42,29 @@ final class PresetConfigurationTests: XCTestCase {
     // MARK: - Spacing Axis
 
     func testTightSpacingUsesSmallerScale() {
-        let theme = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(spacing: .tight)
-        )
-
-        // Curated tight scale: xs=4, sm=4, smd=8, md=12, mlg=16, lg=20, xl=24, xxlg=32, xxl=40
+        let theme = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(spacing: .tight))
         XCTAssertEqual(theme.tokens.spacing.md, 12)
         XCTAssertEqual(theme.tokens.spacing.lg, 20)
-        XCTAssertLessThan(theme.tokens.spacing.md, 16) // less than balanced default
+        XCTAssertLessThan(theme.tokens.spacing.md, 16)
     }
 
     func testAirySpacingUsesLargerScale() {
-        let theme = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(spacing: .airy)
-        )
-
-        // Curated airy scale: xs=8, sm=12, smd=16, md=24, mlg=28, lg=32, xl=40, xxlg=52, xxl=64
+        let theme = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(spacing: .airy))
         XCTAssertEqual(theme.tokens.spacing.md, 24)
         XCTAssertEqual(theme.tokens.spacing.lg, 32)
-        XCTAssertGreaterThan(theme.tokens.spacing.md, 16) // more than balanced default
+        XCTAssertGreaterThan(theme.tokens.spacing.md, 16)
     }
 
     // MARK: - Corner Radius Axis
 
     func testSharpCornersUseSmallerRadii() {
-        let theme = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(corners: .sharp)
-        )
-
-        // Curated sharp scale: xs=4, sm=8, md=8, lg=12, xl=16
+        let theme = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(corners: .sharp))
         XCTAssertEqual(theme.tokens.radii.md, 8)
         XCTAssertEqual(theme.tokens.radii.xl, 16)
     }
 
     func testRoundedCornersUseLargerRadii() {
-        let theme = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(corners: .rounded)
-        )
-
-        // Curated rounded scale: xs=12, sm=16, md=20, lg=28, xl=36
+        let theme = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(corners: .rounded))
         XCTAssertEqual(theme.tokens.radii.md, 20)
         XCTAssertEqual(theme.tokens.radii.xl, 36)
     }
@@ -81,22 +72,14 @@ final class PresetConfigurationTests: XCTestCase {
     // MARK: - Surface Treatment Axis
 
     func testFlatSurfaceZeroesAllShadowRadii() {
-        let theme = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(surface: .flat)
-        )
-
+        let theme = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(surface: .flat))
         XCTAssertEqual(theme.tokens.shadows.soft.radius, 0)
         XCTAssertEqual(theme.tokens.shadows.card.radius, 0)
         XCTAssertEqual(theme.tokens.shadows.lifted.radius, 0)
     }
 
     func testElevatedSurfaceHasNonZeroShadows() {
-        let theme = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(surface: .elevated)
-        )
-
+        let theme = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(surface: .elevated))
         XCTAssertGreaterThan(theme.tokens.shadows.soft.radius, 0)
         XCTAssertGreaterThan(theme.tokens.shadows.card.radius, 0)
         XCTAssertGreaterThan(theme.tokens.shadows.lifted.radius, 0)
@@ -105,20 +88,10 @@ final class PresetConfigurationTests: XCTestCase {
     // MARK: - Typography Weight Axis
 
     func testHeavyWeightUsesBolderHeadings() {
-        let heavy = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(weight: .heavy)
-        )
-        let light = AdaptiveTheme(
-            brandColor: .blue,
-            preset: PresetConfiguration(weight: .light)
-        )
-
-        // Heavy display should be .black, light should be .bold
+        let heavy = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(weight: .heavy))
+        let light = AdaptiveTheme(colorStory: testStory, preset: PresetConfiguration(weight: .light))
         XCTAssertEqual(heavy.tokens.typography.display.weight, .black)
         XCTAssertEqual(light.tokens.typography.display.weight, .bold)
-
-        // Heavy headings should be .bold, light should be .semibold
         XCTAssertEqual(heavy.tokens.typography.titleLarge.weight, .bold)
         XCTAssertEqual(light.tokens.typography.titleLarge.weight, .semibold)
     }
@@ -130,22 +103,49 @@ final class PresetConfigurationTests: XCTestCase {
         XCTAssertEqual(PresetConfiguration.linear.corners, .sharp)
         XCTAssertEqual(PresetConfiguration.linear.weight, .heavy)
         XCTAssertEqual(PresetConfiguration.linear.surface, .flat)
-
         XCTAssertEqual(PresetConfiguration.airbnb.spacing, .airy)
         XCTAssertEqual(PresetConfiguration.airbnb.corners, .rounded)
-
         XCTAssertEqual(PresetConfiguration.stripe.surface, .flat)
         XCTAssertEqual(PresetConfiguration.apple.surface, .glass)
     }
 
-    // MARK: - No-Preset Backward Compatibility
+    // MARK: - ColorStory
 
-    func testInitWithoutPresetMatchesDefault() {
-        let withoutPreset = AdaptiveTheme(brandColor: .blue)
-        let withDefault = AdaptiveTheme(brandColor: .blue, preset: .default)
+    func testColorStoryDerivation() {
+        let story = ColorStory(brand: .blue, contrast: .green, surprise: .orange, surface: .gray)
+        let theme = AdaptiveTheme(colorStory: story, preset: .default)
+        let colors = theme.tokens.colors
 
-        XCTAssertEqual(withoutPreset.tokens.spacing.md, withDefault.tokens.spacing.md)
-        XCTAssertEqual(withoutPreset.tokens.radii.md, withDefault.tokens.radii.md)
-        XCTAssertEqual(withoutPreset.tokens.shadows.card.radius, withDefault.tokens.shadows.card.radius)
+        assertColorsEqual(colors.primary, .blue)
+        assertColorsEqual(colors.secondary, .green)
+        assertColorsEqual(colors.info, .green)
+        assertColorsEqual(colors.accent, .orange)
+        assertColorsEqual(colors.surfaceVariant, .gray)
+        assertColorsEqual(colors.backgroundSecondary, .gray)
+    }
+
+    func testColorStoryWithoutOptionals() {
+        let story = ColorStory(brand: .blue, surface: .gray)
+        let theme = AdaptiveTheme(colorStory: story, preset: .default)
+        let colors = theme.tokens.colors
+
+        assertColorsEqual(colors.primary, .blue)
+        assertColorsEqual(colors.accent, .blue)
+        // Verify derived contrast path
+        let env = EnvironmentValues()
+        let primaryResolved = colors.primary.resolve(in: env)
+        let secondaryResolved = colors.secondary.resolve(in: env)
+        XCTAssertEqual(secondaryResolved.opacity, 0.7, accuracy: 0.05,
+                       "Derived contrast should have ~0.7 opacity")
+        XCTAssertNotEqual(primaryResolved.opacity, secondaryResolved.opacity,
+                          "Derived contrast should differ from brand")
+    }
+
+    func testInitWithoutColorStoryMatchesDefault() {
+        let withoutStory = AdaptiveTheme()
+        let withDefault = AdaptiveTheme(preset: .default)
+        XCTAssertEqual(withoutStory.tokens.spacing.md, withDefault.tokens.spacing.md)
+        XCTAssertEqual(withoutStory.tokens.radii.md, withDefault.tokens.radii.md)
+        XCTAssertEqual(withoutStory.tokens.shadows.card.radius, withDefault.tokens.shadows.card.radius)
     }
 }

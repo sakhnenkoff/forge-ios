@@ -117,7 +117,7 @@ The DS provides code architecture — token system, component APIs, modifier pat
 
 ```swift
 // Brand color drives the entire token system
-DesignSystem.configure(theme: AdaptiveTheme(brandColor: .indigo))
+DesignSystem.configure(theme: AdaptiveTheme(colorStory: ColorStory(brand: .indigo, contrast: .teal, surface: Color(hex: "F4F3F1"))))
 ```
 
 Token groups: `ColorPalette`, `TypographyScale`, `SpacingScale`, `RadiiScale`, `ShadowScale`, `GlassTokens`. All customizable in `AdaptiveTheme.swift`. Components (`DSButton`, `DSCard`, `DSScreen`, etc.) read from tokens — change the tokens, change everything.

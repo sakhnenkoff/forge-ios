@@ -17,8 +17,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         AppConfiguration.validateConfiguration()
-        // Change brand color here: AdaptiveTheme(brandColor: .blue)
-        // The brand color drives accent, shadows, and surface tints across the entire DS.
+        // Configure brand: AdaptiveTheme(colorStory: ColorStory(brand: .blue, surface: Color(hex: "F5F5F5")))
+        // See ColorStory.swift for full palette options (contrast, surprise)
         DesignSystem.configure(theme: AdaptiveTheme())
 
         #if DEBUG

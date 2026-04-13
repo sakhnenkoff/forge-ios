@@ -51,6 +51,10 @@ For each screen, create:
 
 5. **Navigation** — add route to AppRoute/AppSheet/AppTab as specified
 
+## Shared Files (current state — modify in place)
+
+{{SHARED_FILES}}
+
 ## Additional Skill Knowledge
 
 {{SKILL_KNOWLEDGE}}

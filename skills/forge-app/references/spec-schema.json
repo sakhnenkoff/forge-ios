@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["app_name", "pitch", "preset", "features", "models", "navigation"],
+  "properties": {
+    "app_name": { "type": "string" },
+    "pitch": { "type": "string" },
+    "preset": {
+      "type": "object",
+      "properties": {
+        "spacing": { "enum": ["tight", "balanced", "airy"] },
+        "corners": { "enum": ["sharp", "mixed", "rounded"] },
+        "weight": { "enum": ["heavy", "light"] },
+        "surface": { "enum": ["flat", "elevated", "glass"] }
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "screen_type", "required", "status", "nav_path"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "screen_type": { "enum": ["dashboard", "detail", "list", "form", "onboarding", "paywall", "settings"] },
+          "description": { "type": "string" },
+          "required": { "type": "boolean" },
+          "has_manager": { "type": "boolean" },
+          "models": { "type": "array", "items": { "type": "string" } },
+          "depends_on": { "type": "array", "items": { "type": "string" } },
+          "status": { "enum": ["pending", "building", "done", "blocked"] },
+          "nav_case": { "enum": ["tab", "push", "sheet"] },
+          "icon": { "type": "string" },
+          "nav_path": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "fields": { "type": "array", "items": { "type": "object" } }
+        }
+      }
+    },
+    "navigation": {
+      "type": "object",
+      "properties": {
+        "tabs": { "type": "array", "items": { "type": "string" } },
+        "pushes": { "type": "array", "items": { "type": "string" } },
+        "sheets": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -17,21 +17,22 @@
 | File | Action | Purpose |
 |------|--------|---------|
 | `skills/forge-app/SKILL.md` | Modify | Add snapshot, retrospective logging, pattern detection, Pipeline Health report |
+| `skills/forge-app/references/spec-format.md` | Modify | Replace stale `issues.md` reference |
 | `docs/pipeline-history/.gitkeep` | Create | Cross-build retrospective archive |
 | `docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md` | Modify | Replace `.forge/issues.md` with `.forge/retrospective.md` |
 
 ---
 
-### Task 1: Add snapshot tagging and prior-retro check to Phase 1
+### Task 1: Add prior-retro check and snapshot tagging to Phase 1
 
 **Files:**
-- Modify: `skills/forge-app/SKILL.md:119-121` (after "Human gate" section, before Phase 2)
+- Modify: `skills/forge-app/SKILL.md`
 
-- [ ] **Step 1: Insert snapshot and retro check after the human gate in Phase 1**
+- [ ] **Step 1: Insert prior-retro check BEFORE the human gate section**
 
-In `skills/forge-app/SKILL.md`, find the line `Present the spec.json summary to the user. Wait for approval before proceeding to Phase 2.` (line 121).
+In `skills/forge-app/SKILL.md`, find the line `### Human gate` (around line 119).
 
-Insert BEFORE that line (after "Write `.forge/references/index.md`..." block, before the human gate):
+Insert BEFORE `### Human gate`:
 
 ```markdown
 ### Check prior retrospectives
@@ -42,9 +43,9 @@ Before proceeding, check if prior builds left unresolved pipeline issues:
 ls docs/pipeline-history/*-retrospective.md 2>/dev/null
 ```
 
-If files exist, grep for open entries:
+If files exist, grep for open entries (note: markdown bold format):
 ```bash
-grep -l "Status: open" docs/pipeline-history/*-retrospective.md 2>/dev/null
+grep -l "Status:.*open" docs/pipeline-history/*-retrospective.md 2>/dev/null
 ```
 
 If open entries found, remind the user:
@@ -52,17 +53,35 @@ If open entries found, remind the user:
 
 If the user wants to review, show the open entries grouped by fix target. If not, continue.
 
+Show what changed since the last snapshot:
+```bash
+LAST_TAG=$(git tag -l 'forge-pre-*' | sort -V | tail -1)
+if [ -n "$LAST_TAG" ]; then
+  echo "Pipeline changes since last build ($LAST_TAG):"
+  git diff "$LAST_TAG"..HEAD --stat
+fi
+```
+```
+
+- [ ] **Step 2: Insert snapshot creation AFTER the human gate body**
+
+Find the line `Present the spec.json summary to the user. Wait for approval before proceeding to Phase 2.` (around line 121).
+
+Insert AFTER that line:
+
+```markdown
 ### Create pipeline snapshot
 
-After the user confirms the spec.json (human gate), create a snapshot tag:
+After the user approves the spec, create a snapshot tag before any build artifacts are generated:
 
 ```bash
 APP_SLUG=$(echo "{app_name}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
 TAG_NAME="forge-pre-${APP_SLUG}-$(date +%Y%m%dT%H%M%S)"
 
-# Ensure clean working tree for accurate snapshot
+# Refuse to tag a dirty tree — ask user to commit or stash first
 if ! git diff --quiet || ! git diff --cached --quiet; then
-  git add -A && git commit -m "chore: snapshot pipeline state before ${APP_SLUG} build"
+  echo "Working tree has uncommitted changes. Please commit or stash before proceeding."
+  # Wait for user to resolve, then retry
 fi
 
 git tag "$TAG_NAME"
@@ -71,19 +90,19 @@ git tag "$TAG_NAME"
 Log: "Pipeline snapshot created: {TAG_NAME}. You can rollback to this state if improvements break something."
 ```
 
-- [ ] **Step 2: Verify the insertion**
+- [ ] **Step 3: Verify**
 
 ```bash
-grep -n "pipeline snapshot\|prior retrospective\|pipeline-history" skills/forge-app/SKILL.md
+grep -n "prior retrospective\|pipeline snapshot\|pipeline-history\|forge-pre-" skills/forge-app/SKILL.md
 ```
 
-Expected: 3+ matches in the Phase 1 section.
+Expected: 5+ matches. Prior-retro check appears before `### Human gate`. Snapshot appears after the human gate body.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
 git add skills/forge-app/SKILL.md
-git commit -m "feat: add pipeline snapshot tagging and prior-retro check to forge-app Phase 1"
+git commit -m "feat: add prior-retro check and pipeline snapshot to forge-app Phase 1"
 ```
 
 ---
@@ -91,13 +110,13 @@ git commit -m "feat: add pipeline snapshot tagging and prior-retro check to forg
 ### Task 2: Add retrospective logging to Phase 3 build loop
 
 **Files:**
-- Modify: `skills/forge-app/SKILL.md:267-277` (the "On feature completion or block" section)
+- Modify: `skills/forge-app/SKILL.md`
 
-- [ ] **Step 1: Add retrospective auto-logging after floor checks, judge, and human gate**
+- [ ] **Step 1: Insert retrospective logging section BEFORE "On feature completion or block"**
 
 In `skills/forge-app/SKILL.md`, find the section `### On feature completion or block` (around line 267).
 
-Replace the entire section (lines 267-277) with:
+Insert BEFORE it:
 
 ```markdown
 ### Retrospective logging
@@ -107,7 +126,7 @@ After EVERY retry, failure, or human feedback event, auto-append to `.forge/retr
 ```markdown
 ## Screen: {feature_name}
 
-### Stage: {which stage failed — Codex Build | Floor Checks | Hardened Build | Build | Judge | Human Feedback}
+### Stage: {Codex Build | Floor Checks | Hardened Build | Judge | Design | Human Feedback}
 - **Issue:** {one sentence — what went wrong}
 - **Root cause:** {best guess — why it went wrong}
 - **Suggested fix:** {specific change to prevent this — e.g., "Add ScrollView mention to dashboard.md fragment"}
@@ -125,18 +144,23 @@ if [ ! -f .forge/retrospective.md ]; then
 fi
 ```
 
+**Auto-drop rule:** If a Minor entry is logged for a feature, and the feature subsequently passes the same stage on retry, remove the Minor entry (the system self-corrected).
+
 **Pattern detection (mechanical):** After each entry, run a count:
 ```bash
 grep "Fix target:" .forge/retrospective.md | sort | uniq -c | sort -rn | head -5
 ```
 
 If any fix target appears 3+ times, warn the user:
-"⚠ {fix_target} has caused {N} issues so far. Consider prioritizing this fix after the build."
+"This is the Nth time {fix_target} caused an issue. Consider prioritizing this fix after the build."
 
-### On feature completion or block
+**Cross-screen retry context:** When sending fix instructions back to Codex after a failure, include relevant retrospective entries from prior screens that share the same fix target. This prevents Codex from repeating the same mistake across screens.
+```
 
-Update `.forge/spec.json` — set feature status to `done` or `blocked`.
-Log to `.forge/progress.md`:
+- [ ] **Step 2: Update "On feature completion or block" to include retro entry count**
+
+In the existing `### On feature completion or block` section, add `Retro entries: N` to the progress.md log template:
+
 ```
 ## {feature_name}
 Status: done|blocked
@@ -145,21 +169,20 @@ Judge rounds: N/3
 Retro entries: N
 Notes: ...
 ```
-```
 
-- [ ] **Step 2: Verify the insertion**
+- [ ] **Step 3: Verify**
 
 ```bash
-grep -n "retrospective\|pattern detection\|Fix target" skills/forge-app/SKILL.md | head -10
+grep -n "Retrospective logging\|pattern detection\|Cross-screen retry\|Auto-drop" skills/forge-app/SKILL.md
 ```
 
-Expected: Multiple matches in the Phase 3 section.
+Expected: 4 matches in Phase 3.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
 git add skills/forge-app/SKILL.md
-git commit -m "feat: add retrospective auto-logging and pattern detection to forge-app Phase 3"
+git commit -m "feat: add retrospective logging, pattern detection, and cross-screen retry context to Phase 3"
 ```
 
 ---
@@ -167,13 +190,11 @@ git commit -m "feat: add retrospective auto-logging and pattern detection to for
 ### Task 3: Add Pipeline Health report to Completion section
 
 **Files:**
-- Modify: `skills/forge-app/SKILL.md:385-404` (the Completion section)
+- Modify: `skills/forge-app/SKILL.md`
 
-- [ ] **Step 1: Replace the Completion section with an expanded version**
+- [ ] **Step 1: Replace the Completion section**
 
-In `skills/forge-app/SKILL.md`, find the `## Completion` section (around line 385).
-
-Replace everything from `## Completion` to the end of the file with:
+Find `## Completion` (around line 385). Replace everything from there to end of file with:
 
 ```markdown
 ## Completion
@@ -196,7 +217,7 @@ Present final report:
 {If .forge/retrospective.md exists and has entries:}
 
 ### Retrospective Summary
-{Group entries by fix target, count by severity, rank by frequency}
+{Group entries by fix target, count by severity, rank by frequency. Filter: show Major/Critical first, then Minor only if Major/Critical are resolved.}
 
 | Fix Target | Issues | Major/Critical | Top Issue |
 |-----------|--------|---------------|-----------|
@@ -204,11 +225,11 @@ Present final report:
 | skills/forge-judge/SKILL.md | 2 | 2 | Spacing variety not checked |
 
 ### Suggested Improvements
-{For each group with 2+ entries, list the suggested fix from the entries:}
+{For each group with 2+ entries, list the "Suggested fix" from the entries:}
 1. **dashboard.md** (3 issues): Add horizontal ScrollView mention for quick actions
 2. **forge-judge Craft criterion** (2 issues): Add explicit spacing variety check
 
-{If no retrospective entries:}
+{If no retrospective file or no entries:}
 "No pipeline issues logged — clean build!"
 
 ## Next Steps
@@ -221,30 +242,39 @@ Present final report:
 
 ### Post-build: Archive retrospective
 
-If the user applies improvements or defers them, copy the retrospective to the template repo for cross-build reference:
+If `.forge/retrospective.md` exists, archive it to the template repo:
 
 ```bash
-APP_SLUG=$(echo "{app_name}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
-mkdir -p docs/pipeline-history
-cp .forge/retrospective.md "docs/pipeline-history/${APP_SLUG}-retrospective.md"
-git add "docs/pipeline-history/${APP_SLUG}-retrospective.md"
-git commit -m "docs: archive retrospective from ${APP_SLUG} build"
+if [ -f .forge/retrospective.md ]; then
+  APP_SLUG=$(echo "{app_name}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+  ARCHIVE_NAME="${APP_SLUG}-$(date +%Y%m%dT%H%M%S)-retrospective.md"
+  mkdir -p docs/pipeline-history
+  cp .forge/retrospective.md "docs/pipeline-history/${ARCHIVE_NAME}"
+  git add "docs/pipeline-history/${ARCHIVE_NAME}"
+  git commit -m "docs: archive retrospective from ${APP_SLUG} build"
+fi
 ```
 
-When applying improvements, mark entries as `applied` and note the commit:
+When applying improvements, mark entries individually — after EACH fix commit, update only the specific entry that was fixed. Do NOT use a global sed replace. Instead, identify the entry by its Screen + Stage header and update its Status line:
+
+```
+Find the entry for the specific screen/stage you just fixed.
+Change its line from:
+  - **Status:** open
+To:
+  - **Status:** applied (commit: {short_hash})
+```
+
+This must be done per-entry, not globally, so each fix maps to its own commit hash.
+```
+
+- [ ] **Step 2: Verify**
+
 ```bash
-# After each fix commit, update the entry's Status field
-sed -i '' "s/- \*\*Status:\*\* open/- **Status:** applied (commit: $(git rev-parse --short HEAD))/" .forge/retrospective.md
-```
+grep -n "Pipeline Health\|Retrospective Summary\|pipeline-history\|Suggested Improvements\|per-entry" skills/forge-app/SKILL.md
 ```
 
-- [ ] **Step 2: Verify the update**
-
-```bash
-grep -n "Pipeline Health\|Retrospective Summary\|pipeline-history\|Suggested Improvements" skills/forge-app/SKILL.md
-```
-
-Expected: 4+ matches in the Completion section.
+Expected: 5+ matches in Completion section.
 
 - [ ] **Step 3: Commit**
 
@@ -255,11 +285,12 @@ git commit -m "feat: add Pipeline Health report and retro archiving to forge-app
 
 ---
 
-### Task 4: Create pipeline-history directory and update v4 spec
+### Task 4: Create pipeline-history directory and update v4 spec + spec-format.md
 
 **Files:**
 - Create: `docs/pipeline-history/.gitkeep`
 - Modify: `docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md`
+- Modify: `skills/forge-app/references/spec-format.md`
 
 - [ ] **Step 1: Create the pipeline-history directory**
 
@@ -270,7 +301,7 @@ touch docs/pipeline-history/.gitkeep
 
 - [ ] **Step 2: Update v4 spec — replace issues.md with retrospective.md**
 
-In `docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md`, find the .forge/ directory structure section (around line 407). Find the line:
+In `docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md`, find the .forge/ directory structure section. Find the line:
 
 ```
 ├── issues.md               # Failures, fallbacks, unresolved problems
@@ -282,21 +313,19 @@ Replace with:
 ├── retrospective.md        # Pipeline issues log — auto-written by forge-app, committed in app projects
 ```
 
-Also find the gitignore note (around line 411) that mentions `.forge/issues.md` and replace:
+Also in the gitignore section, if `.forge/issues.md` appears as a gitignored path, remove that line. (retrospective.md is NOT gitignored — it should be committed in app projects.)
 
-```
-.forge/issues.md
-```
+- [ ] **Step 3: Update spec-format.md — replace stale issues.md reference**
 
-With nothing (remove the line — retrospective.md is NOT gitignored, it should be committed).
+In `skills/forge-app/references/spec-format.md`, find any reference to `.forge/issues.md` and replace with `.forge/retrospective.md`.
 
-- [ ] **Step 3: Verify**
+- [ ] **Step 4: Verify**
 
 ```bash
-grep -n "issues.md\|retrospective.md" docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md
+grep -rn "issues.md" docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md skills/forge-app/references/spec-format.md
 ```
 
-Expected: `retrospective.md` present, `issues.md` absent.
+Expected: 0 matches.
 
 ```bash
 ls docs/pipeline-history/.gitkeep
@@ -304,11 +333,11 @@ ls docs/pipeline-history/.gitkeep
 
 Expected: file exists.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
-git add docs/pipeline-history/.gitkeep docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md
-git commit -m "chore: create pipeline-history directory, replace issues.md with retrospective.md in v4 spec"
+git add docs/pipeline-history/.gitkeep docs/superpowers/specs/2026-04-12-forge-v4-pipeline-design.md skills/forge-app/references/spec-format.md
+git commit -m "chore: create pipeline-history directory, replace issues.md with retrospective.md everywhere"
 ```
 
 ---
@@ -324,10 +353,10 @@ grep -c "issues.md" skills/forge-app/SKILL.md
 
 Expected: retrospective.md = 3+, issues.md = 0.
 
-- [ ] **Step 2: Check no stale issues.md references anywhere in skills**
+- [ ] **Step 2: Check no stale issues.md references anywhere**
 
 ```bash
-grep -rn "issues.md" skills/
+grep -rn "issues.md" skills/ docs/superpowers/specs/ docs/design-reference/
 ```
 
 Expected: 0 matches.
@@ -340,11 +369,19 @@ grep -c "pipeline-history" skills/forge-app/SKILL.md
 
 Expected: 2+ (prior-retro check + post-build archive).
 
-- [ ] **Step 4: Commit any fixes**
+- [ ] **Step 4: Check grep pattern uses correct markdown format**
 
 ```bash
-git add skills/
-git commit -m "fix: resolve any cross-reference inconsistencies in retrospective system"
+grep -n 'Status:.*open\|Status: open' skills/forge-app/SKILL.md
+```
+
+Expected: all grep commands use `Status:.*open` pattern (not `Status: open` which won't match bold markdown).
+
+- [ ] **Step 5: Commit any fixes**
+
+```bash
+git add skills/ docs/
+git commit -m "fix: resolve cross-reference inconsistencies in retrospective system"
 ```
 
 ---
@@ -353,10 +390,10 @@ git commit -m "fix: resolve any cross-reference inconsistencies in retrospective
 
 | Task | Files | What it does |
 |------|-------|-------------|
-| 1 | `skills/forge-app/SKILL.md` | Snapshot tag + prior-retro check in Phase 1 |
-| 2 | `skills/forge-app/SKILL.md` | Auto-logging + pattern detection in Phase 3 |
-| 3 | `skills/forge-app/SKILL.md` | Pipeline Health report + retro archiving in Completion |
-| 4 | `docs/pipeline-history/.gitkeep`, v4 spec | Create archive dir, replace issues.md |
-| 5 | — | Cross-reference verification |
+| 1 | `skills/forge-app/SKILL.md` | Prior-retro check + snapshot diff before gate, snapshot tag after gate |
+| 2 | `skills/forge-app/SKILL.md` | Auto-logging + pattern detection + cross-screen retry context + auto-drop |
+| 3 | `skills/forge-app/SKILL.md` | Pipeline Health report + per-entry status marking + retro archiving |
+| 4 | `docs/pipeline-history/.gitkeep`, v4 spec, spec-format.md | Create archive dir, replace issues.md everywhere |
+| 5 | — | Cross-reference verification including grep pattern check |
 
-**Total: 5 tasks, 3 files changed.**
+**Total: 5 tasks, 4 files changed.**

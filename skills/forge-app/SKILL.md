@@ -150,14 +150,21 @@ Track `codex_invocations` per feature (starts at 0, max 8). This is a hard ceili
 
 ### Step 1: Codex Code Generation
 
-Read `skills/forge-build/PROMPT.md`. Replace placeholders:
+Read `skills/forge-build/PROMPT.md` (XML template). Load the screen-type fragment:
+
+Load the screen-type fragment file at `skills/forge-build/prompts/{screen_type}.md`.
+If the file does not exist: set feature status to `blocked` in spec.json, log "No prompt fragment for screen_type '{screen_type}'" to `.forge/progress.md`, skip Codex dispatch, and move to the next feature.
+
+Replace placeholders (forge-app wraps DESIGN_BLUEPRINT, AGENTS_RULES, and SHARED_FILES in fenced code blocks during injection to prevent XML tag corruption — the template itself has raw placeholders):
 
 - `{{FEATURE_SPEC}}` — the feature entry from spec.json
-- `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from DESIGN.md
-- `{{AGENTS_RULES}}` — extract from AGENTS.md: "Architecture" through "Post-Build Checks" sections (~200 lines)
+- `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from DESIGN.md (wrap in fenced block during injection)
+- `{{AGENTS_RULES}}` — extract from AGENTS.md: "Architecture" through "Post-Build Checks" sections (~200 lines, wrap in fenced block)
 - `{{PRESET_TOKENS}}` — concrete token values for the selected preset from PresetConfiguration
-- `{{SKILL_KNOWLEDGE}}` — if Build iOS Apps skills are installed, extract relevant patterns inline
-- `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift, and any other shared files the feature will modify
+- `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift (wrap in swift fenced block)
+- `{{SCREEN_TYPE_FRAGMENT}}` — content of the loaded fragment file
+
+Note: Adding a new `screen_type` to spec-schema.json requires creating a matching `skills/forge-build/prompts/{type}.md` fragment file.
 
 Dispatch to Codex:
 ```

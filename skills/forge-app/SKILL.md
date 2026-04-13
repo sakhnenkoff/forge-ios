@@ -35,7 +35,19 @@ fi
 
 **APP_PROJECT** — cwd is an existing app project:
 1. Verify: `ls {AppName}.xcodeproj AGENTS.md Packages/core-packages` must succeed
-2. Continue to Phase 1
+2. Validate skills directory:
+```bash
+MISSING=""
+[ ! -f skills/forge-app/SKILL.md ] && MISSING="$MISSING forge-app"
+[ ! -f skills/forge-build/PROMPT.md ] && MISSING="$MISSING forge-build"
+[ ! -f skills/forge-judge/SKILL.md ] && MISSING="$MISSING forge-judge"
+[ ! -f skills/forge-design/SKILL.md ] && MISSING="$MISSING forge-design"
+if [ -n "$MISSING" ]; then
+  echo "SKILLS_INCOMPLETE:$MISSING"
+fi
+```
+If SKILLS_INCOMPLETE: "Missing forge skills:${MISSING}. Copy from the Forge template: `cp -R ~/Developer/Personal/forge/skills/ ./skills/`"
+3. Continue to Phase 1
 
 **UNKNOWN** — neither template nor app:
 1. Error: "This doesn't look like a Forge project. Either `cd` to your Forge template or your app project directory."

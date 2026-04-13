@@ -126,7 +126,7 @@ Each field has:
 | `pending` | Not yet built. Next in queue. |
 | `building` | Currently being built by the Generator. |
 | `done` | Built, passed Judge, approved by human. |
-| `failed` | Failed after max retries. Logged in `.forge/issues.md`. |
+| `failed` | Failed after max retries. Logged in `.forge/retrospective.md`. |
 
 ---
 

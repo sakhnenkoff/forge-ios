@@ -116,9 +116,55 @@ If user provided screenshots, save them to `.forge/references/`.
 
 Write `.forge/references/index.md` documenting which refs are selected and how they combine.
 
+### Check prior retrospectives
+
+Before proceeding, check if prior builds left unresolved pipeline issues:
+
+```bash
+ls docs/pipeline-history/*-retrospective.md 2>/dev/null
+```
+
+If files exist, grep for open entries (note: markdown bold format):
+```bash
+grep -l "Status:.*open" docs/pipeline-history/*-retrospective.md 2>/dev/null
+```
+
+If open entries found, remind the user:
+"There are unapplied pipeline improvements from prior builds. Want to review them before starting this build?"
+
+If the user wants to review, show the open entries grouped by fix target. If not, continue.
+
+Show what changed since the last snapshot:
+```bash
+LAST_TAG=$(git tag -l 'forge-pre-*' | sort -V | tail -1)
+if [ -n "$LAST_TAG" ]; then
+  echo "Pipeline changes since last build ($LAST_TAG):"
+  git diff "$LAST_TAG"..HEAD --stat
+fi
+```
+
 ### Human gate
 
 Present the spec.json summary to the user. Wait for approval before proceeding to Phase 2.
+
+### Create pipeline snapshot
+
+After the user approves the spec, create a snapshot tag before any build artifacts are generated:
+
+```bash
+APP_SLUG=$(echo "{app_name}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+TAG_NAME="forge-pre-${APP_SLUG}-$(date +%Y%m%dT%H%M%S)"
+
+# Refuse to tag a dirty tree — ask user to commit or stash first
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  echo "Working tree has uncommitted changes. Please commit or stash before proceeding."
+  # Wait for user to resolve, then retry
+fi
+
+git tag "$TAG_NAME"
+```
+
+Log: "Pipeline snapshot created: {TAG_NAME}. You can rollback to this state if improvements break something."
 
 ## Phase 2: Design Contract
 

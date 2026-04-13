@@ -58,8 +58,8 @@ Files to create:
    - Use DS components: DSButton, DSCard, DSListRow, DSScreen, DSTextField, etc.
    - Use DS typography: `.display()`, `.titleLarge()`, `.bodyMedium()`, etc.
    - Use semantic colors: `.themePrimary`, `.textPrimary`, `.textSecondary`, etc.
-   - Use DS spacing: `DSSpacing.xs` (4), `.sm` (8), `.smd` (12), `.md` (16), `.mlg` (20), `.lg` (24), `.xl` (32), `.xxlg` (40), `.xxl` (52)
-   - Use DS radii: `DSRadii.xs` (8), `.sm` (12), `.md` (16), `.lg` (20), `.xl` (28), `.pill` (999)
+   - Use DS spacing tokens: `DSSpacing.xs`, `.sm`, `.smd`, `.md`, `.mlg`, `.lg`, `.xl`, `.xxlg`, `.xxl` (concrete values provided in `<preset_tokens>` below — they vary by preset)
+   - Use DS radii tokens: `DSRadii.xs`, `.sm`, `.md`, `.lg`, `.xl`, `.pill` (concrete values provided in `<preset_tokens>` below — they vary by preset)
 
 2. **ViewModel** (`{App}/Features/{FeatureName}/{FeatureName}ViewModel.swift`)
    - `@MainActor @Observable final class {FeatureName}ViewModel`
@@ -80,15 +80,11 @@ Files to create:
 </task>
 
 <design_contract>
-```
 {{DESIGN_BLUEPRINT}}
-```
 </design_contract>
 
 <architecture_rules>
-```
 {{AGENTS_RULES}}
-```
 </architecture_rules>
 
 <preset_tokens>
@@ -96,9 +92,7 @@ Files to create:
 </preset_tokens>
 
 <shared_files>
-```swift
 {{SHARED_FILES}}
-```
 </shared_files>
 
 <screen_type_guidance>
@@ -113,19 +107,19 @@ Append to shared files (AppRoute, AppServices) — do not reorganize them.
 
 <final_check>
 Before finishing, check the files you just wrote ONCE.
-Use the actual file paths you created (not placeholders).
+Replace {ViewFile} and {VMFile} with the actual file paths you created.
 
 View file:
-- grep -q "DSScreen" <your-view-file> || fix it
-- grep -q "\.toast(" <your-view-file> || fix it
-- grep -q "\.onAppear" <your-view-file> || fix it
-- grep -q "AsyncImage" <your-view-file> && remove it
-- grep -q "@StateObject" <your-view-file> && replace with @State
+- grep -q "DSScreen" {ViewFile} || fix it
+- grep -q "\.toast(" {ViewFile} || fix it
+- grep -q "\.onAppear" {ViewFile} || fix it
+- grep -q "AsyncImage" {ViewFile} && remove it
+- grep -q "@StateObject" {ViewFile} && replace with @State
 
 ViewModel file:
-- grep -q "@Observable" <your-viewmodel-file> || fix it
-- grep -q "var toast: Toast?" <your-viewmodel-file> || add it
-- grep -q "hasLoaded" <your-viewmodel-file> || add the guard pattern
+- grep -q "@Observable" {VMFile} || fix it
+- grep -q "var toast: Toast?" {VMFile} || add it
+- grep -q "hasLoaded" {VMFile} || add the guard pattern
 
 Fix any violations. Do NOT re-check after fixing. Return your final files regardless.
 </final_check>
@@ -233,7 +227,7 @@ Write to `skills/forge-build/prompts/list.md`:
 - DSListRow as the primary repeating component
 - Search bar: use `.searchable(text:)` modifier on the NavigationStack if search is specified
 - Section headers using `.headlineSmall()` + `.textSecondary` if grouped
-- Empty state: centered VStack with SF Symbol (`.font(.system(size: 48))`), title (`.titleSmall()`), subtitle (`.bodyMedium()` + `.textSecondary`), and CTA DSButton
+- Empty state: centered VStack with SF Symbol (`.font(.display())`), title (`.titleSmall()`), subtitle (`.bodyMedium()` + `.textSecondary`), and CTA DSButton
 - Pull-to-refresh: `.refreshable { }` modifier if data is dynamic
 
 ## DS Components to Prefer
@@ -412,23 +406,19 @@ With:
 ```markdown
 Read `skills/forge-build/PROMPT.md` (XML template). Load the screen-type fragment:
 
-```bash
-# Load fragment — fail fast if missing
-FRAGMENT_FILE="skills/forge-build/prompts/${screen_type}.md"
-if [ ! -f "$FRAGMENT_FILE" ]; then
-  echo "ERROR: No prompt fragment for screen_type '${screen_type}'. Add skills/forge-build/prompts/${screen_type}.md or use a supported screen type."
-  # Mark feature as blocked, move to next
-fi
-```
+Load the screen-type fragment file at `skills/forge-build/prompts/{screen_type}.md`.
+If the file does not exist: set feature status to `blocked` in spec.json, log "No prompt fragment for screen_type '{screen_type}'" to `.forge/progress.md`, skip Codex dispatch, and move to the next feature.
 
-Replace placeholders (wrap DESIGN_BLUEPRINT, AGENTS_RULES, and SHARED_FILES in fenced code blocks to prevent XML injection):
+Replace placeholders (forge-app wraps DESIGN_BLUEPRINT, AGENTS_RULES, and SHARED_FILES in fenced code blocks during injection to prevent XML tag corruption — the template itself has raw placeholders):
 
 - `{{FEATURE_SPEC}}` — the feature entry from spec.json
-- `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from DESIGN.md (wrapped in ``` block)
-- `{{AGENTS_RULES}}` — extract from AGENTS.md: "Architecture" through "Post-Build Checks" sections (~200 lines, wrapped in ``` block)
+- `{{DESIGN_BLUEPRINT}}` — Section 7 blueprint for this screen from DESIGN.md (wrap in fenced block during injection)
+- `{{AGENTS_RULES}}` — extract from AGENTS.md: "Architecture" through "Post-Build Checks" sections (~200 lines, wrap in fenced block)
 - `{{PRESET_TOKENS}}` — concrete token values for the selected preset from PresetConfiguration
-- `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift (wrapped in ```swift block)
+- `{{SHARED_FILES}}` — current contents of AppRoute.swift, AppServices.swift (wrap in swift fenced block)
 - `{{SCREEN_TYPE_FRAGMENT}}` — content of the loaded fragment file
+
+Note: Adding a new `screen_type` to spec-schema.json requires creating a matching `skills/forge-build/prompts/{type}.md` fragment file.
 ```
 
 - [ ] **Step 3: Verify the update**

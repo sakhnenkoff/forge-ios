@@ -310,6 +310,43 @@ Approve, or give feedback?"
 If approved: commit files, update spec.json status to "done".
 If feedback: send feedback to Codex (Step 1). Max 2 feedback rounds.
 
+### Retrospective logging
+
+After EVERY retry, failure, or human feedback event, auto-append to `.forge/retrospective.md`:
+
+```markdown
+## Screen: {feature_name}
+
+### Stage: {Codex Build | Floor Checks | Hardened Build | Judge | Design | Human Feedback}
+- **Issue:** {one sentence — what went wrong}
+- **Root cause:** {best guess — why it went wrong}
+- **Suggested fix:** {specific change to prevent this — e.g., "Add ScrollView mention to dashboard.md fragment"}
+- **Fix target:** {file path — e.g., `skills/forge-build/prompts/dashboard.md`}
+- **Severity:** {Minor | Major | Critical}
+- **Status:** open
+- **Build:** {app_name}
+```
+
+Create the file on first entry:
+```bash
+if [ ! -f .forge/retrospective.md ]; then
+  echo "# Pipeline Retrospective — {app_name}" > .forge/retrospective.md
+  echo "" >> .forge/retrospective.md
+fi
+```
+
+**Auto-drop rule:** If a Minor entry is logged for a feature, and the feature subsequently passes the same stage on retry, remove the Minor entry (the system self-corrected).
+
+**Pattern detection (mechanical):** After each entry, run a count:
+```bash
+grep "Fix target:" .forge/retrospective.md | sort | uniq -c | sort -rn | head -5
+```
+
+If any fix target appears 3+ times, warn the user:
+"This is the Nth time {fix_target} caused an issue. Consider prioritizing this fix after the build."
+
+**Cross-screen retry context:** When sending fix instructions back to Codex after a failure, include relevant retrospective entries from prior screens that share the same fix target. This prevents Codex from repeating the same mistake across screens.
+
 ### On feature completion or block
 
 Update `.forge/spec.json` — set feature status to `done` or `blocked`.
@@ -319,6 +356,7 @@ Log to `.forge/progress.md`:
 Status: done|blocked
 Codex invocations: N/8
 Judge rounds: N/3
+Retro entries: N
 Notes: ...
 ```
 

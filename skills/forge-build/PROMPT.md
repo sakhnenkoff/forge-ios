@@ -1,29 +1,15 @@
 # Forge Build — Codex Code Generation Prompt
 
-You are a mechanical code generator for an iOS app built with the Forge template.
-Your job: write Swift files exactly as specified. No aesthetic judgment. No build. No screenshot. Just code.
+<task>
+Build the {feature_name} screen for this iOS app.
+Write complete, compilable Swift files: View + ViewModel + Manager (if needed) + Model + Navigation wiring.
+Do NOT build, run, screenshot, or navigate — only write code files.
 
-## Your Task
-
-Build the following feature:
-
+Feature spec:
 {{FEATURE_SPEC}}
 
-## Design Contract (follow exactly)
+Files to create:
 
-{{DESIGN_BLUEPRINT}}
-
-## Architecture Rules (follow exactly)
-
-{{AGENTS_RULES}}
-
-## Preset Token Values
-
-{{PRESET_TOKENS}}
-
-## Files to Create/Modify
-
-For each screen, create:
 1. **View** (`{App}/Features/{FeatureName}/{FeatureName}View.swift`)
    - Root container: `DSScreen`
    - Must include: `.toast(toast: $viewModel.toast)`, `.onAppear { viewModel.onAppear(services: services, session: session) }`
@@ -32,7 +18,8 @@ For each screen, create:
    - Use DS components: DSButton, DSCard, DSListRow, DSScreen, DSTextField, etc.
    - Use DS typography: `.display()`, `.titleLarge()`, `.bodyMedium()`, etc.
    - Use semantic colors: `.themePrimary`, `.textPrimary`, `.textSecondary`, etc.
-   - Use DS spacing: `DSSpacing.xs` (4), `.sm` (8), `.smd` (12), `.md` (16), `.mlg` (20), `.lg` (24), `.xl` (32), `.xxlg` (40), `.xxl` (52)
+   - Use DS spacing tokens: `DSSpacing.xs`, `.sm`, `.smd`, `.md`, `.mlg`, `.lg`, `.xl`, `.xxlg`, `.xxl` (concrete values provided in `<preset_tokens>` below — they vary by preset)
+   - Use DS radii tokens: `DSRadii.xs`, `.sm`, `.md`, `.lg`, `.xl`, `.pill` (concrete values provided in `<preset_tokens>` below — they vary by preset)
 
 2. **ViewModel** (`{App}/Features/{FeatureName}/{FeatureName}ViewModel.swift`)
    - `@MainActor @Observable final class {FeatureName}ViewModel`
@@ -50,15 +37,49 @@ For each screen, create:
    - `StringIdentifiable` conformance
 
 5. **Navigation** — add route to AppRoute/AppSheet/AppTab as specified
+</task>
 
-## Shared Files (current state — modify in place)
+<design_contract>
+{{DESIGN_BLUEPRINT}}
+</design_contract>
 
+<architecture_rules>
+{{AGENTS_RULES}}
+</architecture_rules>
+
+<preset_tokens>
+{{PRESET_TOKENS}}
+</preset_tokens>
+
+<shared_files>
 {{SHARED_FILES}}
+</shared_files>
 
-## Additional Skill Knowledge
+<screen_type_guidance>
+{{SCREEN_TYPE_FRAGMENT}}
+</screen_type_guidance>
 
-{{SKILL_KNOWLEDGE}}
+<action_safety>
+Keep changes tightly scoped to this feature.
+Do not refactor, rename, or restructure existing code unless the feature requires it.
+Append to shared files (AppRoute, AppServices) — do not reorganize them.
+</action_safety>
 
-## Output
+<final_check>
+Before finishing, check the files you just wrote ONCE.
+Replace {ViewFile} and {VMFile} with the actual file paths you created.
 
-Write complete, compilable Swift files. Every file must be a complete implementation — no TODOs, no placeholders, no "implement later" comments.
+View file:
+- grep -q "DSScreen" {ViewFile} || fix it
+- grep -q "\.toast(" {ViewFile} || fix it
+- grep -q "\.onAppear" {ViewFile} || fix it
+- grep -q "AsyncImage" {ViewFile} && remove it
+- grep -q "@StateObject" {ViewFile} && replace with @State
+
+ViewModel file:
+- grep -q "@Observable" {VMFile} || fix it
+- grep -q "var toast: Toast?" {VMFile} || add it
+- grep -q "hasLoaded" {VMFile} || add the guard pattern
+
+Fix any violations. Do NOT re-check after fixing. Return your final files regardless.
+</final_check>

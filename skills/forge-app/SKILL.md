@@ -78,7 +78,7 @@ If SKILLS_INCOMPLETE: "Missing forge skills:${MISSING}. Copy from the Forge temp
 which xcodebuildmcp 2>/dev/null && echo "XCODEBUILDMCP_OK"
 ```
 
-Check if `codex:rescue` skill exists for Codex dispatch.
+Check if `codex:codex-rescue` skill exists for Codex dispatch.
 
 Log warnings (do not block) if missing:
 - hardened-build skill: "⚠ hardened-build not installed — architecture verification limited to floor checks"
@@ -249,6 +249,61 @@ fi
 
 Present the spec.json summary to the user. Wait for approval before proceeding to Phase 2.
 
+### Auth Gate Check
+
+After the user approves spec.json:
+
+```bash
+# Check if spec.json has any auth-related features
+if [ -f ".forge/spec.json" ]; then
+  AUTH_FEATURES=$(grep -i '"id".*\(auth\|login\|signin\|sign-in\|signup\|sign-up\)' .forge/spec.json | wc -l)
+  if [ "$AUTH_FEATURES" -eq 0 ]; then
+    echo "NO_AUTH_NEEDED"
+  else
+    echo "AUTH_REQUIRED"
+  fi
+fi
+```
+
+If NO_AUTH_NEEDED:
+1. Check if AppRootView.swift has an auth gate:
+```bash
+grep -l "signIn\|isAuthenticated\|authState\|SignInView\|LoginView" {AppName}/App/AppRootView.swift && echo "AUTH_GATE_FOUND"
+```
+2. If AUTH_GATE_FOUND, strip the auth gate — remove the sign-in conditional, route directly from onboarding to main app content. Dispatch to Codex:
+```
+Agent(subagent_type: "codex:codex-rescue", prompt: "
+  Read {AppName}/App/AppRootView.swift.
+  This app does not need authentication.
+  Remove the auth gate (SignInView/LoginView conditional).
+  Route directly from onboarding to the main app content (TabView/NavigationStack).
+  Keep the onboarding flow intact.
+")
+```
+
+### Simplicity Check
+
+After the user approves the spec.json, check for feature bloat:
+
+```bash
+FEATURE_COUNT=$(grep -c '"id"' .forge/spec.json)
+echo "FEATURE_COUNT: $FEATURE_COUNT"
+```
+
+Read the pitch from spec.json. If the pitch implies simplicity — contains phrases like "one glance", "under 3 seconds", "single purpose", "one question", "just one" — but FEATURE_COUNT is 6 or more:
+
+```
+"Your pitch says this is a simple, focused app, but the spec has {N} features.
+Simple apps typically have 3-4 screens. Consider:
+- Which features are essential to the core promise?
+- Which could be cut or deferred to v2?
+- Does every feature serve the '3-second' promise?
+
+Let's trim before building."
+```
+
+Wait for the user to reduce scope before proceeding. This check runs on feature count (from spec.json), not section count (blueprints don't exist yet). The Phase 2 Simplicity Audit in forge-design checks section count within blueprints.
+
 ### Create pipeline snapshot
 
 After the user approves the spec, create a snapshot tag before any build artifacts are generated:
@@ -269,6 +324,27 @@ git tag "$TAG_NAME"
 Log: "Pipeline snapshot created: {TAG_NAME}. You can rollback to this state if improvements break something."
 
 ## Phase 2: Design Contract
+
+### Step 0: Acquire reference screenshots
+
+Before generating DESIGN.md, ensure visual references exist:
+
+```bash
+mkdir -p .forge/references/screenshots
+ls .forge/references/screenshots/*.{png,jpg,jpeg} 2>/dev/null | wc -l
+```
+
+If no screenshots exist:
+1. Check if the user provided screenshots during Phase 1 Q5 — save to `.forge/references/screenshots/`
+2. If no user screenshots, attempt to capture reference app visuals:
+   - For each reference in `.forge/references/index.md`, use WebFetch to capture the app's landing page or App Store preview screenshots
+   - Save to `.forge/references/screenshots/{app-name}-{context}.png` (e.g., `notion-settings.png`, `stripe-dashboard.png`)
+3. If WebFetch fails, log a warning: "No reference screenshots available. Vibe Check will evaluate against Visual Feel paragraph only."
+
+These screenshots are used by:
+- forge-design — visual translation input
+- forge-build — `{{VISUAL_REFERENCES}}` in Codex prompt
+- forge-judge — Vibe Check comparison
 
 ### Step 1: Translate references → DESIGN.md
 
@@ -291,6 +367,34 @@ If CRO background agent results are available, weave them into Section 8 (Screen
 
 Present DESIGN.md to the user. Wait for approval before proceeding to Phase 3.
 
+### Step 2b: Color Gate — Verify ColorStory on a real screen
+
+After the user approves DESIGN.md, validate colors in pixels before building:
+
+1. Extract the ColorStory hex values from the approved DESIGN.md Section 2
+2. Update AppDelegate.swift with the ColorStory:
+```
+Agent(subagent_type: "codex:codex-rescue", prompt: "
+  Read .forge/DESIGN.md Section 2 (Color Palette).
+  Extract the ColorStory hex values (brand, contrast, surprise, surface).
+  Update {AppName}/App/AppDelegate.swift to configure AdaptiveTheme
+  with the extracted ColorStory. Use Color(light:dark:) for surface values.
+")
+```
+3. Build and screenshot the app's current state:
+```bash
+xcodebuildmcp simulator build-and-run --scheme "{AppName} - Mock" --project-path ./{AppName}.xcodeproj --simulator-name "iPhone 17 Pro"
+xcodebuildmcp ui-automation screenshot --simulator-id {SIMULATOR_UDID} --return-format path
+```
+4. Show the screenshot to the user:
+```
+"Here's your ColorStory on a real screen — a rough sanity check before we build.
+Brand: {brand_hex} | Contrast: {contrast_hex} | Surface: {surface_hex}
+Does this palette feel right? (The real color validation happens when the first screen is built.)
+If anything feels off (too clinical, too cold, too loud), now is the time to adjust."
+```
+5. If the user wants changes, update DESIGN.md Section 2, re-apply to AppDelegate, re-screenshot. Max 3 color iterations.
+
 ### Optional: Mockup generation
 
 If the user asks for visual mockups, or if Stitch MCP is detected:
@@ -300,7 +404,48 @@ If the user asks for visual mockups, or if Stitch MCP is detected:
 
 Do NOT present this as a mandatory choice or a lettered path.
 
+### Step 3: Mandatory mockups for complex screens
+
+Check each feature in spec.json. If `screen_type` is `dashboard`, or the screen has charts, or the blueprint has 3+ sections:
+
+1. Generate a Stitch mockup for the screen:
+```
+Agent(description: "Generate mockup for {feature_name}", prompt: "
+  Use Stitch MCP to generate a mockup for {feature_name}.
+  Read .forge/DESIGN.md Section 8 blueprint for {feature_name}.
+  Read .forge/DESIGN.md Section 1 for the Design North Star and Visual Feel.
+  Generate 2-3 visual variants. Save to .forge/design-mockups/{feature_name}-v1.png, v2.png, v3.png
+")
+```
+2. Show mockup variants to the user:
+```
+"Here are 3 mockup options for {feature_name}. Which direction feels right?
+Or describe what you'd change."
+```
+3. Save the approved mockup as `.forge/design-mockups/{feature_name}-approved.png`
+4. Update the blueprint's Visual Reference field to point to the approved mockup
+
+For simple screens (settings, forms) with <3 sections, mockups are optional. Use "None — derived from {closest screen} mockup" in the Visual Reference field.
+
+Do NOT present this as a lettered choice. Complex screens get mockups automatically.
+
 ## Phase 3: Build Loop
+
+### CHECKPOINT: Before Phase 3
+
+Re-read Phase 3 steps below before proceeding. Verify your approach:
+- [ ] Codex dispatch uses `subagent_type: "codex:codex-rescue"` — NEVER `"general-purpose"` or Agent without subagent_type
+- [ ] All build/run/screenshot uses xcodebuildmcp — NEVER raw `xcodebuild`, `xcrun simctl`, or `screencapture`. If xcodebuildmcp fails 4 consecutive times on the same operation, fall back to raw xcodebuild with a warning logged to `.forge/retrospective.md`.
+- [ ] Judge is dispatched after EVERY screenshot — NEVER skipped, NEVER deferred to "after all screens"
+- [ ] Human gate fires after EVERY feature — NEVER batch-committed without individual review
+- [ ] Skill pre-load ran before each Codex dispatch
+- [ ] Bundle ID is verified after every launch — must contain ".mock"
+
+### Hard Rules
+
+**Codex-Only:** ALL code generation and ALL code fixes go through Codex dispatch. The orchestrator NEVER writes or edits Swift code directly. The orchestrator's job is to identify problems and write fix prompts, not to fix code. This includes "quick fixes." There are no quick fixes.
+
+**xcodebuildmcp-First:** Invoke the `xcodebuildmcp-cli` skill at the start of Phase 3 if not already invoked. All simulator discovery, building, running, UI automation, and screenshots go through xcodebuildmcp.
 
 For each feature in spec.json with status "pending", ordered by dependencies:
 
@@ -326,9 +471,25 @@ Replace placeholders (forge-app wraps DESIGN_BLUEPRINT, AGENTS_RULES, and SHARED
 
 Note: Adding a new `screen_type` to spec-schema.json requires creating a matching `skills/forge-build/prompts/{type}.md` fragment file.
 
+#### Skill Pre-load
+
+Before dispatching to Codex, invoke relevant skills and extract patterns:
+
+1. Invoke `swiftui-expert` skill — extract patterns relevant to `{screen_type}`
+2. If the screen uses charts: invoke `axiom-swiftui` for Swift Charts patterns
+3. If the screen has navigation: invoke `axiom-swiftui` for NavigationStack patterns
+4. Capture the skill output and embed the relevant guidance in `{{SKILL_CONTEXT}}`
+
+This is necessary because Codex cannot invoke Claude Code skills. Pre-loading turns skill knowledge into prompt context.
+
+Also populate:
+- `{{VISUAL_FEEL}}` — Design North Star Visual Feel paragraph + this screen's blueprint Visual Feel
+- `{{VISUAL_REFERENCES}}` — Reference screenshots from `.forge/references/screenshots/` (if available)
+- `{{MOCKUP_PATH}}` — Approved mockup from `.forge/design-mockups/{feature_name}-approved.png` (if available)
+
 Dispatch to Codex:
 ```
-Agent(subagent_type: "codex:rescue", prompt: "<populated PROMPT.md content>")
+Agent(subagent_type: "codex:codex-rescue", prompt: "<populated PROMPT.md content>")
 ```
 
 Increment `codex_invocations`. If >= CODEX_CEILING, mark feature as `blocked` in spec.json, log to `.forge/progress.md`, move to next feature.
@@ -393,6 +554,20 @@ xcodebuildmcp ui-automation tap --simulator-id {SIMULATOR_UDID} --x {X} --y {Y}
 xcodebuildmcp ui-automation screenshot --simulator-id {SIMULATOR_UDID} --return-format path
 ```
 
+#### Bundle ID Assertion
+
+After every build-and-run, verify the correct bundle launched:
+
+```bash
+# Check the launched bundle ID
+xcodebuildmcp simulator list-running-apps --simulator-id {SIMULATOR_UDID} | grep -i "{AppName}"
+```
+
+If the bundle ID contains `.dev` or `.prod` instead of `.mock`:
+1. Stop immediately — do NOT screenshot or proceed
+2. Fix the scheme selection: the build must use `"{AppName} - Mock"` scheme
+3. Retry the build-and-run with the correct scheme
+
 If build fails: send error to Codex (Step 1). Max 2 consecutive build failures.
 
 ### Step 5: Taste Judge
@@ -406,23 +581,67 @@ Agent(description: "Judge screen taste", prompt: "
   View file: {view_file_path}
   ViewModel file: {viewmodel_file_path}
   DESIGN.md: .forge/DESIGN.md
-  Grade on 5 criteria: Design Quality, Originality, Craft, Craft Intent, Visual Target Match.
+  Grade on 7 compliance criteria (Design Quality, iOS-Native, Originality, Craft, Craft Intent, Visual Target Match, Architecture) + 5 craft score criteria (Dominance, Rhythm, Breathing room, Typography tension, Signature moment) + Vibe Check.
   Return PASS or FAIL with specific fix instructions.
 ")
 ```
 
-If FAIL: send fix instructions to Codex (Step 1). Max 3 total judge rounds per feature.
+If FAIL: send fix instructions to Codex (Step 1), including:
+- The judge's specific fix instructions (from FIXES REQUIRED)
+- The failing screenshot path (so Codex can see what needs to change via `{{VISUAL_REFERENCES}}`)
+- Cross-screen retrospective entries that share the same fix target
 
-### Step 6: Human Gate
+Max 3 total judge rounds per feature.
+
+### Step 6: Human Gate (Approve or Flag)
 
 Show the screenshot to the user:
 ```
-"Here's the built screen for {feature_name}. [screenshot]
-Approve, or give feedback?"
+"Here's {feature_name}. The hero element is {hero_element_from_blueprint}.
+[screenshot]
+
+Does it command attention? Does the screen have one clear focal point?
+- **Approve** — looks good, continue to next screen
+- **Flag** — note what feels off (I'll continue building, but we'll fix flagged issues in a batch after all screens are done)"
 ```
 
 If approved: commit files, update spec.json status to "done".
-If feedback: send feedback to Codex (Step 1). Max 2 feedback rounds.
+If flagged: record the concern in `.forge/flags.md`, update spec.json status to "done-flagged", continue to next feature.
+If specific feedback that should be fixed now: send feedback to Codex (Step 1). Max 2 feedback rounds.
+
+### Flagged Issues Round
+
+After ALL features are built (or blocked), if any features have status "done-flagged":
+1. Present all flags together:
+```
+"These screens were flagged during the build:
+{list of flagged screens with concerns from .forge/flags.md}
+
+Want to fix all flagged issues now? I'll dispatch Codex for each fix."
+```
+2. If yes: re-enter the build loop for each flagged screen with the flag concern as the fix prompt
+3. Re-judge and re-screenshot each fixed screen
+
+### Gate 2: First Screen Review
+
+After the FIRST feature passes both compliance and craft score, STOP the pipeline before building screen 2:
+
+```
+"This is the first screen built — it sets the visual tone for the entire app.
+[screenshot]
+
+Does this feel like YOUR app? Key questions:
+- Does the hero element command attention?
+- Does the color palette feel right in context?
+- Does the spacing rhythm feel intentional, not uniform?
+
+If yes → I'll build the remaining screens in this style.
+If no → Tell me what feels off and I'll redesign this screen before continuing."
+```
+
+If no: redesign the blueprint for this screen, rebuild, re-judge. Do NOT proceed to screen 2 until the user explicitly approves screen 1's taste.
+
+This gate fires ONCE — only for the first feature in the build loop.
 
 ### Retrospective logging
 

@@ -18,8 +18,8 @@ awesome-design-md (via `npx getdesign`) produces web-native DESIGN.md files in t
 
 | # | Forge Section (Output) | Stitch Section (Input) | Translation |
 |---|----------------------|----------------------|-------------|
-| 1 | Mood | Visual Theme & Atmosphere | Condense to 2 lines max. Extract mood + reference apps. |
-| 2 | Color Palette | Color Palette & Roles | Map hex values to DS semantic tokens. Add light+dark pairs. |
+| 1 | Design North Star | Visual Theme & Atmosphere | Extract mood sentence, write 3-5 sentence Visual Feel paragraph, add anti-references. |
+| 2 | Color Palette | Color Palette & Roles | Extract ColorStory (brand/contrast/surprise/surface) with light+dark hex. Derive semantic roles. |
 | 3 | Typography | Typography Rules | Map web fonts → SF Pro variants. Map sizes → DS text styles. |
 | 4 | Component Rules | Component Stylings | Map web components → DS components with KEEP/COMPOSE/CREATE/SKIP verdicts. |
 | 5 | Layout Principles | Layout Principles | Map CSS spacing → DSSpacing tokens. Map border-radius → DSRadii. |
@@ -34,74 +34,91 @@ awesome-design-md (via `npx getdesign`) produces web-native DESIGN.md files in t
 
 ---
 
-## Section 1: Mood
+## Section 1: Design North Star
 
-**Purpose:** Set the emotional target for the entire app in two lines or fewer. The mood anchors every downstream decision — color warmth, typography weight, animation speed, surface depth.
+**Purpose:** Set the emotional target for the entire app. The North Star anchors every downstream decision — color warmth, typography weight, animation speed, surface depth. This section is the tiebreaker for every design decision.
 
 **Format:**
 
-```markdown
-## Mood
+~~~markdown
+## Design North Star
 
-This app feels like [specific sensory/emotional description — not "clean" or "modern"].
-Reference: [1-2 real apps that embody this mood] — take [specific aspect] from each.
-```
+**Mood:** [One sentence — a specific sensory/emotional description, not "clean" or "modern"]
+
+**Visual Feel:**
+[3-5 sentences describing the EXPERIENCE of using the app, not the anatomy. How does it feel to open? What's the emotional arc of a session? What does the user feel when they close it? This paragraph is included in every Codex build prompt — it's the prose target that gives builders a design north star beyond token compliance.]
+
+**Reference:** [1-2 real apps] — take [specific aspect] from each.
+
+**Anti-references:** This app is NOT [2-3 things it could be mistaken for]. [Why each would be wrong.]
+~~~
 
 **Rules:**
-- Maximum 2 lines
-- Must name a concrete feeling, not an abstract quality ("a calm morning journal" not "minimalist")
-- Must name 1-2 reference apps with WHAT to take from each (not "like Notion" but "like Notion — the density and typography confidence")
-- The mood statement is the tiebreaker for every design decision downstream
+- The Mood sentence must name a concrete feeling, not an abstract quality ("a calm morning journal" not "minimalist")
+- The Visual Feel paragraph describes experience, not anatomy. "Opening this app feels like checking the weather — one number, instant confidence, close" not "The dashboard has a chart and three stat cards."
+- Anti-references prevent builders from drifting toward adjacent genres. A finance tracker is NOT a banking app, NOT a stock trading terminal.
+- References must name 1-2 apps with WHAT to take from each (not "like Notion" but "like Notion — the density and typography confidence")
+- The Visual Feel paragraph is injected into every Codex build prompt via the `{{VISUAL_FEEL}}` placeholder
 
 **Example:**
 
-```markdown
-## Mood
+~~~markdown
+## Design North Star
 
-This app feels like a confident coach's whiteboard — bold data, tight layout, zero decoration.
-Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color discipline).
-```
+**Mood:** This app feels like a confident coach's whiteboard — bold data, tight layout, zero decoration.
+
+**Visual Feel:**
+Opening Drift feels like checking the weather — you glance, see one number, and close. The trend line dominates your attention. Stats are whispered below, not shouted. You never scroll on the main screen. The whole experience is 3 seconds of calm confidence: "I'm on track" or "I need to adjust." There is no dashboard — there is one answer.
+
+**Reference:** Mercury (flat numbers, monospaced confidence), Streaks (single-color discipline).
+
+**Anti-references:** This is NOT a health dashboard (no grids of colored cards), NOT a banking app (no transaction lists), NOT an analytics tool (no multiple charts or date pickers).
+~~~
 
 ---
 
 ## Section 2: Color Palette
 
-**Purpose:** Map every semantic color role to exact hex values (light + dark), the SwiftUI DS token it binds to, and a usage rule that prevents misuse.
+**Purpose:** Define the app's ColorStory — the intentional palette that drives AdaptiveTheme. Map every semantic color role to exact hex values (light + dark) and a usage rule.
 
 **Format:**
 
 ```markdown
 ## Color Palette
 
-| Role | Light | Dark | Token | Usage Rule |
-|------|-------|------|-------|------------|
-| brand | #RRGGBB | #RRGGBB | Color.themePrimary | Primary actions, active states, brand accent only — never backgrounds |
-| background | #RRGGBB | #RRGGBB | Color.backgroundPrimary | Root screen background — all screens |
-| ... | ... | ... | ... | ... |
+### ColorStory
+
+| Role | Light | Dark | Usage Rule |
+|------|-------|------|------------|
+| brand | #RRGGBB | #RRGGBB | Primary actions, active states, brand accent — buttons, tint, tab bar icons |
+| contrast | #RRGGBB | #RRGGBB | Charts, badges, data viz highlights, secondary actions |
+| surprise | #RRGGBB | #RRGGBB | Craft moment highlights only — one per screen, <1% of pixels. Use "None" if omitted. |
+| surface | #RRGGBB | #RRGGBB | Card fills, secondary backgrounds, surface tint |
+
+**Color Distribution:** Brand ~15% of pixels. Contrast ~5%. Surprise <1%. Surface fills the rest.
+
+### Semantic Roles (derived from ColorStory)
+
+| Role | Token | Derives From | Usage Rule |
+|------|-------|-------------|------------|
+| primary | Color.themePrimary | brand | Primary actions, active states |
+| secondary | Color.secondary | contrast | Charts, badges, info states |
+| accent | Color.accent | surprise (or brand if no surprise) | Craft moments only |
+| ... | ... | ... | ... |
 ```
 
-**Required roles (11 minimum):**
-
-| Role | Token | Description |
-|------|-------|-------------|
-| brand | `Color.themePrimary` | Primary brand color — buttons, active indicators, tint |
-| background | `Color.backgroundPrimary` | Root screen background |
-| surface | `Color.surface` | Card and container fill |
-| surfaceVariant | `Color.surfaceVariant` | Secondary container fill, grouped sections |
-| textPrimary | `Color.textPrimary` | Headlines, primary body text |
-| textSecondary | `Color.textSecondary` | Subtitles, metadata, supporting text |
-| textTertiary | `Color.textTertiary` | Timestamps, disabled labels, hints |
-| positive | (custom or mapped) | Success states, completion, streaks |
-| negative | `Color.error` | Errors, destructive actions, alerts |
-| border | `Color.border` | Input field borders, dividers between interactive elements |
-| divider | `Color.divider` | Section separators, list dividers |
+**Required ColorStory fields:**
+- `brand` — required. The single most recognizable color of the app.
+- `surface` — required. Background tint for cards and secondary surfaces.
+- `contrast` — required for apps with data visualization or multi-color references. Use "Derived from brand" for minimal 2-color apps.
+- `surprise` — optional. The craft detail color. Use "None" for single-accent apps.
 
 **Rules:**
-- Every role must have BOTH light and dark hex values
-- Usage rules must be specific enough to prevent misuse ("never backgrounds" not "use sparingly")
-- Additional roles beyond the 11 are encouraged (e.g., `brandSubtle` for tinted backgrounds, `chart1`/`chart2` for data visualization)
+- Every field must have BOTH light and dark hex values
+- Color Distribution is aspirational guidance — used by the judge's Vibe Check, not validated by pipeline
 - The brand color must appear in fewer than 20% of on-screen pixels — it is an accent, not a wash
-- The 11 required roles map directly to DS ColorPalette properties. Additional roles (e.g., brandSubtle, chartIncome) are defined as Color extensions in the app's Theme file, not as ColorPalette properties.
+- Semantic roles derive from the ColorStory via AdaptiveTheme's derivation mapping. Only list overrides where the derivation doesn't match the reference.
+- Apps with rich data viz (6+ colors) define additional chart colors as Color extensions beyond the story
 
 ---
 
@@ -241,9 +258,9 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 |-------|-------|
 | `DSRadii.xs` | 8pt |
 | `DSRadii.sm` | 12pt |
-| `DSRadii.md` | 12pt |
-| `DSRadii.lg` | 16pt |
-| `DSRadii.xl` | 20pt |
+| `DSRadii.md` | 16pt |
+| `DSRadii.lg` | 20pt |
+| `DSRadii.xl` | 28pt |
 
 **Rules:**
 - Maximum 5 bullets
@@ -340,6 +357,15 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 
 **Craft Moment:** [The ONE signature detail that makes this screen memorable. Not a list — one specific thing. Must be verifiable in a screenshot.]
 
+**Visual Feel:** [2-3 sentences describing how this specific screen FEELS to use. Not the layout — the experience.]
+
+**Hierarchy:**
+- **Primary (60%+ visual weight):** [The ONE element that dominates]
+- **Secondary (supporting):** [Elements that support the primary]
+- **Tertiary (discoverable):** [Elements below the fold or visually minimized]
+
+**Density target:** [How much content appears above the fold]
+
 **Visual Reference:** [Path to approved mockup: .forge/design-mockups/{screen}-approved.png]
 
 **Hero element:** [The single most prominent element on this screen — what the eye hits first]
@@ -378,12 +404,21 @@ Reference: Mercury (flat numbers, monospaced confidence), Streaks (single-color 
 
 **Craft Moment:** The hero number uses .contentTransition(.numericText()) so it animates smoothly when the period changes — the one detail that says "this app was made with care."
 
+**Visual Feel:** Opening the Dashboard feels like checking your watch — one glance, one answer, done. The number fills your vision. The small text below is comfort, not information. You never need to scroll.
+
+**Hierarchy:**
+- **Primary (60%+ visual weight):** Today's completion count — standalone 48pt .display() .monospaced number
+- **Secondary (supporting):** Caption subtitle below the number, weekly spark chart (80pt, no axes)
+- **Tertiary (discoverable):** Today's habit list (scrolls into view below the fold)
+
+**Density target:** 1 dominant element above the fold. Everything else scrolls.
+
 **Visual Reference:** .forge/design-mockups/dashboard-approved.png
 
 **Hero element:** Today's completion count — standalone 48pt .display() .monospaced number, left-aligned
 
 **Sections (top to bottom):**
-1. Hero stat — Raw number + ".captionLarge() subtitle below, DSSpacing.xs (4) gap
+1. Hero stat — Raw number + .captionLarge() subtitle below, DSSpacing.xs (4) gap
 2. Today's habits — Vertical list of DSListRow, each with checkbox toggle and habit name
 3. Weekly spark — Inline 7-day bar chart (Swift Charts), 80pt tall, no axes, brand color fill
 
@@ -521,11 +556,15 @@ Use this checklist to verify a DESIGN.md is complete and well-formed before the 
 
 ### Completeness
 
-- [ ] **Mood** exists and is 2 lines or fewer
-- [ ] **Mood** names 1-2 reference apps with specific aspects to take from each
-- [ ] **Color Palette** has 11+ roles with light AND dark hex values
-- [ ] **Color Palette** every role maps to a DS token
-- [ ] **Color Palette** every role has a usage rule (not empty)
+- [ ] **Design North Star** has a Mood sentence (one line, concrete feeling)
+- [ ] **Design North Star** has a Visual Feel paragraph (3-5 sentences, experience not anatomy)
+- [ ] **Design North Star** has Anti-references (2-3 things the app is NOT)
+- [ ] **Design North Star** names 1-2 reference apps with specific aspects to take from each
+- [ ] **Color Palette** has a ColorStory table with brand and surface (required), contrast and surprise (optional)
+- [ ] **Color Palette** every ColorStory field has BOTH light and dark hex values
+- [ ] **Color Palette** has a Color Distribution line
+- [ ] **Color Palette** semantic roles table shows derivation from ColorStory fields
+- [ ] **Color Palette** every override has a usage rule explaining why the derivation doesn't work
 - [ ] **Typography** has 10+ tokens with variant, weight, tracking, and usage
 - [ ] **Typography** no token has an empty variant field
 - [ ] **Component Rules** has a row for every 18 DS components listed in the spec
@@ -546,6 +585,10 @@ Use this checklist to verify a DESIGN.md is complete and well-formed before the 
 - [ ] **Screen Blueprints** every blueprint has exactly ONE Craft Moment (not a list of details)
 - [ ] **Screen Blueprints** every blueprint has a Visual Reference path (or "None — derived from {screen}")
 - [ ] **Screen Blueprints** Craft Moments are specific enough to verify in a screenshot
+- [ ] **Screen Blueprints** every blueprint has a Visual Feel paragraph (2-3 sentences, experience not layout)
+- [ ] **Screen Blueprints** every blueprint has a Hierarchy with Primary/Secondary/Tertiary elements
+- [ ] **Screen Blueprints** every blueprint has a Density target
+- [ ] **Screen Blueprints** Primary element in Hierarchy matches the Hero element field
 - [ ] **Voice & Copy** covers all required context categories
 - [ ] **Voice & Copy** no entry contains placeholder text (TBD, TODO, lorem ipsum)
 
@@ -556,7 +599,7 @@ Use this checklist to verify a DESIGN.md is complete and well-formed before the 
 - [ ] Spacing tokens in Section 5 match the tokens referenced in Section 8 blueprints
 - [ ] Shadow tokens in Section 6 match the tokens referenced in Section 8 blueprints
 - [ ] Empty state copy in Section 8 matches Section 9 verbatim
-- [ ] Mood in Section 1 aligns with color temperature, typography weight, and animation choices
+- [ ] Design North Star in Section 1 aligns with color temperature, typography weight, and animation choices
 - [ ] Don'ts in Section 7 are not contradicted by instructions in Section 4 or Section 8
 - [ ] Visual Reference paths in Section 8 point to files that exist in .forge/design-mockups/
 

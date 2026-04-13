@@ -60,8 +60,9 @@ fastlane/report.json
 # Local configuration with secrets (NEVER commit these)
 *.xcconfig.local
 
-# Forge build artifacts
-.forge/
+# Forge build artifacts — track pipeline state, ignore ephemeral refs
+.forge/references/
+.forge/issues.md
 
 # Superpowers specs and brainstorm sessions
 docs/superpowers/specs/

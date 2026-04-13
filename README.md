@@ -10,13 +10,7 @@ The template provides Swift architecture (MVVM, navigation, design system tokens
 
 ### With Claude Code (recommended)
 
-```bash
-# Add the Forge skill marketplace
-claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
-
-# Install the orchestrator
-claude plugin install forge-app@forge-marketplace
-```
+Skills ship inside this repo under `skills/`. If you cloned the template, they're already available.
 
 Then say `/forge:app` — describe your app and the pipeline handles the rest.
 
@@ -65,22 +59,20 @@ Select the **Mock** scheme and run. See AGENTS.md for architecture conventions.
      └── forge-ship ──── Submission prep
 ```
 
-## Skills (6 plugins)
+## Skills
 
-All installable from the [Forge Marketplace](https://github.com/sakhnenkoff/forge-marketplace):
+All skills live in `skills/` inside this repo:
 
-```bash
-claude plugin marketplace add https://github.com/sakhnenkoff/forge-marketplace
-```
-
-| Skill | Install | Purpose |
-|-------|---------|---------|
-| `forge-app` | `claude plugin install forge-app@forge-marketplace` | Planner — idea → spec.json + DESIGN.md → sprint orchestration |
-| `forge-feature` | `claude plugin install forge-feature@forge-marketplace` | Feature pipeline with forge-build (Generator) + forge-judge (Evaluator) |
-| `forge-workspace` | `claude plugin install forge-workspace@forge-marketplace` | Project setup — rename, brand, configure |
-| `forge-wire` | `claude plugin install forge-wire@forge-marketplace` | Backend — Firebase, Supabase, REST, GraphQL, CloudKit |
-| `forge-ship` | `claude plugin install forge-ship@forge-marketplace` | Submission prep — privacy, accessibility, metadata |
-| `forge-storefront` | `claude plugin install forge-storefront@forge-marketplace` | App Store listing — screenshots, description, keywords |
+| Skill | Directory | Purpose |
+|-------|-----------|---------|
+| `forge-app` | `skills/forge-app/` | Planner — idea → spec.json + DESIGN.md → sprint orchestration |
+| `forge-design` | `skills/forge-design/` | Visual design pipeline — references → DESIGN.md |
+| `forge-build` | `skills/forge-build/` | Generator — Codex-driven screen builder |
+| `forge-judge` | `skills/forge-judge/` | Evaluator — design quality, originality, craft, architecture |
+| `forge-workspace` | `skills/forge-workspace/` | Project setup — rename, brand, configure |
+| `forge-wire` | `skills/forge-wire/` | Backend — Firebase, Supabase, REST, GraphQL, CloudKit |
+| `forge-ship` | `skills/forge-ship/` | Submission prep — privacy, accessibility, metadata |
+| `forge-storefront` | `skills/forge-storefront/` | App Store listing — screenshots, description, keywords |
 
 ## Optional Enhancements
 

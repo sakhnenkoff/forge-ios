@@ -211,11 +211,11 @@ If fails: send fix instructions to Codex (Step 1). Max 2 consecutive failures.
 
 ```bash
 # Discover project
-xcodebuildmcp simulator discover-projs --workspace-root .
+xcodebuildmcp simulator discover-projects --workspace-root .
 xcodebuildmcp simulator list-schemes --project-path ./{AppName}.xcodeproj
 
 # Build and run
-xcodebuildmcp simulator build-run-sim --scheme "{AppName} - Mock" --project-path ./{AppName}.xcodeproj --simulator-name "iPhone 17 Pro"
+xcodebuildmcp simulator build-and-run --scheme "{AppName} - Mock" --project-path ./{AppName}.xcodeproj --simulator-name "iPhone 17 Pro"
 
 # Navigate to the screen using nav_path from spec.json
 # Use snapshot-ui to find elements, tap to navigate

@@ -1,4 +1,6 @@
-# spec.json Format Specification
+> **v3 format — the v4 spec.json schema is defined inline in `skills/forge-app/SKILL.md` Phase 1. This file is retained for reference only.**
+
+# spec.json Format Specification (v3)
 
 The spec.json file is the structured contract between the Planner and the Generator/Judge agents. It defines what features to build, what data models to create, and how navigation connects screens.
 

@@ -481,8 +481,57 @@ Present final report:
 - Consistency check: {status}
 - Navigation sweep: {status}
 
+## Pipeline Health
+
+{If .forge/retrospective.md exists and has entries:}
+
+### Retrospective Summary
+{Group entries by fix target, count by severity, rank by frequency. Filter: show Major/Critical first, then Minor only if Major/Critical are resolved.}
+
+| Fix Target | Issues | Major/Critical | Top Issue |
+|-----------|--------|---------------|-----------|
+| skills/forge-build/prompts/dashboard.md | 3 | 1 | Missing ScrollView guidance |
+| skills/forge-judge/SKILL.md | 2 | 2 | Spacing variety not checked |
+
+### Suggested Improvements
+{For each group with 2+ entries, list the "Suggested fix" from the entries:}
+1. **dashboard.md** (3 issues): Add horizontal ScrollView mention for quick actions
+2. **forge-judge Craft criterion** (2 issues): Add explicit spacing variety check
+
+{If no retrospective file or no entries:}
+"No pipeline issues logged — clean build!"
+
 ## Next Steps
 - [ ] forge-wire: connect backend
 - [ ] forge-storefront: design listing
 - [ ] forge-ship: submission prep
+{If retro entries exist:}
+- [ ] Review pipeline improvements: "You have {N} retrospective entries across {M} fix targets. Want me to apply improvements now, or save for later?"
 ```
+
+### Post-build: Archive retrospective
+
+If `.forge/retrospective.md` exists, archive it to the template repo:
+
+```bash
+if [ -f .forge/retrospective.md ]; then
+  APP_SLUG=$(echo "{app_name}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+  ARCHIVE_NAME="${APP_SLUG}-$(date +%Y%m%dT%H%M%S)-retrospective.md"
+  mkdir -p docs/pipeline-history
+  cp .forge/retrospective.md "docs/pipeline-history/${ARCHIVE_NAME}"
+  git add "docs/pipeline-history/${ARCHIVE_NAME}"
+  git commit -m "docs: archive retrospective from ${APP_SLUG} build"
+fi
+```
+
+When applying improvements, mark entries individually — after EACH fix commit, update only the specific entry that was fixed. Do NOT use a global sed replace. Instead, identify the entry by its Screen + Stage header and update its Status line:
+
+```
+Find the entry for the specific screen/stage you just fixed.
+Change its line from:
+  - **Status:** open
+To:
+  - **Status:** applied (commit: {short_hash})
+```
+
+This must be done per-entry, not globally, so each fix maps to its own commit hash.

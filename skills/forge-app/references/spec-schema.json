@@ -7,6 +7,8 @@
     "pitch": { "type": "string" },
     "preset": {
       "type": "object",
+      "required": ["spacing", "corners", "weight", "surface"],
+      "additionalProperties": false,
       "properties": {
         "spacing": { "enum": ["tight", "balanced", "airy"] },
         "corners": { "enum": ["sharp", "mixed", "rounded"] },
@@ -18,7 +20,8 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "screen_type", "required", "status", "nav_path"],
+        "required": ["id", "name", "screen_type", "description", "required", "has_manager", "models", "depends_on", "status", "nav_case", "nav_path"],
+        "additionalProperties": false,
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
@@ -39,9 +42,20 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": ["name", "fields"],
         "properties": {
           "name": { "type": "string" },
-          "fields": { "type": "array", "items": { "type": "object" } }
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" }
+              }
+            }
+          }
         }
       }
     },

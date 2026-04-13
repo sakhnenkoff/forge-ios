@@ -118,7 +118,10 @@ final class PresetConfigurationTests: XCTestCase {
 
         assertColorsEqual(colors.primary, .blue)
         assertColorsEqual(colors.secondary, .green)
-        assertColorsEqual(colors.info, .green)
+        // info stays system blue (not derived from contrast)
+        let env = EnvironmentValues()
+        let infoResolved = colors.info.resolve(in: env)
+        XCTAssertGreaterThan(infoResolved.blue, 0.9, "info should be system blue, not derived from contrast")
         assertColorsEqual(colors.accent, .orange)
         assertColorsEqual(colors.surfaceVariant, .gray)
         assertColorsEqual(colors.backgroundSecondary, .gray)

@@ -24,7 +24,7 @@ public struct AdaptiveTheme: Theme, Sendable {
             success: Color(light: Color(hex: "34C759"), dark: Color(hex: "30D158")),
             warning: Color(light: Color(hex: "FF9500"), dark: Color(hex: "FF9F0A")),
             error: Color(light: Color(hex: "FF3B30"), dark: Color(hex: "FF453A")),
-            info: colorStory.contrast,
+            info: Color(light: Color(hex: "007AFF"), dark: Color(hex: "0A84FF")),
             backgroundPrimary: Color(light: Color(hex: "FAFAFA"), dark: Color(hex: "0A0A0C")),
             backgroundSecondary: colorStory.surface,
             backgroundTertiary: Color(light: Color(hex: "FFFFFF"), dark: Color(hex: "1E1E22")),

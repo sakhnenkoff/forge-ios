@@ -29,7 +29,13 @@ fi
 
 **TEMPLATE_REPO** — cwd is the Forge template itself:
 1. Ask: "What's the app name?" (if not already known from context)
-2. Run `Skill("forge-workspace")` to create the project
+2. Dispatch forge-workspace:
+```
+Agent(description: "Set up project", prompt: "
+  Read skills/forge-workspace/SKILL.md and follow it exactly.
+  Set up a new Forge project from this template.
+")
+```
 3. `cd` to the new project directory (e.g., `~/Developer/Personal/Apps/{AppName}`)
 4. All subsequent work happens there — never write artifacts in the template repo
 
@@ -256,8 +262,6 @@ Log: "Pipeline snapshot created: {TAG_NAME}. You can rollback to this state if i
 Dispatch forge-design to translate the collected awesome-design-md references into an iOS-native DESIGN.md:
 
 ```
-Skill("forge-design")
-# OR if Agent dispatch is needed:
 Agent(description: "Generate DESIGN.md", prompt: "
   You are forge-design. Read skills/forge-design/SKILL.md and follow it exactly.
   Read .forge/references/ for awesome-design-md files and screenshots.
@@ -380,7 +384,7 @@ If build fails: send error to Codex (Step 1). Max 2 consecutive build failures.
 
 ### Step 5: Taste Judge
 
-Dispatch forge-judge (use same dispatch mechanism resolved in Task 11):
+Dispatch forge-judge:
 ```
 Agent(description: "Judge screen taste", prompt: "
   You are forge-judge. Read skills/forge-judge/SKILL.md and follow it exactly.
@@ -510,7 +514,7 @@ Fix critical/high findings. Log remaining as known issues.
 
 ### Layer 3: Judge Consistency Mode
 
-Dispatch forge-judge in cross-screen mode (use same dispatch mechanism resolved in Task 11):
+Dispatch forge-judge in cross-screen mode:
 ```
 Agent(description: "Judge cross-screen consistency", prompt: "
   You are forge-judge. Read skills/forge-judge/SKILL.md and follow it exactly.
@@ -542,7 +546,10 @@ Log any unreachable screens to progress.md.
 
 ### Step 1: forge-wire
 ```
-Skill("forge-wire")
+Agent(description: "Wire backend", prompt: "
+  Read skills/forge-wire/SKILL.md and follow it exactly.
+  Read .forge/spec.json for the app configuration.
+")
 ```
 
 ### Step 2: Post-wire verification
@@ -555,12 +562,17 @@ If Axiom available, run concurrency + security auditors on wired managers.
 
 ### Step 3: forge-storefront
 ```
-Skill("forge-storefront")
+Agent(description: "Design App Store listing", prompt: "
+  Read skills/forge-storefront/SKILL.md and follow it exactly.
+  Read .forge/spec.json and .forge/DESIGN.md for context.
+")
 ```
 
 ### Step 4: forge-ship
 ```
-Skill("forge-ship")
+Agent(description: "Prepare for submission", prompt: "
+  Read skills/forge-ship/SKILL.md and follow it exactly.
+")
 ```
 
 ## Completion

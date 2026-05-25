@@ -1,0 +1,35 @@
+{
+  "schema_version": "forge.module-plan.v1",
+  "app_id": "generated-residue",
+  "generated_app": "GeneratedResidue",
+  "selected_modules": [
+    "local-proof-shell"
+  ],
+  "rejected_modules": [
+    {
+      "id": "auth-account",
+      "rationale": "Fixture intentionally leaves rejected auth/account residue so absence gates can fail."
+    },
+    {
+      "id": "paywall-purchases",
+      "rationale": "Fixture intentionally leaves rejected purchase/paywall residue so absence gates can fail."
+    },
+    {
+      "id": "sync-backend",
+      "rationale": "Fixture intentionally leaves rejected backend/Firebase residue so absence gates can fail."
+    },
+    {
+      "id": "settings-profile",
+      "rationale": "Settings/profile is not selected for this local proof fixture."
+    },
+    {
+      "id": "onboarding",
+      "rationale": "Onboarding is not selected for this local proof fixture."
+    },
+    {
+      "id": "public-launch",
+      "rationale": "Fixture intentionally leaves rejected launch instructions so absence gates can fail."
+    }
+  ],
+  "absence_gate": "This fixture must fail proof-app strictness when rejected module residue remains."
+}

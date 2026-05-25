@@ -44,6 +44,21 @@ Each cycle:
    - native generation for a specific app direction if the gate requires Matvii taste/product approval;
    - ambiguous tradeoffs where multiple options are genuinely viable.
 
+## Blocker-to-pipeline-improvement loop
+
+Blocked cards are pipeline evidence. The orchestrator/watchdog must not merely unblock and continue.
+
+For every blocked card:
+
+1. Classify it with `docs/forge-vnext/blocker-taxonomy-and-routing.md` or the local probe script:
+   `node scripts/forge-vnext-blocker-classifier.mjs --probe --json`.
+2. If classification is `real_human_gate`, ask Matvii only for the exact decision and keep the card blocked.
+3. If classification is `mechanical_repair`, create/dispatch a repair task to the lane that owns the broken artifact.
+4. If classification is `pipeline_bug`, create/dispatch a pipeline-hardening task whose acceptance adds a verifier/test/gate, generator/substrate patch, watchdog/orchestrator routing update, or doc/skill rule.
+5. If classification is `worker_error`, reclaim/reassign/retry with corrected instructions and record any prompt/doc fix needed to prevent recurrence.
+6. If classification is `dependency_shape_bug`, fix Kanban parent/child/status shape; do not ask Matvii.
+7. Record the compact blocker notice from `docs/forge-vnext/watchdog-blocker-brief.md` before resuming the original card.
+
 ## Access and capability principle
 
 The pipeline should explicitly check and use available research/integration access where appropriate:

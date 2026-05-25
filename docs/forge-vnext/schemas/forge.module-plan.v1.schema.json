@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.module-plan.v1.schema.json",
+  "title": "Forge Module Plan v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app_id",
+    "generated_app",
+    "selected_modules",
+    "rejected_modules"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.module-plan.v1"
+    },
+    "app_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_app": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_modules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "rejected_modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "rationale"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "absence_gate": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

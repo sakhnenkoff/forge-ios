@@ -1,11 +1,21 @@
 #!/usr/bin/env node
 import fs from "node:fs/promises";
+import crypto from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 
 const PLAN_VERSION = "forge.verification-plan.v1";
 const INDEX_VERSION = "forge.evidence-index.v1";
 const SUBSTITUTE_VERSION = "forge.substitute-evidence.v1";
+const MODULE_PLAN_VERSION = "forge.module-plan.v1";
+const DEFAULT_REJECTED_PROOF_MODULES = [
+  "auth-account",
+  "paywall-purchases",
+  "sync-backend",
+  "settings-profile",
+  "onboarding",
+  "public-launch"
+];
 
 function usage() {
   return `Usage:\n  node scripts/forge-vnext-verifier.mjs --app-path <app-or-fixture-path> [--plan .forge/verification-plan.json] [--write-index]\n\nRuns the generic Forge vNext verification/evidence contract. App-specific paths, markers, screenshots, and substitutions must live in the app-local .forge plan and evidence index.`;
@@ -45,6 +55,14 @@ async function readJson(filePath) {
 
 async function readText(filePath) {
   return fs.readFile(filePath, "utf8");
+}
+
+async function sha256File(filePath) {
+  return crypto.createHash("sha256").update(await fs.readFile(filePath)).digest("hex");
+}
+
+function normalizeArtifactPath(value) {
+  return value.split(path.sep).join("/");
 }
 
 function relPath(base, value) {
@@ -128,6 +146,139 @@ function getPointer(doc, pointer) {
   }, doc);
 }
 
+async function evaluateModulePlan(appPath, plan, errors) {
+  if (plan.policy?.strictness !== "proof-app") return;
+
+  const modulePlanPath = relPath(appPath, ".forge/module-plan.json");
+  const modulePlan = await readJson(modulePlanPath).catch((error) => {
+    errors.push(`proof-app module plan missing or invalid at .forge/module-plan.json: ${error.message}`);
+    return null;
+  });
+  if (!modulePlan) return;
+
+  if (modulePlan.schema_version !== MODULE_PLAN_VERSION) errors.push(`module plan schema_version must be ${MODULE_PLAN_VERSION}`);
+  if (!Array.isArray(modulePlan.selected_modules) || modulePlan.selected_modules.length === 0) errors.push("module plan selected_modules must explicitly select at least one module");
+  if (!modulePlan.selected_modules?.includes("local-proof-shell")) errors.push("module plan for generated proof apps must select local-proof-shell");
+  if (!Array.isArray(modulePlan.rejected_modules)) {
+    errors.push("module plan rejected_modules must be an array");
+    return;
+  }
+
+  const rejectedById = new Map(modulePlan.rejected_modules.map((module) => [module?.id, module]));
+  for (const moduleId of DEFAULT_REJECTED_PROOF_MODULES) {
+    const rejected = rejectedById.get(moduleId);
+    if (!rejected) {
+      errors.push(`module plan must explicitly reject non-selected proof module ${moduleId}`);
+      continue;
+    }
+    if (typeof rejected.rationale !== "string" || rejected.rationale.trim() === "") errors.push(`module plan rejection ${moduleId} must include rationale`);
+  }
+  if (typeof modulePlan.absence_gate !== "string" || modulePlan.absence_gate.trim() === "") errors.push("module plan must declare the absence_gate enforcing rejected modules");
+}
+
+function mandatoryGeneratedProofChecks(plan) {
+  if (plan.policy?.strictness !== "proof-app") return [];
+  return [
+    ...[
+      "skills",
+      "forge-cli",
+      "docs/superpowers",
+      "docs/goals",
+      "docs/plans",
+      ".forge/research",
+      "scripts/new-app.sh",
+      "scripts/forge-vnext-verifier.mjs",
+      "scripts/forge-vnext-gate-validate.mjs",
+      "scripts/forge-e2e-native-verify.mjs",
+      "tests"
+    ].map((forbiddenPath) => ({
+      id: `mandatory-generated-proof-no-${forbiddenPath.replaceAll("/", "-").replaceAll(".", "-")}`,
+      type: "path_absent",
+      severity: "blocker",
+      path: forbiddenPath,
+      rationale: "Generated proof repos must not contain copied Forge control-plane residue."
+    })),
+    {
+      id: "mandatory-generated-proof-no-forbidden-compiled-surfaces",
+      type: "repo_forbid_regex",
+      severity: "blocker",
+      include: ["**/*.swift", "**/*.pbxproj", "Package.swift", "Package.resolved"],
+      patterns: [
+        "\\bStoreKit\\b",
+        "\\b[Rr]evenue[Cc]at\\b",
+        "\\b[Pp]aywall(View|ViewModel)?\\b",
+        "\\bAuthView\\b",
+        "\\blogIn\\b",
+        "\\bDayRate(Lab)?\\b",
+        "\\bAccountView(Model)?\\b",
+        "\\bAuth(Manager|ViewModel)\\b",
+        "\\bAuthenticationManager\\b",
+        "\\bPaymentManager\\b",
+        "\\bPurchase(Manager|Service)\\b",
+        "case auth",
+        "case account",
+        "case paywall",
+        "case settings",
+        "case onboarding",
+        "Sign in to your account",
+        "Upgrade subscription",
+        "Text\\(\\\"Settings\\\"\\)",
+        "Welcome onboarding",
+        "\\bFirebaseAuth\\b",
+        "\\bFirebaseFirestore\\b",
+        "\\bFirebaseMessaging\\b",
+        "\\bFirebaseRemoteConfig\\b",
+        "\\bFirebaseStorage\\b",
+        "\\bFirebaseAnalytics\\b",
+        "\\bFirebaseCrashlytics\\b",
+        "\\bGoogleSignIn\\b",
+        "\\bMixpanel\\b",
+        "purchases-ios",
+        "firebase-ios-sdk",
+        "mixpanel-swift"
+      ],
+      rationale: "Generated local proof apps must not compile copied money, account, auth, payment, analytics, push, external SDK dependency, or old fixture-domain surfaces."
+    },
+    {
+      id: "mandatory-generated-proof-no-push-external-signing-residue",
+      type: "repo_forbid_regex",
+      severity: "blocker",
+      include: ["**/*.swift", "**/*.pbxproj", "Package.swift", "Package.resolved", "**/*.plist", "**/*.entitlements", "scripts/**/*.sh"],
+      patterns: [
+        "GoogleService-Info",
+        "GoogleServicePLists",
+        "Crashlytics/upload-symbols",
+        "\\bupload-symbols\\b",
+        "aps-environment",
+        "FirebaseAppDelegateProxyEnabled",
+        "DEVELOPMENT_TEAM",
+        "CODE_SIGN_STYLE\\s*=\\s*Automatic",
+        "PROVISIONING_PROFILE",
+        "PROVISIONING_PROFILE_SPECIFIER"
+      ],
+      rationale: "Generated local proof apps must not carry copied Firebase plist, Crashlytics, push entitlement, public signing, team, or provisioning residue."
+    },
+    {
+      id: "mandatory-generated-proof-no-public-release-instructions",
+      type: "repo_forbid_regex",
+      severity: "blocker",
+      include: ["README.md", "AGENTS.md", "docs/**/*.md", "scripts/**/*.sh"],
+      patterns: [
+        "App Store",
+        "TestFlight",
+        "StoreKit",
+        "[Rr]evenue[Cc]at",
+        "signing",
+        "provisioning profile",
+        "public launch",
+        "DayRate(Lab)?",
+        "\\b(?:[Ss]et up|[Cc]onfigure|[Ee]nable|[Aa]dd|[Ii]mplement|[Cc]reate|[Ww]ire|[Ii]ntegrate)\\b.{0,80}\\b(?:accounts?|auth(?:entication)?|payments?|paywalls?|subscriptions?|purchases?)\\b"
+      ],
+      rationale: "Generated local proof apps must not carry copied public release, store, payment, account, auth, subscription, purchase, or stale fixture instructions."
+    }
+  ];
+}
+
 async function resolveMarkerSource(appPath, descriptor, plan) {
   if (Array.isArray(descriptor.markers)) return descriptor.markers;
   if (typeof descriptor.markers_from !== "string") return [];
@@ -152,6 +303,11 @@ async function runCheck(check, ctx) {
   if (check.type === "json_schema_valid") {
     try { await readJson(relPath(ctx.appPath, check.path)); }
     catch (error) { fail(`invalid JSON ${check.path}: ${error.message}`); }
+    return;
+  }
+  if (check.type === "path_absent") {
+    if (!check.path) return fail("path_absent requires path");
+    if (await exists(relPath(ctx.appPath, check.path))) fail(`forbidden path exists: ${check.path}`);
     return;
   }
   if (check.type === "markdown_contains_sections") {
@@ -223,6 +379,28 @@ function validateIndexShape(index, errors) {
   if (!Array.isArray(index.slots)) errors.push("evidence index slots must be an array");
 }
 
+async function validateAcceptedEvidenceSourceHashes(appPath, indexSlot, errors) {
+  if (typeof indexSlot.artifact !== "string") return;
+  const artifact = normalizeArtifactPath(indexSlot.artifact);
+  if (!artifact.startsWith(".forge/evidence/") || !artifact.endsWith(".json")) return;
+
+  const transcript = await readJson(relPath(appPath, indexSlot.artifact)).catch(() => null);
+  if (!transcript || !Array.isArray(transcript.sources)) return;
+
+  for (const source of transcript.sources) {
+    if (typeof source?.path !== "string" || typeof source?.sha256 !== "string") continue;
+    const sourcePath = relPath(appPath, source.path);
+    if (!await exists(sourcePath)) {
+      errors.push(`missing evidence source in ${artifact} for ${source.path}`);
+      continue;
+    }
+    const actual = await sha256File(sourcePath);
+    if (actual !== source.sha256) {
+      errors.push(`stale evidence source hash in ${artifact} for ${source.path}: expected ${source.sha256}, got ${actual}`);
+    }
+  }
+}
+
 async function validateSubstitute(appPath, indexSlot, slot, errors, warnings) {
   if (!indexSlot.owner || !indexSlot.rationale) errors.push(`approved substitute for ${slot.id} must include rationale and owner in evidence index`);
   if (!indexSlot.artifact) {
@@ -268,7 +446,11 @@ async function evaluateEvidence(appPath, plan, slotById, errors, warnings) {
     }
     outputSlots.push(indexSlot);
     if (indexSlot.status === "accepted") {
-      if (!indexSlot.artifact || !await exists(relPath(appPath, indexSlot.artifact))) errors.push(`missing required evidence artifact for ${id}: ${indexSlot.artifact ?? "<none>"}`);
+      if (!indexSlot.artifact || !await exists(relPath(appPath, indexSlot.artifact))) {
+        errors.push(`missing required evidence artifact for ${id}: ${indexSlot.artifact ?? "<none>"}`);
+      } else {
+        await validateAcceptedEvidenceSourceHashes(appPath, indexSlot, errors);
+      }
       continue;
     }
     if (indexSlot.status === "substituted_approved") {
@@ -302,10 +484,11 @@ async function main() {
   for (const source of [plan.sources?.spec, plan.sources?.design, ...(plan.sources?.gate_receipts ?? [])].filter(Boolean)) {
     if (!await exists(relPath(appPath, source))) errors.push(`referenced source artifact does not exist: ${source}`);
   }
+  await evaluateModulePlan(appPath, plan, errors);
 
   const slotById = collectSlots(plan);
   const ctx = { appPath, plan, errors, warnings, slotById };
-  for (const check of plan.checks ?? []) await runCheck(check, ctx);
+  for (const check of [...mandatoryGeneratedProofChecks(plan), ...(plan.checks ?? [])]) await runCheck(check, ctx);
   const evidence = await evaluateEvidence(appPath, plan, slotById, errors, warnings);
 
   const result = {

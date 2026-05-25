@@ -1,0 +1,84 @@
+{
+  "schema_version": "forge.verification-plan.v1",
+  "app": {
+    "id": "generated-residue",
+    "name": "GeneratedResidue",
+    "repo_root": ".",
+    "project": "GeneratedResidue.xcodeproj",
+    "scheme": "GeneratedResidue - Mock",
+    "platform": "ios"
+  },
+  "sources": {
+    "spec": ".forge/spec.json",
+    "design": ".forge/DESIGN.md",
+    "gate_receipts": [
+      ".forge/gates/product.json"
+    ]
+  },
+  "policy": {
+    "strictness": "proof-app",
+    "allow_substitutes": false
+  },
+  "checks": [
+    {
+      "id": "no-copied-skills",
+      "type": "path_absent",
+      "severity": "blocker",
+      "path": "skills",
+      "rationale": "Generated app proofs must not include Forge skill packs."
+    },
+    {
+      "id": "no-forge-cli",
+      "type": "path_absent",
+      "severity": "blocker",
+      "path": "forge-cli",
+      "rationale": "Generated app proofs must not include the Forge control-plane CLI."
+    },
+    {
+      "id": "no-vnext-scripts",
+      "type": "path_absent",
+      "severity": "blocker",
+      "path": "scripts/forge-vnext-verifier.mjs",
+      "rationale": "Generated app proofs must not include Forge verifier implementation scripts."
+    },
+    {
+      "id": "no-forbidden-compiled-surfaces",
+      "type": "repo_forbid_regex",
+      "severity": "blocker",
+      "include": [
+        "**/*.swift",
+        "**/*.pbxproj",
+        "Package.swift",
+        "Package.resolved"
+      ],
+      "patterns": [
+        "\\bStoreKit\\b",
+        "\\bRevenueCat\\b",
+        "\\bPaywall(View|ViewModel)?\\b",
+        "\\bAuthView\\b",
+        "\\blogIn\\b"
+      ],
+      "rationale": "Local proof app must not compile payment, paywall, or auth surfaces."
+    },
+    {
+      "id": "no-public-release-instructions",
+      "type": "repo_forbid_regex",
+      "severity": "blocker",
+      "include": [
+        "README.md",
+        "AGENTS.md",
+        "docs/**/*.md",
+        "scripts/**/*.sh"
+      ],
+      "patterns": [
+        "App Store",
+        "TestFlight",
+        "signing",
+        "provisioning profile",
+        "public launch"
+      ],
+      "rationale": "Local proof artifacts must not carry public release/account instructions."
+    }
+  ],
+  "evidence_slots": []
+}

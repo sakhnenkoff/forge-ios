@@ -1,0 +1,35 @@
+{
+  "schema_version": "forge.module-plan.v1",
+  "app_id": "missing-proof",
+  "generated_app": "MissingProof",
+  "selected_modules": [
+    "local-proof-shell"
+  ],
+  "rejected_modules": [
+    {
+      "id": "auth-account",
+      "rationale": "Fixture proof app does not select account/auth surfaces."
+    },
+    {
+      "id": "paywall-purchases",
+      "rationale": "Fixture proof app does not select purchases, subscriptions, StoreKit, or RevenueCat."
+    },
+    {
+      "id": "sync-backend",
+      "rationale": "Fixture proof app does not select backend sync, Firebase, push, analytics, or external services."
+    },
+    {
+      "id": "settings-profile",
+      "rationale": "Fixture proof app does not select generic settings/profile surfaces."
+    },
+    {
+      "id": "onboarding",
+      "rationale": "Fixture proof app does not select copied onboarding surfaces."
+    },
+    {
+      "id": "public-launch",
+      "rationale": "Fixture proof app excludes App Store, TestFlight, signing, and public launch actions."
+    }
+  ],
+  "absence_gate": "scripts/forge-vnext-verifier.mjs proof-app strictness enforces rejected module absence."
+}

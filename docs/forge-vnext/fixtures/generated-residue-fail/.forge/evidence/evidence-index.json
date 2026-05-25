@@ -1,0 +1,8 @@
+{
+  "schema_version": "forge.evidence-index.v1",
+  "app_id": "generated-residue",
+  "generated_at": "2026-05-25T00:00:00.000Z",
+  "verification_plan": ".forge/verification-plan.json",
+  "overall_status": "pending",
+  "slots": []
+}

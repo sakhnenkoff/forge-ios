@@ -1,0 +1,6 @@
+// PBX placeholder with RevenueCat package reference
+// firebase-ios-sdk mixpanel-swift FirebaseMessaging FirebaseRemoteConfig FirebaseStorage FirebaseAnalytics FirebaseCrashlytics Mixpanel
+// GoogleService-Info.plist GoogleServicePLists Crashlytics/upload-symbols
+DEVELOPMENT_TEAM = ABC123;
+CODE_SIGN_STYLE = Automatic;
+PROVISIONING_PROFILE_SPECIFIER = GeneratedResidueProfile;

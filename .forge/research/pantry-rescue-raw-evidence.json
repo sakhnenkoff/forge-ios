@@ -1,0 +1,1068 @@
+{
+  "schema_version": "forge.raw_evidence_notes.v1",
+  "task_id": "t_0df5ff6c",
+  "app_direction": "pantry-rescue-queue",
+  "created_at": "2026-05-25T18:24:14Z",
+  "created_by": "forgeverifier",
+  "safety": {
+    "access_scope": "safe public/read-only URLs plus local Forge documents only",
+    "accounts_or_credentials_used": false,
+    "purchases_or_external_actions": false,
+    "native_generation_or_app_repo_actions": false,
+    "main_direction_gate_edited": false
+  },
+  "purpose": "Raw/source-linked evidence notes to replace circular/self-referential review and competitor claims in the Pantry Rescue Queue direction gate.",
+  "evidence_notes": [
+    {
+      "id": "RAW-APPLE-SEARCH-CATEGORY-001",
+      "claim_supported": "Pantry/food-inventory/expiration tracker apps exist in the US App Store with non-trivial ratings, supporting category demand and competitor density.",
+      "source_url": "https://itunes.apple.com/search?term=pantry%20inventory%20expiration%20tracker&country=us&entity=software&limit=10",
+      "access_method": "python3 urllib.request public GET to Apple iTunes Search API, no account",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": [
+        {
+          "track_name": "Pantry Check - Grocery List",
+          "app_id": 966702368,
+          "average_user_rating": 4.51499,
+          "user_rating_count": 1534,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-check-grocery-list/id966702368?uo=4"
+        },
+        {
+          "track_name": "NoWaste: Food Inventory List",
+          "app_id": 926211004,
+          "average_user_rating": 4.15591,
+          "user_rating_count": 744,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/nowaste-food-inventory-list/id926211004?uo=4"
+        },
+        {
+          "track_name": "Pantry Inventory - Panzy",
+          "app_id": 6748056076,
+          "average_user_rating": 4.59551,
+          "user_rating_count": 89,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-inventory-panzy/id6748056076?uo=4"
+        },
+        {
+          "track_name": "Cooklist: Pantry Meals Recipes",
+          "app_id": 1352600944,
+          "average_user_rating": 4.73109,
+          "user_rating_count": 11134,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/cooklist-pantry-meals-recipes/id1352600944?uo=4"
+        },
+        {
+          "track_name": "My Pantry Tracker",
+          "app_id": 1567647197,
+          "average_user_rating": 3.51724,
+          "user_rating_count": 29,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/my-pantry-tracker/id1567647197?uo=4"
+        },
+        {
+          "track_name": "Oops - Expiration Date Tracker",
+          "app_id": 1591883953,
+          "average_user_rating": 5,
+          "user_rating_count": 3,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/oops-expiration-date-tracker/id1591883953?uo=4"
+        },
+        {
+          "track_name": "Pantry Manager",
+          "app_id": 512026829,
+          "average_user_rating": 3.58537,
+          "user_rating_count": 82,
+          "formatted_price": "$3.99",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-manager/id512026829?uo=4"
+        },
+        {
+          "track_name": "Pantry Check",
+          "app_id": 6670480023,
+          "average_user_rating": 4.53012,
+          "user_rating_count": 166,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-check/id6670480023?uo=4"
+        },
+        {
+          "track_name": "BEEP - Expiry Date Tracking",
+          "app_id": 1242739153,
+          "average_user_rating": 4.14957,
+          "user_rating_count": 234,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/beep-expiry-date-tracking/id1242739153?uo=4"
+        },
+        {
+          "track_name": "Pantry - Don't let them expire",
+          "app_id": 1556421447,
+          "average_user_rating": 0,
+          "user_rating_count": 0,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-dont-let-them-expire/id1556421447?uo=4"
+        }
+      ],
+      "confidence": "high for existence and ratings; medium for user intent or willingness to pay",
+      "limitations": "US storefront only; App Store ratings do not prove the Pantry Rescue Queue positioning or manual-MVP willingness."
+    },
+    {
+      "id": "RAW-APPLE-REVIEWS-PAIN-002",
+      "claim_supported": "Competitor reviews expose concrete pain around duplicate purchases, expiration tracking, freezer/pantry visibility, shopping-list memory, and add/organization friction.",
+      "source_url": "https://itunes.apple.com/us/rss/customerreviews/id=966702368/sortBy=mostRecent/json",
+      "access_method": "python3 urllib.request public GET to Apple App Store customer review RSS JSON, no account",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": {
+        "app": "Pantry Check - Grocery List",
+        "selected_keyword_matched_recent_reviews": [
+          {
+            "title": "Perfectly functional",
+            "rating": "5",
+            "updated": "2026-05-17T19:00:26-07:00",
+            "excerpt": "This pantry inventory app that allows you to scan barcodes and add expiration dates two items works amazingly well. Scanning the barcode pulls back pictures of the exact item. It is very quick and very easy to use. It even makes a satisfying 'boop' sound when the item is scanned. I'll be subbing when I hit the limit.",
+            "matched_terms": [
+              "add",
+              "barcode",
+              "inventory",
+              "pantry",
+              "scan"
+            ]
+          },
+          {
+            "title": "Practical and helpful!!",
+            "rating": "5",
+            "updated": "2026-05-17T14:44:07-07:00",
+            "excerpt": "Very helpful so far! Easy to use and love the expiration tracking. I wish it had a ‘desired stock qty’ per item that would make creating a generated shopping list more accurate, but either way, this app is ABSOLUTELY worth using.",
+            "matched_terms": [
+              "shopping",
+              "stock"
+            ]
+          },
+          {
+            "title": "Almost perfect",
+            "rating": "3",
+            "updated": "2026-04-25T13:57:12-07:00",
+            "excerpt": "I have been using the app for a few months and it really good. Scans fast and easy to add unidentified items and move products around. My only struggle is that I REALLY want to set my own categories and be able to organize the categories manually. I waste too much time finding and organizing based on automatic categories.",
+            "matched_terms": [
+              "add",
+              "scan",
+              "time"
+            ]
+          },
+          {
+            "title": "Great App",
+            "rating": "5",
+            "updated": "2026-04-05T07:49:00-07:00",
+            "excerpt": "It’s so easy to keep up with what’s in my pantry now. It prevents me from purchasing duplicates and tells me when products are about to expire. I highly recommend it.",
+            "matched_terms": [
+              "duplicate",
+              "expire",
+              "pantry"
+            ]
+          },
+          {
+            "title": "Great!",
+            "rating": "5",
+            "updated": "2026-03-26T12:16:58-07:00",
+            "excerpt": "For more than a decade, I’ve been relying on this app for my inventory and grocery shopping. It enables me to have separate shopping lists for each of the stores at which I shop. Love it!",
+            "matched_terms": [
+              "inventory",
+              "shopping"
+            ]
+          },
+          {
+            "title": "Lifesaving!",
+            "rating": "5",
+            "updated": "2026-03-21T12:33:26-07:00",
+            "excerpt": "I’m not sure what I would do without this app! Honestly. I’ve used it for many years now and it’s proven indispensable. I’m disabled, bed bound, and unable to visually access my refrigerator, pantry, etc. I use the app to keep track of everything, with my caregivers scanning in new items. I especially love the product photographs as I can show them exactly what they need to be looking for when I request something. The shopping list section works brilliantly. There’s a bit of a learning curve involved, but I now have my usage tweaked to suit me. I really appreciate all the flexibility. There are still new discoveries from time to time. Thanks, Pantry Check developers!",
+            "matched_terms": [
+              "pantry",
+              "scan",
+              "shopping",
+              "time"
+            ]
+          },
+          {
+            "title": "Stellar",
+            "rating": "5",
+            "updated": "2026-03-01T08:18:06-07:00",
+            "excerpt": "Review: The End of \"Do We Have Eggs?\" Panic Rating: ⭐⭐⭐⭐⭐ If you’ve ever stood in the grocery aisle staring blankly at a carton of milk, wondering if the one at home is half-full or a science experiment, Pantry Check is about to change your life. It’s rare to find an app that actually solves a \"mental load\" problem rather than just adding another digital chore to your list, but this is it. Here is why it’s a permanent resident on my home screen: Why It’s Stellar: * Effortless Inventory: The barcode scanner is snappy and reliable. I spent twenty minutes scanning my pantry, and now I have a digital twin of my kitchen. * Expiration Tracking: This is the \"killer feature.\" It sends gentle nudges when items are nearing their end. It’s saved me dozens of dollars by reminding me to use that heavy cream before it turns into cheese. * Smart Shopping Lists: It bridges the gap between \"I'm out of th",
+            "matched_terms": [
+              "add",
+              "barcode",
+              "inventory",
+              "pantry",
+              "scan",
+              "shopping"
+            ]
+          },
+          {
+            "title": "Wish I had found this sooner",
+            "rating": "5",
+            "updated": "2026-01-20T11:42:28-07:00",
+            "excerpt": "Honestly, I love this amp. I can use it as a shopping list and add it to my inventory. I'm kind of a person that is a freak about inventory so especially being in a career for 20 years doing inventory.",
+            "matched_terms": [
+              "add",
+              "inventory",
+              "shopping"
+            ]
+          }
+        ]
+      },
+      "confidence": "medium_high for sampled review pain; low for prevalence across all users",
+      "limitations": "Most-recent RSS sample only; excerpts are not a statistically representative review corpus; some positive reviews also reinforce barcode/scanner expectations."
+    },
+    {
+      "id": "RAW-APPLE-REVIEWS-MANUAL-FRICTION-003",
+      "claim_supported": "Manual/add-flow and scanner/default-expiry friction are real review complaints; a manual MVP must be faster/calmer than inventory-table data entry, not merely less capable.",
+      "source_url": "https://itunes.apple.com/us/rss/customerreviews/id=926211004/sortBy=mostRecent/json",
+      "access_method": "python3 urllib.request public GET to Apple App Store customer review RSS JSON, no account",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": {
+        "app": "NoWaste: Food Inventory List",
+        "selected_keyword_matched_recent_reviews": [
+          {
+            "title": "Great concept, disappointing execution",
+            "rating": "1",
+            "updated": "2026-03-15T07:30:31-07:00",
+            "excerpt": "Really irritated that I paid for this app. Almost feel ripped off. Adding food to the inventory is extremely clunky and time-consuming. When scanning barcodes, expiration dates are never correct (almost everything defaults to expiring today). If I have my fridge list open as I’m scanning then why are the items being added to the pantry??? The minute I added a custom category to the category list, all other default categories disappeared and won’t come back. I didn’t even get through the 15 items on the top shelf of my refrigerator before giving up. It would literally take all day to build an accurate inventory of the food in my house. Was really excited to try this out but ended up being a huge letdown.",
+            "matched_terms": [
+              "add",
+              "barcode",
+              "clunky",
+              "expiration",
+              "time-consuming"
+            ]
+          },
+          {
+            "title": "Useful but no support",
+            "rating": "2",
+            "updated": "2025-10-02T05:14:20-07:00",
+            "excerpt": "I went to share the app with my husband, it wouldn’t take my app credentials and then when I tried to log back into the account on my phone it wouldn’t accept my password or allow me to reset it. The password reset link on the app will not work. I have emailed support and they have yet to contact me. I had lost all my scanned data and purchased account. So I had to make a new account and rescan all of my stock. It’s very frustrating.",
+            "matched_terms": [
+              "stock"
+            ]
+          },
+          {
+            "title": "Great Customer Service",
+            "rating": "5",
+            "updated": "2025-09-09T07:00:44-07:00",
+            "excerpt": "This app is great. I use it to keep an inventory of my deep freezer. It’s handy to have at the grocery store too. I was having an issue with the app and emailed the developer. He got back to me right away and fixed it!",
+            "matched_terms": [
+              "freezer",
+              "grocery"
+            ]
+          },
+          {
+            "title": "Wrong Expiration Dates",
+            "rating": "2",
+            "updated": "2024-02-08T14:20:29-07:00",
+            "excerpt": "I wanted to love this app & it is super easy to use, but I have repeatedly seen the expiration dates be far off from what was marked on the food’s packaging. Not sure if it is because I am in the US and this was developed in Denmark.",
+            "matched_terms": [
+              "expiration"
+            ]
+          },
+          {
+            "title": "Camera is too blurry to read barcodes",
+            "rating": "3",
+            "updated": "2024-01-04T08:23:16-07:00",
+            "excerpt": "This has been the bane of my existence for every app that includes a scanner. Apple has not taught developers how to use specify the close-up camera for the new iPhone, and so it always defaults to the wide angle lens, meaning any every barcode ever made is too small to capture using the default camera. I’ve dropped many apps for this reason alone, but so far the manual item entry is manageable.",
+            "matched_terms": [
+              "barcode",
+              "manual",
+              "scanner"
+            ]
+          },
+          {
+            "title": "No Longer Functional - No Support",
+            "rating": "1",
+            "updated": "2023-08-30T18:06:51-07:00",
+            "excerpt": "I have been using this app for years and have become thoroughly dependent on it. I have lifetime pro membership, which turns out it doesn't mean much, since I expect to have decades left yet I can no longer even use the app. It was wonderful until it stopped letting me add items to my inventory (I'm nowhere near the huge pro limit). Whenever I try to add anything, I just get a loading/processing icon that never goes away. I can still remove and relocate items, but I can't add anything. I've had to keep a separate list on paper of things I've bought since the app broke for me. I've tried logging out, uninstalling, restarting the phone, redownloading, and signing in. Everything is still there but I still can't add anything new. As others have reported, contacting the developer is pointless. I have received no response. Disappointing. This was a wonderful app when it worked, but it seems co",
+            "matched_terms": [
+              "add"
+            ]
+          },
+          {
+            "title": "Cool Idea, App needs work",
+            "rating": "2",
+            "updated": "2023-06-18T19:44:06-07:00",
+            "excerpt": "The idea of saving money and food is great! However the scanner does not work. I also have tried adding food multiple times and it won’t add to the list. I wouldn’t go pro for this one you’re better using your phone calendar until improvements can be made.",
+            "matched_terms": [
+              "add",
+              "scanner"
+            ]
+          },
+          {
+            "title": "Highly Recommend!!!",
+            "rating": "5",
+            "updated": "2023-02-19T19:35:07-07:00",
+            "excerpt": "This has almost everything I am looking for in a pantry tracking app. You can add categories (fridge, freezer, pantry, ect), type of packaging, weight, and even where it is! The expiration date is customizable and there are rings next to each item showing how close to expiration it is. Very easy to use and perfectly simple (without all the unnecessary clutter other apps add). This is a genius solution to tracking and reducing waste in my home and across the world. The only suggestion to make this app better would be to type in the weight/ quantity rather than selecting the set number. This would help for the 1.5lb packages. Still great without that option!",
+            "matched_terms": [
+              "add",
+              "expiration",
+              "freezer"
+            ]
+          }
+        ]
+      },
+      "confidence": "medium_high for existence of add-flow friction; medium for direction implication",
+      "limitations": "Selected reviews include negative and positive anecdotes; they prove friction exists but not that users prefer manual-only flows."
+    },
+    {
+      "id": "RAW-APPLE-REVIEWS-SYNC-BARCODE-004",
+      "claim_supported": "Reviews also show barcode, camera, sync, and household-sharing expectations; these are non-goals for the proof but cannot be hidden as market expectations.",
+      "source_url": "https://itunes.apple.com/us/rss/customerreviews/id=512026829/sortBy=mostRecent/json",
+      "access_method": "python3 urllib.request public GET to Apple App Store customer review RSS JSON, no account",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": {
+        "app": "Pantry Manager",
+        "selected_keyword_matched_recent_reviews": [
+          {
+            "title": "App not supported anymore?",
+            "rating": "1",
+            "updated": "2025-10-26T09:54:39-07:00",
+            "excerpt": "I used to LOVE this app. It was awesome. I began having trouble with it the last couple of years. Then, items would not get entered or deleted. I have tried reaching out to them three different times, but they have never responded. I guess they no longer update or have anything to do with this app. I am very disappointed.",
+            "matched_terms": [
+              "supported"
+            ]
+          },
+          {
+            "title": "Doesn’t seem like it’s supported anymore",
+            "rating": "1",
+            "updated": "2023-11-27T15:22:35-07:00",
+            "excerpt": "When it works, this app is great. I’ve used it for a long time. However, it’s become very glitchy and crashes frequently. I contacted support twice a year ago and they suggested things that didn’t work. I don’t think that this app is supported anymore, a shame, because I would pay for a working app.",
+            "matched_terms": [
+              "pay",
+              "supported"
+            ]
+          },
+          {
+            "title": "Great app for keeping pantry organized!",
+            "rating": "5",
+            "updated": "2022-10-29T09:17:24-07:00",
+            "excerpt": "Use it for shopping and love the expiration reminders. Great app that I use all the time.",
+            "matched_terms": [
+              "expiration",
+              "shopping"
+            ]
+          },
+          {
+            "title": "Won’t Sync",
+            "rating": "2",
+            "updated": "2021-02-28T08:03:38-07:00",
+            "excerpt": "I like the app but it won’t sync to my wife’s phone. Very annoying. I have tried to contact the developer several times.",
+            "matched_terms": [
+              "sync",
+              "wife"
+            ]
+          },
+          {
+            "title": "DOES NOT WORK",
+            "rating": "1",
+            "updated": "2020-04-17T11:56:05-07:00",
+            "excerpt": "This app does not work. The camera is blurry and is unable to scan the barcodes. Save your money, because they will refuse to refund it. Pantry Check app works perfectly.",
+            "matched_terms": [
+              "barcode",
+              "scan"
+            ]
+          },
+          {
+            "title": "Need on Android",
+            "rating": "4",
+            "updated": "2020-03-22T09:09:29-07:00",
+            "excerpt": "I love using pantry manager on my iPad . It does a great job of keeping up with my food items. But I need an app that works on my iPad and my android phone. One that will sync between the two. Any plans? Does anyone know of an app that already does that?",
+            "matched_terms": [
+              "sync"
+            ]
+          },
+          {
+            "title": "Use all the time",
+            "rating": "4",
+            "updated": "2019-12-31T09:33:46-07:00",
+            "excerpt": "Very good app, but it would be nice if you could enter the upc code manually, since scanning a bar code can sometimes be problematic on a rounded surface. Other than that I am really pleased. It also doesn't seem to be improving. The number of items in their upc seems to be less than other apps I have used, but I haven't verified that",
+            "matched_terms": [
+              "manual",
+              "scan"
+            ]
+          },
+          {
+            "title": "Love it.",
+            "rating": "5",
+            "updated": "2019-09-03T09:20:15-07:00",
+            "excerpt": "Takes a little bit to scan things , but one you get everything going it’s awesome. I use this app for my than just food. I use it to keep track of cleaning supplies, freezer food dishes ( ones I buy but also one I’ve made) , etc. the only thing is remembering to track when you remove an item.",
+            "matched_terms": [
+              "scan"
+            ]
+          }
+        ]
+      },
+      "confidence": "medium for expectation existence; low for current market prevalence because the app is older/modestly rated",
+      "limitations": "Pantry Manager is a smaller/older comparator; its review set should be treated as corroborating, not decisive."
+    },
+    {
+      "id": "RAW-APPLE-LOOKUP-FEATURE-EXPECTATIONS-005",
+      "claim_supported": "Public competitor descriptions repeatedly promise barcode scanning, receipt/photo import, sync/family/cloud/iCloud, expiration sorting/reminders, shopping lists, and loyalty-card import; this supports the scanner/OCR/sync expectation risk.",
+      "source_url": "https://itunes.apple.com/lookup?id=966702368,926211004,1352600944,6748056076,512026829&country=us&entity=software",
+      "access_method": "python3 urllib.request public GET to Apple iTunes Lookup API, no account",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": [
+        {
+          "track_name": "Pantry Check - Grocery List",
+          "app_id": 966702368,
+          "bundle_id": "com.pantrycheck.Pantry-Check",
+          "average_user_rating": 4.51499,
+          "user_rating_count": 1534,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-check-grocery-list/id966702368?uo=4",
+          "screenshot_url_count": 9,
+          "ipad_screenshot_url_count": 9,
+          "feature_snippets": [
+            {
+              "term": "barcode",
+              "snippet": "- The easiest household inventory system - The best barcode scanner - Real-time syncing and family sharing - Automatic expiration reminders - Smart shopping lists, based on usage and inventory - Organize by custom locations - Prices, runni"
+            },
+            {
+              "term": "photo",
+              "snippet": "stom locations - Prices, running tally and estimated totals for lists - Current inventory & usage timeline - Submit own photos and product info - Crowd-sourced cloud database - Millions of products recognized - Track up to 200 items for free - Affordable storage subscriptions Pantry Check is the easiest"
+            },
+            {
+              "term": "sync",
+              "snippet": "- The easiest household inventory system - The best barcode scanner - Real-time syncing and family sharing - Automatic expiration reminders - Smart shopping lists, based on usage and inventory - Organize by custom locations - Prices, running tally and estimated to"
+            },
+            {
+              "term": "family",
+              "snippet": "- The easiest household inventory system - The best barcode scanner - Real-time syncing and family sharing - Automatic expiration reminders - Smart shopping lists, based on usage and inventory - Organize by custom locations - Prices, running tally and estimated totals for lists"
+            },
+            {
+              "term": "shopping",
+              "snippet": "ntory system - The best barcode scanner - Real-time syncing and family sharing - Automatic expiration reminders - Smart shopping lists, based on usage and inventory - Organize by custom locations - Prices, running tally and estimated totals for lists - Current inventory & usage timeline - Submit own photos"
+            },
+            {
+              "term": "expiration",
+              "snippet": "- The easiest household inventory system - The best barcode scanner - Real-time syncing and family sharing - Automatic expiration reminders - Smart shopping lists, based on usage and inventory - Organize by custom locations - Prices, running tally and estimated totals for lists - Current inventory & usage ti"
+            },
+            {
+              "term": "pantry",
+              "snippet": "d cloud database - Millions of products recognized - Track up to 200 items for free - Affordable storage subscriptions Pantry Check is the easiest way to manage the groceries you buy and use. With seamless cloud sync, multiple device login and intuitive UI, it's never been easier to plan meals, do your"
+            }
+          ]
+        },
+        {
+          "track_name": "NoWaste: Food Inventory List",
+          "app_id": 926211004,
+          "bundle_id": "com.KHApps.Cloud-Fryser",
+          "average_user_rating": 4.15591,
+          "user_rating_count": 744,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/nowaste-food-inventory-list/id926211004?uo=4",
+          "screenshot_url_count": 0,
+          "ipad_screenshot_url_count": 5,
+          "feature_snippets": [
+            {
+              "term": "barcode",
+              "snippet": "reduce food waste and save a bunch of money. Features: • Inventory lists for your freezer, fridge & pantry ​ • Scan barcodes, receipts or photos to add food in seconds. • Synchronize your lists across devices • Great list design to help you get an overview of your food • AI Assistant: Speak or write"
+            },
+            {
+              "term": "receipt",
+              "snippet": "d waste and save a bunch of money. Features: • Inventory lists for your freezer, fridge & pantry ​ • Scan barcodes, receipts or photos to add food in seconds. • Synchronize your lists across devices • Great list design to help you get an overview of your food • AI Assistant: Speak or write to the as"
+            },
+            {
+              "term": "photo",
+              "snippet": "save a bunch of money. Features: • Inventory lists for your freezer, fridge & pantry ​ • Scan barcodes, receipts or photos to add food in seconds. • Synchronize your lists across devices • Great list design to help you get an overview of your food • AI Assistant: Speak or write to the assistant to"
+            },
+            {
+              "term": "sync",
+              "snippet": ": • Inventory lists for your freezer, fridge & pantry ​ • Scan barcodes, receipts or photos to add food in seconds. • Synchronize your lists across devices • Great list design to help you get an overview of your food • AI Assistant: Speak or write to the assistant to make it add food, check what's i"
+            },
+            {
+              "term": "shopping",
+              "snippet": "freezer, fridge and pantry, you can easily check what food you have left, see what food you need to use first, create a shopping list, plan your meals, avoid unnecessary purchases, reduce food waste and save a bunch of money. Features: • Inventory lists for your freezer, fridge & pantry ​ • Scan barcode"
+            },
+            {
+              "term": "expiration",
+              "snippet": "ssistant: Speak or write to the assistant to make it add food, check what's in stock and much more • Sort your food by expiration date, name or category • Filter your food according to category or placement ​• Move items items between lists • Search and find out if you have that particular grocery in sto"
+            },
+            {
+              "term": "freezer",
+              "snippet": "Easily track, organize and manage the food in your home. With lists for your freezer, fridge and pantry, you can easily check what food you have left, see what food you need to use first, create a shopping list, plan your meals, avoid unnecessary purchases, reduce"
+            },
+            {
+              "term": "pantry",
+              "snippet": "Easily track, organize and manage the food in your home. With lists for your freezer, fridge and pantry, you can easily check what food you have left, see what food you need to use first, create a shopping list, plan your meals, avoid unnecessary purchases, reduce food waste and sav"
+            },
+            {
+              "term": "AI",
+              "snippet": "d in seconds. • Synchronize your lists across devices • Great list design to help you get an overview of your food • AI Assistant: Speak or write to the assistant to make it add food, check what's in stock and much more • Sort your food by expiration date, name or category • Filter your food acco"
+            }
+          ]
+        },
+        {
+          "track_name": "Cooklist: Pantry Meals Recipes",
+          "app_id": 1352600944,
+          "bundle_id": "org.reactjs.native.example.Cooklist",
+          "average_user_rating": 4.73109,
+          "user_rating_count": 11134,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/cooklist-pantry-meals-recipes/id1352600944?uo=4",
+          "screenshot_url_count": 10,
+          "ipad_screenshot_url_count": 3,
+          "feature_snippets": [
+            {
+              "term": "barcode",
+              "snippet": "CANNER • Always know what ingredients you have on hand with our pantry check • Add pantry and fridge food items with a barcode scanner • Use the ingredient scanner to find nutrition facts and details for over 1 million pantry and fridge food products MEAL PLANNER & RECIPE KEEPER • Over 1 million recipes"
+            },
+            {
+              "term": "receipt",
+              "snippet": "ns and 75 more of your favorite grocery stores • Automatically import past and future purchases • Keep all your grocery receipts stored in one place • Just like Mint.com, except for groceries! AUTOMATIC PANTRY INVENTORY & INGREDIENT SCANNER • Always know what ingredients you have on hand with our pantry c"
+            },
+            {
+              "term": "sync",
+              "snippet": "your household • The grocery shopping list, pantry inventory, and recipes are shared with the household • Automatically syncs between all devices and backed up in the cloud Terms of Service: https://www.cooklist.co/terms-of-use"
+            },
+            {
+              "term": "shopping",
+              "snippet": "Cooklist introduces an entirely new way to think about your relationship with cooking and grocery shopping. It connects to your grocery store loyalty cards and automatically downloads all of your food purchases into a digital pantry. Over 1 million cooking recipes are then matched to t"
+            },
+            {
+              "term": "expiration",
+              "snippet": "cery aisle REDUCE FOOD WASTE • Keep track of how old each item in your pantry or fridge is • Food and pantry inventory expiration notifications • Automatic cooking recipes with ingredients that is expiring soon COOK BETTER, TOGETHER • Use Cooklist for easy recipes to cook with everyone in your household • T"
+            },
+            {
+              "term": "pantry",
+              "snippet": ". It connects to your grocery store loyalty cards and automatically downloads all of your food purchases into a digital pantry. Over 1 million cooking recipes are then matched to the groceries you have in your fridge and pantry and filtered to show you a feed of recipes you can cook with the food you alre"
+            },
+            {
+              "term": "loyalty",
+              "snippet": "entirely new way to think about your relationship with cooking and grocery shopping. It connects to your grocery store loyalty cards and automatically downloads all of your food purchases into a digital pantry. Over 1 million cooking recipes are then matched to the groceries you have in your fridge and pa"
+            },
+            {
+              "term": "AI",
+              "snippet": "• Add pantry and fridge food items with a barcode scanner • Use the ingredient scanner to find nutrition facts and details for over 1 million pantry and fridge food products MEAL PLANNER & RECIPE KEEPER • Over 1 million recipes generated by your pantry inventory to show you healthy recipes you can"
+            }
+          ]
+        },
+        {
+          "track_name": "Pantry Inventory - Panzy",
+          "app_id": 6748056076,
+          "bundle_id": "com.tantostudio.Panzy",
+          "average_user_rating": 4.59551,
+          "user_rating_count": 89,
+          "formatted_price": "Free",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-inventory-panzy/id6748056076?uo=4",
+          "screenshot_url_count": 0,
+          "ipad_screenshot_url_count": 0,
+          "feature_snippets": [
+            {
+              "term": "barcode",
+              "snippet": "or run out. - Smart Features: Low-stock automation: Items automatically move to your shopping list when running low. Barcode scanner: Quickly scan items to fetch product details from our database. iCloud sync: Access your pantry seamlessly across all your Apple devices. Expiration reminders: Get notif"
+            },
+            {
+              "term": "sync",
+              "snippet": "hopping list when running low. Barcode scanner: Quickly scan items to fetch product details from our database. iCloud sync: Access your pantry seamlessly across all your Apple devices. Expiration reminders: Get notified before food goes bad. Organized by location: Separate your pantry, fridge, and f"
+            },
+            {
+              "term": "iCloud",
+              "snippet": "your shopping list when running low. Barcode scanner: Quickly scan items to fetch product details from our database. iCloud sync: Access your pantry seamlessly across all your Apple devices. Expiration reminders: Get notified before food goes bad. Organized by location: Separate your pantry, fridge,"
+            },
+            {
+              "term": "shopping",
+              "snippet": "l of your kitchen and reduce food waste with Panzy, your smart pantry companion. Whether you're meal prepping, grocery shopping, or just staying organized, Panzy makes it simple to track what's in your pantry, fridge, or freezer. Easily add items with quantity and expiration dates, and let Panzy remind you"
+            },
+            {
+              "term": "expiration",
+              "snippet": "organized, Panzy makes it simple to track what's in your pantry, fridge, or freezer. Easily add items with quantity and expiration dates, and let Panzy remind you before they expire or run out. - Smart Features: Low-stock automation: Items automatically move to your shopping list when running low. Barcode s"
+            },
+            {
+              "term": "freezer",
+              "snippet": "prepping, grocery shopping, or just staying organized, Panzy makes it simple to track what's in your pantry, fridge, or freezer. Easily add items with quantity and expiration dates, and let Panzy remind you before they expire or run out. - Smart Features: Low-stock automation: Items automatically move to"
+            },
+            {
+              "term": "pantry",
+              "snippet": "Panzy - Pantry made easy Take control of your kitchen and reduce food waste with Panzy, your smart pantry companion. Whether you're meal prepping, grocery shopping, or just staying organized, Panzy makes it simple to track what's in your pantry, fridge, or freezer. Easily add items w"
+            },
+            {
+              "term": "AI",
+              "snippet": "ems automatically move to your shopping list when running low. Barcode scanner: Quickly scan items to fetch product details from our database. iCloud sync: Access your pantry seamlessly across all your Apple devices. Expiration reminders: Get notified before food goes bad. Organized by location: S"
+            }
+          ]
+        },
+        {
+          "track_name": "Pantry Manager",
+          "app_id": 512026829,
+          "bundle_id": "com.mjlyco.mypantry",
+          "average_user_rating": 3.58537,
+          "user_rating_count": 82,
+          "formatted_price": "$3.99",
+          "track_view_url": "https://apps.apple.com/us/app/pantry-manager/id512026829?uo=4",
+          "screenshot_url_count": 6,
+          "ipad_screenshot_url_count": 8,
+          "feature_snippets": [
+            {
+              "term": "barcode",
+              "snippet": ". Open up pantry manager and see if your milk will go bad soon or if you need more AA Batteries. You can even scan a barcode to quickly add items.* --- Create a free Pantry Manager account and sync all of your items in the cloud. Using one account, everyone in your household can add, modify, and delet"
+            },
+            {
+              "term": "photo",
+              "snippet": "will purchase • Barcode scanning to quickly add items* • Free Pantry Manager account for cloud syncing • Locally saved photos of your items • In-app purchase for syncing photos** • Icons to quickly see expired and soon to be expired items • App badges to see how many expired items you have • iPad and iP"
+            },
+            {
+              "term": "sync",
+              "snippet": "ed more AA Batteries. You can even scan a barcode to quickly add items.* --- Create a free Pantry Manager account and sync all of your items in the cloud. Using one account, everyone in your household can add, modify, and delete objects in your database. Need your spouse to pick up a few things on th"
+            },
+            {
+              "term": "shopping",
+              "snippet": "Manages all of your household items with Pantry Manager! Lower food waste with expiration date reminders and a shopping list that matches actual items you own or will buy. Now with Apple Watch support! Never again will you wonder if you have that ingredient when you’re at the store. Open up pan"
+            },
+            {
+              "term": "expiration",
+              "snippet": "Manages all of your household items with Pantry Manager! Lower food waste with expiration date reminders and a shopping list that matches actual items you own or will buy. Now with Apple Watch support! Never again will you wonder if you have that ingredient when you’"
+            },
+            {
+              "term": "pantry",
+              "snippet": "Manages all of your household items with Pantry Manager! Lower food waste with expiration date reminders and a shopping list that matches actual items you own or will buy. Now with Apple Watch support! Never again will you w"
+            },
+            {
+              "term": "AI",
+              "snippet": "te reminders and a shopping list that matches actual items you own or will buy. Now with Apple Watch support! Never again will you wonder if you have that ingredient when you’re at the store. Open up pantry manager and see if your milk will go bad soon or if you need more AA Batteries. You can ev"
+            }
+          ]
+        }
+      ],
+      "confidence": "high for public listing-copy feature claims; medium for actual user expectation strength",
+      "limitations": "Listing copy is vendor-authored marketing text, not independent user evidence; no app was installed or logged into."
+    },
+    {
+      "id": "RAW-APPLE-PUBLIC-PRICING-006",
+      "claim_supported": "Public App Store pages expose some competitor pricing/IAP rows and screenshot availability, but not logged-in paywall UX; money-path evidence remains limited.",
+      "source_url": "multiple App Store public product pages; see raw_observations.source_url per app",
+      "access_method": "python3 urllib.request public GET to apps.apple.com pages, regex extraction of visible IAP text-pair rows, no account/no purchase",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": [
+        {
+          "app": "Pantry Check - Grocery List",
+          "source_url": "https://apps.apple.com/us/app/pantry-check-grocery-list/id966702368",
+          "iap_rows": [
+            {
+              "name": "Premium: 2,000 items",
+              "price": "$11.99"
+            },
+            {
+              "name": "Premium: 2,000 items",
+              "price": "$7.99"
+            },
+            {
+              "name": "Pro: 10,000 items",
+              "price": "$29.99"
+            },
+            {
+              "name": "Premium: 2,000 items",
+              "price": "$1.99"
+            },
+            {
+              "name": "Pro: 10,000 items",
+              "price": "$14.99"
+            },
+            {
+              "name": "Premium: 2,000 items",
+              "price": "$9.49"
+            },
+            {
+              "name": "Pro: 10,000 items",
+              "price": "$4.99"
+            },
+            {
+              "name": "Pro: 10,000 items",
+              "price": "$19.99"
+            }
+          ],
+          "html_bytes": 603916,
+          "contains_in_app_purchases_label": true
+        },
+        {
+          "app": "NoWaste: Food Inventory List",
+          "source_url": "https://apps.apple.com/us/app/nowaste-food-inventory-list/id926211004",
+          "iap_rows": [
+            {
+              "name": "NoWaste Pro Lifetime",
+              "price": "$29.99"
+            },
+            {
+              "name": "NoWaste Pro Annual",
+              "price": "$6.99"
+            }
+          ],
+          "html_bytes": 673650,
+          "contains_in_app_purchases_label": true
+        },
+        {
+          "app": "Cooklist: Pantry Meals Recipes",
+          "source_url": "https://apps.apple.com/us/app/cooklist-pantry-meals-recipes/id1352600944",
+          "iap_rows": [
+            {
+              "name": "Cooklist Pro Yearly",
+              "price": "$49.99"
+            },
+            {
+              "name": "Cooklist Pro Monthly",
+              "price": "$7.99"
+            },
+            {
+              "name": "Cooklist Pro Yearly",
+              "price": "$59.99"
+            },
+            {
+              "name": "Cooklist Pro Monthly",
+              "price": "$9.99"
+            },
+            {
+              "name": "Cooklist Pro Monthly",
+              "price": "$5.99"
+            },
+            {
+              "name": "Yearly access to Cooklist Pro",
+              "price": "$59.99"
+            }
+          ],
+          "html_bytes": 691168,
+          "contains_in_app_purchases_label": true
+        },
+        {
+          "app": "Pantry Inventory - Panzy",
+          "source_url": "https://apps.apple.com/us/app/pantry-inventory-panzy/id6748056076",
+          "iap_rows": [
+            {
+              "name": "Lifetime",
+              "price": "$24.99"
+            },
+            {
+              "name": "Yearly",
+              "price": "$14.99"
+            },
+            {
+              "name": "Monthly",
+              "price": "$3.99"
+            },
+            {
+              "name": "Yearly",
+              "price": "$12.99"
+            }
+          ],
+          "html_bytes": 690797,
+          "contains_in_app_purchases_label": true
+        },
+        {
+          "app": "Pantry Manager",
+          "source_url": "https://apps.apple.com/us/app/pantry-manager/id512026829",
+          "iap_rows": [
+            {
+              "name": "Sync Photos",
+              "price": "$0.99"
+            }
+          ],
+          "html_bytes": 573939,
+          "contains_in_app_purchases_label": true
+        }
+      ],
+      "confidence": "medium_high for public price/IAP visibility when rows are extracted; low for paywall design/Pro-boundary conclusions",
+      "limitations": "No app installation, no logged-in App Store, no in-app paywall flow, no purchase. Some App Store pages may expose no IAP rows to this parser even when lookup/listing metadata confirms the app exists."
+    },
+    {
+      "id": "RAW-REDDIT-PUBLIC-SUBSTITUTE-007",
+      "claim_supported": "Public Reddit search returns pantry/inventory/receipt/kitchen-app discussions, useful as weak community substitute evidence and source-discovery, but not enough to prove the solo-household beachhead.",
+      "source_url": "https://www.reddit.com/search.json public search endpoints; see raw_observations.source_url per query",
+      "access_method": "python3 urllib.request public GET to Reddit search JSON with descriptive User-Agent, no login",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": [
+        {
+          "query": "pantry inventory app expiration",
+          "source_url": "https://www.reddit.com/search.json?q=pantry%20inventory%20app%20expiration&limit=5",
+          "dist": 5,
+          "results": [
+            {
+              "subreddit": "TwoXPreppers",
+              "title": "Pantry organization and inventory",
+              "permalink": "https://www.reddit.com/r/TwoXPreppers/comments/1qmqef9/pantry_organization_and_inventory/",
+              "score": 30,
+              "num_comments": 24
+            },
+            {
+              "subreddit": "Famnest",
+              "title": "Shared pantry + household inventory feature?",
+              "permalink": "https://www.reddit.com/r/Famnest/comments/1sib1g7/shared_pantry_household_inventory_feature/",
+              "score": 2,
+              "num_comments": 13
+            },
+            {
+              "subreddit": "SideProject",
+              "title": "Shipped an iPhone app for photo-first home inventory. Does the positioning feel coherent or muddy?",
+              "permalink": "https://www.reddit.com/r/SideProject/comments/1std8ed/shipped_an_iphone_app_for_photofirst_home/",
+              "score": 3,
+              "num_comments": 6
+            },
+            {
+              "subreddit": "Appstore",
+              "title": "[Self-Promotion] I built an app that scans grocery receipts and automatically builds your pantry + tracks spending",
+              "permalink": "https://www.reddit.com/r/Appstore/comments/1tf3o9o/selfpromotion_i_built_an_app_that_scans_grocery/",
+              "score": 1,
+              "num_comments": 1
+            },
+            {
+              "subreddit": "iOSAppsMarketing",
+              "title": "Which value prop reads clearer from these screenshots: home inventory, pantry tracking, or AI assistant?",
+              "permalink": "https://www.reddit.com/r/iOSAppsMarketing/comments/1std6zm/which_value_prop_reads_clearer_from_these/",
+              "score": 1,
+              "num_comments": 4
+            }
+          ]
+        },
+        {
+          "query": "food inventory app freezer pantry",
+          "source_url": "https://www.reddit.com/search.json?q=food%20inventory%20app%20freezer%20pantry&limit=5",
+          "dist": 5,
+          "results": [
+            {
+              "subreddit": "EatCheapAndHealthy",
+              "title": "Taking inventory to prevent wasting food, a quarantine activity...",
+              "permalink": "https://www.reddit.com/r/EatCheapAndHealthy/comments/ghncba/taking_inventory_to_prevent_wasting_food_a/",
+              "score": 891,
+              "num_comments": 58
+            },
+            {
+              "subreddit": "Appstore",
+              "title": "[Self-Promotion] I built an app that scans grocery receipts and automatically builds your pantry + tracks spending",
+              "permalink": "https://www.reddit.com/r/Appstore/comments/1tf3o9o/selfpromotion_i_built_an_app_that_scans_grocery/",
+              "score": 1,
+              "num_comments": 1
+            },
+            {
+              "subreddit": "AppIdeas",
+              "title": "AI \"Kitchen OS\" (Fridge + Pantry + Goals) that plans meals, tracks inventory automatically, and adapts the week when life changes",
+              "permalink": "https://www.reddit.com/r/AppIdeas/comments/1qrt1aw/ai_kitchen_os_fridge_pantry_goals_that_plans/",
+              "score": 0,
+              "num_comments": 15
+            },
+            {
+              "subreddit": "iosapps",
+              "title": "I built an app that tells you what to cook with the food you already have (SousCheff)",
+              "permalink": "https://www.reddit.com/r/iosapps/comments/1roo7lw/i_built_an_app_that_tells_you_what_to_cook_with/",
+              "score": 5,
+              "num_comments": 6
+            },
+            {
+              "subreddit": "SomebodyMakeThis",
+              "title": "AI \"Kitchen OS\" (Fridge + Pantry + Goals) that plans meals, tracks inventory automatically, and adapts the week when life changes",
+              "permalink": "https://www.reddit.com/r/SomebodyMakeThis/comments/1qrtdct/ai_kitchen_os_fridge_pantry_goals_that_plans/",
+              "score": 0,
+              "num_comments": 12
+            }
+          ]
+        },
+        {
+          "query": "grocery inventory app duplicate buys",
+          "source_url": "https://www.reddit.com/search.json?q=grocery%20inventory%20app%20duplicate%20buys&limit=5",
+          "dist": 5,
+          "results": [
+            {
+              "subreddit": "expo",
+              "title": "Shipped my third iOS app, Sage - a grocery receipt tracking app",
+              "permalink": "https://www.reddit.com/r/expo/comments/1scgl9t/shipped_my_third_ios_app_sage_a_grocery_receipt/",
+              "score": 7,
+              "num_comments": 8
+            },
+            {
+              "subreddit": "Appstore",
+              "title": "[Self-Promotion] I built an app that scans grocery receipts and automatically builds your pantry + tracks spending",
+              "permalink": "https://www.reddit.com/r/Appstore/comments/1tf3o9o/selfpromotion_i_built_an_app_that_scans_grocery/",
+              "score": 1,
+              "num_comments": 1
+            },
+            {
+              "subreddit": "apps",
+              "title": "I built a “smart kitchen” app that combines grocery lists, inventory tracking and recipes",
+              "permalink": "https://www.reddit.com/r/apps/comments/1rf99bk/i_built_a_smart_kitchen_app_that_combines_grocery/",
+              "score": 3,
+              "num_comments": 0
+            },
+            {
+              "subreddit": "SideProject",
+              "title": "I built an iOS app that turns receipts into smart grocery lists, tracks pantry items, and compares store prices",
+              "permalink": "https://www.reddit.com/r/SideProject/comments/1kcfghc/i_built_an_ios_app_that_turns_receipts_into_smart/",
+              "score": 1,
+              "num_comments": 0
+            },
+            {
+              "subreddit": "PaprikaApp",
+              "title": "So I have decided to bite the bullet and build a next gen Paprika",
+              "permalink": "https://www.reddit.com/r/PaprikaApp/comments/1rq48cn/so_i_have_decided_to_bite_the_bullet_and_build_a/",
+              "score": 51,
+              "num_comments": 88
+            }
+          ]
+        }
+      ],
+      "confidence": "low_medium for source-discovery; low for demand strength or segment proof",
+      "limitations": "Search results are broad/noisy and include self-promotion/adjacent home-inventory posts; no thread bodies were deeply read; not a validated representative community sample."
+    },
+    {
+      "id": "RAW-HN-PUBLIC-SUBSTITUTE-008",
+      "claim_supported": "Hacker News Algolia returns a few pantry/food-inventory app posts, corroborating that the category exists in builder communities but not proving mainstream demand.",
+      "source_url": "https://hn.algolia.com/api/v1/search public API; see raw_observations.source_url per query",
+      "access_method": "python3 urllib.request public GET to HN Algolia API, no login",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": [
+        {
+          "query": "pantry inventory app",
+          "source_url": "https://hn.algolia.com/api/v1/search?query=pantry%20inventory%20app&tags=story&hitsPerPage=5",
+          "nb_hits": 4,
+          "results": [
+            {
+              "title": "Show HN: PPantry offline-first pantry and inventory tracker",
+              "url": "https://ppantry.app/",
+              "object_id": "47959143",
+              "points": 2,
+              "num_comments": 0
+            },
+            {
+              "title": "Ask HN: What's a good app for grocery management?",
+              "url": null,
+              "object_id": "14053195",
+              "points": 12,
+              "num_comments": 14
+            },
+            {
+              "title": "Show HN: RowMaker – Turn Images and Words into Spreadsheets",
+              "url": "https://www.simpltech.ai/?",
+              "object_id": "42117802",
+              "points": 2,
+              "num_comments": 0
+            },
+            {
+              "title": "Show HN: iPantry – Track food inventory and reduce waste",
+              "url": "https://apps.apple.com/us/app/ipantry-food-inventory/id1291843113",
+              "object_id": "44568541",
+              "points": 1,
+              "num_comments": 3
+            }
+          ]
+        },
+        {
+          "query": "food inventory app expiration",
+          "source_url": "https://hn.algolia.com/api/v1/search?query=food%20inventory%20app%20expiration&tags=story&hitsPerPage=5",
+          "nb_hits": 1,
+          "results": [
+            {
+              "title": "Show HN: iPantry – Track food inventory and reduce waste",
+              "url": "https://apps.apple.com/us/app/ipantry-food-inventory/id1291843113",
+              "object_id": "44568541",
+              "points": 1,
+              "num_comments": 3
+            }
+          ]
+        },
+        {
+          "query": "Pantry Check app",
+          "source_url": "https://hn.algolia.com/api/v1/search?query=Pantry%20Check%20app&tags=story&hitsPerPage=5",
+          "nb_hits": 4,
+          "results": [
+            {
+              "title": "Show HN: I build an AI-powered recipe app solving „what's for dinner?\" problem",
+              "url": "https://chefiniti.app",
+              "object_id": "44256032",
+              "points": 1,
+              "num_comments": 2
+            },
+            {
+              "title": "Show HN: I made an app to help my gf cook experimentally",
+              "url": "https://pantry.bot",
+              "object_id": "39524307",
+              "points": 1,
+              "num_comments": 0
+            },
+            {
+              "title": "Ask HN: DigitalOcean destroyed all my data while I was sick. Any recourse?",
+              "url": null,
+              "object_id": "26650631",
+              "points": 69,
+              "num_comments": 17
+            },
+            {
+              "title": "How Tech Will Change Dating In Future",
+              "url": "http://fundersandfounders.com/future-of-dating-tech",
+              "object_id": "3968060",
+              "points": 1,
+              "num_comments": 2
+            }
+          ]
+        }
+      ],
+      "confidence": "low_medium for community/source-breadth existence; low for demand strength",
+      "limitations": "HN hits are sparse and builder-skewed; result count is not a product-market signal by itself."
+    },
+    {
+      "id": "RAW-ACCESS-LIMITATIONS-009",
+      "claim_supported": "X/Twitter and Product Hunt were not used in this repair; existing access audit says X search is disabled/login-gated and dedicated Product Hunt/Reddit/HN ingestion is not configured, so missing sources must remain explicit.",
+      "source_url": "docs/forge-vnext/research-integration-access-audit.md",
+      "access_method": "local_file_read from prior Forge access audit plus this task public-source attempts",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": {
+        "x_twitter": "Not queried in this task; prior access audit records logged-out X search redirect/login gate and disabled x_search toolset in this worker context.",
+        "product_hunt": "No dedicated Product Hunt CLI/API/MCP configured in access audit; not used to avoid weak/dynamic scraping claims.",
+        "substitutes_used": [
+          "Apple public Search/Lookup/Review RSS",
+          "App Store public product pages",
+          "Reddit public search JSON",
+          "HN Algolia public API"
+        ]
+      },
+      "confidence": "high for tooling/access limitation; not demand evidence",
+      "limitations": "This is a limitation note, not a market claim; future lanes may configure first-class X/Product Hunt/Reddit ingestion."
+    },
+    {
+      "id": "RAW-BEACHHEAD-GAP-010",
+      "claim_supported": "The solo-household beachhead remains a synthesis/gap, not directly proven by segment-specific interviews or solo-user source material.",
+      "source_url": "docs/forge-vnext/second-proof-app-direction-gate.md#sharpened-beachhead-user and .forge/research/evidence-matrix.json#E-BEACHHEAD-SEGMENT-1",
+      "access_method": "local_file_read of current Forge direction gate/evidence matrix; no external/account actions",
+      "fetched_or_read_at": "2026-05-25T18:24:14Z",
+      "raw_observations": {
+        "local_claim": "Primary beachhead is defined as a solo household food operator with weekly grocery trip, fridge/freezer/pantry overflow, and repeated expiring-food or duplicate-buying pain during dinner decisions.",
+        "raw_external_support_found_in_this_task": "Apple/Reddit/HN sources support pantry inventory, expiry, duplicate-buying, freezer/pantry visibility, and scanner/sync expectations generally, but do not directly prove solo-household as the optimal first segment.",
+        "required_future_evidence": [
+          "solo-user interviews or survey snippets",
+          "prototype timing with solo-user scenario",
+          "returning-user weekly rescue recap evidence"
+        ]
+      },
+      "confidence": "high that the gap exists; low that the beachhead is externally proven",
+      "limitations": "This deliberately preserves the gap instead of converting synthesis into a fake evidence claim."
+    }
+  ],
+  "coverage_map": {
+    "competitor_review_pain": [
+      "RAW-APPLE-REVIEWS-PAIN-002",
+      "RAW-APPLE-REVIEWS-MANUAL-FRICTION-003",
+      "RAW-APPLE-REVIEWS-SYNC-BARCODE-004"
+    ],
+    "manual_inventory_friction": [
+      "RAW-APPLE-REVIEWS-MANUAL-FRICTION-003",
+      "RAW-APPLE-LOOKUP-FEATURE-EXPECTATIONS-005"
+    ],
+    "barcode_ocr_sync_expectations": [
+      "RAW-APPLE-REVIEWS-SYNC-BARCODE-004",
+      "RAW-APPLE-LOOKUP-FEATURE-EXPECTATIONS-005"
+    ],
+    "pricing_paywall_visibility_limits": [
+      "RAW-APPLE-PUBLIC-PRICING-006"
+    ],
+    "solo_household_beachhead_gap": [
+      "RAW-BEACHHEAD-GAP-010"
+    ],
+    "public_community_substitutes_and_limitations": [
+      "RAW-REDDIT-PUBLIC-SUBSTITUTE-007",
+      "RAW-HN-PUBLIC-SUBSTITUTE-008",
+      "RAW-ACCESS-LIMITATIONS-009"
+    ]
+  },
+  "validation": {
+    "json_validation_command": "python3 -m json.tool .forge/research/pantry-rescue-raw-evidence.json >/tmp/pantry-rescue-raw-evidence.validated.json",
+    "validated_at": "2026-05-25T18:24:39Z",
+    "status": "passed"
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "schema_version": "forge.research_evidence_matrix.v1",
+  "created_at": "2026-05-25T18:01:54Z",
+  "updated_at": "2026-05-25T18:27:22Z",
+  "created_by": "forgeproduct",
+  "task_id": "t_f46570f6",
+  "app_direction": "pantry-rescue-queue",
+  "status": "repaired_synthesis_ready_for_judge_matvii_gate",
+  "verdict": "approve_for_matvii_gate",
+  "safety": {
+    "access_scope": "read_only_public_sources_local_docs_and_local_static_prototype_only",
+    "native_generation_blocked": true,
+    "native_generation_allowed": false,
+    "external_account_use": false,
+    "purchases_or_payment_actions": false,
+    "app_store_testflight_signing_iap_actions": false,
+    "forbidden_prior_app_use": "negative_guardrail_only",
+    "dayratelab_use": "negative_guardrail_only_no_inspiration_design_naming_fixtures_or_screenshots"
+  },
+  "source_artifacts": [
+    {
+      "path": ".forge/research/pantry-rescue-raw-evidence.json",
+      "task_id": "t_0df5ff6c",
+      "role": "raw/source-linked evidence notes"
+    },
+    {
+      "path": "docs/forge-vnext/pantry-rescue-activation-prototype.md",
+      "task_id": "t_6fdcb138",
+      "role": "timed activation and returning-loop storyboard"
+    },
+    {
+      "path": "docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html",
+      "task_id": "t_6fdcb138",
+      "role": "local static HTML prototype"
+    },
+    {
+      "path": "docs/forge-vnext/pantry-rescue-money-path.md",
+      "task_id": "t_d39b995a",
+      "role": "money path and local-only Pro boundary deferral"
+    },
+    {
+      "path": "docs/forge-vnext/second-proof-app-direction-gate.md",
+      "task_id": "t_f46570f6",
+      "role": "human-readable repaired synthesis receipt"
+    }
+  ],
+  "summary": {
+    "recommended_posture": "approve_for_matvii_gate_not_native_generation",
+    "matvii_question": "Do you accept manual quick-add plus rescue queue as the honest MVP for a local second proof, with barcode/OCR/sync/import/payments explicitly deferred?",
+    "manual_quick_add_mvp_decision": "Manual quick-add is coherent enough for a human direction decision because the static prototype shows a sub-30-second rescue path; it is still not native/user evidence.",
+    "beachhead_user": "Solo household food operator who does one weekly grocery trip, has fridge/freezer/pantry overflow, and repeatedly discovers expiring food or duplicate buys while deciding dinner.",
+    "money_path": "Explicit monetization deferral. Public competitor pricing exists, but no live monetization, StoreKit/IAP, price-point, launch-candidate monetization, or payment claim is approved.",
+    "key_risks": [
+      "Category incumbents emphasize barcode, receipt/photo scanning, account sync, family sharing, or loyalty-card import, so manual quick-add must prove it is faster and more emotionally useful than scanner-first inventory.",
+      "Activation and repeat loop are supported only by a non-native/static prototype and storyboard, not by user behavior or native simulator proof.",
+      "Solo-household beachhead remains a synthesis/gap rather than directly proven segment evidence.",
+      "Money path is acceptable only by explicit deferral; paywall UX and conversion are not proven."
+    ]
+  },
+  "hard_minimums": {
+    "stage": "direction_after_repair_lanes_for_matvii_gate",
+    "demand_evidence_types_count": 4,
+    "required_demand_evidence_types_count": 2,
+    "has_excluded_user_statement": true,
+    "has_revenue_taste_tradeoff_statement": true,
+    "activation_evidence_present": true,
+    "activation_evidence_type": "non_native_static_storyboard_and_html_prototype",
+    "core_loop_evidence_present": true,
+    "retention_evidence_present": true,
+    "retention_evidence_type": "non_native_returning_user_storyboard",
+    "money_boundary_evidence_present_or_deferred_by_approval": true,
+    "money_boundary_status": "explicitly_deferred_no_monetization_yet",
+    "evidence_matrix_present": true,
+    "raw_source_linked_evidence_present": true,
+    "competitor_pricing_notes_present": true,
+    "competitor_screenshot_notes_present": true,
+    "dayratelab_negative_guardrail_only": true,
+    "native_generation_allowed": false,
+    "hard_minimum_failures": [],
+    "contradictions_unresolved": []
+  },
+  "native_generation_blockers": [
+    "No Matvii approval of the manual quick-add tradeoff yet.",
+    "No native/simulator activation walkthrough exists.",
+    "No local persistence proof for duplicate caution, weekly recap, or queue state exists.",
+    "No accepted native coverage matrix or app blueprint exists.",
+    "No monetization launch claim is approved; money path is deferred."
+  ],
+  "scores": {
+    "weighted_overall_estimate": 7.1,
+    "dimensions": {
+      "pain_problem_clarity": {
+        "score": 8,
+        "minimum": 7,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-PANTRY-RAW-EVIDENCE-1"],
+        "rationale": "Source-linked App Store reviews and listings support expiry, duplicate-buying, freezer/pantry visibility, and add-flow friction."
+      },
+      "target_user_sharpness": {
+        "score": 7,
+        "minimum": 7,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-BEACHHEAD-SEGMENT-1"],
+        "rationale": "Beachhead is sharp enough to ask Matvii, while RAW-BEACHHEAD-GAP-010 preserves that solo-household is not directly externally proven."
+      },
+      "use_case_activation": {
+        "score": 7,
+        "minimum": 7,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-ACTIVATION-PROTOTYPE-1"],
+        "rationale": "Static prototype/storyboard shows a concrete under-30-second manual-add path to a useful rescue decision."
+      },
+      "repeat_use_retention_loop": {
+        "score": 7,
+        "minimum": 7,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-RETURNING-LOOP-PROTOTYPE-1"],
+        "rationale": "Returning recap, duplicate caution, and queue-clearing progress are sketched with state transitions."
+      },
+      "money_path_believability": {
+        "score": 6,
+        "minimum": 6,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-MONEY-DEFERRAL-1"],
+        "rationale": "Money path is coherent by explicit deferral and local-only future Pro-boundary prototype language, not by paid launch evidence."
+      },
+      "product_distinctiveness_taste": {
+        "score": 7,
+        "minimum": 7,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-ACTIVATION-PROTOTYPE-1"],
+        "rationale": "Rescue Mouth, Rescue Lane, Caution Memory, Quiet Fridge Progress, and Weekly Rescue Recap create app-specific structure."
+      },
+      "blueprint_coverage_launch_slice_integrity": {
+        "score": 7,
+        "minimum": 7,
+        "pass_for_matvii_gate": true,
+        "native_score": 6,
+        "native_minimum": 8,
+        "pass_for_native_generation": false,
+        "evidence_ids": ["E-ACTIVATION-PROTOTYPE-1", "E-RETURNING-LOOP-PROTOTYPE-1"],
+        "rationale": "Enough local prototype coverage for a Matvii direction gate; no native coverage matrix, simulator walkthrough, or app blueprint exists."
+      },
+      "evidence_integrity": {
+        "score": 8,
+        "minimum": 8,
+        "pass_for_matvii_gate": true,
+        "evidence_ids": ["E-PANTRY-RAW-EVIDENCE-1", "E-ACCESS-LIMITATIONS-1"],
+        "rationale": "Raw source-linked evidence, access limitations, and remaining gaps are explicit and cited."
+      }
+    }
+  },
+  "evidence": [
+    {
+      "id": "E-PANTRY-RAW-EVIDENCE-1",
+      "claim": "Pantry Rescue Queue has source-linked public evidence for category demand, competitor expectations, review pain, pricing surfaces, and remaining access/source gaps.",
+      "source_name": "Raw/source-linked Pantry Rescue evidence notes",
+      "source_url": ".forge/research/pantry-rescue-raw-evidence.json",
+      "source_task_id": "t_0df5ff6c",
+      "access_method": "local_file_read_of_public_source_notes",
+      "raw_note_ids": [
+        "RAW-APPLE-SEARCH-CATEGORY-001",
+        "RAW-APPLE-REVIEWS-PAIN-002",
+        "RAW-APPLE-REVIEWS-MANUAL-FRICTION-003",
+        "RAW-APPLE-REVIEWS-SYNC-BARCODE-004",
+        "RAW-APPLE-LOOKUP-FEATURE-EXPECTATIONS-005",
+        "RAW-APPLE-PUBLIC-PRICING-006",
+        "RAW-REDDIT-PUBLIC-SUBSTITUTE-007",
+        "RAW-HN-PUBLIC-SUBSTITUTE-008",
+        "RAW-ACCESS-LIMITATIONS-009",
+        "RAW-BEACHHEAD-GAP-010"
+      ],
+      "proves": ["pain_problem_clarity", "category_demand", "competitor_feature_expectations", "pricing_public_surfaces", "evidence_integrity"],
+      "confidence": "medium_high",
+      "limitations": "Raw notes include sampled reviews and public metadata; they do not prove solo-household segment optimality, willingness to pay, or manual-MVP acceptance."
+    },
+    {
+      "id": "E-ACTIVATION-PROTOTYPE-1",
+      "claim": "A manual quick-add flow can be reviewed as a sub-30-second first-use path to a useful rescue decision at non-native prototype level.",
+      "source_name": "Pantry Rescue Queue activation prototype/storyboard",
+      "source_url": "docs/forge-vnext/pantry-rescue-activation-prototype.md",
+      "secondary_source_url": "docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html",
+      "source_task_id": "t_6fdcb138",
+      "access_method": "local_file_read",
+      "observed": {
+        "target_budget_seconds": 30,
+        "first_useful_result_by_seconds": 12,
+        "visible_progress_by_seconds": 18,
+        "duplicate_memory_by_seconds": 30,
+        "first_use_flow": ["open app to rescue prompt", "enter spinach", "tap fridge", "tap tonight", "receive Cook tonight rescue action", "tap Cook tonight", "see queue shrink", "store duplicate caution"]
+      },
+      "proves": ["activation_evidence_present_for_matvii_gate", "product_distinctiveness_taste", "manual_mvp_reviewability"],
+      "confidence": "medium",
+      "limitations": "Non-native/static prototype only; not user behavior, simulator proof, persistence proof, or native coverage."
+    },
+    {
+      "id": "E-RETURNING-LOOP-PROTOTYPE-1",
+      "claim": "The repeat loop is sketched with weekly recap, duplicate-avoidance memory, and queue-clearing progress states.",
+      "source_name": "Pantry Rescue Queue returning-user/progress storyboard",
+      "source_url": "docs/forge-vnext/pantry-rescue-activation-prototype.md#returning-user--progress-loop-sketch",
+      "secondary_source_url": "docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html",
+      "source_task_id": "t_6fdcb138",
+      "access_method": "local_file_read",
+      "observed": [
+        "Weekly recap references previous rescues and creates a next action.",
+        "Duplicate caution is created from a prior rescue action and appears before grocery trip.",
+        "Queue-clearing progress changes after eat/freeze/cook/ignore/do-not-buy-again action."
+      ],
+      "proves": ["core_loop_evidence_present_for_matvii_gate", "retention_evidence_present_for_matvii_gate"],
+      "confidence": "medium",
+      "limitations": "No native persistence, notification, or dogfood repeat-use evidence exists yet."
+    },
+    {
+      "id": "E-MONEY-DEFERRAL-1",
+      "claim": "Money path is coherent only as explicit monetization deferral with a future local/non-purchasable Pro-boundary learning surface.",
+      "source_name": "Pantry Rescue Queue money path / Pro boundary repair",
+      "source_url": "docs/forge-vnext/pantry-rescue-money-path.md",
+      "source_task_id": "t_d39b995a",
+      "access_method": "local_file_read",
+      "observed": {
+        "recommendation": "explicit_monetization_deferral",
+        "free_value_never_gated": ["first useful rescue queue", "basic manual add", "expiry urgency", "marking an item rescued/ignored", "trust/privacy/local-only settings"],
+        "future_local_pro_candidates": ["multiple named storage zones", "recurring reminder templates", "duplicate-buy memory/history", "weekly/monthly recap history", "export/share draft"],
+        "forbidden_now": ["live monetization", "StoreKit/IAP", "price-point claims", "launch-candidate monetization", "payments"]
+      },
+      "proves": ["money_boundary_evidence_present_or_deferred", "revenue_taste_tradeoff_statement"],
+      "confidence": "medium",
+      "limitations": "Public competitor pricing exists but in-app paywall UX, conversion, and product-specific paid willingness are not proven."
+    },
+    {
+      "id": "E-BEACHHEAD-SEGMENT-1",
+      "claim": "The beachhead is a sharp solo-household food operator segment suitable for a Matvii taste/strategy decision, with the external segment-proof gap preserved.",
+      "source_name": "Repaired synthesis plus raw beachhead gap note",
+      "source_url": "docs/forge-vnext/second-proof-app-direction-gate.md#sharpened-beachhead-user",
+      "secondary_source_url": ".forge/research/pantry-rescue-raw-evidence.json",
+      "source_task_ids": ["t_0df5ff6c", "t_f46570f6"],
+      "access_method": "local_file_read",
+      "proves": ["target_user_sharpness"],
+      "confidence": "medium",
+      "limitations": "RAW-BEACHHEAD-GAP-010 says solo-household is not directly proven by interviews or segment-specific external sources."
+    },
+    {
+      "id": "E-ACCESS-LIMITATIONS-1",
+      "claim": "Missing or weak community/X/Product Hunt evidence is explicit and should not be converted into a fake pass.",
+      "source_name": "Raw access limitations and public-community substitute notes",
+      "source_url": ".forge/research/pantry-rescue-raw-evidence.json",
+      "raw_note_ids": ["RAW-REDDIT-PUBLIC-SUBSTITUTE-007", "RAW-HN-PUBLIC-SUBSTITUTE-008", "RAW-ACCESS-LIMITATIONS-009"],
+      "access_method": "local_file_read",
+      "proves": ["evidence_integrity_limitations", "source_breadth_gap"],
+      "confidence": "high_for_limitation",
+      "limitations": "Not demand proof; only explains source coverage limits."
+    },
+    {
+      "id": "E-DAYRATELAB-NEGATIVE-GUARDRAIL-1",
+      "claim": "DayRateLab/prior proof app is used only as a negative guardrail and did not contaminate Pantry Rescue naming, design, fixtures, screenshots, or implementation direction.",
+      "source_name": "Safety boundary in repaired synthesis",
+      "source_url": "docs/forge-vnext/second-proof-app-direction-gate.md#safety-and-source-boundaries",
+      "access_method": "local_file_read",
+      "proves": ["prior_app_contamination_blocked"],
+      "confidence": "medium_high",
+      "limitations": "This is a process/safety assertion, not market evidence."
+    }
+  ],
+  "open_evidence_gaps": [
+    {
+      "id": "G-MATVII-MANUAL-MVP-APPROVAL-1",
+      "description": "Matvii has not yet accepted manual quick-add plus rescue queue as the honest MVP while scanner/OCR/sync/import/payments are deferred.",
+      "blocks": ["native_generation", "product_design_gate_execution"]
+    },
+    {
+      "id": "G-NATIVE-ACTIVATION-PROOF-1",
+      "description": "No native/simulator evidence that one manual quick-add creates a useful rescue queue in under 30 seconds.",
+      "blocks": ["native_generation", "launch_slice_integrity_pass_for_native"]
+    },
+    {
+      "id": "G-NATIVE-RETENTION-PROOF-1",
+      "description": "No native/local persistence evidence for weekly rescue recap, duplicate avoidance memory, or queue-clearing progress.",
+      "blocks": ["native_generation", "retention_claims_beyond_direction_gate"]
+    },
+    {
+      "id": "G-PAYWALL-VISUAL-1",
+      "description": "No logged-in/in-app paywall screenshots or purchase flows captured for competitors; money path is explicitly deferred.",
+      "blocks": ["money_path_launch_ready", "paid_launch_claims"]
+    },
+    {
+      "id": "G-SOLO-HOUSEHOLD-BEACHHEAD-1",
+      "description": "No direct solo-household interview/survey/source evidence proves this is the optimal first segment.",
+      "blocks": ["high_confidence_segment_claim"]
+    },
+    {
+      "id": "G-COMMUNITY-BREADTH-1",
+      "description": "Reddit/HN evidence is weak/noisy substitute evidence; X/Product Hunt/dedicated public-community evidence remains absent or access-limited.",
+      "blocks": ["high_confidence_market_breadth_claim"]
+    }
+  ],
+  "coverage_map": {
+    "competitor_review_pain": ["E-PANTRY-RAW-EVIDENCE-1"],
+    "manual_inventory_friction": ["E-PANTRY-RAW-EVIDENCE-1", "E-ACTIVATION-PROTOTYPE-1"],
+    "barcode_ocr_sync_expectations": ["E-PANTRY-RAW-EVIDENCE-1"],
+    "pricing_paywall_visibility_limits": ["E-PANTRY-RAW-EVIDENCE-1", "E-MONEY-DEFERRAL-1"],
+    "activation": ["E-ACTIVATION-PROTOTYPE-1"],
+    "repeat_loop": ["E-RETURNING-LOOP-PROTOTYPE-1"],
+    "solo_household_beachhead_gap": ["E-BEACHHEAD-SEGMENT-1"],
+    "public_community_substitutes_and_limitations": ["E-ACCESS-LIMITATIONS-1"],
+    "prior_app_negative_guardrail": ["E-DAYRATELAB-NEGATIVE-GUARDRAIL-1"]
+  },
+  "next_gate": {
+    "for": "forgejudge",
+    "decision": "approve_for_matvii_gate",
+    "question": "Are the evidence matrix, raw evidence notes, activation prototype, money deferral, hard flags, and hard-minimum failures internally consistent enough to ask Matvii the single manual-MVP decision?",
+    "if_yes": "Ask Matvii the manual quick-add / rescue queue approval question; do not generate native code yet.",
+    "if_no": "Return repair_again with a narrow concrete blocker, or kill_batch if scanner/OCR/sync/import is mandatory for credibility."
+  },
+  "validation": {
+    "commands_run": [
+      "python3 - <<'PY' ... json.load .forge/research/evidence-matrix.json and .forge/research/pantry-rescue-raw-evidence.json; parse all ```json fenced blocks in docs/forge-vnext/second-proof-app-direction-gate.md ... PY",
+      "python3 - <<'PY' ... consistency assertions for verdict, hard flags, native block, source paths, and DayRateLab negative guardrail ... PY"
+    ],
+    "validated_at": "2026-05-25T18:27:22Z",
+    "status": "passed",
+    "results": [
+      "evidence-matrix JSON valid",
+      "raw evidence JSON valid",
+      "2 embedded JSON fenced blocks valid",
+      "verdict/hard flags/native block/source paths/dayratelab guardrail consistency passed"
+    ]
+  }
+}

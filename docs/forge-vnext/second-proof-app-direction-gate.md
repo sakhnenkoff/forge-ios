@@ -1,464 +1,315 @@
-# Forge vNext Second Proof App Direction Gate
+# Forge vNext Second Proof App Direction Gate — repaired synthesis
 
-Generated: 2026-05-25T18:59:39+02:00
-Task: `t_0ba879f1`
-Status: direction recommendation only — no native app repo generated.
+Generated: 2026-05-25T19:22:41+0200
+Repaired: 2026-05-25T20:01:54+0200 / 2026-05-25T18:01:54Z
+Synthesis updated: 2026-05-25T18:27:22Z
+Original task: `t_35ba8a8c`
+Repair task: `t_770574b9`
+Synthesis task: `t_f46570f6`
+Parent repair lanes: `t_0df5ff6c`, `t_6fdcb138`, `t_d39b995a`
+Status: repaired direction is ready for skeptical judge review of a Matvii decision gate only. Native generation remains blocked.
 
-## Gate verdict
+## Safety and source boundaries
 
-Recommendation: build `ShiftTill` as the second Forge vNext proof app, pending Matvii approval.
+This gate is intentionally limited to read-only local/public research, local static prototype review, and document writing.
 
-Why this is the best next proof:
+Actions not taken:
 
-- It has a sharp painful job: tipped workers need to know what they actually made after every shift, not a generic finance dashboard.
-- It has an obvious repeat-use loop: every shift creates a log, every week creates a payout/tax/export question, every pattern creates a better forecast.
-- It has believable direct monetization because competing tip/income trackers already exist with large review counts and paid/full-version complaints.
-- It is feasible for a local second proof app: Forge can prove activation, core loop, retention, and money boundary with mock data, native screenshots, and a local launch package without external accounts.
-- It creates strong design pressure: an end-of-shift receipt/cash-drawer interaction is visibly different from DayRateLab and from generic cards.
+- no native iOS app generation;
+- no generated app repo creation;
+- no public posting, external account use, App Store Connect, TestFlight, signing, bundle ID, IAP, payments, credentials, purchases, or work-system actions;
+- no deletion/quarantine of old artifacts;
+- no use of DayRateLab or any prior proof app as product, design, naming, market, fixture, screenshot, implementation, or verifier inspiration.
 
-Decision needed from Matvii: approve `ShiftTill` for product/design gate work and native generation, ask for a repair to the direction, or reject and choose one of the alternates.
+DayRateLab is only a negative guardrail: the second proof must not become a generic dashboard/card shell, must not reuse old names/copy/screenshots/verifier assumptions, and must stop at explicit judge/human approval before native generation.
 
-## Inputs and repaired criteria used
+## Synthesis verdict
 
-Source Forge artifacts:
+Verdict for `forgejudge`: `approve_for_matvii_gate`.
 
-- `docs/forge-vnext/final-dry-run-receipt.md`
-- `docs/forge-vnext/executable-pipeline-integration.md`
-- `docs/forge-vnext-charter.md`
-- `docs/forge-vnext/lanes/product-taste-gates.md`
-- `docs/forge-vnext/lanes/design-look-feel-gates.md`
+Meaning: the repaired parent artifacts now support one concrete human decision gate for Matvii, not native app generation.
 
-Repaired gate criteria applied:
+The direction is coherent enough to ask Matvii this narrowly scoped question after judge review:
 
-- Pain/problem clarity >= 7
-- Target user sharpness >= 7
-- Use-case activation >= 7
-- Repeat-use / retention loop >= 7
-- Money-path believability >= 6 for utility/prosumer apps, unless explicitly deferred
-- Product distinctiveness / taste >= 7
-- Future native slice must prove activation, core loop, returning-user/progress, and money boundary
-- Evidence must include independent demand/pain signals and explicit gaps; weak evidence must ask Matvii instead of pretending to pass
-- Design must reject token-only scaffold reskins, generic card dashboards, and copy/palette-only distinctiveness
+> Do you accept manual quick-add plus rescue queue as the honest MVP for a local second proof, with barcode, OCR, receipt import, loyalty-card import, account/cloud sync, family sharing, StoreKit/IAP, and live payments explicitly deferred?
 
-Research method:
+If Matvii answers yes, Forge may create product/design gate artifacts for the local proof. If Matvii answers no, the honest next action is `repair_again` only if a scanner/sync-free variant is still desired; otherwise `kill_batch` or return to candidate selection.
 
-- Local App Store Search API lookups via `itunes.apple.com/search` for competitor existence, ratings, review counts, descriptions, and IDs.
-- App Store customer review RSS samples for selected competitors via `itunes.apple.com/us/rss/customerreviews/id=.../sortBy=mostRecent/json`.
-- This is direction-gate evidence, not full market validation. The next app run must produce a formal `.forge/research/evidence-matrix.json` before native expansion.
+Native generation is still blocked because the current evidence is source-linked research plus non-native/static prototype proof, not simulator/native/user evidence.
 
-## Candidate 1 — ShiftTill
+## Parent artifacts integrated
 
-Working name: `ShiftTill`
+This synthesis updates the gate using the following exact artifacts:
 
-One-line direction: An end-of-shift income ritual for tipped workers that turns cash/card tips, tip-outs, hours, and hourly wage into a trusted take-home ledger and next-shift forecast.
+- Raw/source-linked evidence notes: `.forge/research/pantry-rescue-raw-evidence.json` from `t_0df5ff6c`.
+- Activation and returning-loop artifact: `docs/forge-vnext/pantry-rescue-activation-prototype.md` from `t_6fdcb138`.
+- Static HTML activation prototype: `docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html` from `t_6fdcb138`.
+- Money path / Pro boundary artifact: `docs/forge-vnext/pantry-rescue-money-path.md` from `t_d39b995a`.
+- Durable matrix updated with this synthesis: `.forge/research/evidence-matrix.json`.
 
-Target user:
+The parent lanes repair the previous contradiction: activation, repeat loop, evidence integrity, and money path are no longer claimed as proven by prose alone. They are either backed by specific local artifacts or explicitly deferred.
 
-- Primary: US restaurant servers, bartenders, baristas, delivery/service workers, and other tipped/commission workers with variable income.
-- Excluded users: salaried workers, people who only need a restaurant tip calculator, enterprise payroll admins, and accountants looking for full bookkeeping.
+## Repaired candidate direction
 
-Painful job:
-
-- "I just finished a shift; how much did I actually make after tip-out, cash/card split, hourly wage, taxes/withholding estimate, and the shift pattern I care about?"
-- Cost of doing nothing: underestimating/overestimating weekly income, losing cash/card records, poor tax prep, and not learning which shifts are worth taking.
-
-Repeat-use loop:
-
-1. Trigger: shift ends or schedule changes.
-2. Action: log cash tips, card tips, hours, hourly wage, tip-out, role/location, and notes in under 30 seconds.
-3. Reward/progress: see real hourly rate, take-home estimate, week target progress, and whether this shift beat personal baseline.
-4. Next trigger: forecast upcoming shifts, weekly payout, export/tax prep, and streak of logged shifts.
-
-Money path:
-
-- Free: single job, limited history/export, simple shift logging.
-- Pro: unlimited jobs/locations, CSV/tax export, shift-pattern forecasts, backup/sync if later approved, advanced tip-out templates.
-- Boundary is value-aligned: the user pays when the app becomes their reliable income ledger, not for basic logging.
-
-Distinctive design angle:
-
-- Emotional tone: "closing-time clarity" — a calm cash drawer after a chaotic shift.
-- Interaction shape: receipt-stack ledger, not finance dashboard. Each shift is a tactile receipt that slides into a weekly till.
-- Signature surfaces:
-  - `Close Shift` one-thumb flow with segmented cash/card/tip-out strips.
-  - `This Week Till` stacked receipts that fold into totals and forecast.
-  - `Best Shifts` pattern board with night/day/role/location chips, not generic charts first.
-  - Paywall boundary as "unlock the locked drawer" for export/forecast templates.
-- Explicitly rejects: generic finance cards, net-worth dashboard, big pie charts as first screen, scaffold `DSCard` metric grid.
-
-Evidence / confidence / gaps:
-
-Evidence found:
-
-- App Store search for `tip tracker server waiter app` returned multiple direct competitors:
-  - `ServerLife - Tip Tracker`, id `1098987860`, Finance, rating 4.81588, 8,978 ratings. Description claims "Over 750,000 workers" and "65 million income entries" and positions around real take-home pay shift by shift.
-  - `TipTracker - track your income`, id `1161307849`, Finance/Utilities, rating 4.77694, 9,177 ratings. Description includes hourly income, hours, tips, graphs, calendar, multiple jobs, custom categories, CSV export.
-  - `Waiter Pal: Tip Tracker`, id `1619187216`, Finance, rating 4.88077, 780 ratings. Description says it replaces pen-and-paper tip tracking and supports cash/credit tips and average hourly pay.
-- Review samples show pain and willingness to pay:
-  - ServerLife review: "perfect for keeping track of literally everything about your job and the money you're making" and "I bought the full version".
-  - ServerLife review: "accurately see my take home, per day, per hour, per week, per month".
-  - TipTracker negative reviews complain about paid app still showing ads and entries not saving, which suggests trust/reliability and paid boundary are real product issues.
-
-Confidence: high for demand/pain existence; medium for differentiation until we inspect more competitor screenshots and paywall details.
-
-Gaps to close next:
-
-- Need competitor screenshot/design review to avoid cloning ServerLife/TipTracker.
-- Need App Store pricing/paywall evidence; Search API only showed free listing prices, not IAP products.
-- Need exact privacy stance for local-only income data.
-- Need validate whether target should be US-only for tip/tax assumptions or allow generic currency/tax-free MVP.
-
-## Candidate 2 — Pantry Rescue Queue
+### Candidate A — Pantry Rescue Queue
 
 Working name: `Pantry Rescue Queue`
 
-One-line direction: A household food-expiry app that stops acting like inventory software and instead creates a daily rescue queue of what must be eaten, frozen, cooked, or bought next.
+One-line direction: A local-first household food-expiry app that stops acting like inventory software and gives the user a daily rescue queue: eat tonight, freeze, cook, ignore, or do-not-buy-again.
 
-Target user:
+### Sharpened beachhead user
 
-- Primary: household food managers, families, meal preppers, and people with pantry/freezer/fridge overflow who repeatedly waste food or buy duplicates.
-- Excluded users: restaurants/retail inventory teams, macro/calorie trackers, recipe-only users, and people who want grocery delivery commerce.
+Primary beachhead: solo household food operator who does one weekly grocery trip, has fridge/freezer/pantry overflow, and repeatedly discovers expiring food or duplicate buys while deciding dinner.
 
-Painful job:
+Evidence posture: the beachhead is a coherent synthesis, not externally proven segment truth. `.forge/research/pantry-rescue-raw-evidence.json` preserves `RAW-BEACHHEAD-GAP-010`, which says external sources support pantry inventory, expiry, duplicate-buying, freezer/pantry visibility, and scanner/sync expectations generally, but do not directly prove solo-household as the optimal first segment.
 
-- "What is about to go bad, what can I still rescue tonight, and what should I not buy again?"
-- Cost of doing nothing: expired food, duplicate purchases, freezer archaeology, and guilt/friction around meal planning.
+Excluded users/use cases:
 
-Repeat-use loop:
-
-1. Trigger: grocery trip, unpacking food, nightly dinner decision, or expiry reminder.
-2. Action: scan/add item with expiry/location; swipe into eat/freeze/cook/ignore.
-3. Reward/progress: rescue queue shrinks, waste avoided, shopping list excludes duplicates.
-4. Next trigger: next reminder, next grocery trip, weekly waste-saved recap.
-
-Money path:
-
-- Free: one household, manual add, limited inventory/history.
-- Pro: barcode/receipt acceleration, family sync, multiple locations/freezers, smart shopping list and export.
-- Money path is plausible but more competitive and more feature-heavy than ShiftTill.
-
-Distinctive design angle:
-
-- Emotional tone: "rescue mission, not pantry spreadsheet".
-- Interaction shape: perishable triage lane with urgency bands and action cards (`eat tonight`, `freeze`, `batch cook`, `buy later`).
-- Signature surface is a fridge-light rescue queue, not an inventory table or generic grocery dashboard.
-
-Evidence / confidence / gaps:
-
-Evidence found:
-
-- App Store search for `pantry inventory expiration` and `food expiry tracker` returned direct competitors:
-  - `Pantry Check - Grocery List`, id `966702368`, rating 4.51499, 1,534 ratings. Description includes barcode scanner, real-time syncing/family sharing, automatic expiration reminders, smart shopping lists, locations, usage timeline.
-  - `NoWaste: Food Inventory List`, id `926211004`, rating 4.15591, 744 ratings. Description includes freezer/fridge/pantry lists, use-first, shopping list, meal planning, reducing waste and saving money.
-  - `BEEP - Expiry Date Tracking`, id `1242739153`, rating 4.14957, 234 ratings. Description focuses on scanning barcodes and reminders before expiry.
-- Review samples show the pain is real:
-  - Pantry Check review: app "prevents me from purchasing duplicates and tells me when products are about to expire".
-  - Pantry Check review asks for desired stock quantity to improve generated shopping lists.
-  - NoWaste negative review says adding food is "clunky and time-consuming" and barcode expiration dates default incorrectly.
-  - NoWaste negative review says scanned items were lost after freeze, highlighting trust/reliability pain.
-
-Confidence: medium-high for pain and category; medium for second-proof feasibility because barcode/receipt/OCR/family sync can balloon scope.
-
-Gaps to close next:
-
-- Need decide whether the proof can skip real barcode/OCR and still be honest. A manual/mock-add proof risks under-proving the main friction.
-- Need understand how much of the money path depends on sync/scanning, which requires external services later.
-- Need competitor visual review to avoid inventory table/card-shell outcome.
-
-## Candidate 3 — MedRunway
-
-Working name: `MedRunway`
-
-One-line direction: A local-first medication supply runway that helps chronic-med users know what they took, how many doses remain, and when refill risk becomes urgent.
-
-Target user:
-
-- Primary: adults managing several recurring medications/supplements and refill dates, especially for chronic conditions or caregiver-assisted routines.
-- Excluded users: emergency medical advice users, diagnosis/treatment users, pharmacy fulfillment users, and clinical providers.
+- restaurant/retail inventory teams;
+- recipe-only users;
+- macro/calorie trackers;
+- grocery-delivery optimization users;
+- users who require real barcode scanning, OCR, receipt import, loyalty-card import, cloud/account sync, live family sharing, or grocery APIs for the proof to feel honest.
 
 Painful job:
 
-- "Did I take the medication, how many doses are left, and am I about to run out before I can refill?"
-- Cost of doing nothing: missed doses, refill gaps, anxious manual counting, caregiver uncertainty.
+- “What is about to go bad, what can I still rescue tonight, and what should I not buy again?”
+- Cost of doing nothing: expired food, duplicate purchases, freezer archaeology, guilt/friction around dinner decisions, and wasted money.
 
-Repeat-use loop:
+## Evidence synthesis
 
-1. Trigger: scheduled dose or low-supply threshold.
-2. Action: mark taken/skipped; update remaining count; confirm refill request status.
-3. Reward/progress: runway timeline shows safe days left and next refill deadline.
-4. Next trigger: next dose, caregiver check-in, refill warning, weekly adherence view.
+### Raw/source-linked evidence integrity
 
-Money path:
+`.forge/research/pantry-rescue-raw-evidence.json` contributes 10 raw notes:
 
-- Free: local reminders and supply count for limited meds.
-- Pro candidate: multiple profiles/caregiver exports, advanced refill scheduling, local PDF summary.
-- This is the weakest money path because trust, privacy, and accessibility expectations are high; monetization must not exploit health anxiety.
+- `RAW-APPLE-SEARCH-CATEGORY-001`: App Store category demand and competitor density.
+- `RAW-APPLE-REVIEWS-PAIN-002`: duplicate purchases, expiry tracking, freezer/pantry visibility, shopping-list memory.
+- `RAW-APPLE-REVIEWS-MANUAL-FRICTION-003`: add-flow/scanner/default-expiry friction.
+- `RAW-APPLE-REVIEWS-SYNC-BARCODE-004`: barcode, camera, sync, and household-sharing expectations.
+- `RAW-APPLE-LOOKUP-FEATURE-EXPECTATIONS-005`: competitor listing-copy expectations around barcode, receipt/photo import, sync, family/cloud, shopping lists, loyalty-card import.
+- `RAW-APPLE-PUBLIC-PRICING-006`: public pricing/IAP rows and paywall limitations.
+- `RAW-REDDIT-PUBLIC-SUBSTITUTE-007`: weak/noisy community substitute evidence.
+- `RAW-HN-PUBLIC-SUBSTITUTE-008`: sparse builder-community corroboration.
+- `RAW-ACCESS-LIMITATIONS-009`: X/Product Hunt/dedicated source access limitations.
+- `RAW-BEACHHEAD-GAP-010`: solo-household beachhead remains a gap.
 
-Distinctive design angle:
+This improves evidence integrity from “matrix exists but needs audit” to “source-linked enough for judge review,” while preserving the remaining gaps instead of hiding them.
 
-- Emotional tone: "quiet control before the runway ends".
-- Interaction shape: runway strips per medication with dose dots and refill horizon, not a generic habit checklist.
-- Signature surfaces:
-  - Today dose rail.
-  - Supply runway timeline.
-  - Refill risk card with conservative language.
-  - Caregiver-safe summary screen.
+### Activation and repeat loop
 
-Evidence / confidence / gaps:
+`docs/forge-vnext/pantry-rescue-activation-prototype.md` and `docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html` repair the activation/retention contradiction at direction-gate level:
 
-Evidence found:
+- under-30-second activation script: open app, name one item, choose location/urgency, receive a rescue action, commit `Cook tonight`, see queue progress, create duplicate-avoidance memory;
+- first useful result by about 12 seconds in the storyboard;
+- visible queue progress by about 18 seconds;
+- duplicate-avoidance memory before 30 seconds;
+- returning-user sketch for weekly recap, duplicate caution, and queue-clearing progress;
+- explicit anti-generic design pressure: no inventory table first, no metric-card dashboard, no tab-first generic scaffold, no scanner/OCR/sync affordances in the first proof.
 
-- App Store search for `medication refill reminder app` returned large direct competitors:
-  - `Medisafe Medication Management`, id `573916946`, Medical/Health & Fitness, rating 4.70889, 99,893 ratings.
-  - `Pill Reminder - All in One`, id `816347839`, rating 4.71995, 27,127 ratings. Description includes recurring reminders, remaining quantity tracking, and refill alerts.
-  - `Pill Reminder MyTherapy`, id `662170995`, rating 4.78711, 8,009 ratings.
-- Review samples show recurring pain and trust expectations:
-  - Medisafe negative review says app became hard to open after years of use.
-  - Medisafe negative review complains about a $60/year transition and navigation difficulty.
-  - Medisafe review asks to sync meds with Apple Health instead of re-entering medication data.
+Limit: this is non-native/static prototype evidence, not real user or simulator evidence. It is enough to ask Matvii whether the manual-MVP tradeoff is acceptable. It is not enough to generate native code without the judge/human gate.
 
-Confidence: high that medication reminders/refills are real; low-medium that this is the right second proof app now.
+### Money path / Pro boundary
 
-Gaps to close next:
+`docs/forge-vnext/pantry-rescue-money-path.md` repairs the money contradiction by choosing explicit monetization deferral rather than forcing a false pass.
 
-- Need privacy/legal/medical disclaimers and an explicit no-medical-advice stance.
-- Need decide if Apple Health import is out of scope; if users expect it, a local mock proof may feel incomplete.
-- Need accessibility bar much higher than normal.
-- Need money path that does not feel predatory.
+Current money posture:
 
-## Product/taste scorecard summary
+- public competitor pricing/IAP exists, but logged-in/in-app paywall UX was not captured;
+- no live monetization, StoreKit/IAP, price-point, launch-candidate monetization, or payment claim is approved;
+- free proof value must include first useful rescue queue, manual add, expiry urgency, and marking an item rescued/ignored;
+- only a later local, non-purchasable Pro-boundary prototype may explore multiple storage zones, reminder templates, duplicate-buy memory/history, recap history, export/share draft, and clearly deferred shared-household concepts;
+- `pricing-draft.json` or launch-package artifacts, if created later, should use `recommendedModel: no_monetization_yet` until the money evidence improves.
 
-Scores are direction-gate estimates on the repaired 0-10 scale. They are not final app scores because no native app exists yet.
+This makes the money path acceptable for a Matvii manual-MVP gate because the gate no longer claims monetization is proven. It does not make monetization launch-ready.
 
-| Dimension | Hard min | ShiftTill | Pantry Rescue Queue | MedRunway |
-|---|---:|---:|---:|---:|
-| Pain/problem clarity | 7 | 8 | 8 | 8 |
-| Target user sharpness | 7 | 8 | 7 | 7 |
-| Use-case activation | 7 | 8 | 7 | 7 |
-| Repeat-use / retention loop | 7 | 8 | 8 | 8 |
-| Money-path believability | 6 | 7 | 6 | 5 |
-| Product distinctiveness / taste | 7 | 8 | 7 | 7 |
-| Blueprint coverage / launch-slice integrity risk | 8 native gate | 8 | 7 | 7 |
-| Evidence integrity at direction gate | 8 native gate | 8 | 8 | 8 |
-| Direction verdict | — | pass_to_matvii_approval | repair_or_approve_with_scope_warning | ask_matvii_or_defer |
+## Competitor pricing, paywall, and screenshot notes
+
+All notes below come from safe public/read-only App Store sources and the raw evidence artifact. No app was installed, no in-app flow was opened, no purchase was made, and no external account was used. Screenshot notes identify public screenshot availability and listing/product surfaces; they are not a claim that a logged-in paywall was visually audited.
+
+| Competitor | Public source | Pricing / IAP notes | Product-surface notes | Direction implication |
+|---|---|---|---|---|
+| Pantry Check - Grocery List | `https://apps.apple.com/us/app/pantry-check-grocery-list/id966702368` | Free listing. Public IAP includes `Premium: 2,000 items` and `Pro: 10,000 items` at multiple public price points. | Listing emphasizes barcode scanner, real-time sync/family sharing, expiration reminders, smart shopping lists, custom locations, prices/totals, inventory, and usage timeline. | Strong scanner/sync expectation. Pantry Rescue Queue must compete on rescue triage speed and emotional clarity, not scanner coverage. |
+| NoWaste: Food Inventory List | `https://apps.apple.com/us/app/nowaste-food-inventory-list/id926211004` | Free listing. Public IAP includes `NoWaste Pro Annual $6.99` and `NoWaste Pro Lifetime $29.99`. | Listing emphasizes freezer/fridge/pantry lists, barcode/receipt/photo adding, sync, AI assistant, expiration sorting/filtering, moving items, shopping, and meal planning. | Manual MVP is credible only if tightly scoped to rescue decisions, not inventory breadth. |
+| Cooklist: Pantry Meals Recipes | `https://apps.apple.com/us/app/cooklist-pantry-meals-recipes/id1352600944` | Free listing. Public IAP includes monthly/yearly Pro prices. | Listing positions Cooklist around grocery loyalty-card import, recipe matching, meal planning, shopping-list/cart generation, household sharing, and cloud backup. | Adjacent competitor; raises automation/import expectations but should not pull Pantry Rescue into recipe-feed-first positioning. |
+| Pantry Inventory - Panzy | `https://apps.apple.com/us/app/pantry-inventory-panzy/id6748056076` | Free listing. Public IAP includes monthly/yearly/lifetime plans. | Listing frames it as a smart pantry companion with quantity/expiration add, low-stock automation, barcode scanner, iCloud sync, reminders, and pantry/fridge/freezer organization. | Confirms small apps still monetize pantry utilities and that barcode/iCloud expectations are common. |
+| Pantry Manager | `https://apps.apple.com/us/app/pantry-manager/id512026829` | Paid upfront `$3.99`. Public IAP includes `Sync Photos $0.99`. | Listing emphasizes household item management, expiration reminders, shopping list from actual owned items, optional barcode add, cloud sync, local photos, CSV export, tags, and Apple Watch. | Manual-first/upfront precedent exists, but broad inventory scope and modest rating make a paid proof risky without strong native value evidence. |
+
+## Scorecard after parent repair lanes
+
+Scores are direction-gate estimates. They are not native app scores because no native app exists yet.
+
+| Dimension | Hard min for Matvii gate | Repaired score | Pass for Matvii gate? | Evidence IDs / artifact paths | Rationale |
+|---|---:|---:|---|---|---|
+| Pain/problem clarity | 7 | 8 | yes | `E-PANTRY-RAW-EVIDENCE-1`, `.forge/research/pantry-rescue-raw-evidence.json` | Source-linked App Store reviews and listings support expiry, duplicate buying, freezer/pantry visibility, and add-flow friction. |
+| Target user sharpness | 7 | 7 | yes-with-gap | `E-BEACHHEAD-SEGMENT-1`, `RAW-BEACHHEAD-GAP-010` | Beachhead is sharp enough to ask Matvii, while still marked as not directly externally proven. |
+| Use-case activation | 7 | 7 | yes-for-Matvii-gate | `E-ACTIVATION-PROTOTYPE-1`, `docs/forge-vnext/pantry-rescue-activation-prototype.md` | Static prototype/storyboard shows a concrete under-30-second manual-add path. Needs native/user evidence later. |
+| Repeat-use / retention loop | 7 | 7 | yes-for-Matvii-gate | `E-RETURNING-LOOP-PROTOTYPE-1`, `docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html` | Returning recap, duplicate caution, and queue-clearing progress are sketched with state transitions. Needs persistence/native proof later. |
+| Money-path believability | 6 | 6 | yes-by-deferral | `E-MONEY-DEFERRAL-1`, `docs/forge-vnext/pantry-rescue-money-path.md` | Money path is not proven, but the gate is coherent because monetization is explicitly deferred and free/pro local boundary is documented. |
+| Product distinctiveness / taste | 7 | 7 | yes-for-direction | `E-ACTIVATION-PROTOTYPE-1` | Rescue Mouth, Rescue Lane, Caution Memory, Quiet Fridge Progress, and Weekly Rescue Recap create app-specific structure. |
+| Blueprint coverage / launch-slice integrity | 8 native gate | 6 native / 7 Matvii gate | yes-for-Matvii-gate, no-for-native | `E-ACTIVATION-PROTOTYPE-1`, `E-RETURNING-LOOP-PROTOTYPE-1` | There is enough local prototype coverage to ask a human direction question, but no native coverage matrix or simulator proof. |
+| Evidence integrity | 8 | 8 | yes-for-judge-review | `E-PANTRY-RAW-EVIDENCE-1`, `.forge/research/evidence-matrix.json` | Matrix now cites raw/source-linked evidence, activation artifact, and money deferral artifact, and preserves gaps. |
 
 Interpretation:
 
-- `ShiftTill` clears all direction hard minimums and has the cleanest path to proving every required native surface locally.
-- `Pantry Rescue Queue` has strong pain but the proof can become dishonest if scanning/OCR/sync are treated as future magic. It needs scope repair before native work.
-- `MedRunway` has the strongest human stakes but also the highest trust/privacy/accessibility and medical-domain risk. It is not the best second proof unless Matvii explicitly wants a higher-risk health utility.
+- `approve_for_matvii_gate` is coherent because the remaining issues are framed as explicit human tradeoff decisions, not hidden false passes.
+- `native_generation_allowed` remains `false`.
+- The next judge must reject this gate if it believes static activation evidence is too weak to ask Matvii, or if manual quick-add cannot honestly stand without scanner/OCR/sync/import.
 
-## Why ShiftTill is best now
+## Direction product/taste gate receipt
 
-1. It tests Forge's repaired gates without demanding external integrations.
-   - Activation can be a local after-shift logging flow.
-   - Core loop can be local shift entry + totals.
-   - Retention can be local weekly history/patterns.
-   - Money boundary can be a local Pro/export/forecast paywall concept.
+Receipt type: human-readable direction receipt; no generated app repo exists yet.
 
-2. It avoids DayRateLab's failure mode.
-   - DayRateLab risk was a polished calculator/dashboard without enough repeat loop/product evidence.
-   - ShiftTill's first screen can be the user's painful trigger (`Close Shift`), not a dashboard.
-   - The native proof can show state transitions: empty week -> close shift -> receipt added -> weekly till/forecast updated -> export/paywall boundary.
+```json
+{
+  "schema_version": "forge.product_taste_gate.v1",
+  "app": {
+    "id": "pantry-rescue-queue",
+    "name": "Pantry Rescue Queue",
+    "repo_path": null,
+    "run_id": "t_f46570f6"
+  },
+  "gate": {
+    "name": "product_taste",
+    "stage": "direction_after_repair_lanes",
+    "created_at": "2026-05-25T18:27:22Z",
+    "created_by": "forgeproduct",
+    "verdict": "approve_for_matvii_gate",
+    "confidence": "medium",
+    "native_generation_allowed": false
+  },
+  "source_artifacts": [
+    ".forge/research/pantry-rescue-raw-evidence.json",
+    "docs/forge-vnext/pantry-rescue-activation-prototype.md",
+    "docs/forge-vnext/artifacts/pantry-rescue-activation-prototype.html",
+    "docs/forge-vnext/pantry-rescue-money-path.md",
+    ".forge/research/evidence-matrix.json",
+    "docs/forge-vnext/second-proof-app-direction-gate.md"
+  ],
+  "evidence_ids": [
+    "E-PANTRY-RAW-EVIDENCE-1",
+    "E-ACTIVATION-PROTOTYPE-1",
+    "E-RETURNING-LOOP-PROTOTYPE-1",
+    "E-MONEY-DEFERRAL-1",
+    "E-BEACHHEAD-SEGMENT-1",
+    "E-ACCESS-LIMITATIONS-1",
+    "E-DAYRATELAB-NEGATIVE-GUARDRAIL-1"
+  ],
+  "scores": {
+    "weighted_overall_estimate": 7.1,
+    "dimensions": {
+      "pain_problem_clarity": { "score": 8, "minimum": 7, "pass_for_matvii_gate": true, "evidence_ids": ["E-PANTRY-RAW-EVIDENCE-1"], "rationale": "Source-linked evidence supports expiry, duplicate-buying, freezer/pantry visibility, and add-flow friction." },
+      "target_user_sharpness": { "score": 7, "minimum": 7, "pass_for_matvii_gate": true, "evidence_ids": ["E-BEACHHEAD-SEGMENT-1"], "rationale": "Solo-household beachhead is sharp enough for human tradeoff approval, while still marked as not externally proven." },
+      "use_case_activation": { "score": 7, "minimum": 7, "pass_for_matvii_gate": true, "evidence_ids": ["E-ACTIVATION-PROTOTYPE-1"], "rationale": "Static prototype/storyboard shows first useful rescue result under 30 seconds." },
+      "repeat_use_retention_loop": { "score": 7, "minimum": 7, "pass_for_matvii_gate": true, "evidence_ids": ["E-RETURNING-LOOP-PROTOTYPE-1"], "rationale": "Returning recap, duplicate caution, and queue-clearing progress are represented as prototype state transitions." },
+      "money_path_believability": { "score": 6, "minimum": 6, "pass_for_matvii_gate": true, "evidence_ids": ["E-MONEY-DEFERRAL-1"], "rationale": "Money is explicitly deferred; local Pro boundary is documented as future non-purchasable prototype only." },
+      "product_distinctiveness_taste": { "score": 7, "minimum": 7, "pass_for_matvii_gate": true, "evidence_ids": ["E-ACTIVATION-PROTOTYPE-1"], "rationale": "Rescue-specific surfaces replace generic inventory/dashboard shapes." },
+      "blueprint_coverage_launch_slice_integrity": { "score": 7, "minimum": 7, "pass_for_matvii_gate": true, "native_score": 6, "native_minimum": 8, "pass_for_native_generation": false, "evidence_ids": ["E-ACTIVATION-PROTOTYPE-1", "E-RETURNING-LOOP-PROTOTYPE-1"], "rationale": "Enough local prototype coverage for a Matvii direction gate; no native coverage exists." },
+      "evidence_integrity": { "score": 8, "minimum": 8, "pass_for_matvii_gate": true, "evidence_ids": ["E-PANTRY-RAW-EVIDENCE-1", "E-ACCESS-LIMITATIONS-1"], "rationale": "Raw source-linked evidence, access limitations, and remaining gaps are explicit." }
+    },
+    "hard_minimum_failures": []
+  },
+  "hard_minimums": {
+    "demand_evidence_types_count": 4,
+    "required_demand_evidence_types_count": 2,
+    "has_excluded_user_statement": true,
+    "has_revenue_taste_tradeoff_statement": true,
+    "activation_evidence_present": true,
+    "activation_evidence_type": "non_native_static_storyboard_and_html_prototype",
+    "core_loop_evidence_present": true,
+    "retention_evidence_present": true,
+    "retention_evidence_type": "non_native_returning_user_storyboard",
+    "money_boundary_evidence_present_or_deferred_by_approval": true,
+    "money_boundary_status": "explicitly_deferred_no_monetization_yet",
+    "evidence_matrix_present": true,
+    "raw_source_linked_evidence_present": true,
+    "competitor_pricing_notes_present": true,
+    "competitor_screenshot_notes_present": true,
+    "dayratelab_negative_guardrail_only": true,
+    "native_generation_allowed": false,
+    "contradictions_unresolved": []
+  },
+  "native_generation_blockers": [
+    "No Matvii approval of the manual quick-add tradeoff yet.",
+    "No native/simulator activation walkthrough exists.",
+    "No local persistence proof for duplicate caution, weekly recap, or queue state exists.",
+    "No accepted native coverage matrix or app blueprint exists.",
+    "No monetization launch claim is approved; money path is deferred."
+  ],
+  "recommendation": {
+    "type": "approve_for_matvii_gate",
+    "confidence": "medium",
+    "summary": "Ask Matvii one concrete manual-MVP decision after skeptical judge review; keep native generation blocked.",
+    "matvii_decision_required": true,
+    "matvii_question": "Do you accept manual quick-add plus rescue queue as the honest MVP for a local second proof, with barcode/OCR/sync/import/payments explicitly deferred?",
+    "allowed_matvii_decisions": ["accept_manual_mvp_and_continue_to_product_design_gate", "request_one_more_repair", "kill_direction"],
+    "next_forgejudge_gate": "approve_for_matvii_gate"
+  },
+  "next_allowed_actions": [
+    "forgejudge_review_repaired_synthesis_gate",
+    "if_judge_approves_ask_matvii_single_manual_mvp_decision",
+    "do_not_generate_native_app_without_judge_and_matvii_approval"
+  ]
+}
+```
 
-3. It is specific enough for app-specific design.
-   - The receipt/cash-drawer metaphor can drive layout, components, copy, haptics, and empty states.
-   - It can reject generic finance cards and prove a workflow shape.
+## Proposed `.forge/spec.json` outline only if judge and Matvii approve
 
-4. It has clearer monetization than the alternates.
-   - Income history/export/forecasting are credible paid value boundaries.
-   - Competitor reviews indicate users pay or object when paid boundaries are mishandled.
-
-5. It is small enough for one proof slice but not toy-sized.
-   - The MVP can be honest with mock/local data.
-   - Future real features exist, but the proof does not require accounts, banks, payroll APIs, camera/OCR, Apple Health, App Store Connect, or external services.
-
-## Explicit non-goals for recommended direction
-
-For the second proof app, `ShiftTill` must not attempt:
-
-- Real payroll, bank, employer, POS, or tax-service integrations.
-- Legal/tax advice or exact tax filing calculations.
-- Multi-user cloud sync or account creation.
-- Real in-app purchase setup, App Store Connect, TestFlight, signing, bundle IDs, or live paywalls.
-- AI prediction claims; only transparent local forecasting from mock/history data.
-- Generic personal finance dashboard, budgeting suite, or net-worth app expansion.
-- DayRateLab reuse, polishing, naming, copy, screenshots, or verifier shortcuts.
-
-## Kill risks for recommended direction
-
-Structural risks that could make Matvii kill or repair the direction:
-
-1. Competitor saturation risk
-   - Existing apps are mature and well-rated. ShiftTill must differentiate on trust, speed, design, and the after-shift ritual, not just "another tip tracker".
-
-2. Tax/trust risk
-   - If tax estimates are too prominent, the app may imply precision it cannot safely provide. Keep first proof to transparent take-home estimates and export prep language.
-
-3. Boring spreadsheet risk
-   - If implementation drifts into table/calendar/cards/charts first, it fails the design gate. The proof must lead with the close-shift interaction and receipt-stack week state.
-
-4. Money-path irritation risk
-   - Reviews of competitors complain about ads after payment. ShiftTill must make the Pro boundary calm and trust-preserving: paid export/templates/forecasting, never interrupting the logging ritual.
-
-5. Geography risk
-   - Tipping/tax assumptions vary by country. First proof should state US-tipped-worker assumptions or use currency/tax-neutral language until Matvii chooses localization.
-
-## Proposed `.forge/spec.json` outline for ShiftTill
+This outline is not permission to generate native code. It exists so the next gate knows what would be tested if judge review passes and Matvii accepts the risk.
 
 ```json
 {
   "schema_version": "forge.spec.v1",
   "app": {
-    "id": "shifttill",
-    "name": "ShiftTill",
-    "tagline": "Close every shift knowing what you really made.",
-    "category": "finance_utility",
+    "id": "pantry-rescue-queue",
+    "name": "Pantry Rescue Queue",
+    "tagline": "Rescue what is about to go bad before you buy more.",
+    "category": "household_food_utility",
     "platform": "ios",
     "local_only_for_proof": true
   },
   "target_user": {
-    "primary": "US tipped and commission workers who log income after each shift",
-    "contexts": ["restaurant servers", "bartenders", "baristas", "delivery/service workers"],
-    "excluded": ["salaried workers", "restaurant tip calculators only", "payroll admins", "tax professionals"]
-  },
-  "problem": {
-    "painful_job": "After each shift, know real take-home income from tips, hours, hourly wage, tip-out, and weekly pattern without spreadsheet friction.",
-    "current_workarounds": ["notes app", "paper notebook", "spreadsheet", "memory", "generic income tracker"],
-    "cost_of_doing_nothing": ["lost records", "bad weekly income estimates", "tax prep friction", "not knowing best shift patterns"]
+    "primary": "Solo household food operator with weekly grocery trips, fridge/freezer/pantry overflow, and recurring expiring-food or duplicate-buying pain during dinner decisions",
+    "excluded": ["restaurants", "retail inventory", "calorie trackers", "recipe-only users", "scanner/OCR/sync-dependent users"]
   },
   "activation": {
-    "promise": "Log a complete shift and see real hourly/take-home estimate in under 30 seconds.",
-    "first_use_flow": ["choose role/location", "enter cash tips", "enter card tips", "enter hours/tip-out", "save receipt", "see weekly till update"]
+    "promise": "Create a useful rescue queue from one manually quick-added expiring item in under 30 seconds.",
+    "first_use_flow": ["choose storage location", "quick-add food item", "choose expiry urgency", "see rescue action", "mark eat/freeze/cook/ignore", "watch queue/progress update", "optionally remember a do-not-buy-again caution"]
   },
   "core_loop": {
-    "trigger": "shift ended",
-    "action": "close shift by logging receipt fields",
-    "reward": "receipt joins weekly till and updates take-home/forecast",
-    "next_trigger": "next scheduled shift, weekly target, export/tax prep reminder"
-  },
-  "retention": {
-    "returning_user_state": "week with multiple shift receipts, baseline comparison, best-shift pattern chips, export readiness",
-    "progress_signals": ["logged shift streak", "weekly target progress", "average hourly by role/location", "unexported weeks count"]
+    "trigger": "grocery trip, expiry reminder, weekly recap, or dinner decision",
+    "action": "triage food into rescue actions and update local inventory/shopping memory",
+    "reward": "queue shrinks, waste-saved progress updates, duplicate-buy warning improves",
+    "next_trigger": "next reminder, next grocery trip, weekly rescue recap"
   },
   "monetization": {
-    "strategy": "freemium_local_proof_only",
-    "free_boundary": ["single job", "basic shift logging", "last 30 shifts"],
-    "pro_boundary": ["unlimited history", "multi-job/location templates", "CSV/tax export", "shift forecast", "advanced tip-out templates"],
+    "strategy": "no_monetization_yet",
     "live_iap": false,
-    "requires_matvii_approval_before_live_use": true
+    "storekit": false,
+    "payment_actions": false,
+    "future_local_pro_boundary_candidates": ["multiple storage zones", "reminder templates", "duplicate-buy history", "weekly/monthly rescue recap history", "local export/share draft"]
   },
-  "design": {
-    "emotional_tone": "closing-time clarity after a chaotic shift",
-    "core_metaphor": "cash drawer and stacked shift receipts",
-    "signature_interactions": ["one-thumb close-shift receipt", "receipt slides into weekly till", "locked drawer for export/pro boundary", "pattern chips from past receipts"],
-    "banned_patterns": ["generic finance dashboard first", "metric card grid as primary proof", "pie-chart hero", "tax advice copy", "DayRateLab visual reuse"]
-  },
-  "screens": [
-    {
-      "id": "activation.close_shift",
-      "name": "Close Shift",
-      "role": "activation",
-      "native_required_now": true,
-      "evidence_required": ["screenshot", "flow_video_or_substitute"]
-    },
-    {
-      "id": "core.receipt_saved",
-      "name": "Shift Receipt Saved",
-      "role": "core_loop",
-      "native_required_now": true,
-      "evidence_required": ["screenshot"]
-    },
-    {
-      "id": "retention.weekly_till",
-      "name": "This Week Till",
-      "role": "retention",
-      "native_required_now": true,
-      "evidence_required": ["screenshot"]
-    },
-    {
-      "id": "money.export_drawer",
-      "name": "Export / Forecast Pro Boundary",
-      "role": "monetization",
-      "native_required_now": true,
-      "evidence_required": ["screenshot"]
-    },
-    {
-      "id": "empty.first_shift_prompt",
-      "name": "Empty Week Prompt",
-      "role": "empty_error",
-      "native_required_now": true,
-      "evidence_required": ["screenshot"]
-    }
-  ],
-  "verification": {
-    "mock_build_required": true,
-    "simulator_run_required": true,
-    "screenshots_required": ["activation.close_shift", "core.receipt_saved", "retention.weekly_till", "money.export_drawer", "empty.first_shift_prompt"],
-    "generic_verifier_must_pass_without_source_edits": true
-  },
-  "launch_bar": {
-    "local_launch_package_required": true,
-    "privacy_draft_required": true,
-    "pricing_draft_required": true,
-    "app_scorecard_required": true,
-    "pipeline_scorecard_required": true,
-    "no_external_actions_without_approval": true
-  }
+  "non_goals_before_later_capability_gate": ["barcode", "OCR", "receipt import", "loyalty-card import", "cloud sync", "live family sharing", "grocery APIs", "payments"]
 }
 ```
 
-## Next native-generation acceptance bar if Matvii approves
+## Concrete next gate
 
-Before native Swift generation starts:
+Next gate for `forgejudge`: `approve_for_matvii_gate`.
 
-- `.forge/spec.json` exists for `ShiftTill` and includes the outline fields above.
-- `.forge/research/evidence-matrix.json` exists with at least:
-  - 3 competitor apps,
-  - review/pain excerpts,
-  - pricing/paywall evidence or explicit pricing gap,
-  - confidence and gaps.
-- Product/taste direction gate emits markdown + JSON receipt and passes all direction hard minimums or blocks for Matvii.
-- Design pre-native gate emits references, original synthesis, emotional tone, design system, and local clickable prototype receipt.
-- Design gate explicitly passes token-swap, card-dashboard, scaffold-dependency, screen-shape, and emotional-tone tests.
-- `.forge/verification-plan.json` exists before implementation with app-specific required screenshots/evidence.
+Judge question:
 
-Native proof completion bar:
+- Are the evidence matrix, raw evidence notes, activation prototype, money deferral, hard flags, and hard-minimum failures internally consistent enough to ask Matvii the single manual-MVP decision above?
 
-- Generated app lives in a separate local repo outside the Forge template.
-- Mock build succeeds.
-- Simulator run succeeds.
-- Screenshots/evidence prove:
-  - activation: close a first shift,
-  - core loop: receipt saved and totals changed,
-  - retention/progress: week with multiple receipts and baseline/pattern state,
-  - monetization: local export/forecast Pro boundary,
-  - empty/error/constrained state.
-- Generic verifier passes without source edits and without DayRateLab literals.
-- Local launch package exists with app-specific privacy/pricing/copy/screenshot plan.
-- App scorecard and pipeline scorecard remain separate.
-- Postmortem and learning-patches proposal exist.
-- No App Store/TestFlight/signing/IAP/money/external account actions occur.
+If yes:
 
-## Matvii decision options
+- Ask Matvii the manual quick-add / rescue queue approval question.
+- Do not generate native code yet; create product/design gate artifacts only after Matvii accepts.
 
-Option A — Approve recommended direction: `ShiftTill`
+If no:
 
-- Proceed to product/design gate artifacts and then native generation under the repaired gates.
-- Recommended.
-
-Option B — Repair before approval
-
-- Keep `ShiftTill`, but ask for one focused repair before generation:
-  - inspect competitor screenshots/paywalls more deeply,
-  - decide US-only vs currency-neutral proof,
-  - tighten tax wording and privacy stance.
-
-Option C — Reject and choose another direction
-
-- Choose `Pantry Rescue Queue` if Matvii wants household/food-waste utility and accepts barcode/OCR/sync scope risk.
-- Choose `MedRunway` if Matvii wants higher-stakes health utility and accepts privacy/accessibility/medical-domain risk.
+- Return `repair_again` only with a narrow concrete blocker, such as “static prototype is too abstract; record a timed walkthrough” or “money deferral still muddies product promise.”
+- Return `kill_batch` if scanner/OCR/sync/import is judged mandatory for credibility.
 
 ## Stop condition
 
-This task stops here. Do not create the native app repo, do not polish DayRateLab, and do not touch App Store/TestFlight/signing/money/external accounts until Matvii explicitly approves a direction.
+This task stops here. Do not create the native app repo, do not generate Swift, do not polish or reuse old proof artifacts, and do not touch App Store/TestFlight/signing/IAP/money/external accounts until judge review passes and Matvii explicitly approves this direction.

@@ -1,0 +1,381 @@
+{
+  "schema_version": "forge.native_proof_spec.v1",
+  "created_at": "2026-05-25T18:54:00Z",
+  "created_by": "forgeproduct",
+  "task_id": "t_a048159e",
+  "status": "local_product_design_native_proof_preparation_only",
+  "app": {
+    "id": "pantry-rescue-queue",
+    "name": "Pantry Rescue Queue",
+    "tagline": "Rescue what is about to go bad before you buy more.",
+    "platform": "ios",
+    "local_only_for_proof": true,
+    "native_code_generated": false,
+    "app_repo_created": false
+  },
+  "scope": {
+    "allowed_now": [
+      "local product spec",
+      "local design/native-proof acceptance criteria",
+      "local machine-readable spec artifact"
+    ],
+    "forbidden_now": [
+      "Swift/native app code",
+      "separate app repo creation",
+      "barcode",
+      "OCR",
+      "receipt import",
+      "loyalty-card import",
+      "cloud/account sync",
+      "live family sharing",
+      "StoreKit/IAP",
+      "payments",
+      "public launch/App Store/TestFlight/signing/account actions",
+      "DayRateLab as inspiration"
+    ]
+  },
+  "source_artifacts": [
+    "docs/forge-vnext/persistent-orchestrator-charter.md",
+    "docs/forge-vnext/second-proof-app-direction-gate.md",
+    "docs/forge-vnext/pantry-rescue-activation-prototype.md",
+    "docs/forge-vnext/pantry-rescue-money-path.md",
+    ".forge/research/evidence-matrix.json",
+    ".forge/research/pantry-rescue-raw-evidence.json"
+  ],
+  "target_user": {
+    "primary": "Solo household food operator who does one weekly grocery trip, has fridge/freezer/pantry overflow, and repeatedly discovers expiring food or duplicate buys while deciding dinner.",
+    "context": [
+      "Sunday/evening or pre-dinner uncertainty",
+      "notices an item about to go bad",
+      "does not want complete inventory setup before value",
+      "feels waste/duplicate-buy guilt or friction"
+    ],
+    "excluded": [
+      "restaurants and retail inventory teams",
+      "recipe-feed-first users",
+      "macro/calorie trackers",
+      "grocery delivery optimization users",
+      "scanner/OCR/receipt/import/sync/family/payment-dependent users"
+    ],
+    "evidence_caveat": "RAW-BEACHHEAD-GAP-010 preserves that solo-household is a sharp synthesis, not externally proven optimal segment."
+  },
+  "activation": {
+    "promise": "One manually quick-added item creates a useful rescue queue decision in under 30 seconds without inventory setup, account, scanner, OCR, sync, or payment.",
+    "target_seconds_max": 30,
+    "first_useful_result_by_seconds": 12,
+    "visible_progress_by_seconds": 18,
+    "duplicate_memory_by_seconds": 30,
+    "first_use_flow": [
+      "open app to rescue prompt",
+      "enter item name",
+      "choose location fridge/freezer/pantry",
+      "choose urgency tonight/1-2 days/this week/not sure",
+      "see ranked rescue lane entry and primary rescue action",
+      "commit eat/freeze/cook/ignore/do-not-buy-again action",
+      "see queue/progress update",
+      "create or decline duplicate caution"
+    ],
+    "first_useful_result_definition": "The app recommends what to do with the item now, not merely that the item exists in inventory."
+  },
+  "core_loop": {
+    "trigger": [
+      "dinner decision",
+      "weekly grocery trip",
+      "weekly rescue recap",
+      "local expiry/urgency reminder in a later proof",
+      "opening the app because something in the fridge is yelling"
+    ],
+    "action": [
+      "quick-add or review at-risk item",
+      "choose rescue verb",
+      "optionally record local caution"
+    ],
+    "reward_progress": [
+      "queue shrinks",
+      "weekly rescue count changes",
+      "duplicate-buy caution becomes available before next grocery trip",
+      "guilt becomes a plan"
+    ],
+    "next_trigger": [
+      "remaining queue item",
+      "weekly recap with next action",
+      "future grocery pre-check showing caution",
+      "another at-risk food"
+    ]
+  },
+  "screens": [
+    {
+      "id": "activation.rescue_mouth",
+      "name": "Rescue Mouth / First Use",
+      "role": "activation",
+      "required_status": "native_required_later",
+      "description": "One-line item entry with location chips and urgency rail; no dashboard/table/scanner-first flow."
+    },
+    {
+      "id": "core_loop.rescue_lane",
+      "name": "Rescue Lane",
+      "role": "core_loop",
+      "required_status": "native_required_later",
+      "description": "Ranked at-risk items with immediate rescue verbs and visible action state transition."
+    },
+    {
+      "id": "progress.quiet_fridge",
+      "name": "Quiet Fridge Progress",
+      "role": "progress",
+      "required_status": "native_required_later",
+      "description": "Queue shrink and weekly rescue progress as relief-oriented copy, not abstract metric cards."
+    },
+    {
+      "id": "memory.duplicate_caution",
+      "name": "Caution Memory",
+      "role": "retention_duplicate_caution",
+      "required_status": "native_required_later_if_claimed",
+      "description": "Do-not-buy-again warning created from rescue/ignore action and surfaced later."
+    },
+    {
+      "id": "retention.weekly_recap",
+      "name": "Weekly Rescue Recap",
+      "role": "retention",
+      "required_status": "native_required_later",
+      "description": "Returning-user surface referencing prior action and suggesting a next rescue action."
+    },
+    {
+      "id": "trust.local_settings",
+      "name": "Local Settings / Trust Note",
+      "role": "boundary_clarity",
+      "required_status": "optional",
+      "description": "Minimal local-only trust copy; must not introduce account/sync/paywall scope."
+    }
+  ],
+  "data_model_sketch": {
+    "RescueItem": {
+      "fields": {
+        "id": "stable local identifier",
+        "name": "user-entered food name",
+        "location": "fridge | freezer | pantry",
+        "urgency": "tonight | one_to_two_days | this_week | not_sure",
+        "status": "queued | planned | rescued | frozen | ignored | too_late",
+        "createdAt": "local timestamp",
+        "updatedAt": "local timestamp",
+        "lastActionId": "optional latest rescue action id"
+      }
+    },
+    "RescueAction": {
+      "fields": {
+        "id": "stable local identifier",
+        "itemId": "linked rescue item id",
+        "verb": "eat | freeze | cook | ignore | do_not_buy_again",
+        "label": "human action copy",
+        "createdAt": "local timestamp",
+        "effect": "queue_position_changed | queue_removed | caution_prompted | recap_updated"
+      }
+    },
+    "CautionMemory": {
+      "fields": {
+        "id": "stable local identifier",
+        "itemName": "normalized food name",
+        "sourceActionId": "action that created caution",
+        "condition": "warn_on_next_grocery_trip | warn_if_recent_rescue | warn_if_still_unused",
+        "status": "active | snoozed | cleared",
+        "createdAt": "local timestamp",
+        "lastShownAt": "optional local timestamp"
+      }
+    },
+    "WeeklyRecap": {
+      "fields": {
+        "weekId": "local week key",
+        "rescuedCount": "integer",
+        "ignoredCount": "integer",
+        "newCautionCount": "integer",
+        "remainingQueueItemIds": "list of local item ids",
+        "nextSuggestedItemId": "optional local item id"
+      }
+    }
+  },
+  "local_persistence_requirement": {
+    "purpose": "Prove returning value is not placeholder prose.",
+    "minimum_behaviors": [
+      "at least one RescueItem survives relaunch or simulated returning session",
+      "at least one RescueAction updates queue/progress state",
+      "at least one CautionMemory is created from an action and later surfaced",
+      "WeeklyRecap or equivalent derived recap references prior action state"
+    ],
+    "allowed_later": [
+      "simple local JSON",
+      "UserDefaults",
+      "SwiftData",
+      "mock manager chosen by native implementation worker"
+    ],
+    "forbidden": [
+      "cloud sync",
+      "account identity",
+      "remote backend",
+      "shared household real-time state"
+    ]
+  },
+  "acceptance_criteria": [
+    "activation under 30 seconds from prompt to useful rescue decision",
+    "manual quick-add produces decision/action, not just database row",
+    "core loop action changes queue/progress state",
+    "returning session shows prior rescue/caution/progress state",
+    "duplicate caution is created from rescue action and surfaces later",
+    "weekly recap references prior actions and suggests next action",
+    "monetization remains no_monetization_yet with no paywall/StoreKit/payment surface",
+    "barcode/OCR/receipt/loyalty/sync/family/cloud/IAP/payment/public launch scope is absent",
+    "first useful surface is Rescue Mouth + Rescue Lane, not dashboard cards or inventory tables",
+    "evidence ties screenshots/video/tests to coverage matrix IDs"
+  ],
+  "coverage_matrix": [
+    {
+      "id": "activation.first_use",
+      "coverage_area": "activation",
+      "required_proof_surface": "Rescue Mouth -> Rescue Lane first-use path under 30s",
+      "status_for_this_spec": "required_native_later",
+      "evidence_source_now": ["E-ACTIVATION-PROTOTYPE-1", "docs/forge-vnext/pantry-rescue-activation-prototype.md"],
+      "later_native_proof_required": "simulator/video/screenshot sequence",
+      "failure_mode": "Dashboard/table/onboarding before value"
+    },
+    {
+      "id": "retention.returning_loop",
+      "coverage_area": "returning loop",
+      "required_proof_surface": "Weekly recap and next action after prior rescue",
+      "status_for_this_spec": "required_native_later",
+      "evidence_source_now": ["E-RETURNING-LOOP-PROTOTYPE-1"],
+      "later_native_proof_required": "returning-state screenshot/video/test",
+      "failure_mode": "No visible difference between first and later session"
+    },
+    {
+      "id": "persistence.returning_state",
+      "coverage_area": "local persistence",
+      "required_proof_surface": "Item/action/caution/recap state survives returning session",
+      "status_for_this_spec": "required_native_later",
+      "evidence_source_now": ["G-NATIVE-RETENTION-PROOF-1"],
+      "later_native_proof_required": "local persistence proof after relaunch or simulated return",
+      "failure_mode": "Recap/caution is placeholder-only"
+    },
+    {
+      "id": "memory.duplicate_caution",
+      "coverage_area": "duplicate caution",
+      "required_proof_surface": "Caution created from rescue action and surfaced later",
+      "status_for_this_spec": "required_native_later",
+      "evidence_source_now": ["activation prototype frame 4", "RAW-APPLE-REVIEWS-PAIN-002"],
+      "later_native_proof_required": "action -> caution -> later warning evidence",
+      "failure_mode": "Caution is a static settings/list feature"
+    },
+    {
+      "id": "progress.weekly_recap",
+      "coverage_area": "weekly recap/progress",
+      "required_proof_surface": "Quiet progress path + weekly recap with next action",
+      "status_for_this_spec": "required_native_later",
+      "evidence_source_now": ["E-RETURNING-LOOP-PROTOTYPE-1"],
+      "later_native_proof_required": "native state transition + recap evidence",
+      "failure_mode": "Abstract metrics without next rescue"
+    },
+    {
+      "id": "money.deferred_boundary",
+      "coverage_area": "deferred-money boundary",
+      "required_proof_surface": "no_monetization_yet, no paid surface",
+      "status_for_this_spec": "required_boundary_now_and_later",
+      "evidence_source_now": ["E-MONEY-DEFERRAL-1", "docs/forge-vnext/pantry-rescue-money-path.md"],
+      "later_native_proof_required": "evidence that no paywall/IAP/payment path appears",
+      "failure_mode": "Pro/trial/price/StoreKit copy appears before approval"
+    }
+  ],
+  "money": {
+    "strategy": "no_monetization_yet",
+    "live_iap": false,
+    "storekit": false,
+    "payments": false,
+    "public_pricing_claim": false,
+    "future_local_pro_boundary_candidates_not_commitments": [
+      "multiple named storage zones",
+      "reminder templates",
+      "duplicate-buy history",
+      "weekly/monthly rescue recap history",
+      "export/share draft of rescue list as local text/CSV"
+    ]
+  },
+  "non_goals": [
+    "barcode",
+    "OCR",
+    "receipt import",
+    "loyalty-card import",
+    "cloud/account sync",
+    "live family sharing",
+    "grocery APIs",
+    "StoreKit/IAP",
+    "payments",
+    "public launch/App Store/TestFlight/signing",
+    "native app repo generation in this task",
+    "complete inventory management",
+    "recipe feed as primary surface",
+    "social/sharing loops",
+    "production notification permission flows",
+    "DayRateLab-derived UI/fixtures/copy/verifier assumptions"
+  ],
+  "success_gates": [
+    "activation.first_use has simulator evidence and reaches a useful rescue action",
+    "core_loop.rescue_action changes queue/progress state",
+    "persistence.returning_state has evidence after relaunch or equivalent returning-state simulation",
+    "retention.weekly_recap references prior actions and produces a next action",
+    "memory.duplicate_caution has creation and later-surfacing evidence",
+    "money.deferred_boundary is preserved with no live monetization surface",
+    "app-specific UI would fail if pantry/rescue/caution concepts were token-swapped away",
+    "skeptical reviewer cannot fairly call result a generic dashboard/card/list scaffold"
+  ],
+  "failure_gates": [
+    "generic dashboard/metric cards/inventory table/tab scaffold before first useful rescue action",
+    "activation requires quantity, price, purchase date, account, complete inventory, barcode, OCR, receipt, sync, family setup, or payment",
+    "manual add creates only a row/list item",
+    "action buttons do not visibly update queue/progress",
+    "returning session lacks prior action/caution/recap state",
+    "duplicate caution is static rather than action-created",
+    "weekly recap has no next action",
+    "monetization copy claims Pro/subscription/premium/trial/price or hides core value behind paid boundary",
+    "barcode/OCR/sync/import/payment is introduced as required MVP scope",
+    "evidence cannot be audited from screenshots/video/tests/coverage artifacts"
+  ],
+  "evidence_ids": [
+    "E-PANTRY-RAW-EVIDENCE-1",
+    "E-ACTIVATION-PROTOTYPE-1",
+    "E-RETURNING-LOOP-PROTOTYPE-1",
+    "E-MONEY-DEFERRAL-1",
+    "E-BEACHHEAD-SEGMENT-1",
+    "E-ACCESS-LIMITATIONS-1",
+    "E-DAYRATELAB-NEGATIVE-GUARDRAIL-1"
+  ],
+  "raw_note_ids": [
+    "RAW-APPLE-SEARCH-CATEGORY-001",
+    "RAW-APPLE-REVIEWS-PAIN-002",
+    "RAW-APPLE-REVIEWS-MANUAL-FRICTION-003",
+    "RAW-APPLE-REVIEWS-SYNC-BARCODE-004",
+    "RAW-APPLE-LOOKUP-FEATURE-EXPECTATIONS-005",
+    "RAW-APPLE-PUBLIC-PRICING-006",
+    "RAW-REDDIT-PUBLIC-SUBSTITUTE-007",
+    "RAW-HN-PUBLIC-SUBSTITUTE-008",
+    "RAW-ACCESS-LIMITATIONS-009",
+    "RAW-BEACHHEAD-GAP-010"
+  ],
+  "self_review": {
+    "target_user_included": true,
+    "activation_promise_included": true,
+    "first_use_flow_included": true,
+    "core_loop_included": true,
+    "data_model_sketch_included": true,
+    "screen_list_included": true,
+    "non_goals_included": true,
+    "acceptance_criteria_included": true,
+    "evidence_links_included": true,
+    "native_proof_success_failure_gates_included": true,
+    "coverage_matrix_required_areas_included": [
+      "activation",
+      "returning_loop",
+      "local_persistence",
+      "duplicate_caution",
+      "weekly_recap_progress",
+      "deferred_money_boundary"
+    ],
+    "no_native_code_written": true,
+    "no_app_repo_created": true
+  }
+}

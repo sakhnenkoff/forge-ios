@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pantry Rescue Queue — Native Design Blueprint</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #223026;
+      --muted: #687466;
+      --paper: #fbf5e8;
+      --panel: #fffdf7;
+      --line: #d8ccb7;
+      --leaf: #3f7f4a;
+      --leaf-soft: #e2f0dd;
+      --amber: #bd6b2f;
+      --amber-soft: #fae1bf;
+      --night: #233746;
+      --slip: #fff5df;
+      --shadow: 0 24px 70px rgba(54, 43, 25, .18);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(191, 106, 47, .24), transparent 32rem),
+        radial-gradient(circle at 90% 18%, rgba(63, 127, 74, .20), transparent 28rem),
+        linear-gradient(150deg, #ead9bb 0%, #f8f3e8 48%, #dfe9d7 100%);
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .wrap {
+      width: min(1100px, 100%);
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .phone {
+      width: min(390px, 100%);
+      min-height: 790px;
+      border: 12px solid #17211b;
+      border-radius: 46px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 96px;
+      height: 24px;
+      border-radius: 0 0 18px 18px;
+      background: #17211b;
+      z-index: 2;
+    }
+
+    header {
+      padding: 48px 22px 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: .98;
+      letter-spacing: -.05em;
+      max-width: 250px;
+    }
+
+    .trust-pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.66);
+      border-radius: var(--radius-pill);
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    main { padding: 10px 18px 112px; }
+
+    .rescue-mouth {
+      border: 2px solid #2f3f31;
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      padding: 18px;
+      box-shadow: 0 14px 0 rgba(47, 63, 49, .08);
+      margin-bottom: 14px;
+    }
+
+    .prompt {
+      margin: 0 0 12px;
+      font-size: 19px;
+      font-weight: 950;
+      letter-spacing: -.025em;
+    }
+
+    .input-line {
+      min-height: 58px;
+      border-bottom: 2px solid var(--line);
+      display: flex;
+      align-items: center;
+      font-size: 34px;
+      font-weight: 950;
+      letter-spacing: -.055em;
+    }
+
+    .placeholder { color: #b7aa92; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: #fff9ed;
+      border-radius: var(--radius-pill);
+      padding: 9px 12px;
+      min-height: 38px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--muted);
+    }
+
+    .chip.selected { border-color: var(--leaf); color: var(--leaf); background: var(--leaf-soft); }
+    .chip.urgent { border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+
+    .panel {
+      display: none;
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+      margin: 14px 0;
+      box-shadow: 0 10px 30px rgba(60, 45, 22, .07);
+    }
+
+    .panel.visible { display: block; animation: rise .34s ease-out both; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-title {
+      margin: 0 0 7px;
+      font-size: 20px;
+      font-weight: 950;
+      letter-spacing: -.035em;
+    }
+
+    .copy { margin: 0 0 12px; color: var(--muted); line-height: 1.38; }
+
+    .lane-card {
+      background: linear-gradient(135deg, #edf7e8, #fff7e8);
+      border: 1px solid #c4d5bb;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      position: relative;
+    }
+
+    .lane-card::after {
+      content: "next: mushrooms";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: -24px;
+      z-index: -1;
+      border-radius: 0 0 20px 20px;
+      padding: 9px 14px 7px;
+      color: var(--muted);
+      background: #efe7d8;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .lane-card strong { display: block; font-size: 19px; margin-bottom: 6px; }
+
+    .verbs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+
+    button {
+      appearance: none;
+      border: 0;
+      min-height: 44px;
+      border-radius: 16px;
+      background: var(--night);
+      color: white;
+      padding: 11px 13px;
+      font-weight: 950;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(35, 55, 70, .18);
+    }
+
+    button.secondary { background: #e9dfcf; color: var(--ink); box-shadow: none; }
+    button.leaf { background: var(--leaf); }
+    button.warn { background: var(--amber); }
+    button:focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+    .progress-path {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      margin: 10px 0 12px;
+      color: var(--leaf);
+      font-weight: 950;
+    }
+
+    .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--leaf); box-shadow: inset 0 0 0 7px var(--leaf-soft); }
+    .line { height: 4px; background: linear-gradient(90deg, var(--leaf), var(--line)); border-radius: 99px; }
+
+    .memory-slip {
+      border: 1px dashed var(--amber);
+      background: var(--slip);
+      border-radius: 22px;
+      padding: 13px;
+      margin-top: 10px;
+      transform: rotate(-.6deg);
+    }
+
+    .memory-slip strong { display: block; margin-bottom: 4px; }
+
+    .recap-route {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .route-step {
+      border-left: 4px solid var(--leaf);
+      background: #fffaf0;
+      border-radius: 18px;
+      padding: 11px 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .route-step.next { border-left-color: var(--amber); color: var(--ink); }
+
+    .bottom-bar {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      display: grid;
+      gap: 8px;
+      background: linear-gradient(180deg, rgba(251,245,232,0), var(--paper) 20%);
+      padding-top: 26px;
+    }
+
+    .notes {
+      background: rgba(255,253,247,.78);
+      border: 1px solid rgba(216,204,183,.9);
+      border-radius: 30px;
+      padding: 22px;
+      box-shadow: 0 16px 46px rgba(54, 43, 25, .11);
+    }
+
+    .notes h2 { margin: 0 0 10px; font-size: 28px; letter-spacing: -.04em; }
+    .notes p { color: var(--muted); line-height: 1.5; }
+    .notes ul { padding-left: 20px; color: var(--muted); line-height: 1.55; }
+    .notes strong { color: var(--ink); }
+
+    .review-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .review-controls button { box-shadow: none; }
+
+    @media (max-width: 860px) {
+      .wrap { grid-template-columns: 1fr; justify-items: center; }
+      .notes { max-width: 430px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel.visible { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="phone" aria-label="Pantry Rescue Queue native design blueprint">
+      <header>
+        <div>
+          <p class="eyebrow">Pantry Rescue Queue</p>
+          <h1 id="screenTitle">Rescue one thing before dinner</h1>
+        </div>
+        <div class="trust-pill">local proof</div>
+      </header>
+
+      <main>
+        <section class="rescue-mouth" aria-label="Rescue Mouth first launch quick add">
+          <p class="prompt">What needs rescuing?</p>
+          <div class="input-line" id="itemText"><span class="placeholder">spinach...</span></div>
+          <div class="chips" aria-label="Location and urgency choices">
+            <span class="chip" id="fridgeChip">fridge</span>
+            <span class="chip">freezer</span>
+            <span class="chip">pantry</span>
+            <span class="chip" id="tonightChip">tonight</span>
+            <span class="chip">1-2 days</span>
+            <span class="chip">not sure</span>
+          </div>
+        </section>
+
+        <section class="panel" id="lane" aria-label="Rescue Lane queue outcome">
+          <p class="panel-title">Spinach is first in the rescue queue.</p>
+          <p class="copy">Useful result: not an inventory row — a dinner decision.</p>
+          <div class="lane-card">
+            <strong>Best rescue: cook tonight</strong>
+            <span>Eggs + spinach, or toss into pasta. Fallback: freeze before bed.</span>
+            <div class="verbs">
+              <button class="leaf" id="cookBtn">Cook tonight</button>
+              <button class="secondary">Freeze</button>
+              <button class="secondary">Ignore</button>
+              <button class="warn">Do not buy again</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="progress" aria-label="Item triage action and queue progress">
+          <p class="panel-title">Queue got quieter.</p>
+          <div class="progress-path"><span class="dot"></span><span class="line"></span><span>3 at risk → 2</span></div>
+          <p class="copy">Done — spinach is planned tonight. Mushrooms and yogurt are still asking for attention.</p>
+          <div class="memory-slip" id="memory">
+            <strong>Duplicate caution memory</strong>
+            Should I warn you before buying spinach again? Last time it was rescued at the edge.
+          </div>
+        </section>
+
+        <section class="panel" id="recap" aria-label="Weekly Rescue Recap returning state">
+          <p class="panel-title">This week the fridge got quieter.</p>
+          <p class="copy">Returning state references prior actions and creates a next action.</p>
+          <div class="recap-route">
+            <div class="route-step">3 things rescued</div>
+            <div class="route-step">Spinach became a grocery caution</div>
+            <div class="route-step next">Next likely rescue: mushrooms by Tuesday</div>
+          </div>
+        </section>
+
+        <section class="panel" id="trust" aria-label="Settings and local proof trust note">
+          <p class="panel-title">Local proof boundaries</p>
+          <p class="copy">Your rescue queue stays on this device for the proof. No account, scanner, OCR, receipt import, sync, sharing, StoreKit, IAP, or payments.</p>
+        </section>
+      </main>
+
+      <div class="bottom-bar" aria-label="Prototype controls">
+        <button id="fillBtn">Fill rescue mouth</button>
+        <button class="secondary" id="laneBtn">Show rescue lane</button>
+        <button class="secondary" id="recapBtn">Return next week</button>
+      </div>
+    </section>
+
+    <aside class="notes">
+      <p class="eyebrow">Native design gate artifact</p>
+      <h2>Warm rescue station, not pantry admin.</h2>
+      <p>This local static blueprint expresses the native proof direction from <strong>Rescue Mouth</strong> to <strong>Rescue Lane</strong>, <strong>Caution Memory</strong>, and <strong>Weekly Recap</strong>.</p>
+      <ul>
+        <li><strong>Pass:</strong> direct manual quick-add, action-first queue, relief-oriented progress.</li>
+        <li><strong>Fail:</strong> inventory table first, generic dashboard cards, tab-first scaffold, scanner/OCR/sync/import/payment affordances.</li>
+        <li><strong>Review:</strong> first useful rescue decision should be visible before any admin surface.</li>
+      </ul>
+      <div class="review-controls" aria-label="Desktop review controls">
+        <button id="desktopFill">Fill rescue mouth</button>
+        <button class="leaf" id="desktopCook">Commit cook tonight</button>
+        <button class="secondary" id="desktopTrust">Show trust note</button>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const itemText = document.getElementById('itemText');
+    const fridgeChip = document.getElementById('fridgeChip');
+    const tonightChip = document.getElementById('tonightChip');
+    const lane = document.getElementById('lane');
+    const progress = document.getElementById('progress');
+    const recap = document.getElementById('recap');
+    const trust = document.getElementById('trust');
+    const title = document.getElementById('screenTitle');
+
+    function fillMouth() {
+      itemText.textContent = 'spinach';
+      fridgeChip.classList.add('selected');
+      tonightChip.classList.add('urgent');
+      title.textContent = 'Spinach needs a plan';
+    }
+
+    function showLane() {
+      fillMouth();
+      lane.classList.add('visible');
+      title.textContent = 'Tonight’s first rescue';
+      lane.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    function commitCook() {
+      showLane();
+      progress.classList.add('visible');
+      title.textContent = 'The fridge got quieter';
+      progress.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    function returnNextWeek() {
+      commitCook();
+      recap.classList.add('visible');
+      title.textContent = 'Weekly rescue recap';
+      recap.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    function showTrust() {
+      trust.classList.add('visible');
+      title.textContent = 'Local proof only';
+      trust.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    document.getElementById('fillBtn').addEventListener('click', fillMouth);
+    document.getElementById('laneBtn').addEventListener('click', showLane);
+    document.getElementById('cookBtn').addEventListener('click', commitCook);
+    document.getElementById('recapBtn').addEventListener('click', returnNextWeek);
+    document.getElementById('desktopFill').addEventListener('click', fillMouth);
+    document.getElementById('desktopCook').addEventListener('click', commitCook);
+    document.getElementById('desktopTrust').addEventListener('click', showTrust);
+  </script>
+</body>
+</html>

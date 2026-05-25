@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "monetizationThesis": "Free 3-day plans build trust; Pro unlocks saved plans and grocery export.",
+  "recommendedModel": "freemium",
+  "pricePoints": [
+    {
+      "tier": "Pro Monthly",
+      "draftPriceUSD": 4.99,
+      "rationale": "Comparable meal planning apps cluster around $3.99-$7.99/month.",
+      "sourcePaths": [
+        ".forge/research/evidence-matrix.json"
+      ]
+    }
+  ],
+  "paywallBoundary": {
+    "freeValue": [
+      "First useful local outcome"
+    ],
+    "paidValue": [
+      "Durable saved value",
+      "Export or advanced workflow"
+    ],
+    "nativeEvidenceRequired": [
+      ".forge/evidence/screenshots/paywall.png"
+    ]
+  },
+  "liveSystems": {
+    "storeKitConfigured": false,
+    "iapProductsCreated": false,
+    "requiresHumanApprovalBeforeAnyActivation": true
+  },
+  "risks": [
+    "Revenue thesis is competitor-informed but not user-validated.",
+    "No IAP products were created; pricing is local draft only."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "claims": [
+    {
+      "claim": "User can complete the core loop locally",
+      "requiredFor": [
+        "copy",
+        "launch_readiness",
+        "scorecard"
+      ],
+      "evidence": [
+        {
+          "type": "video",
+          "path": ".forge/evidence/videos/core-flow.mp4"
+        },
+        {
+          "type": "test",
+          "path": ".forge/evidence/logs/mock-build.txt"
+        }
+      ],
+      "status": "supported",
+      "notes": "Fixture evidence paths are local placeholders for validator contracts."
+    },
+    {
+      "claim": "Money boundary is represented by native UI",
+      "requiredFor": [
+        "pricing",
+        "launch_readiness"
+      ],
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": ".forge/evidence/screenshots/paywall.png"
+        }
+      ],
+      "status": "supported",
+      "notes": "Paywall evidence path is present in fixture."
+    },
+    {
+      "claim": "Privacy posture is local-first",
+      "requiredFor": [
+        "privacy",
+        "copy"
+      ],
+      "evidence": [
+        {
+          "type": "source",
+          "path": "Sources/FocusPantry/LocalStore.swift"
+        }
+      ],
+      "status": "partial",
+      "notes": "Needs human privacy confirmation before submission."
+    }
+  ]
+}

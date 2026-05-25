@@ -1,0 +1,25 @@
+{
+  "schema_version": "forge.evidence-index.v1",
+  "app_id": "habit-spark",
+  "generated_at": "2026-05-25T12:10:00Z",
+  "verification_plan": ".forge/verification-plan.json",
+  "overall_status": "pass",
+  "slots": [
+    {
+      "id": "screenshots.activation-first-value",
+      "class": "screenshot",
+      "required": true,
+      "status": "accepted",
+      "artifact": ".forge/evidence/screenshots/activation-first-value.png"
+    },
+    {
+      "id": "video.activation-flow",
+      "class": "video",
+      "required": true,
+      "status": "accepted",
+      "artifact": ".forge/evidence/video/activation-flow.mp4"
+    }
+  ],
+  "blockers": [],
+  "warnings": []
+}

@@ -1,0 +1,20 @@
+{
+  "emotional_tone": {
+    "mood_sentence": "Clean, modern, simple, and premium.",
+    "session_arc": {
+      "open": "See dashboard",
+      "act": "Tap card",
+      "return": "See stats",
+      "close": "Done"
+    },
+    "voice_rules": [
+      "Short labels"
+    ],
+    "anti_tone": [
+      "cluttered"
+    ],
+    "screens_that_must_express_tone": [
+      "Dashboard"
+    ]
+  }
+}

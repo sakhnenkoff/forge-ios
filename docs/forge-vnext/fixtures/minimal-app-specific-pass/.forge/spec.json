@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "app": {
+    "name": "Focus Pantry",
+    "bundleId": "local.draft.only.focuspantry",
+    "platform": "iOS",
+    "minimumOS": "18.0"
+  },
+  "positioning": {
+    "targetUser": "Busy solo cooks with pantry odds and ends",
+    "pain": "They waste food because planning from leftovers is mentally heavy",
+    "corePromise": "Turn what is already in the pantry into a calm 3-day meal plan",
+    "competitorContrast": "Less database-heavy than calorie trackers; more actionable than recipe bookmarks"
+  },
+  "monetization": {
+    "recommendedModel": "freemium",
+    "thesis": "Free 3-day plans build trust; Pro unlocks saved plans and grocery export.",
+    "pricePoints": [
+      {
+        "tier": "Pro Monthly",
+        "draftPriceUSD": 4.99,
+        "rationale": "Comparable meal planning apps cluster around $3.99-$7.99/month.",
+        "sourcePaths": [
+          ".forge/research/evidence-matrix.json"
+        ]
+      }
+    ]
+  }
+}

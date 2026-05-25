@@ -1,0 +1,1 @@
+Fixture build evidence placeholder; no live build invoked.

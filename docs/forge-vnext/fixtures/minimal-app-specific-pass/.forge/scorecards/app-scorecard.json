@@ -1,0 +1,90 @@
+{
+  "schema_version": "forge.app_scorecard.v1",
+  "app_id": "focus-pantry",
+  "score_scope": "app_quality_only",
+  "overall_score": 8.0,
+  "dimensions": {
+    "pain_problem_clarity": {
+      "score": 8,
+      "minimum": 7,
+      "weight": 1.2,
+      "evidence_ids": [
+        "research.paid_competitors",
+        "research.forum_pain"
+      ],
+      "rationale": "Specific painful leftover-waste trigger and alternatives."
+    },
+    "target_user_sharpness": {
+      "score": 8,
+      "minimum": 7,
+      "weight": 1.0,
+      "evidence_ids": [
+        "research.forum_pain",
+        "native.activation.flow"
+      ],
+      "rationale": "Busy solo cooks with excluded use cases."
+    },
+    "use_case_activation": {
+      "score": 8,
+      "minimum": 7,
+      "weight": 1.2,
+      "evidence_ids": [
+        "native.activation.flow"
+      ],
+      "rationale": "First useful output is evidenced."
+    },
+    "repeat_use_retention_loop": {
+      "score": 8,
+      "minimum": 7,
+      "weight": 1.2,
+      "evidence_ids": [
+        "native.returning_user.progress"
+      ],
+      "rationale": "Saved preferences, avoided-waste history, and pantry depletion create a repeat-use loop."
+    },
+    "money_path_believability": {
+      "score": 7,
+      "minimum": 6,
+      "weight": 1.0,
+      "evidence_ids": [
+        "native.money_boundary.pro"
+      ],
+      "rationale": "Paid boundary tied to saved plans and grocery export value."
+    },
+    "product_distinctiveness_taste": {
+      "score": 8,
+      "minimum": 7,
+      "weight": 1.0,
+      "evidence_ids": [
+        "native.taste.review"
+      ],
+      "rationale": "Pantry-first planning, calm tone, and leftover-aware interactions."
+    },
+    "blueprint_coverage_launch_slice_integrity": {
+      "score": 8,
+      "minimum": 8,
+      "weight": 1.3,
+      "evidence_ids": [
+        "native.activation.flow",
+        "native.core_loop.flow",
+        "native.returning_user.progress",
+        "native.money_boundary.pro"
+      ],
+      "rationale": "Activation, core loop, retention, and money boundary all mapped."
+    },
+    "evidence_integrity": {
+      "score": 8,
+      "minimum": 8,
+      "weight": 1.3,
+      "evidence_ids": [
+        "native.taste.review",
+        "native.activation.flow"
+      ],
+      "rationale": "Claims cite local fixture artifacts and coverage matrix."
+    }
+  },
+  "hard_minimum_failures": [],
+  "verdict": "pass",
+  "pipeline_scorecard_ref": ".forge/scorecards/pipeline-scorecard.json",
+  "notes": "App quality scorecard only; pipeline enforcement score is intentionally separate."
+}

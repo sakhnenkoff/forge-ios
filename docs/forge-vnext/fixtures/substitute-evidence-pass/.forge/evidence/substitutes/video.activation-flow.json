@@ -1,0 +1,14 @@
+{
+  "schema_version": "forge.substitute-evidence.v1",
+  "slot_id": "video.activation-flow",
+  "status": "approved",
+  "rationale": "Simulator video capture is unavailable in this fixture, but ordered screenshots and action log cover the flow.",
+  "owner": "verification-agent",
+  "approved_by": "verification-agent",
+  "approved_at": "2026-05-25T12:05:00Z",
+  "substitute_artifacts": [
+    ".forge/evidence/screenshots/activation-first-value.png",
+    ".forge/evidence/run/activation-action-log.json"
+  ],
+  "limits": "Does not prove animation smoothness."
+}

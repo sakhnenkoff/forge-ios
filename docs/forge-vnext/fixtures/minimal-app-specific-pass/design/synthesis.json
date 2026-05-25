@@ -1,0 +1,46 @@
+{
+  "original_synthesis": {
+    "one_sentence_direction": "A guided decision trail where each screen clears one patch of fog and turns scattered evidence into the next safe commitment.",
+    "core_metaphor_or_shape": "A left-edge commitment trail with evidence notes branching from each step.",
+    "signature_interactions": [
+      "Pin one signal onto the trail",
+      "Commit the next safe step",
+      "Reveal why a branch is locked or risky"
+    ],
+    "signature_surfaces": [
+      "Commitment rail",
+      "Evidence margin",
+      "Locked branch paywall boundary",
+      "Empty fog-clearing prompt"
+    ],
+    "reference_synthesis": [
+      {
+        "from_reference": "Apple Journal reflection flow",
+        "trait": "single focused prompt",
+        "transformed_into": "one-signal activation card that starts the trail instead of a form"
+      },
+      {
+        "from_reference": "AllTrails route progress",
+        "trait": "waypoint continuity",
+        "transformed_into": "persistent commitment rail showing prior and next decisions"
+      },
+      {
+        "from_reference": "Field notebook margin annotations",
+        "trait": "side notes",
+        "transformed_into": "evidence margin attached to each commitment"
+      },
+      {
+        "from_reference": "Linear issue state transitions",
+        "trait": "state reshapes next action",
+        "transformed_into": "commit button mutates the trail and reveals the next repair state"
+      }
+    ],
+    "explicitly_rejected_patterns": [
+      "KPI card dashboard",
+      "generic title-card-list-button formula",
+      "token-only scaffold reskin",
+      "metric tiles as first useful screen"
+    ],
+    "proof_screen_or_flow": "Activation-to-next-action trail"
+  }
+}

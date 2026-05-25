@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.verification-plan.v1.schema.json",
+  "title": "Forge Verification Plan v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app",
+    "sources",
+    "policy",
+    "checks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.verification-plan.v1"
+    },
+    "app": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "repo_root",
+        "project",
+        "scheme",
+        "platform"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repo_root": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scheme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bundle_id": {
+          "type": "string"
+        },
+        "platform": {
+          "enum": [
+            "ios",
+            "macos",
+            "other"
+          ]
+        },
+        "configuration": {
+          "type": "string"
+        },
+        "simulator": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "sources": {
+      "type": "object",
+      "required": [
+        "spec",
+        "design",
+        "gate_receipts"
+      ],
+      "properties": {
+        "spec": {
+          "type": "string",
+          "minLength": 1
+        },
+        "design": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gate_receipts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "allow_substitutes"
+      ],
+      "properties": {
+        "strictness": {
+          "type": "string"
+        },
+        "allow_substitutes": {
+          "type": "boolean"
+        },
+        "max_repair_loops_before_human": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overclaiming_rule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "severity",
+          "rationale"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "file_exists",
+              "json_schema_valid",
+              "markdown_contains_sections",
+              "swift_contains_all",
+              "swift_contains_any",
+              "repo_contains_any",
+              "repo_forbid_regex",
+              "spec_feature_statuses",
+              "gate_assertion",
+              "evidence_slot_present"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "blocker",
+              "warning"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "evidence_slots": {
+      "type": "array"
+    },
+    "screenshot_slots": {
+      "type": "array"
+    },
+    "video_slots": {
+      "type": "array"
+    },
+    "success_criteria": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

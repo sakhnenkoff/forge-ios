@@ -1,0 +1,26 @@
+{
+  "emotional_tone": {
+    "mood_sentence": "Like clearing fog from a trail until the next safe step is obvious.",
+    "session_arc": {
+      "open": "Relief from scattered decisions",
+      "act": "Confidence while committing one step",
+      "return": "Continuity from prior trail markers",
+      "close": "Quiet forward motion"
+    },
+    "voice_rules": [
+      "Name the next action plainly",
+      "Empty states ask for one commitment",
+      "Errors explain what evidence is missing"
+    ],
+    "anti_tone": [
+      "admin dashboard",
+      "metric tile wall",
+      "generic productivity cards"
+    ],
+    "screens_that_must_express_tone": [
+      "Activation",
+      "Core loop",
+      "Empty trail"
+    ]
+  }
+}

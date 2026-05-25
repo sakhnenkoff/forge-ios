@@ -1,0 +1,32 @@
+{
+  "motion_haptics": {
+    "principles": [
+      {
+        "name": "Reveal only on commitment",
+        "why_product_needs_it": "Motion should clarify the next state after a decision",
+        "anti_pattern": "confetti for every tap"
+      }
+    ],
+    "interactions": [
+      {
+        "trigger": "SafeStepButton commit",
+        "user_intent": "commit next safe action",
+        "motion": "rail marker slides into completed position",
+        "haptic": "success",
+        "duration_ms": 180,
+        "easing": "easeOut",
+        "feedback_purpose": "confirm",
+        "reduce_motion_behavior": "instant marker state change",
+        "failure_mode_if_missing_or_overdone": "decision feels either ambiguous or gimmicky"
+      }
+    ],
+    "banned_motion": [
+      "generic bounce",
+      "confetti flourish",
+      "spinner-only loading"
+    ],
+    "verification_notes": [
+      "Fixture final phase uses structured evidence; real generated apps need video or equivalent proof."
+    ]
+  }
+}

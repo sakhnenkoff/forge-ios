@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "safety": {
+    "localDraftOnly": true,
+    "liveExternalActionsPerformed": false,
+    "requiresHumanApprovalBeforeLiveUse": true
+  },
+  "app": {
+    "name": "Focus Pantry",
+    "bundleId": "local.draft.only.focuspantry",
+    "platform": "iOS",
+    "minimumOS": "18.0",
+    "repoPath": "/Users/matvii/Developer/Personal/forge-e2e-clean/docs/forge-vnext/fixtures/minimal-app-specific-pass",
+    "generatedAt": "2026-05-25T12:00:00.000Z"
+  },
+  "sourceInputs": {
+    "research": [
+      ".forge/research/evidence-matrix.json"
+    ],
+    "product": [
+      ".forge/product/product-strategy.json"
+    ],
+    "design": [
+      ".forge/design/design-system.json"
+    ],
+    "verification": [
+      ".forge/verification/evidence-index.json"
+    ]
+  },
+  "artifactStatus": {
+    "ascDraft": "ready_for_human_review",
+    "privacyDraft": "ready_for_human_review",
+    "pricingDraft": "ready_for_human_review",
+    "copyDraft": "ready_for_human_review",
+    "screenshotPlan": "ready_for_human_review",
+    "testflightLocalChecklist": "ready_for_human_review"
+  },
+  "launchReadiness": {
+    "verdict": "ready_for_human_review",
+    "blockingReasons": [
+      "Human approval still required before live use."
+    ],
+    "humanApprovalRequiredBefore": [
+      "App Store Connect login/API usage",
+      "bundle ID creation",
+      "signing/capabilities changes",
+      "TestFlight upload",
+      "privacy declaration submission",
+      "live IAP/paywall activation",
+      "public marketing/posting"
+    ]
+  },
+  "artifacts": {
+    "ascDraft": ".forge/launch/asc-draft.json",
+    "privacyDraft": ".forge/launch/privacy-draft.json",
+    "pricingDraft": ".forge/launch/pricing-draft.json",
+    "copyDraft": ".forge/launch/copy-draft.md",
+    "screenshotPlan": ".forge/launch/screenshot-plan.json",
+    "testflightLocalChecklist": ".forge/launch/testflight-local-checklist.md",
+    "evidenceIndex": ".forge/launch/evidence-index.json",
+    "humanReviewReceipt": ".forge/launch/review-receipt.md"
+  }
+}

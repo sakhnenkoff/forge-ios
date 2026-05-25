@@ -1,0 +1,23 @@
+{
+  "original_synthesis": {
+    "one_sentence_direction": "A clean modern dashboard for tracking progress.",
+    "core_metaphor_or_shape": "Dashboard cards",
+    "signature_interactions": [
+      "tap cards"
+    ],
+    "signature_surfaces": [
+      "Home dashboard"
+    ],
+    "reference_synthesis": [
+      {
+        "from_reference": "Apple Fitness Summary",
+        "trait": "large numbers",
+        "transformed_into": "large metric cards"
+      }
+    ],
+    "explicitly_rejected_patterns": [
+      "none"
+    ],
+    "proof_screen_or_flow": "Dashboard"
+  }
+}

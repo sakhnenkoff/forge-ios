@@ -1,0 +1,32 @@
+{
+  "prototype": {
+    "entry_file": "design/prototype/index.html",
+    "viewports_tested": [
+      "iPhone 17 Pro",
+      "iPhone SE"
+    ],
+    "flows": [
+      {
+        "name": "dashboard flow",
+        "steps": [
+          "open",
+          "tap card"
+        ],
+        "product_gate_covered": "activation"
+      }
+    ],
+    "screens_or_states": [
+      {
+        "name": "dashboard",
+        "what_it_proves": "cards render",
+        "design_artifacts_expressed": [
+          "design_system"
+        ]
+      }
+    ],
+    "known_limitations": [
+      "No unique workflow shape"
+    ],
+    "human_review_recommendation": "repair"
+  }
+}

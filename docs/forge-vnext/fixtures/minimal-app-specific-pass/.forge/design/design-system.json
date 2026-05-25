@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "tone": "warm pantry calm, not clinical dieting",
+  "visualDifferentiators": [
+    "receipt-card meal plan layout",
+    "soft shelf-inspired color system"
+  ],
+  "sourceReferences": [
+    ".forge/design/original-synthesis.md"
+  ]
+}

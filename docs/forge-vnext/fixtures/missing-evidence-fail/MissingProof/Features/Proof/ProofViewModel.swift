@@ -1,0 +1,3 @@
+@Observable
+ProofViewModel
+LoggableEvent

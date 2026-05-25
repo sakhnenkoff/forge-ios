@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "activationMoment": "User enters five pantry items and receives a plausible dinner plan.",
+  "repeatUseLoop": "Weekly pantry refresh creates updated meal plan and grocery gaps.",
+  "moneyBoundary": "Upgrade after first useful plan to save unlimited plans and export PDF grocery lists."
+}

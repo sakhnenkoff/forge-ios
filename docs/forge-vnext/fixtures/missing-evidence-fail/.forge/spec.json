@@ -1,0 +1,15 @@
+{
+  "schema_version": "forge.spec.fixture.v1",
+  "app": {
+    "id": "missing-proof",
+    "name": "MissingProof"
+  },
+  "features": [
+    {
+      "id": "proof-loop",
+      "status": "done",
+      "screen_type": "primary_surface",
+      "nav_path": "tab:proof-loop"
+    }
+  ]
+}

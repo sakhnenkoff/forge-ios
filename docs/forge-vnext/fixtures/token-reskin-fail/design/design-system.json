@@ -1,0 +1,76 @@
+{
+  "design_system": {
+    "principles": [
+      {
+        "name": "Clean",
+        "why": "Modern feel",
+        "visible_consequence": "White cards on tinted background"
+      }
+    ],
+    "tokens": {
+      "colors": [
+        {
+          "role": "primary",
+          "value": "#3B82F6",
+          "usage": "buttons",
+          "product_rationale": "Looks premium"
+        }
+      ],
+      "typography": [
+        {
+          "role": "title",
+          "style": "largeTitle",
+          "usage": "headers",
+          "product_rationale": "iOS native"
+        }
+      ],
+      "spacing_and_shape": [
+        {
+          "role": "card radius",
+          "value": "16",
+          "usage": "cards",
+          "product_rationale": "Friendly"
+        }
+      ]
+    },
+    "components": [
+      {
+        "name": "DSCard",
+        "purpose": "Show any metric",
+        "states": [
+          "default"
+        ],
+        "must_differ_from_scaffold_by": [
+          "blue accent color"
+        ],
+        "usage_rules": [
+          "Use for every dashboard item"
+        ]
+      },
+      {
+        "name": "DSButton",
+        "purpose": "Generic CTA",
+        "states": [
+          "default",
+          "pressed"
+        ],
+        "must_differ_from_scaffold_by": [
+          "primary color"
+        ],
+        "usage_rules": [
+          "Use for actions"
+        ]
+      }
+    ],
+    "screen_composition_rules": [
+      "Title then card stack then button"
+    ],
+    "empty_error_loading_rules": [
+      "Use default empty state copy"
+    ],
+    "accessibility_rules": [
+      "Respect contrast"
+    ],
+    "banned_patterns": []
+  }
+}

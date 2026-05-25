@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.app-scorecard.v1.schema.json",
+  "title": "Forge vNext App Scorecard v1",
+  "description": "App quality scorecard only. Pipeline scores are linked by ref and must not be embedded or averaged into app scores.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app_id",
+    "score_scope",
+    "overall_score",
+    "dimensions",
+    "hard_minimum_failures",
+    "verdict",
+    "pipeline_scorecard_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.app_scorecard.v1"
+    },
+    "app_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "score_scope": {
+      "const": "app_quality_only"
+    },
+    "overall_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "dimensions": {
+      "type": "object"
+    },
+    "hard_minimum_failures": {
+      "type": "array"
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "repair",
+        "ask_matvii",
+        "kill_recommended",
+        "launch_candidate_blocked",
+        "launch_candidate"
+      ]
+    },
+    "pipeline_scorecard_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "pipeline_score"
+        ]
+      },
+      {
+        "required": [
+          "pipeline_scores"
+        ]
+      },
+      {
+        "required": [
+          "pipeline_dimensions"
+        ]
+      },
+      {
+        "required": [
+          "pipeline_product_enforcement_score"
+        ]
+      }
+    ]
+  },
+  "$defs": {
+    "scoreDimension": {
+      "type": "object",
+      "required": [
+        "score",
+        "minimum",
+        "weight",
+        "evidence_ids",
+        "rationale"
+      ],
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "minimum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "weight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

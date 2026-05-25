@@ -1,0 +1,15 @@
+{
+  "schema_version": "forge.spec.fixture.v1",
+  "app": {
+    "id": "habit-spark",
+    "name": "HabitSpark"
+  },
+  "features": [
+    {
+      "id": "habit-loop",
+      "status": "done",
+      "screen_type": "primary_surface",
+      "nav_path": "tab:habit-loop"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "appstore-meal-planners",
+      "path": ".forge/research/evidence-matrix.json",
+      "finding": "Paid meal planners commonly charge monthly subscriptions."
+    },
+    {
+      "id": "reviews-leftovers",
+      "path": ".forge/research/evidence-matrix.json",
+      "finding": "Users complain about recipe apps ignoring what they already have."
+    }
+  ],
+  "evidenceGaps": [
+    "No direct user interviews yet."
+  ]
+}

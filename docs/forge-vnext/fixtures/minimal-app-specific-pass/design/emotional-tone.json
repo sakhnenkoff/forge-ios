@@ -1,0 +1,29 @@
+{
+  "emotional_tone": {
+    "mood_sentence": "Like walking with a warm headlamp through fog: the whole route is unknown, but the next safe step is lit clearly.",
+    "session_arc": {
+      "open": "The user feels immediate relief because only one signal is requested.",
+      "act": "Committing feels decisive, not administrative.",
+      "return": "Prior trail markers make returning feel continuous.",
+      "close": "The residue is calm forward motion rather than inbox guilt."
+    },
+    "voice_rules": [
+      "Labels name the next physical action, not abstract productivity",
+      "Empty states ask for one signal and show why it matters",
+      "Paywall copy frames advanced branches as planning leverage, not blocked basics",
+      "Error copy names the missing evidence and one repair action"
+    ],
+    "anti_tone": [
+      "generic dashboard",
+      "admin panel",
+      "metric tile wall",
+      "card stack productivity template"
+    ],
+    "screens_that_must_express_tone": [
+      "Activation",
+      "Core trail loop",
+      "Empty trail",
+      "Locked branch"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "original_synthesis": {
+    "one_sentence_direction": "A decision trail that turns scattered plans into one next action.",
+    "core_metaphor_or_shape": "annotated trail",
+    "signature_interactions": [
+      "commit next action",
+      "reveal reason trail",
+      "mark follow-up"
+    ],
+    "signature_surfaces": [
+      "trail",
+      "commitment rail",
+      "blocked-state note"
+    ],
+    "reference_synthesis": [
+      {
+        "from_reference": "Apple Reminders",
+        "trait": "inline completion",
+        "transformed_into": "commitment rail tick"
+      },
+      {
+        "from_reference": "Budget dashboard",
+        "trait": "total visibility",
+        "transformed_into": "one next-risk badge"
+      },
+      {
+        "from_reference": "Field notebook",
+        "trait": "margin notes",
+        "transformed_into": "reason annotations"
+      }
+    ],
+    "explicitly_rejected_patterns": [
+      "KPI card wall",
+      "generic dashboard",
+      "title-card-list-button"
+    ],
+    "proof_screen_or_flow": "Activation-to-next-action trail"
+  }
+}

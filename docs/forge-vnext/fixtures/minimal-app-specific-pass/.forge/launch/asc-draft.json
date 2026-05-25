@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "safety": {
+    "localDraftOnly": true,
+    "liveAppStoreConnectTouched": false,
+    "requiresHumanApprovalBeforeUse": true
+  },
+  "appInfo": {
+    "name": "Focus Pantry",
+    "subtitle": "Turn what is already in the pantry into a calm 3-day meal plan",
+    "primaryCategory": "human_required",
+    "secondaryCategory": "human_required",
+    "contentRights": "draft_unknown_until_human_confirms",
+    "ageRatingNotes": [
+      "Local draft only; human must confirm before live use."
+    ]
+  },
+  "localizations": [
+    {
+      "locale": "en-US",
+      "promotionalText": "Turn what is already in the pantry into a calm 3-day meal plan",
+      "description": "They waste food because planning from leftovers is mentally heavy Turn what is already in the pantry into a calm 3-day meal plan",
+      "keywords": [
+        "focus",
+        "pantry",
+        "busy",
+        "solo",
+        "cooks"
+      ],
+      "supportURL": "draft_required_before_live_use",
+      "marketingURL": "optional_draft_required_before_live_use",
+      "whatsNew": "Initial local TestFlight draft."
+    }
+  ],
+  "reviewNotesDraft": {
+    "demoAccount": "not_applicable_or_human_to_fill",
+    "instructions": "Turn what is already in the pantry into a calm 3-day meal plan",
+    "knownLimitations": [
+      "Local-only package; no live ASC, TestFlight, signing, or IAP action performed."
+    ]
+  },
+  "attachments": {
+    "screenshots": [
+      ".forge/evidence/screenshots/activation.png"
+    ],
+    "previewVideo": ".forge/evidence/videos/core-flow.mp4"
+  }
+}

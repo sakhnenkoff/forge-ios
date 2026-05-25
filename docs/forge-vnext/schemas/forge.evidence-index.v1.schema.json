@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.evidence-index.v1.schema.json",
+  "title": "Forge Evidence Index v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app_id",
+    "generated_at",
+    "verification_plan",
+    "overall_status",
+    "slots",
+    "blockers",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.evidence-index.v1"
+    },
+    "app_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verification_plan": {
+      "type": "string",
+      "minLength": 1
+    },
+    "overall_status": {
+      "enum": [
+        "pass",
+        "pass_with_substitutions",
+        "fail",
+        "blocked_human_decision"
+      ]
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "class",
+          "required",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "accepted",
+              "missing",
+              "failed",
+              "substitution_requested",
+              "substituted_approved",
+              "substituted_rejected",
+              "not_applicable_with_rationale"
+            ]
+          },
+          "artifact": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "limits": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

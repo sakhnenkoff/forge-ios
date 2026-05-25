@@ -1,0 +1,17 @@
+{
+  "schema_version": "forge.gate.activation.fixture.v1",
+  "gate": "activation",
+  "status": "approved",
+  "required_native_proof": [
+    {
+      "id": "reflection-first-entry",
+      "state": "first value visible",
+      "feature_id": "journal-loop",
+      "nav_path": "tab:journal-loop > tap:primary-action",
+      "acceptance": [
+        "first useful value visible"
+      ],
+      "required": true
+    }
+  ]
+}

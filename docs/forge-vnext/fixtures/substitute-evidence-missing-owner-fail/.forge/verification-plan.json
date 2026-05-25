@@ -1,0 +1,115 @@
+{
+  "schema_version": "forge.verification-plan.v1",
+  "app": {
+    "id": "substitute-no-owner",
+    "name": "SubstituteNoOwner",
+    "repo_root": ".",
+    "project": "SubstituteNoOwner.xcodeproj",
+    "scheme": "SubstituteNoOwner - Mock",
+    "bundle_id": "local.fixture.substitute-no-owner",
+    "platform": "ios",
+    "configuration": "Debug",
+    "simulator": {
+      "device": "iPhone 17 Pro",
+      "os": "latest"
+    }
+  },
+  "sources": {
+    "spec": ".forge/spec.json",
+    "design": ".forge/DESIGN.md",
+    "gate_receipts": [
+      ".forge/gates/activation.json"
+    ]
+  },
+  "policy": {
+    "strictness": "proof-app",
+    "allow_substitutes": true,
+    "overclaiming_rule": "missing_required_evidence_blocks_success"
+  },
+  "checks": [
+    {
+      "id": "primary-source-exists",
+      "type": "file_exists",
+      "severity": "blocker",
+      "path": "SubstituteNoOwner/Features/Activation/ActivationViewModel.swift",
+      "rationale": "Fixture source exists."
+    },
+    {
+      "id": "source-markers",
+      "type": "swift_contains_all",
+      "severity": "blocker",
+      "path": "SubstituteNoOwner/Features/Activation/ActivationViewModel.swift",
+      "markers": [
+        "@Observable",
+        "ActivationViewModel"
+      ],
+      "rationale": "Plan-specific source markers prove generic checking."
+    },
+    {
+      "id": "feature-done",
+      "type": "spec_feature_statuses",
+      "severity": "blocker",
+      "spec": ".forge/spec.json",
+      "feature_ids": [
+        "activation"
+      ],
+      "required_status": "done",
+      "rationale": "Required feature must be done."
+    }
+  ],
+  "evidence_slots": [
+    {
+      "id": "screenshots.activation-first-value",
+      "class": "screenshot",
+      "required": true,
+      "artifact": ".forge/evidence/screenshots/activation-first-value.png",
+      "derived_from": [
+        ".forge/gates/activation.json#/required_native_proof/0"
+      ],
+      "acceptance": [
+        "first useful value visible"
+      ]
+    },
+    {
+      "id": "video.activation-flow",
+      "class": "video",
+      "required": true,
+      "artifact": ".forge/evidence/video/activation-flow.mp4",
+      "substitute_allowed": true,
+      "acceptance": [
+        "ordered activation flow reaches first value"
+      ]
+    }
+  ],
+  "screenshot_slots": [
+    {
+      "id": "screenshots.activation-first-value",
+      "class": "screenshot",
+      "required": true,
+      "artifact": ".forge/evidence/screenshots/activation-first-value.png",
+      "derived_from": [
+        ".forge/gates/activation.json#/required_native_proof/0"
+      ],
+      "acceptance": [
+        "first useful value visible"
+      ]
+    }
+  ],
+  "video_slots": [
+    {
+      "id": "video.activation-flow",
+      "class": "video",
+      "required": true,
+      "artifact": ".forge/evidence/video/activation-flow.mp4",
+      "substitute_allowed": true,
+      "acceptance": [
+        "ordered activation flow reaches first value"
+      ]
+    }
+  ],
+  "success_criteria": {
+    "required_features": [
+      "activation"
+    ]
+  }
+}

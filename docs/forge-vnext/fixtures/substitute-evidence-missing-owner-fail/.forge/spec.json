@@ -1,0 +1,15 @@
+{
+  "schema_version": "forge.spec.fixture.v1",
+  "app": {
+    "id": "substitute-no-owner",
+    "name": "SubstituteNoOwner"
+  },
+  "features": [
+    {
+      "id": "activation",
+      "status": "done",
+      "screen_type": "primary_surface",
+      "nav_path": "tab:activation"
+    }
+  ]
+}

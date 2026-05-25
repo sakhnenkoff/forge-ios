@@ -1,0 +1,46 @@
+{
+  "references": [
+    {
+      "name": "Apple Reminders",
+      "type": "ios_native",
+      "source": "app_name",
+      "why_relevant": "List interactions",
+      "borrow": [
+        "inline completion gesture"
+      ],
+      "do_not_copy": [
+        "generic list-only shell",
+        "system app visual identity"
+      ],
+      "risk_if_overused": "Too close to stock iOS"
+    },
+    {
+      "name": "Budget dashboard",
+      "type": "category",
+      "source": "app_name",
+      "why_relevant": "Shows money summary anti-pattern",
+      "borrow": [
+        "quick total visibility"
+      ],
+      "do_not_copy": [
+        "KPI tile wall",
+        "charts without decisions"
+      ],
+      "risk_if_overused": "Shallow dashboard"
+    },
+    {
+      "name": "Field notebook",
+      "type": "emotional",
+      "source": "local_screenshot_path",
+      "why_relevant": "A tactile planning mood",
+      "borrow": [
+        "margin annotations",
+        "progressive disclosure"
+      ],
+      "do_not_copy": [
+        "paper skeuomorphism"
+      ],
+      "risk_if_overused": "Decorative notebook skin"
+    }
+  ]
+}

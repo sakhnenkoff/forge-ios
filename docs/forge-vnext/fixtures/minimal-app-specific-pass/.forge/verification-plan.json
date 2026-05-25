@@ -1,0 +1,134 @@
+{
+  "schema_version": "forge.verification-plan.v1",
+  "app": {
+    "id": "focus-pantry",
+    "name": "Focus Pantry",
+    "repo_root": ".",
+    "project": "Sources/FocusPantry/LocalStore.swift",
+    "scheme": "Focus Pantry - Mock",
+    "bundle_id": "local.draft.only.focuspantry",
+    "platform": "ios",
+    "configuration": "Debug",
+    "simulator": {
+      "device": "iPhone 17 Pro",
+      "os": "latest"
+    }
+  },
+  "sources": {
+    "spec": ".forge/spec.json",
+    "design": "design/design-system.json",
+    "gate_receipts": [
+      ".forge/gates/product-taste-gate.json",
+      "design/design-gate-receipt.json"
+    ]
+  },
+  "policy": {
+    "strictness": "proof-app-fixture",
+    "allow_substitutes": true,
+    "overclaiming_rule": "missing_required_evidence_blocks_success"
+  },
+  "checks": [
+    {
+      "id": "local-source-exists",
+      "type": "file_exists",
+      "severity": "blocker",
+      "path": "Sources/FocusPantry/LocalStore.swift",
+      "rationale": "Fixture contains an app-owned source marker outside the Forge template."
+    },
+    {
+      "id": "app-specific-contract-markers",
+      "type": "repo_contains_any",
+      "severity": "blocker",
+      "include": [
+        ".forge/**/*.json",
+        "design/**/*.json",
+        "Sources/**/*.swift"
+      ],
+      "markers": [
+        "Focus Pantry",
+        "pantry",
+        "meal plan"
+      ],
+      "rationale": "The generic verifier must read app-specific fixture contracts instead of DayRateLab literals."
+    },
+    {
+      "id": "forbid-dayrate-contamination",
+      "type": "repo_forbid_regex",
+      "severity": "blocker",
+      "include": [
+        ".forge/gates/*.json",
+        ".forge/product/*.json",
+        ".forge/scorecards/*.json",
+        "design/**/*.json",
+        "Sources/**/*.swift"
+      ],
+      "patterns": [
+        "DayRateLab",
+        "DayRate"
+      ],
+      "rationale": "Pass fixture must not carry the prior sample app identity."
+    },
+    {
+      "id": "activation-slot-configured",
+      "type": "evidence_slot_present",
+      "severity": "blocker",
+      "slot_id": "screenshots.activation",
+      "rationale": "Activation screenshot evidence is required before launch."
+    }
+  ],
+  "evidence_slots": [
+    {
+      "id": "screenshots.activation",
+      "class": "screenshot",
+      "required": true,
+      "artifact": ".forge/evidence/screenshots/activation.png",
+      "derived_from": [
+        ".forge/gates/product-coverage-matrix.json#/surfaces/0"
+      ],
+      "acceptance": [
+        "first useful pantry plan visible"
+      ]
+    },
+    {
+      "id": "video.core-flow",
+      "class": "video",
+      "required": true,
+      "artifact": ".forge/evidence/videos/core-flow.mp4",
+      "substitute_allowed": true,
+      "acceptance": [
+        "core loop reaches a saved 3-day plan"
+      ]
+    }
+  ],
+  "screenshot_slots": [
+    {
+      "id": "screenshots.activation",
+      "class": "screenshot",
+      "required": true,
+      "artifact": ".forge/evidence/screenshots/activation.png",
+      "derived_from": [
+        ".forge/gates/product-coverage-matrix.json#/surfaces/0"
+      ],
+      "acceptance": [
+        "first useful pantry plan visible"
+      ]
+    }
+  ],
+  "video_slots": [
+    {
+      "id": "video.core-flow",
+      "class": "video",
+      "required": true,
+      "artifact": ".forge/evidence/videos/core-flow.mp4",
+      "substitute_allowed": true,
+      "acceptance": [
+        "core loop reaches a saved 3-day plan"
+      ]
+    }
+  ],
+  "success_criteria": {
+    "required_features": [
+      "pantry-plan-core-loop"
+    ]
+  }
+}

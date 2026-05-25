@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.substitute-evidence.v1.schema.json",
+  "title": "Forge Substitute Evidence v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "slot_id",
+    "status",
+    "rationale",
+    "owner",
+    "approved_by",
+    "approved_at",
+    "substitute_artifacts",
+    "limits"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.substitute-evidence.v1"
+    },
+    "slot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "approved",
+        "rejected",
+        "requested"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "substitute_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limits": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}

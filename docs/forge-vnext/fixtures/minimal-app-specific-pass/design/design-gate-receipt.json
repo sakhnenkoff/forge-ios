@@ -1,0 +1,157 @@
+{
+  "schema_version": "forge.design_gate.v1",
+  "app_id": "minimal-app-specific-pass",
+  "app_name": "TrailWise",
+  "spec_hash_or_timestamp": "fixture-2026-05-25",
+  "gate_status": "pass",
+  "artifacts": {
+    "references_md": "design/references.md",
+    "references_json": "design/references.json",
+    "synthesis_md": "design/synthesis.md",
+    "synthesis_json": "design/synthesis.json",
+    "emotional_tone_md": "design/emotional-tone.md",
+    "emotional_tone_json": "design/emotional-tone.json",
+    "design_system_md": "design/design-system.md",
+    "design_system_json": "design/design-system.json",
+    "prototype_entry": "design/prototype/index.html",
+    "prototype_receipt": "design/prototype/prototype-receipt.json",
+    "screenshot_review_md": "design/screenshot-review.md",
+    "screenshot_review_json": "design/screenshot-review.json",
+    "motion_haptics_md": "design/motion-haptics.md",
+    "motion_haptics_json": "design/motion-haptics.json"
+  },
+  "product_design_handshake": {
+    "app_name": "TrailWise",
+    "target_user": "solo freelancers choosing one next action from scattered project signals",
+    "core_workflow": "capture one signal, commit the next safe step, then return to continue the trail",
+    "core_emotional_job": "make ambiguity feel navigable without pretending the whole route is known",
+    "repeat_use_moment": "return after a client reply to continue the same commitment trail",
+    "monetization_boundary": "advanced branch comparison and multi-plan planning pack",
+    "launch_bar": [
+      "Activation must prove one signal becomes one next commitment",
+      "Core loop must show trail continuation and evidence margin",
+      "Money boundary must be a locked branch, not a surprise modal"
+    ],
+    "design_implications": [
+      {
+        "product_fact": "Activation starts with only one signal",
+        "design_consequence": "Use a FogPrompt instead of onboarding cards",
+        "must_show_in_screen_or_flow": "Activation"
+      },
+      {
+        "product_fact": "Core workflow is choosing one next action",
+        "design_consequence": "A CommitmentRail dominates the core screen",
+        "must_show_in_screen_or_flow": "Core loop"
+      },
+      {
+        "product_fact": "Trust depends on seeing why",
+        "design_consequence": "EvidenceMargin attaches reasons beside each step",
+        "must_show_in_screen_or_flow": "Core loop"
+      },
+      {
+        "product_fact": "Repeat use resumes prior uncertainty",
+        "design_consequence": "ReturnMarker shows the previous commitment and next branch",
+        "must_show_in_screen_or_flow": "Retention"
+      },
+      {
+        "product_fact": "Paid value is advanced planning branches",
+        "design_consequence": "BranchLock shows monetization boundary as locked branch with rationale",
+        "must_show_in_screen_or_flow": "Monetization"
+      },
+      {
+        "product_fact": "Zero data is common for new users",
+        "design_consequence": "TrailEmptyState asks for one signal and explains why",
+        "must_show_in_screen_or_flow": "Empty"
+      }
+    ]
+  },
+  "subgate_verdicts": {
+    "references_synthesis": "pass",
+    "emotional_tone": "pass",
+    "design_system": "pass",
+    "prototype": "pass",
+    "native_screenshots": "pass",
+    "motion_haptics": "pass",
+    "generic_ui_rejection_tests": "pass"
+  },
+  "generic_ui_rejection_tests": {
+    "token_swap_test": {
+      "verdict": "pass",
+      "why_not_interchangeable": [
+        "commitment rail sequence is specific to turning signals into decisions",
+        "evidence margin makes reasons visible beside each step",
+        "locked branch monetization maps directly to advanced planning"
+      ],
+      "app_specific_structural_choices": [
+        "left-edge commitment rail",
+        "side evidence margin",
+        "locked branch boundary"
+      ]
+    },
+    "card_dashboard_test": {
+      "verdict": "pass",
+      "card_like_regions_count": 1,
+      "generic_metric_tiles_count": 0,
+      "justification_if_exception": null,
+      "distinctive_non_card_mechanisms": [
+        "commitment rail",
+        "evidence margin",
+        "branch lock"
+      ]
+    },
+    "scaffold_dependency_test": {
+      "verdict": "pass",
+      "default_components_used": [
+        "DSButton under SafeStepButton internals"
+      ],
+      "app_specific_components_used": [
+        "CommitmentRail",
+        "EvidenceMargin",
+        "FogPrompt",
+        "BranchLock",
+        "TrailEmptyState"
+      ],
+      "identity_carried_by": "layout, components, interactions, workflow_shape",
+      "repair_if_tokens_only": []
+    },
+    "screen_shape_uniqueness_test": {
+      "verdict": "pass",
+      "screen_shapes": [
+        {
+          "screen": "Activation",
+          "composition_shape": "fog prompt feeding rail seed",
+          "why_this_shape_matches_task": "minimizes startup overwhelm"
+        },
+        {
+          "screen": "Core loop",
+          "composition_shape": "persistent rail with evidence margin",
+          "why_this_shape_matches_task": "choice plus rationale must remain visible"
+        },
+        {
+          "screen": "Locked branch",
+          "composition_shape": "branch preview with locked continuation",
+          "why_this_shape_matches_task": "monetization is advanced planning continuation"
+        },
+        {
+          "screen": "Empty trail",
+          "composition_shape": "open trail space plus one-signal repair",
+          "why_this_shape_matches_task": "zero data still teaches the workflow"
+        }
+      ],
+      "repeated_formula_risk": "low because states change rail, margin, and branch composition for product reasons"
+    },
+    "emotional_tone_blind_test": {
+      "reviewer_inferred_tone": "calm guided decision trail",
+      "intended_tone": "calm guided decision trail",
+      "match": "yes",
+      "mismatches": []
+    }
+  },
+  "blocking_findings": [],
+  "repair_plan": [],
+  "approval": {
+    "human_review_required_before_swift_expansion": true,
+    "recommended_decision": "approve",
+    "rationale": "Fixture carries app-specific references, synthesis, tone, design system, prototype, and native review evidence without generating a second app."
+  }
+}

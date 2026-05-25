@@ -1,0 +1,97 @@
+{
+  "schema_version": "forge.design_gate.v1",
+  "app_id": "token-reskin-fail",
+  "app_name": "Token Reskin",
+  "spec_hash_or_timestamp": "fixture",
+  "gate_status": "pass",
+  "artifacts": {
+    "references_json": "design/references.json",
+    "synthesis_json": "design/synthesis.json",
+    "emotional_tone_json": "design/emotional-tone.json",
+    "design_system_json": "design/design-system.json",
+    "prototype_entry": "design/prototype/index.html",
+    "prototype_receipt": "design/prototype/prototype-receipt.json"
+  },
+  "product_design_handshake": {
+    "app_name": "Token Reskin",
+    "target_user": "busy people",
+    "core_workflow": "check dashboard",
+    "core_emotional_job": "feel organized",
+    "repeat_use_moment": "daily check",
+    "monetization_boundary": null,
+    "launch_bar": [
+      "looks nice"
+    ],
+    "design_implications": [
+      {
+        "product_fact": "users need stats",
+        "design_consequence": "show cards",
+        "must_show_in_screen_or_flow": "dashboard"
+      }
+    ]
+  },
+  "subgate_verdicts": {
+    "references_synthesis": "pass",
+    "emotional_tone": "pass",
+    "design_system": "pass",
+    "prototype": "pass",
+    "native_screenshots": "not_started",
+    "motion_haptics": "pass",
+    "generic_ui_rejection_tests": "pass"
+  },
+  "generic_ui_rejection_tests": {
+    "token_swap_test": {
+      "verdict": "fail",
+      "why_not_interchangeable": [
+        "Only name/colors/icons differ"
+      ],
+      "app_specific_structural_choices": []
+    },
+    "card_dashboard_test": {
+      "verdict": "fail",
+      "card_like_regions_count": 8,
+      "generic_metric_tiles_count": 6,
+      "justification_if_exception": null,
+      "distinctive_non_card_mechanisms": []
+    },
+    "scaffold_dependency_test": {
+      "verdict": "fail",
+      "default_components_used": [
+        "DSScreen",
+        "DSCard",
+        "DSButton"
+      ],
+      "app_specific_components_used": [],
+      "identity_carried_by": "tokens",
+      "repair_if_tokens_only": [
+        "Create workflow-shaped components"
+      ]
+    },
+    "screen_shape_uniqueness_test": {
+      "verdict": "fail",
+      "screen_shapes": [
+        {
+          "screen": "Dashboard",
+          "composition_shape": "title-card-list-button",
+          "why_this_shape_matches_task": "default"
+        }
+      ],
+      "repeated_formula_risk": "Every screen uses same shell"
+    },
+    "emotional_tone_blind_test": {
+      "reviewer_inferred_tone": "generic productivity dashboard",
+      "intended_tone": "calm premium progress",
+      "match": "no",
+      "mismatches": [
+        "Tone is carried by palette only"
+      ]
+    }
+  },
+  "blocking_findings": [],
+  "repair_plan": [],
+  "approval": {
+    "human_review_required_before_swift_expansion": true,
+    "recommended_decision": "approve",
+    "rationale": "fixture intentionally overclaims pass"
+  }
+}

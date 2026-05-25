@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.design-review-receipt.v1.schema.json",
+  "title": "Forge vNext Design Review Receipt",
+  "description": "Final design gate receipt plus prototype, native screenshot review, and generic UI rejection evidence. Native screenshot evidence may be fixture evidence until a real generated app exists.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app_id",
+    "app_name",
+    "spec_hash_or_timestamp",
+    "gate_status",
+    "artifacts",
+    "product_design_handshake",
+    "subgate_verdicts",
+    "generic_ui_rejection_tests",
+    "blocking_findings",
+    "repair_plan",
+    "approval"
+  ],
+  "properties": {
+    "schema_version": { "const": "forge.design_gate.v1" },
+    "app_id": { "type": "string", "minLength": 1 },
+    "app_name": { "type": "string", "minLength": 1 },
+    "spec_hash_or_timestamp": { "type": "string", "minLength": 1 },
+    "gate_status": { "enum": ["pass", "repair", "reject"] },
+    "artifacts": {
+      "type": "object",
+      "required": ["references_json", "synthesis_json", "emotional_tone_json", "design_system_json", "prototype_entry", "prototype_receipt"],
+      "additionalProperties": { "type": "string" }
+    },
+    "product_design_handshake": { "type": "object" },
+    "subgate_verdicts": {
+      "type": "object",
+      "required": ["references_synthesis", "emotional_tone", "design_system", "prototype", "native_screenshots", "motion_haptics", "generic_ui_rejection_tests"],
+      "additionalProperties": false,
+      "properties": {
+        "references_synthesis": { "$ref": "#/$defs/verdict" },
+        "emotional_tone": { "$ref": "#/$defs/verdict" },
+        "design_system": { "$ref": "#/$defs/verdict" },
+        "prototype": { "$ref": "#/$defs/verdict" },
+        "native_screenshots": { "enum": ["pass", "repair", "reject", "not_started"] },
+        "motion_haptics": { "$ref": "#/$defs/verdict" },
+        "generic_ui_rejection_tests": { "$ref": "#/$defs/verdict" }
+      }
+    },
+    "generic_ui_rejection_tests": {
+      "type": "object",
+      "required": ["token_swap_test", "card_dashboard_test", "scaffold_dependency_test", "screen_shape_uniqueness_test", "emotional_tone_blind_test"],
+      "properties": {
+        "token_swap_test": {
+          "type": "object",
+          "required": ["verdict", "why_not_interchangeable", "app_specific_structural_choices"],
+          "properties": {
+            "verdict": { "$ref": "#/$defs/passFail" },
+            "why_not_interchangeable": { "type": "array", "minItems": 3, "items": { "type": "string" } },
+            "app_specific_structural_choices": { "type": "array", "minItems": 3, "items": { "type": "string" } }
+          }
+        },
+        "card_dashboard_test": {
+          "type": "object",
+          "required": ["verdict", "card_like_regions_count", "generic_metric_tiles_count", "justification_if_exception", "distinctive_non_card_mechanisms"],
+          "properties": {
+            "verdict": { "enum": ["pass", "fail", "justified_exception"] },
+            "card_like_regions_count": { "type": "integer", "minimum": 0 },
+            "generic_metric_tiles_count": { "type": "integer", "minimum": 0 },
+            "justification_if_exception": { "type": ["string", "null"] },
+            "distinctive_non_card_mechanisms": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "scaffold_dependency_test": {
+          "type": "object",
+          "required": ["verdict", "default_components_used", "app_specific_components_used", "identity_carried_by", "repair_if_tokens_only"],
+          "properties": {
+            "verdict": { "$ref": "#/$defs/passFail" },
+            "default_components_used": { "type": "array", "items": { "type": "string" } },
+            "app_specific_components_used": { "type": "array", "items": { "type": "string" } },
+            "identity_carried_by": { "type": "string" },
+            "repair_if_tokens_only": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "screen_shape_uniqueness_test": {
+          "type": "object",
+          "required": ["verdict", "screen_shapes", "repeated_formula_risk"],
+          "properties": {
+            "verdict": { "$ref": "#/$defs/passFail" },
+            "screen_shapes": { "type": "array", "minItems": 3, "items": { "type": "object" } },
+            "repeated_formula_risk": { "type": "string" }
+          }
+        },
+        "emotional_tone_blind_test": {
+          "type": "object",
+          "required": ["reviewer_inferred_tone", "intended_tone", "match", "mismatches"],
+          "properties": {
+            "reviewer_inferred_tone": { "type": "string" },
+            "intended_tone": { "type": "string" },
+            "match": { "enum": ["yes", "partial", "no"] },
+            "mismatches": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "native_screenshot_review": {
+      "type": "object",
+      "description": "Optional in pre-native; required by the native-review phase.",
+      "properties": {
+        "screenshots": { "type": "array" },
+        "rubric_scores": { "type": "object" },
+        "blocking_findings": { "type": "array" },
+        "repair_required": { "type": "array" },
+        "verdict": { "$ref": "#/$defs/verdict" }
+      }
+    },
+    "blocking_findings": { "type": "array", "items": { "type": "string" } },
+    "repair_plan": { "type": "array", "items": { "type": "object" } },
+    "approval": {
+      "type": "object",
+      "required": ["human_review_required_before_swift_expansion", "recommended_decision", "rationale"],
+      "properties": {
+        "human_review_required_before_swift_expansion": { "const": true },
+        "recommended_decision": { "enum": ["approve", "repair", "reject"] },
+        "rationale": { "type": "string", "minLength": 8 }
+      }
+    }
+  },
+  "$defs": {
+    "verdict": { "enum": ["pass", "repair", "reject"] },
+    "passFail": { "enum": ["pass", "fail"] }
+  }
+}

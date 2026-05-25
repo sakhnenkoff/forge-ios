@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "safety": {
+    "localDraftOnly": true,
+    "notLegalAdvice": true,
+    "requiresHumanConfirmationBeforeSubmission": true
+  },
+  "dataCollectionSummary": {
+    "collectsData": "unknown",
+    "tracking": "unknown",
+    "thirdPartySDKs": []
+  },
+  "dataTypes": [
+    {
+      "appleCategory": "Identifiers",
+      "collected": "unknown",
+      "linkedToUser": "unknown",
+      "usedForTracking": "unknown",
+      "purposes": [
+        "App Functionality"
+      ],
+      "evidencePaths": [
+        "Sources/FocusPantry/LocalStore.swift"
+      ],
+      "confidence": "low",
+      "humanReviewNeeded": true
+    }
+  ],
+  "permissions": [
+    {
+      "permission": "Camera",
+      "used": false,
+      "evidencePaths": [],
+      "notes": "No camera permission evidence in fixture; human confirmation still required."
+    }
+  ],
+  "openQuestions": [
+    "Will analytics or crash reporting be enabled before TestFlight?",
+    "What support and privacy policy URLs should be used for live submission?"
+  ]
+}

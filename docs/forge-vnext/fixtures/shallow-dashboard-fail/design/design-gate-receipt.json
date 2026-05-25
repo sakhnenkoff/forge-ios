@@ -1,0 +1,134 @@
+{
+  "schema_version": "forge.design_gate.v1",
+  "app_id": "missing-prototype",
+  "app_name": "Missing Prototype",
+  "spec_hash_or_timestamp": "fixture",
+  "gate_status": "pass",
+  "artifacts": {
+    "references_json": "design/references.json",
+    "synthesis_json": "design/synthesis.json",
+    "emotional_tone_json": "design/emotional-tone.json",
+    "design_system_json": "design/design-system.json",
+    "prototype_entry": "design/prototype/index.html",
+    "prototype_receipt": "design/prototype/prototype-receipt.json"
+  },
+  "product_design_handshake": {
+    "app_name": "Missing Prototype",
+    "target_user": "freelancers choosing next action",
+    "core_workflow": "turn scattered inputs into next action",
+    "core_emotional_job": "make ambiguity feel navigable",
+    "repeat_use_moment": "return to continue trail",
+    "monetization_boundary": "pro planning packs",
+    "launch_bar": [
+      "activation trail proves one commitment"
+    ],
+    "design_implications": [
+      {
+        "product_fact": "activation requires one input",
+        "design_consequence": "input trail starts immediately",
+        "must_show_in_screen_or_flow": "Activation"
+      },
+      {
+        "product_fact": "repeat use resumes context",
+        "design_consequence": "trail markers persist",
+        "must_show_in_screen_or_flow": "Retention"
+      },
+      {
+        "product_fact": "money boundary is advanced planning",
+        "design_consequence": "paywall is a locked branch",
+        "must_show_in_screen_or_flow": "Monetization"
+      },
+      {
+        "product_fact": "users fear wrong choice",
+        "design_consequence": "show reasons in margin",
+        "must_show_in_screen_or_flow": "Core loop"
+      },
+      {
+        "product_fact": "empty state is common",
+        "design_consequence": "empty asks for one signal",
+        "must_show_in_screen_or_flow": "Empty"
+      }
+    ]
+  },
+  "subgate_verdicts": {
+    "references_synthesis": "pass",
+    "emotional_tone": "pass",
+    "design_system": "pass",
+    "prototype": "pass",
+    "native_screenshots": "not_started",
+    "motion_haptics": "pass",
+    "generic_ui_rejection_tests": "pass"
+  },
+  "generic_ui_rejection_tests": {
+    "token_swap_test": {
+      "verdict": "pass",
+      "why_not_interchangeable": [
+        "trail commitments",
+        "margin evidence",
+        "locked branch monetization"
+      ],
+      "app_specific_structural_choices": [
+        "trail",
+        "commitment rail",
+        "branch lock"
+      ]
+    },
+    "card_dashboard_test": {
+      "verdict": "pass",
+      "card_like_regions_count": 1,
+      "generic_metric_tiles_count": 0,
+      "justification_if_exception": null,
+      "distinctive_non_card_mechanisms": [
+        "trail rail",
+        "margin notes"
+      ]
+    },
+    "scaffold_dependency_test": {
+      "verdict": "pass",
+      "default_components_used": [
+        "DSButton"
+      ],
+      "app_specific_components_used": [
+        "CommitmentRail",
+        "ReasonMargin",
+        "TrailBranch"
+      ],
+      "identity_carried_by": "layout, components, interactions, workflow_shape",
+      "repair_if_tokens_only": []
+    },
+    "screen_shape_uniqueness_test": {
+      "verdict": "pass",
+      "screen_shapes": [
+        {
+          "screen": "Activation",
+          "composition_shape": "single signal prompt with trail seed",
+          "why_this_shape_matches_task": "starts low-friction evidence capture"
+        },
+        {
+          "screen": "Core",
+          "composition_shape": "commitment rail with margin reasons",
+          "why_this_shape_matches_task": "decision clarity"
+        },
+        {
+          "screen": "Empty",
+          "composition_shape": "blank trail plus one repair prompt",
+          "why_this_shape_matches_task": "removes overwhelm"
+        }
+      ],
+      "repeated_formula_risk": "low"
+    },
+    "emotional_tone_blind_test": {
+      "reviewer_inferred_tone": "guided calm decision trail",
+      "intended_tone": "guided calm decision trail",
+      "match": "yes",
+      "mismatches": []
+    }
+  },
+  "blocking_findings": [],
+  "repair_plan": [],
+  "approval": {
+    "human_review_required_before_swift_expansion": true,
+    "recommended_decision": "approve",
+    "rationale": "fixture intentionally lacks prototype files"
+  }
+}

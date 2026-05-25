@@ -1,0 +1,408 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.product-taste-gate.v1.schema.json",
+  "title": "Forge vNext Product/Taste Gate Receipt v1",
+  "description": "Executable product/taste gate receipt. App quality is scored here; pipeline quality must stay in a separate pipeline scorecard artifact.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app",
+    "gate",
+    "source_artifacts",
+    "evidence_index",
+    "scores",
+    "hard_minimums",
+    "coverage_matrix_ref",
+    "recommendation",
+    "human_decision",
+    "next_allowed_actions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.product_taste_gate.v1"
+    },
+    "app": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "repo_path",
+        "run_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repo_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "gate": {
+      "type": "object",
+      "required": [
+        "name",
+        "stage",
+        "created_at",
+        "created_by",
+        "verdict",
+        "confidence"
+      ],
+      "properties": {
+        "name": {
+          "const": "product_taste"
+        },
+        "stage": {
+          "enum": [
+            "direction",
+            "slice_selection",
+            "native_evidence",
+            "final_audit"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verdict": {
+          "enum": [
+            "pass",
+            "repair",
+            "ask_matvii",
+            "kill_recommended",
+            "launch_candidate_blocked",
+            "launch_candidate"
+          ]
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "kind"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "hash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_index": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "kind",
+          "proves",
+          "status",
+          "notes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "proves": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "enum": [
+              "present",
+              "missing",
+              "substitute",
+              "stale"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "scores": {
+      "type": "object",
+      "required": [
+        "scale",
+        "weighted_overall",
+        "dimensions",
+        "hard_minimum_failures"
+      ],
+      "properties": {
+        "scale": {
+          "const": "0-10 integer"
+        },
+        "weighted_overall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "dimensions": {
+          "type": "object"
+        },
+        "hard_minimum_failures": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "hard_minimums": {
+      "type": "object",
+      "required": [
+        "demand_evidence_types_count",
+        "required_demand_evidence_types_count",
+        "has_excluded_user_statement",
+        "has_revenue_taste_tradeoff_statement",
+        "activation_evidence_present",
+        "core_loop_evidence_present",
+        "retention_evidence_present",
+        "money_boundary_evidence_present_or_deferred_by_approval",
+        "contradictions_unresolved"
+      ],
+      "properties": {
+        "demand_evidence_types_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "required_demand_evidence_types_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "has_excluded_user_statement": {
+          "type": "boolean"
+        },
+        "has_revenue_taste_tradeoff_statement": {
+          "type": "boolean"
+        },
+        "activation_evidence_present": {
+          "type": "boolean"
+        },
+        "core_loop_evidence_present": {
+          "type": "boolean"
+        },
+        "retention_evidence_present": {
+          "type": "boolean"
+        },
+        "money_boundary_evidence_present_or_deferred_by_approval": {
+          "type": "boolean"
+        },
+        "contradictions_unresolved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "coverage_matrix_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommendation": {
+      "type": "object",
+      "required": [
+        "type",
+        "confidence",
+        "summary",
+        "failed_hard_minimums",
+        "repair_options",
+        "kill_case",
+        "matvii_decision_required",
+        "allowed_decisions"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "pass",
+            "repair",
+            "ask_matvii",
+            "kill_recommended",
+            "launch_candidate_blocked",
+            "launch_candidate"
+          ]
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "failed_hard_minimums": {
+          "type": "array"
+        },
+        "repair_options": {
+          "type": "array"
+        },
+        "kill_case": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "matvii_decision_required": {
+          "type": "boolean"
+        },
+        "allowed_decisions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "human_decision": {
+      "type": "object",
+      "required": [
+        "required",
+        "reason",
+        "status",
+        "decision_by",
+        "decision_at",
+        "decision_artifact"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "not_required",
+            "pending",
+            "approved",
+            "rejected",
+            "overridden"
+          ]
+        },
+        "decision_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_artifact": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "next_allowed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "scoreDimension": {
+      "type": "object",
+      "required": [
+        "score",
+        "minimum",
+        "weight",
+        "evidence_ids",
+        "rationale"
+      ],
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "minimum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "weight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

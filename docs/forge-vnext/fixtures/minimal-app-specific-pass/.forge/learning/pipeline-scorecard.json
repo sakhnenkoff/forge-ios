@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "overallScore": 8.1,
+  "verdict": "pipeline_acceptable",
+  "dimensions": [
+    {
+      "id": "researchEvidenceQuality",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Research evidence exists and names known gaps."
+    },
+    {
+      "id": "gateClarityEnforcement",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Launch validator enforces local-only manifests and learning-review rules."
+    },
+    {
+      "id": "designArtifactQuality",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Design system artifact is linked into launch/screenshot package."
+    },
+    {
+      "id": "nativeArchitectureModularity",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Native app is represented by local evidence paths rather than Forge template mutations."
+    },
+    {
+      "id": "verificationReliability",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Evidence index claims include statuses and evidence paths."
+    },
+    {
+      "id": "launchPackageCompleteness",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/launch/launch-package.json"
+      ],
+      "rationale": "All launch artifacts are separate and referenced by manifest."
+    },
+    {
+      "id": "reusabilityGeneralization",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Script reads app-owned .forge artifacts and contains no DayRateLab literals."
+    },
+    {
+      "id": "learningQuality",
+      "score": 8,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/verification/evidence-index.json"
+      ],
+      "rationale": "Learning patch proposals cite evidence and require human review."
+    }
+  ],
+  "regressions": [],
+  "durableLearningNeeded": true
+}

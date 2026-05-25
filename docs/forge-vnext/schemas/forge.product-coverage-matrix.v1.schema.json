@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.product-coverage-matrix.v1.schema.json",
+  "title": "Forge vNext Product Coverage Matrix v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "app_id",
+    "surfaces",
+    "required_roles",
+    "missing_blockers"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.product_coverage_matrix.v1"
+    },
+    "app_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "product_role",
+          "required_status",
+          "source_refs",
+          "native_evidence_ids",
+          "prototype_evidence_ids",
+          "launch_impact_if_missing",
+          "status",
+          "notes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "product_role": {
+            "enum": [
+              "activation",
+              "core_loop",
+              "retention",
+              "monetization",
+              "approved_monetization_deferral",
+              "dashboard",
+              "supporting"
+            ]
+          },
+          "required_status": {
+            "enum": [
+              "native_required_now",
+              "prototype_only",
+              "deferred_non_blocking",
+              "deferred_blocks_launch",
+              "not_applicable"
+            ]
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "native_evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "prototype_evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "launch_impact_if_missing": {
+            "enum": [
+              "blocks_launch_candidate",
+              "non_blocking_with_approval",
+              "none"
+            ]
+          },
+          "status": {
+            "enum": [
+              "proven",
+              "missing",
+              "prototype_only",
+              "deferred_non_blocking",
+              "deferred_blocks_launch",
+              "not_applicable"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "required_roles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "activation",
+          "core_loop",
+          "retention",
+          "monetization_or_approved_deferral"
+        ]
+      }
+    },
+    "missing_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

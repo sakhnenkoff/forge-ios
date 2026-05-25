@@ -1,0 +1,27 @@
+{
+  "schema_version": "forge.evidence-index.v1",
+  "app_id": "focus-pantry",
+  "generated_at": "2026-05-25T12:30:00Z",
+  "verification_plan": ".forge/verification-plan.json",
+  "overall_status": "pass",
+  "slots": [
+    {
+      "id": "screenshots.activation",
+      "class": "screenshot",
+      "required": true,
+      "status": "accepted",
+      "artifact": ".forge/evidence/screenshots/activation.png"
+    },
+    {
+      "id": "video.core-flow",
+      "class": "video",
+      "required": true,
+      "status": "accepted",
+      "artifact": ".forge/evidence/videos/core-flow.mp4"
+    }
+  ],
+  "blockers": [],
+  "warnings": [
+    "Fixture evidence proves validator contracts only; replace with real native simulator evidence during approved second-app generation."
+  ]
+}

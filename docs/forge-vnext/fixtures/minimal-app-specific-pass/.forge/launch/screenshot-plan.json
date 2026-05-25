@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "deviceTargets": [
+    "iPhone 17 Pro"
+  ],
+  "style": {
+    "sourceDesignSystem": ".forge/design/design-system.json",
+    "marketingFrameStyle": "plain_screenshot",
+    "background": "app_specific"
+  },
+  "requiredShots": [
+    {
+      "id": "activation",
+      "title": "Turn what is already in the pantry into a calm 3-day meal plan",
+      "screenOrFlow": "Turn what is already in the pantry into a calm 3-day meal plan",
+      "evidencePath": ".forge/evidence/screenshots/activation.png",
+      "captionDraft": "Turn what is already in the pantry into a calm 3-day meal plan",
+      "status": "captured",
+      "acceptanceCriteria": [
+        "Shows app-specific native UI or is explicitly marked missing.",
+        "Does not require live service, signing, or TestFlight actions."
+      ]
+    },
+    {
+      "id": "core_loop",
+      "title": "Core repeat-use loop",
+      "screenOrFlow": "Core repeat-use loop",
+      "evidencePath": ".forge/evidence/screenshots/core-loop.png",
+      "captionDraft": "Core repeat-use loop",
+      "status": "captured",
+      "acceptanceCriteria": [
+        "Shows app-specific native UI or is explicitly marked missing.",
+        "Does not require live service, signing, or TestFlight actions."
+      ]
+    },
+    {
+      "id": "money_boundary",
+      "title": "Upgrade boundary after first value",
+      "screenOrFlow": "Upgrade boundary after first value",
+      "evidencePath": ".forge/evidence/screenshots/paywall.png",
+      "captionDraft": "Upgrade boundary after first value",
+      "status": "captured",
+      "acceptanceCriteria": [
+        "Shows app-specific native UI or is explicitly marked missing.",
+        "Does not require live service, signing, or TestFlight actions."
+      ]
+    },
+    {
+      "id": "taste_moment",
+      "title": "Less database-heavy than calorie trackers; more actionable than recipe bookmarks",
+      "screenOrFlow": "Less database-heavy than calorie trackers; more actionable than recipe bookmarks",
+      "evidencePath": ".forge/evidence/screenshots/activation.png",
+      "captionDraft": "Less database-heavy than calorie trackers; more actionable than recipe bookmarks",
+      "status": "captured",
+      "acceptanceCriteria": [
+        "Shows app-specific native UI or is explicitly marked missing.",
+        "Does not require live service, signing, or TestFlight actions."
+      ]
+    }
+  ],
+  "blockedIfMissing": [
+    "activation",
+    "core_loop"
+  ]
+}

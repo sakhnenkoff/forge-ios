@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "overallScore": 7.8,
+  "verdict": "testflight_local_candidate",
+  "thresholds": {
+    "launchCandidateMinimumOverall": 8,
+    "hardMinimumPerCriticalDimension": 7,
+    "criticalDimensions": [
+      "pain",
+      "repeatUse",
+      "nativeUX",
+      "launchReadiness"
+    ]
+  },
+  "dimensions": [
+    {
+      "id": "pain",
+      "label": "Pain/problem clarity",
+      "score": 8,
+      "weight": 1,
+      "hardMinimum": 7,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/research/evidence-matrix.json"
+      ],
+      "rationale": "Pain/problem clarity has app-specific local evidence in the minimal fixture."
+    },
+    {
+      "id": "targetUser",
+      "label": "Target user sharpness",
+      "score": 8,
+      "weight": 1,
+      "hardMinimum": 6,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/research/evidence-matrix.json"
+      ],
+      "rationale": "Target user sharpness has app-specific local evidence in the minimal fixture."
+    },
+    {
+      "id": "repeatUse",
+      "label": "Repeat-use/retention loop",
+      "score": 8,
+      "weight": 1.25,
+      "hardMinimum": 7,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/research/evidence-matrix.json"
+      ],
+      "rationale": "Repeat-use/retention loop has app-specific local evidence in the minimal fixture."
+    },
+    {
+      "id": "distinctiveness",
+      "label": "Visual/product distinctiveness",
+      "score": 8,
+      "weight": 1,
+      "hardMinimum": 6,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/research/evidence-matrix.json"
+      ],
+      "rationale": "Visual/product distinctiveness has app-specific local evidence in the minimal fixture."
+    },
+    {
+      "id": "monetization",
+      "label": "Monetization believability",
+      "score": 8,
+      "weight": 1,
+      "hardMinimum": 6,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/research/evidence-matrix.json"
+      ],
+      "rationale": "Monetization believability has app-specific local evidence in the minimal fixture."
+    },
+    {
+      "id": "nativeUX",
+      "label": "Native UX quality",
+      "score": 7,
+      "weight": 1.25,
+      "hardMinimum": 7,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/evidence/screenshots/activation.png"
+      ],
+      "rationale": "Native UX quality has app-specific local evidence in the minimal fixture."
+    },
+    {
+      "id": "launchReadiness",
+      "label": "Launch readiness",
+      "score": 8,
+      "weight": 1,
+      "hardMinimum": 7,
+      "status": "pass",
+      "evidencePaths": [
+        ".forge/research/evidence-matrix.json"
+      ],
+      "rationale": "Launch readiness has app-specific local evidence in the minimal fixture."
+    }
+  ],
+  "cannotAverageAwayFailures": true,
+  "openRisks": [
+    "No real user validation yet.",
+    "Privacy still needs human confirmation."
+  ]
+}

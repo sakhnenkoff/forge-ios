@@ -1,0 +1,73 @@
+{
+  "native_screenshot_review": {
+    "screenshots": [
+      {
+        "path": "evidence/screenshots/native/activation.txt",
+        "screen_or_state": "Activation fog prompt",
+        "required_by_gate": "activation",
+        "matches_prototype": "yes",
+        "matches_design_system": "yes",
+        "distinctiveness_score": 3,
+        "workflow_clarity_score": 3,
+        "apple_native_fit_score": 2,
+        "notes": "Fixture evidence asserts the native review contract without generating a second app."
+      },
+      {
+        "path": "evidence/screenshots/native/core-loop.txt",
+        "screen_or_state": "Commitment rail",
+        "required_by_gate": "core_loop",
+        "matches_prototype": "yes",
+        "matches_design_system": "yes",
+        "distinctiveness_score": 3,
+        "workflow_clarity_score": 3,
+        "apple_native_fit_score": 2,
+        "notes": "Fixture evidence asserts the native review contract without generating a second app."
+      },
+      {
+        "path": "evidence/screenshots/native/retention.txt",
+        "screen_or_state": "Return marker trail",
+        "required_by_gate": "retention",
+        "matches_prototype": "yes",
+        "matches_design_system": "yes",
+        "distinctiveness_score": 3,
+        "workflow_clarity_score": 3,
+        "apple_native_fit_score": 2,
+        "notes": "Fixture evidence asserts the native review contract without generating a second app."
+      },
+      {
+        "path": "evidence/screenshots/native/empty-error.txt",
+        "screen_or_state": "Empty trail repair",
+        "required_by_gate": "empty_error",
+        "matches_prototype": "yes",
+        "matches_design_system": "yes",
+        "distinctiveness_score": 3,
+        "workflow_clarity_score": 3,
+        "apple_native_fit_score": 2,
+        "notes": "Fixture evidence asserts the native review contract without generating a second app."
+      },
+      {
+        "path": "evidence/screenshots/native/monetization.txt",
+        "screen_or_state": "Locked branch",
+        "required_by_gate": "monetization",
+        "matches_prototype": "yes",
+        "matches_design_system": "yes",
+        "distinctiveness_score": 3,
+        "workflow_clarity_score": 3,
+        "apple_native_fit_score": 2,
+        "notes": "Fixture evidence asserts the native review contract without generating a second app."
+      }
+    ],
+    "rubric_scores": {
+      "app_specific_identity": 3,
+      "workflow_clarity": 3,
+      "visual_hierarchy": 2,
+      "native_feel": 2,
+      "emotional_tone_match": 3,
+      "non_generic_composition": 3,
+      "accessibility_visible_care": 2
+    },
+    "blocking_findings": [],
+    "repair_required": [],
+    "verdict": "pass"
+  }
+}

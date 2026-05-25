@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "appVerdict": "testflight_local_candidate",
+  "pipelineVerdict": "pipeline_acceptable",
+  "recommendedNextAction": "human review before second-app generation or live launch actions",
+  "links": {
+    "launchPackage": ".forge/launch/launch-package.json",
+    "appScorecard": ".forge/learning/app-scorecard.json",
+    "pipelineScorecard": ".forge/learning/pipeline-scorecard.json",
+    "learningPatches": ".forge/learning/learning-patches.json"
+  },
+  "evidenceGaps": [
+    "No direct user interviews.",
+    "Privacy and live pricing need human confirmation."
+  ],
+  "decisionLog": [
+    "Generated local-only package.",
+    "No live external actions performed.",
+    "Learning patch remains proposal-only."
+  ]
+}

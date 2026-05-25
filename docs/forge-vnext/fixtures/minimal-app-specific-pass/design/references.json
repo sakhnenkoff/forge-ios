@@ -1,0 +1,64 @@
+{
+  "references": [
+    {
+      "name": "Apple Journal reflection flow",
+      "type": "ios_native",
+      "source": "app_name",
+      "why_relevant": "Native capture flow that feels personal without becoming a form",
+      "borrow": [
+        "single focused prompt with private-feeling affordances",
+        "native sheet rhythm for adding context"
+      ],
+      "do_not_copy": [
+        "Journal branding",
+        "large memory timeline",
+        "private diary framing"
+      ],
+      "risk_if_overused": "Would feel like a journaling clone rather than a decision tool"
+    },
+    {
+      "name": "AllTrails route progress",
+      "type": "category",
+      "source": "app_name",
+      "why_relevant": "Adjacent progress trail metaphor for returning to a path",
+      "borrow": [
+        "route marker continuity",
+        "clear next waypoint state"
+      ],
+      "do_not_copy": [
+        "outdoor map chrome",
+        "social trail reviews"
+      ],
+      "risk_if_overused": "Could become decorative map skeuomorphism"
+    },
+    {
+      "name": "Field notebook margin annotations",
+      "type": "emotional",
+      "source": "local_screenshot_path",
+      "why_relevant": "Tactile evidence-in-the-margin mood for ambiguous work",
+      "borrow": [
+        "side notes as trust-building evidence",
+        "handmade but legible annotation density"
+      ],
+      "do_not_copy": [
+        "paper texture overload",
+        "literal notebook tabs"
+      ],
+      "risk_if_overused": "Might look nostalgic instead of useful"
+    },
+    {
+      "name": "Linear issue state transitions",
+      "type": "interaction",
+      "source": "app_name",
+      "why_relevant": "Decisive state changes in a focused work loop",
+      "borrow": [
+        "status changes that immediately reshape next actions"
+      ],
+      "do_not_copy": [
+        "developer issue vocabulary",
+        "dense command UI"
+      ],
+      "risk_if_overused": "Too utilitarian for a personal planning app"
+    }
+  ]
+}

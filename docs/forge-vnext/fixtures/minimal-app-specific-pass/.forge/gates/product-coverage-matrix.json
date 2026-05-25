@@ -1,0 +1,77 @@
+{
+  "schema_version": "forge.product_coverage_matrix.v1",
+  "app_id": "focus-pantry",
+  "surfaces": [
+    {
+      "id": "activation.first_use",
+      "name": "First useful pantry meal plan",
+      "product_role": "activation",
+      "required_status": "native_required_now",
+      "source_refs": [
+        ".forge/product-strategy.md#activation"
+      ],
+      "native_evidence_ids": [
+        "native.activation.flow"
+      ],
+      "prototype_evidence_ids": [],
+      "launch_impact_if_missing": "blocks_launch_candidate",
+      "status": "proven",
+      "notes": "Cold-start pantry-to-plan proof exists."
+    },
+    {
+      "id": "core_loop.plan_cook_regenerate",
+      "name": "Plan, cook, mark used, regenerate",
+      "product_role": "core_loop",
+      "required_status": "native_required_now",
+      "source_refs": [
+        ".forge/product-strategy.md#core-loop"
+      ],
+      "native_evidence_ids": [
+        "native.core_loop.flow"
+      ],
+      "prototype_evidence_ids": [],
+      "launch_impact_if_missing": "blocks_launch_candidate",
+      "status": "proven",
+      "notes": "Core pantry planning mechanic proof exists."
+    },
+    {
+      "id": "retention.returning_user",
+      "name": "Returning cook progress state",
+      "product_role": "retention",
+      "required_status": "native_required_now",
+      "source_refs": [
+        ".forge/product-strategy.md#retention"
+      ],
+      "native_evidence_ids": [
+        "native.returning_user.progress"
+      ],
+      "prototype_evidence_ids": [],
+      "launch_impact_if_missing": "blocks_launch_candidate",
+      "status": "proven",
+      "notes": "Saved preferences and pantry depletion improve the next plan."
+    },
+    {
+      "id": "money.pro_boundary",
+      "name": "Saved plans and grocery export Pro boundary",
+      "product_role": "monetization",
+      "required_status": "native_required_now",
+      "source_refs": [
+        ".forge/product-strategy.md#money-path"
+      ],
+      "native_evidence_ids": [
+        "native.money_boundary.pro"
+      ],
+      "prototype_evidence_ids": [],
+      "launch_impact_if_missing": "blocks_launch_candidate",
+      "status": "proven",
+      "notes": "Local free/pro boundary concept."
+    }
+  ],
+  "required_roles": [
+    "activation",
+    "core_loop",
+    "retention",
+    "monetization_or_approved_deferral"
+  ],
+  "missing_blockers": []
+}

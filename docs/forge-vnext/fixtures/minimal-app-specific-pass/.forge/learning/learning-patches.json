@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "patches": [
+    {
+      "id": "lp-001",
+      "title": "Keep launch package generation local-only and evidence-linked",
+      "targetType": "gate",
+      "targetPath": "docs/forge-vnext/schemas/forge.launch-package.v1.schema.json",
+      "problem": "Launch readiness can be overclaimed if copy, privacy, pricing, screenshots, and TestFlight checklist are bundled into prose only.",
+      "evidencePaths": [
+        ".forge/launch/launch-package.json",
+        ".forge/launch/evidence-index.json"
+      ],
+      "proposedChange": "Require separate launch artifacts and evidence-linked claims before any ready-for-human-review verdict.",
+      "expectedBenefit": "Prevents generic handoff docs from hiding missing local launch evidence.",
+      "risk": "May add schema overhead before the pipeline has enough generated app data.",
+      "complexity": "medium",
+      "reviewStatus": "proposed",
+      "requiresHumanReview": true,
+      "applicationPlan": [
+        "Review this patch after the next proof app.",
+        "If approved, add the rule to final audit and gate prompts."
+      ]
+    }
+  ]
+}

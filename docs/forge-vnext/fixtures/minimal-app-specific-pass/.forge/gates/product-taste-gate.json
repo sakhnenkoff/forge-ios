@@ -1,0 +1,217 @@
+{
+  "schema_version": "forge.product_taste_gate.v1",
+  "app": {
+    "id": "focus-pantry",
+    "name": "Focus Pantry",
+    "repo_path": "../generated-apps/focus-pantry",
+    "run_id": "fixture-pass"
+  },
+  "gate": {
+    "name": "product_taste",
+    "stage": "native_evidence",
+    "created_at": "2026-05-25T00:00:00Z",
+    "created_by": "fixture",
+    "verdict": "pass",
+    "confidence": "medium"
+  },
+  "source_artifacts": [
+    {
+      "id": "product.strategy",
+      "path": ".forge/product-strategy.md",
+      "kind": "markdown",
+      "hash": null
+    }
+  ],
+  "evidence_index": [
+    {
+      "id": "research.paid_competitors",
+      "path": ".forge/research/review-quotes.md",
+      "kind": "markdown",
+      "proves": [
+        "pain_problem_clarity"
+      ],
+      "status": "present",
+      "notes": "Paid alternatives and review complaints."
+    },
+    {
+      "id": "research.forum_pain",
+      "path": ".forge/research/review-quotes.md",
+      "kind": "markdown",
+      "proves": [
+        "pain_problem_clarity",
+        "target_user_sharpness"
+      ],
+      "status": "present",
+      "notes": "Forum complaints from busy cooks dealing with leftovers."
+    },
+    {
+      "id": "native.activation.flow",
+      "path": ".forge/evidence/activation-flow.md",
+      "kind": "markdown",
+      "proves": [
+        "use_case_activation"
+      ],
+      "status": "present",
+      "notes": "First useful meal plan."
+    },
+    {
+      "id": "native.core_loop.flow",
+      "path": ".forge/evidence/core-loop.md",
+      "kind": "markdown",
+      "proves": [
+        "blueprint_coverage_launch_slice_integrity"
+      ],
+      "status": "present",
+      "notes": "Plan-cook-mark-regenerate loop."
+    },
+    {
+      "id": "native.returning_user.progress",
+      "path": ".forge/evidence/returning-user-progress.md",
+      "kind": "markdown",
+      "proves": [
+        "repeat_use_retention_loop"
+      ],
+      "status": "present",
+      "notes": "Saved preferences and pantry state alter future plans."
+    },
+    {
+      "id": "native.money_boundary.pro",
+      "path": ".forge/evidence/money-boundary.md",
+      "kind": "markdown",
+      "proves": [
+        "money_path_believability"
+      ],
+      "status": "present",
+      "notes": "Free vs Pro concept boundary."
+    },
+    {
+      "id": "native.taste.review",
+      "path": ".forge/evidence/taste-review.md",
+      "kind": "markdown",
+      "proves": [
+        "product_distinctiveness_taste",
+        "evidence_integrity"
+      ],
+      "status": "present",
+      "notes": "App-specific workflow and tone review."
+    }
+  ],
+  "scores": {
+    "scale": "0-10 integer",
+    "weighted_overall": 8.0,
+    "dimensions": {
+      "pain_problem_clarity": {
+        "score": 8,
+        "minimum": 7,
+        "weight": 1.2,
+        "evidence_ids": [
+          "research.paid_competitors",
+          "research.forum_pain"
+        ],
+        "rationale": "Specific painful leftover-waste trigger and alternatives."
+      },
+      "target_user_sharpness": {
+        "score": 8,
+        "minimum": 7,
+        "weight": 1.0,
+        "evidence_ids": [
+          "research.forum_pain",
+          "native.activation.flow"
+        ],
+        "rationale": "Busy solo cooks with excluded use cases."
+      },
+      "use_case_activation": {
+        "score": 8,
+        "minimum": 7,
+        "weight": 1.2,
+        "evidence_ids": [
+          "native.activation.flow"
+        ],
+        "rationale": "First useful output is evidenced."
+      },
+      "repeat_use_retention_loop": {
+        "score": 8,
+        "minimum": 7,
+        "weight": 1.2,
+        "evidence_ids": [
+          "native.returning_user.progress"
+        ],
+        "rationale": "Saved preferences, avoided-waste history, and pantry depletion create a repeat-use loop."
+      },
+      "money_path_believability": {
+        "score": 7,
+        "minimum": 6,
+        "weight": 1.0,
+        "evidence_ids": [
+          "native.money_boundary.pro"
+        ],
+        "rationale": "Paid boundary tied to saved plans and grocery export value."
+      },
+      "product_distinctiveness_taste": {
+        "score": 8,
+        "minimum": 7,
+        "weight": 1.0,
+        "evidence_ids": [
+          "native.taste.review"
+        ],
+        "rationale": "Pantry-first planning, calm tone, and leftover-aware interactions."
+      },
+      "blueprint_coverage_launch_slice_integrity": {
+        "score": 8,
+        "minimum": 8,
+        "weight": 1.3,
+        "evidence_ids": [
+          "native.activation.flow",
+          "native.core_loop.flow",
+          "native.returning_user.progress",
+          "native.money_boundary.pro"
+        ],
+        "rationale": "Activation, core loop, retention, and money boundary all mapped."
+      },
+      "evidence_integrity": {
+        "score": 8,
+        "minimum": 8,
+        "weight": 1.3,
+        "evidence_ids": [
+          "native.taste.review",
+          "native.activation.flow"
+        ],
+        "rationale": "Claims cite local fixture artifacts and coverage matrix."
+      }
+    },
+    "hard_minimum_failures": []
+  },
+  "hard_minimums": {
+    "demand_evidence_types_count": 2,
+    "required_demand_evidence_types_count": 2,
+    "has_excluded_user_statement": true,
+    "has_revenue_taste_tradeoff_statement": true,
+    "activation_evidence_present": true,
+    "core_loop_evidence_present": true,
+    "retention_evidence_present": true,
+    "money_boundary_evidence_present_or_deferred_by_approval": true,
+    "contradictions_unresolved": []
+  },
+  "coverage_matrix_ref": ".forge/gates/product-coverage-matrix.json",
+  "recommendation": {
+    "type": "pass",
+    "confidence": "medium",
+    "summary": "All hard minimums met.",
+    "failed_hard_minimums": [],
+    "repair_options": [],
+    "kill_case": null,
+    "matvii_decision_required": false,
+    "allowed_decisions": []
+  },
+  "human_decision": {
+    "required": false,
+    "reason": null,
+    "status": "not_required",
+    "decision_by": null,
+    "decision_at": null,
+    "decision_artifact": null
+  },
+  "next_allowed_actions": [
+    "proceed_to_design_gate"
+  ]
+}

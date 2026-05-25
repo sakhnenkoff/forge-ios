@@ -1,0 +1,240 @@
+{
+  "design_system": {
+    "principles": [
+      {
+        "name": "Light one next step",
+        "why": "The target user arrives with scattered ambiguous inputs",
+        "visible_consequence": "Activation asks for one signal, not a dashboard tour"
+      },
+      {
+        "name": "Reasons in the margin",
+        "why": "Trust comes from seeing why Forge picked a next action",
+        "visible_consequence": "Evidence notes attach beside the commitment rail"
+      },
+      {
+        "name": "Commitment changes shape",
+        "why": "The core loop is not browsing; it is choosing and returning",
+        "visible_consequence": "The rail mutates after each commitment and reveals the next state"
+      },
+      {
+        "name": "Boundaries are honest",
+        "why": "Monetization and missing evidence must not surprise the user",
+        "visible_consequence": "Locked branches and error states explain what is unavailable and why"
+      }
+    ],
+    "tokens": {
+      "colors": [
+        {
+          "role": "fog background",
+          "value": "#F2F0E8",
+          "usage": "screen canvas",
+          "product_rationale": "soft uncertainty without blank white admin feel"
+        },
+        {
+          "role": "trail ink",
+          "value": "#26324A",
+          "usage": "rail and commitment text",
+          "product_rationale": "steady contrast for decisive next step"
+        }
+      ],
+      "typography": [
+        {
+          "role": "commitment phrase",
+          "value": "rounded title2 semibold",
+          "usage": "next-step actions",
+          "product_rationale": "warm enough for personal planning, strong enough for commitment"
+        }
+      ],
+      "spacing_and_shape": [
+        {
+          "role": "margin gutter",
+          "value": "28px rail gutter",
+          "usage": "evidence notes beside trail",
+          "product_rationale": "makes reasons visibly subordinate but available"
+        }
+      ]
+    },
+    "components": [
+      {
+        "name": "CommitmentRail",
+        "purpose": "Carries the visible sequence of decisions",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "workflow_shape",
+          "state progression"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "EvidenceMargin",
+        "purpose": "Shows why a step is trustworthy",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "layout",
+          "interaction",
+          "annotation behavior"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "FogPrompt",
+        "purpose": "Captures the first uncertain signal",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "composition",
+          "focused activation behavior"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "SafeStepButton",
+        "purpose": "Commits one next action and reshapes the rail",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "behavior",
+          "state transition"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "BranchLock",
+        "purpose": "Shows monetization boundary as locked planning branch",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "workflow",
+          "interaction",
+          "layout"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "TrailEmptyState",
+        "purpose": "Turns zero data into one signal request",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "composition",
+          "copy",
+          "empty-state behavior"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "RiskChip",
+        "purpose": "Flags constrained/error evidence without a modal",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "state",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      },
+      {
+        "name": "ReturnMarker",
+        "purpose": "Restores repeat-use continuity",
+        "states": [
+          "default",
+          "pressed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "layout",
+          "workflow_shape"
+        ],
+        "usage_rules": [
+          "Use only where this trail behavior is product-relevant",
+          "Keep the commitment rail visible when context changes"
+        ]
+      }
+    ],
+    "screen_composition_rules": [
+      "Activation screen is a fog prompt feeding a left-edge rail, never a stats dashboard",
+      "Core loop keeps commitment rail persistent while evidence margin changes",
+      "Empty state uses open trail space plus one signal request, not a generic illustration card"
+    ],
+    "empty_error_loading_rules": [
+      "Empty: Ask for one signal to start clearing the trail",
+      "Error: Name the missing evidence and offer one repair action",
+      "Loading: Shimmer along the rail only, preserving spatial continuity"
+    ],
+    "accessibility_rules": [
+      "Contrast meets WCAG AA for rail and margin notes",
+      "Dynamic Type up to AX3 preserves the rail before wrapping notes",
+      "Reduce motion changes trail reveal into instant state swap",
+      "VoiceOver labels include step number, commitment state, and evidence count"
+    ],
+    "banned_patterns": [
+      "generic dashboard",
+      "KPI card wall",
+      "default scaffold identity",
+      "DSCard stack as first useful screen",
+      "token-only reskin",
+      "admin panel table"
+    ]
+  }
+}

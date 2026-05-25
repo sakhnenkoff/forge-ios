@@ -1,0 +1,103 @@
+{
+  "$id": "https://forge.local/schemas/forge.learning-patches.v1.schema.json",
+  "title": "Forge vNext learning patch proposals",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "patches"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "patches": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "targetType",
+          "targetPath",
+          "problem",
+          "evidencePaths",
+          "proposedChange",
+          "expectedBenefit",
+          "risk",
+          "complexity",
+          "reviewStatus",
+          "requiresHumanReview",
+          "applicationPlan"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^lp-[0-9]{3,}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "targetType": {
+            "enum": [
+              "prompt",
+              "gate",
+              "verifier_rule",
+              "architecture_template",
+              "design_reference",
+              "optional_module",
+              "docs",
+              "script",
+              "external_tool_or_skill"
+            ]
+          },
+          "targetPath": {
+            "type": "string"
+          },
+          "problem": {
+            "type": "string"
+          },
+          "evidencePaths": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "proposedChange": {
+            "type": "string"
+          },
+          "expectedBenefit": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "complexity": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "reviewStatus": {
+            "const": "proposed"
+          },
+          "requiresHumanReview": {
+            "const": true
+          },
+          "applicationPlan": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false
+}

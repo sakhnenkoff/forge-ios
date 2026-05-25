@@ -1,0 +1,254 @@
+{
+  "$id": "https://forge.local/schemas/forge.launch-package.v1.schema.json",
+  "title": "Forge vNext local launch package manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "safety",
+    "app",
+    "sourceInputs",
+    "artifactStatus",
+    "launchReadiness",
+    "artifacts"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "localDraftOnly",
+        "liveExternalActionsPerformed",
+        "requiresHumanApprovalBeforeLiveUse"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "localDraftOnly": {
+          "const": true
+        },
+        "liveExternalActionsPerformed": {
+          "const": false
+        },
+        "requiresHumanApprovalBeforeLiveUse": {
+          "const": true
+        }
+      }
+    },
+    "app": {
+      "type": "object",
+      "required": [
+        "name",
+        "bundleId",
+        "platform",
+        "minimumOS",
+        "repoPath",
+        "generatedAt"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "not": {
+            "const": "DayRateLab"
+          }
+        },
+        "bundleId": {
+          "type": "string",
+          "pattern": "^local\\.draft\\.only\\."
+        },
+        "platform": {
+          "type": "string"
+        },
+        "minimumOS": {
+          "type": "string"
+        },
+        "repoPath": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "sourceInputs": {
+      "type": "object",
+      "required": [
+        "research",
+        "product",
+        "design",
+        "verification"
+      ],
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "artifactStatus": {
+      "type": "object",
+      "required": [
+        "ascDraft",
+        "privacyDraft",
+        "pricingDraft",
+        "copyDraft",
+        "screenshotPlan",
+        "testflightLocalChecklist"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ascDraft": {
+          "enum": [
+            "not_started",
+            "drafted",
+            "ready_for_human_review",
+            "repair_required",
+            "blocked_missing_input",
+            "blocked_needs_approval",
+            "approved_local_only"
+          ]
+        },
+        "privacyDraft": {
+          "enum": [
+            "not_started",
+            "drafted",
+            "ready_for_human_review",
+            "repair_required",
+            "blocked_missing_input",
+            "blocked_needs_approval",
+            "approved_local_only"
+          ]
+        },
+        "pricingDraft": {
+          "enum": [
+            "not_started",
+            "drafted",
+            "ready_for_human_review",
+            "repair_required",
+            "blocked_missing_input",
+            "blocked_needs_approval",
+            "approved_local_only"
+          ]
+        },
+        "copyDraft": {
+          "enum": [
+            "not_started",
+            "drafted",
+            "ready_for_human_review",
+            "repair_required",
+            "blocked_missing_input",
+            "blocked_needs_approval",
+            "approved_local_only"
+          ]
+        },
+        "screenshotPlan": {
+          "enum": [
+            "not_started",
+            "drafted",
+            "ready_for_human_review",
+            "repair_required",
+            "blocked_missing_input",
+            "blocked_needs_approval",
+            "approved_local_only"
+          ]
+        },
+        "testflightLocalChecklist": {
+          "enum": [
+            "not_started",
+            "drafted",
+            "ready_for_human_review",
+            "repair_required",
+            "blocked_missing_input",
+            "blocked_needs_approval",
+            "approved_local_only"
+          ]
+        }
+      }
+    },
+    "launchReadiness": {
+      "type": "object",
+      "required": [
+        "verdict",
+        "blockingReasons",
+        "humanApprovalRequiredBefore"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "verdict": {
+          "enum": [
+            "repair_required",
+            "blocked_missing_input",
+            "ready_for_human_review",
+            "approved_local_only"
+          ]
+        },
+        "blockingReasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "humanApprovalRequiredBefore": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "required": [
+        "ascDraft",
+        "privacyDraft",
+        "pricingDraft",
+        "copyDraft",
+        "screenshotPlan",
+        "testflightLocalChecklist",
+        "evidenceIndex",
+        "humanReviewReceipt"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ascDraft": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "privacyDraft": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "pricingDraft": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "copyDraft": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "screenshotPlan": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "testflightLocalChecklist": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "evidenceIndex": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        },
+        "humanReviewReceipt": {
+          "type": "string",
+          "pattern": "^\\.forge/launch/"
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false
+}

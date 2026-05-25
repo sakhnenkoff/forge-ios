@@ -1,0 +1,3 @@
+@Observable
+ActivationViewModel
+LoggableEvent

@@ -1,0 +1,66 @@
+{
+  "$id": "https://forge.local/schemas/forge.postmortem.v1.schema.json",
+  "title": "Forge vNext postmortem summary contract",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "appVerdict",
+    "pipelineVerdict",
+    "recommendedNextAction",
+    "links",
+    "evidenceGaps",
+    "decisionLog"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "appVerdict": {
+      "type": "string"
+    },
+    "pipelineVerdict": {
+      "type": "string"
+    },
+    "recommendedNextAction": {
+      "type": "string"
+    },
+    "links": {
+      "type": "object",
+      "required": [
+        "launchPackage",
+        "appScorecard",
+        "pipelineScorecard",
+        "learningPatches"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "launchPackage": {
+          "type": "string"
+        },
+        "appScorecard": {
+          "type": "string"
+        },
+        "pipelineScorecard": {
+          "type": "string"
+        },
+        "learningPatches": {
+          "type": "string"
+        }
+      }
+    },
+    "evidenceGaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decisionLog": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false
+}

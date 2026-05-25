@@ -1,0 +1,87 @@
+{
+  "$id": "https://forge.local/schemas/forge.pipeline-scorecard.v1.schema.json",
+  "title": "Forge vNext pipeline scorecard",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "overallScore",
+    "verdict",
+    "dimensions",
+    "regressions",
+    "durableLearningNeeded"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "overallScore": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "verdict": {
+      "enum": [
+        "pipeline_repair_required",
+        "pipeline_acceptable",
+        "pipeline_regression"
+      ]
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "score",
+          "status",
+          "evidencePaths",
+          "rationale"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "warn",
+              "fail",
+              "blocked"
+            ]
+          },
+          "evidencePaths": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "repairRecommendation": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "regressions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "durableLearningNeeded": {
+      "type": "boolean"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false
+}

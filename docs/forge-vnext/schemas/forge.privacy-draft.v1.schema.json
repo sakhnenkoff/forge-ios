@@ -1,0 +1,194 @@
+{
+  "$id": "https://forge.local/schemas/forge.privacy-draft.v1.schema.json",
+  "title": "Forge vNext privacy draft",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "safety",
+    "dataCollectionSummary",
+    "dataTypes",
+    "permissions",
+    "openQuestions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "localDraftOnly",
+        "notLegalAdvice",
+        "requiresHumanConfirmationBeforeSubmission"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "localDraftOnly": {
+          "const": true
+        },
+        "notLegalAdvice": {
+          "const": true
+        },
+        "requiresHumanConfirmationBeforeSubmission": {
+          "const": true
+        }
+      }
+    },
+    "dataCollectionSummary": {
+      "type": "object",
+      "required": [
+        "collectsData",
+        "tracking",
+        "thirdPartySDKs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "collectsData": {
+          "enum": [
+            "unknown",
+            "yes",
+            "no"
+          ]
+        },
+        "tracking": {
+          "enum": [
+            "unknown",
+            "yes",
+            "no"
+          ]
+        },
+        "thirdPartySDKs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "purpose",
+              "enabledInCurrentBuild",
+              "evidence"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "enabledInCurrentBuild": {
+                "type": "boolean"
+              },
+              "evidence": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "dataTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "appleCategory",
+          "collected",
+          "linkedToUser",
+          "usedForTracking",
+          "purposes",
+          "evidencePaths",
+          "confidence",
+          "humanReviewNeeded"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "appleCategory": {
+            "type": "string"
+          },
+          "collected": {
+            "enum": [
+              "unknown",
+              "yes",
+              "no"
+            ]
+          },
+          "linkedToUser": {
+            "enum": [
+              "unknown",
+              "yes",
+              "no"
+            ]
+          },
+          "usedForTracking": {
+            "enum": [
+              "unknown",
+              "yes",
+              "no"
+            ]
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidencePaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "humanReviewNeeded": {
+            "const": true
+          }
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "permission",
+          "used",
+          "evidencePaths",
+          "notes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "permission": {
+            "type": "string"
+          },
+          "used": {
+            "type": "boolean"
+          },
+          "evidencePaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "openQuestions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false
+}

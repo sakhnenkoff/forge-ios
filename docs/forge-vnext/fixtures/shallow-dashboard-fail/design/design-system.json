@@ -1,0 +1,213 @@
+{
+  "design_system": {
+    "principles": [
+      {
+        "name": "One safe next step",
+        "why": "User arrives overwhelmed",
+        "visible_consequence": "Primary surface is a trail step, not metrics"
+      },
+      {
+        "name": "Evidence in the margin",
+        "why": "Trust comes from why, not count",
+        "visible_consequence": "Reasons appear as side annotations"
+      },
+      {
+        "name": "Commitment over browsing",
+        "why": "Core action is choosing",
+        "visible_consequence": "One commitment rail dominates"
+      },
+      {
+        "name": "Recoverable uncertainty",
+        "why": "Plans are incomplete",
+        "visible_consequence": "Blocked states show repair prompts"
+      }
+    ],
+    "tokens": {
+      "colors": [
+        {
+          "role": "trail ink",
+          "value": "#25324D",
+          "usage": "core text",
+          "product_rationale": "calm confidence"
+        }
+      ],
+      "typography": [
+        {
+          "role": "commitment",
+          "style": "title2 rounded",
+          "usage": "next action",
+          "product_rationale": "human scale"
+        }
+      ],
+      "spacing_and_shape": [
+        {
+          "role": "trail gap",
+          "value": "20px",
+          "usage": "between decisions",
+          "product_rationale": "signals sequence"
+        }
+      ]
+    },
+    "components": [
+      {
+        "name": "TrailComponent1",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent2",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent3",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent4",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent5",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent6",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent7",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      },
+      {
+        "name": "TrailComponent8",
+        "purpose": "app-specific trail interaction",
+        "states": [
+          "default",
+          "pressed",
+          "empty",
+          "error"
+        ],
+        "must_differ_from_scaffold_by": [
+          "structure",
+          "interaction"
+        ],
+        "usage_rules": [
+          "Use in trail flow"
+        ]
+      }
+    ],
+    "screen_composition_rules": [
+      "Activation uses trail not card grid",
+      "Core loop centers commitment rail",
+      "Empty state asks for one next evidence point"
+    ],
+    "empty_error_loading_rules": [
+      "Empty state says: Add one signal to start the trail",
+      "Error state names missing signal and repair action"
+    ],
+    "accessibility_rules": [
+      "WCAG contrast",
+      "Dynamic Type to AX3",
+      "reduce motion preserves reveal order",
+      "VoiceOver labels commitment state"
+    ],
+    "banned_patterns": [
+      "generic dashboard",
+      "KPI card wall",
+      "default scaffold identity",
+      "DSScreen-only identity",
+      "default DSCard stack",
+      "token-only reskin"
+    ]
+  }
+}

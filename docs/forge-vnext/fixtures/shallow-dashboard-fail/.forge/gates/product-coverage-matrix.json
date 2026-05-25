@@ -1,0 +1,29 @@
+{
+  "schema_version": "forge.product_coverage_matrix.v1",
+  "app_id": "pulsedesk",
+  "surfaces": [
+    {
+      "id": "dashboard.overview",
+      "name": "Overview cards",
+      "product_role": "dashboard",
+      "required_status": "native_required_now",
+      "source_refs": [
+        ".forge/product-strategy.md"
+      ],
+      "native_evidence_ids": [
+        "native.dashboard.cards"
+      ],
+      "prototype_evidence_ids": [],
+      "launch_impact_if_missing": "non_blocking_with_approval",
+      "status": "proven",
+      "notes": "Only static cards."
+    }
+  ],
+  "required_roles": [
+    "activation",
+    "core_loop",
+    "retention",
+    "monetization_or_approved_deferral"
+  ],
+  "missing_blockers": []
+}

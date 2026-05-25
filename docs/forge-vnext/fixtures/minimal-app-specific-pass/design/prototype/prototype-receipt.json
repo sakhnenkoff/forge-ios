@@ -1,0 +1,76 @@
+{
+  "prototype": {
+    "entry_file": "design/prototype/index.html",
+    "viewports_tested": [
+      "iPhone 17 Pro",
+      "iPhone SE or compact width"
+    ],
+    "flows": [
+      {
+        "name": "Start a trail",
+        "steps": [
+          "Open fog prompt",
+          "Pin one signal",
+          "See commitment rail"
+        ],
+        "product_gate_covered": "activation"
+      },
+      {
+        "name": "Commit next step",
+        "steps": [
+          "Read evidence margin",
+          "Tap commitment",
+          "Rail updates"
+        ],
+        "product_gate_covered": "core_loop"
+      },
+      {
+        "name": "Preview locked branch",
+        "steps": [
+          "Tap branch",
+          "Read boundary rationale"
+        ],
+        "product_gate_covered": "monetization"
+      },
+      {
+        "name": "Zero data repair",
+        "steps": [
+          "Open empty trail",
+          "Read one-signal prompt"
+        ],
+        "product_gate_covered": "empty_error"
+      }
+    ],
+    "screens_or_states": [
+      {
+        "name": "Activation fog prompt",
+        "what_it_proves": "First useful moment is one signal, not dashboard setup",
+        "design_artifacts_expressed": [
+          "synthesis",
+          "emotional_tone",
+          "design_system"
+        ]
+      },
+      {
+        "name": "Core commitment rail",
+        "what_it_proves": "Main loop is committing next safe step",
+        "design_artifacts_expressed": [
+          "synthesis",
+          "design_system"
+        ]
+      },
+      {
+        "name": "Locked branch",
+        "what_it_proves": "Money boundary is explicit and app-specific",
+        "design_artifacts_expressed": [
+          "emotional_tone",
+          "design_system"
+        ]
+      }
+    ],
+    "known_limitations": [
+      "Fixture prototype uses static HTML instead of generated SwiftUI"
+    ],
+    "human_review_recommendation": "approve"
+  }
+}

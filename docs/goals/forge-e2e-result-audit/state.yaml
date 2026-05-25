@@ -1,0 +1,186 @@
+# GoalBuddy v2 state.yaml
+# Board truth lives here. goal.md is the editable charter; notes/ holds long receipts only.
+
+version: 2
+
+goal:
+  title: "Forge E2E Result Audit: Is It Actually Good?"
+  slug: "forge-e2e-result-audit"
+  kind: audit
+  tranche: "read-only adversarial audit of Forge E2E pipeline result and generated DayRateLab app"
+  status: complete
+  final_verdict: trust_with_fixes
+  app_quality_score: 6
+  pipeline_quality_score: 6
+  merge_readiness: needs_cleanup
+  best_next_action: "Merge or preserve the clean Forge pipeline work only after recording limitations, then run one focused DayRateLab repair pass: fix unit tests, make Mock launch/screenshot proof reproducible, and repair activation flow before using this as the next app baseline."
+  oracle:
+    signal: "A skeptical final audit report states whether to trust the Forge E2E result, with app quality score, pipeline quality score, merge readiness, top issues, evidence, and next action."
+    cadence: "after each audit package and final report"
+    final_proof: "notes/final-audit.md exists and state.yaml records verdict, app score, pipeline score, merge readiness, and concrete next action."
+  intake:
+    original_request: "Proceed with audit Forge E2E result as a goal; inspect actual app/result and judge whether it is actually good."
+    interpreted_outcome: "Matvii gets a clear decision about whether the Forge E2E pipeline/app result is trustworthy and what to do next tomorrow."
+    input_shape: specific
+    audience: "Matvii"
+    authority: requested
+    proof_type: audit
+    completion_proof: "A final audit report with evidence-backed verdict and next action."
+    likely_misfire: "Rubber-stamping Codex's final audit or only checking that commands pass, without judging product/design/retention/reusability quality."
+    blind_spots_considered:
+      - "Previous Forge goals overclaimed success."
+      - "Screenshots may pass while product/design is weak."
+      - "Pipeline scripts may be too bespoke to generalize."
+      - "Generated app may be a decent demo but not worth polishing."
+      - "Repo state may be clean only in a separate worktree, while original checkout remains contaminated."
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: not_started
+    url: null
+    command: "npx goalbuddy board docs/goals/forge-e2e-result-audit"
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: scout
+    assignee: Scout
+    status: completed
+    reasoning_hint: high
+    objective: "Read-only inventory of what exists: clean Forge worktree, generated DayRateLab app, screenshots, .forge artifacts, verification scripts, final receipts, git commits/status, and original contaminated checkout."
+    inputs:
+      - "goal.md"
+      - "/Users/matvii/vault/projects/forge-e2e-pipeline-status-2026-05-24.md"
+      - "/Users/matvii/Developer/Personal/forge-e2e-clean"
+      - "/Users/matvii/Developer/Personal/forge-proof-apps/DayRateLab"
+      - "/Users/matvii/Developer/Personal/forge"
+    constraints:
+      - "Read-only except receipt/state updates."
+      - "Do not modify app or pipeline code."
+      - "Do not push/publish/deploy/spend money/use credentials."
+      - "Redact secrets."
+    expected_output:
+      - "Artifact inventory with paths."
+      - "Verification commands and current results."
+      - "Screenshot/UI evidence list."
+      - "Git status/commit map."
+      - "Known caveats."
+    receipt: "notes/final-audit.md"
+
+  - id: T002
+    type: judge
+    assignee: Judge
+    status: completed
+    reasoning_hint: high
+    objective: "Product/UX/retention/monetization audit of DayRateLab using .forge artifacts, code, screenshots/UI evidence, and app handoff."
+    inputs:
+      - "T001 receipt."
+      - "Generated app .forge artifacts."
+      - "Native screenshots/UI evidence."
+    constraints:
+      - "Do not implement."
+      - "Be skeptical; do not rubber-stamp."
+      - "Use concrete evidence from files/screenshots."
+    expected_output:
+      - "Product verdict and score."
+      - "UX/onboarding verdict."
+      - "Retention verdict."
+      - "Monetization verdict."
+      - "Top app-quality issues."
+    receipt: "notes/final-audit.md"
+
+  - id: T003
+    type: judge
+    assignee: Judge
+    status: completed
+    reasoning_hint: high
+    objective: "Design/native implementation audit: inspect screenshots, Swift code, architecture, Mock build safety, and whether app feels polished or generic."
+    inputs:
+      - "T001 receipt."
+      - "Generated app source files."
+      - "Screenshots/UI evidence."
+      - "AGENTS.md architecture rules."
+    constraints:
+      - "Do not implement."
+      - "Focus on actual app quality, not just build success."
+    expected_output:
+      - "Design score and issues."
+      - "Swift architecture/code score and issues."
+      - "Build/runtime safety judgment."
+      - "Evidence-backed screenshots/code references."
+    receipt: "notes/final-audit.md"
+
+  - id: T004
+    type: judge
+    assignee: Judge
+    status: completed
+    reasoning_hint: high
+    objective: "Forge pipeline reusability audit: decide whether the pipeline gates/scripts are reusable for the next app or mostly one-off DayRateLab proof scaffolding."
+    inputs:
+      - "T001 receipt."
+      - "docs/forge-e2e-pipeline-gates.md"
+      - "scripts/forge-e2e-native-verify.mjs"
+      - "scripts/forge-e2e-handoff.mjs"
+      - "Goal receipts from forge-e2e-pipeline-great-apps if needed."
+    constraints:
+      - "Do not implement."
+      - "Separate reusable capability from proof-app evidence."
+    expected_output:
+      - "Pipeline quality score."
+      - "Reusable stages that are real."
+      - "Stages that are still shallow/manual."
+      - "What would fail on a second app."
+      - "Best next pipeline improvement."
+    receipt: "notes/final-audit.md"
+
+  - id: T005
+    type: judge
+    assignee: Judge
+    status: completed
+    reasoning_hint: high
+    objective: "Final audit report: combine all evidence into trust/trust_with_fixes/do_not_trust verdict, app score, pipeline score, merge readiness, top 5 issues, what is good/weak, tomorrow test plan, and one next action."
+    inputs:
+      - "All prior receipts."
+      - "Current git status in clean Forge worktree and generated app repo."
+      - "Verification rerun results."
+    constraints:
+      - "Do not implement."
+      - "Do not claim trust unless evidence supports it."
+      - "Must write notes/final-audit.md and update state with final verdict."
+    expected_output:
+      - "notes/final-audit.md"
+      - "state.yaml final verdict fields."
+    receipt: "notes/final-audit.md"
+
+checks:
+  dirty_fingerprint: "clean Forge worktree has only this audit board untracked; generated app repo clean; original /Users/matvii/Developer/Personal/forge remains contaminated and must not be merge source"
+  last_verification:
+    result: trust_with_fixes
+    task: T005
+    commands:
+      - "DEVELOPER_DIR=/Applications/Xcode-26.5.0.app/Contents/Developer node scripts/forge-e2e-native-verify.mjs --app-path /Users/matvii/Developer/Personal/forge-proof-apps/DayRateLab -> NATIVE_VERIFY_OK"
+      - "DEVELOPER_DIR=/Applications/Xcode-26.5.0.app/Contents/Developer node scripts/forge-e2e-handoff.mjs --app-path /Users/matvii/Developer/Personal/forge-proof-apps/DayRateLab -> HANDOFF_OK"
+      - "DEVELOPER_DIR=/Applications/Xcode-26.5.0.app/Contents/Developer xcodebuild -project DayRateLab.xcodeproj -scheme 'DayRateLab - Mock' -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest' build -> BUILD SUCCEEDED"
+      - "DEVELOPER_DIR=/Applications/Xcode-26.5.0.app/Contents/Developer xcodebuild -quiet -project DayRateLab.xcodeproj -scheme 'DayRateLab - Mock' -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest' test -> TEST FAILED, HomeViewModelTests selectedHomeTab compile error"
+      - "XcodeBuildMCP build_run_sim explicit Mock -> succeeded and foregrounded onboarding"
+      - "XcodeBuildMCP build_run_sim default Debug/dev -> app crashed in Firebase configuration"
+  final_report: "notes/final-audit.md"

@@ -1,0 +1,45 @@
+{
+  "references": [
+    {
+      "name": "Apple Fitness Summary",
+      "type": "ios_native",
+      "source": "app_name",
+      "why_relevant": "Native summary surface reference",
+      "borrow": [
+        "large friendly numbers"
+      ],
+      "do_not_copy": [
+        "fitness rings",
+        "activity metaphors"
+      ],
+      "risk_if_overused": "Turns into a generic stats dashboard"
+    },
+    {
+      "name": "Generic SaaS dashboard",
+      "type": "category",
+      "source": "local_screenshot_path",
+      "why_relevant": "Shows what not to do",
+      "borrow": [
+        "none; anti-reference"
+      ],
+      "do_not_copy": [
+        "metric cards",
+        "top KPI row"
+      ],
+      "risk_if_overused": "Scaffold reskin"
+    },
+    {
+      "name": "Calm color palette",
+      "type": "emotional",
+      "source": "url",
+      "why_relevant": "Soft atmosphere",
+      "borrow": [
+        "muted blue background"
+      ],
+      "do_not_copy": [
+        "meditation imagery"
+      ],
+      "risk_if_overused": "Color-only branding"
+    }
+  ]
+}

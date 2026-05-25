@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.design-handshake.v1.schema.json",
+  "title": "Forge vNext Product Design Handshake",
+  "description": "Machine-readable contract proving a design direction derives from app-specific product logic before visual/native work expands.",
+  "type": "object",
+  "required": ["product_design_handshake"],
+  "additionalProperties": false,
+  "properties": {
+    "product_design_handshake": {
+      "type": "object",
+      "required": [
+        "app_name",
+        "target_user",
+        "core_workflow",
+        "core_emotional_job",
+        "repeat_use_moment",
+        "monetization_boundary",
+        "launch_bar",
+        "design_implications"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "app_name": { "type": "string", "minLength": 1 },
+        "target_user": { "type": "string", "minLength": 12 },
+        "core_workflow": { "type": "string", "minLength": 12 },
+        "core_emotional_job": { "type": "string", "minLength": 12 },
+        "repeat_use_moment": { "type": "string", "minLength": 12 },
+        "monetization_boundary": { "type": ["string", "null"] },
+        "launch_bar": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 8 }
+        },
+        "design_implications": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "required": ["product_fact", "design_consequence", "must_show_in_screen_or_flow"],
+            "additionalProperties": false,
+            "properties": {
+              "product_fact": { "type": "string", "minLength": 8 },
+              "design_consequence": { "type": "string", "minLength": 8 },
+              "must_show_in_screen_or_flow": { "type": "string", "minLength": 3 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

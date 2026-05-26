@@ -153,6 +153,175 @@ A per-app dependency must state:
 - Evaluation plan: read-only query set + source capture; no posting/DM/follow/login mutation.
 - Rollback: mark unavailable and use public web/HN/blog substitutes.
 
+### dep.research.appstore-public-harvester
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`, `visual`, `launch`
+- Candidate: Direct Apple public endpoints: iTunes Search/Lookup, Reviews RSS, Apple Marketing Tools charts, App Store web listings.
+- Problem: Forge needs real competitor screenshots, metadata, ratings, reviews, release notes, chart context, and launch copy before synthesizing app ideas/designs.
+- Expected leverage: strong safe baseline for product/taste/visual/launch research without paid services.
+- Risks: endpoint brittleness, noisy reviews, App Store country bias, screenshot-copying risk.
+- Approval needed: none for read-only public use; adoption as foundation script still requires code review.
+- Evaluation plan: generate a JSON packet for 10-25 apps from one category/query; include screenshot URLs, reviews, release notes, source URLs, access date, and limitations.
+- Rollback: remove harvester from required gates and keep manual App Store citations.
+
+### dep.research.reddit-json-demand-harvester
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`
+- Candidate: Reddit public JSON endpoints with custom User-Agent.
+- Problem: Forge needs real user pain, alternative requests, price/privacy/offline complaints, and product language beyond App Store listings.
+- Expected leverage: qualitative demand evidence for app direction gates.
+- Risks: spam, vocal minority bias, rate limits, public-user privacy/PII concerns.
+- Approval needed: none for read-only public JSON; no login/posting/voting.
+- Evaluation plan: run query families such as `looking for app`, `alternative to`, `wish there was an app`, `too expensive`, `privacy`, `offline`, `subscription` across relevant subreddits and output scored evidence clusters.
+- Rollback: remove Reddit as required source and use App Store reviews/HN/GitHub issues.
+
+### dep.research.github-ios-reference-index
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`, `native`, `substrate`
+- Candidate: GitHub public API plus curated repos such as `dkhamsing/open-source-ios-apps`.
+- Problem: Forge needs real native implementation references, package health checks, and open-source pattern discovery without copying code/assets.
+- Expected leverage: better SwiftUI/UIKit architecture references and dependency evaluation.
+- Risks: unauthenticated GitHub rate limits, license ambiguity, star-count false confidence, copy/paste contamination.
+- Approval needed: none for read-only public metadata; code/package adoption requires separate approval/review.
+- Evaluation plan: produce a repo index with license, activity, stars, language/UI stack, domain, screen patterns, and issue/discussion signals.
+- Rollback: remove as required source and use manually selected references.
+
+### dep.research.pageflows-public-parser
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`, `visual`
+- Candidate: Page Flows public pages visible without login/payment.
+- Problem: Forge needs flow sequencing and real journey structures, not isolated screenshot inspiration.
+- Expected leverage: better onboarding/paywall/permission/account/core-loop flow contracts before visual synthesis.
+- Risks: public subset only, ToS/bulk-download risk, old app versions, copying flow structure too literally.
+- Approval needed: none for limited public-page citation; paid/account access requires explicit approval.
+- Evaluation plan: parse curated public URLs into flow-step skeletons without downloading proprietary media/assets.
+- Rollback: remove parser and use manual flow notes.
+
+### dep.research.web-search-provider
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`
+- Candidate: DDGS/SearXNG-style local fallback or paid providers such as Exa, Firecrawl, Parallel, Tavily.
+- Problem: Hermes web/search backend is currently empty, forcing ad-hoc direct URL research.
+- Expected leverage: broader discovery of tools, references, and demand evidence.
+- Risks: provider cost/account/API keys, search quality variance, scraping/ToS concerns.
+- Approval needed: local free fallback can be proposed for spike; paid/API provider requires explicit approval.
+- Evaluation plan: compare one low-risk local/public search fallback against manual known-source research on a fixed Forge query set.
+- Rollback: remove provider and continue with direct public endpoints.
+
+### dep.mcp.github-readonly
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`, `native`, `operator_ux`
+- Candidate: GitHub MCP with mutation tools excluded.
+- Problem: Forge needs safer structured access to GitHub repositories/issues/files for research and dependency vetting.
+- Expected leverage: faster repo inspection while keeping writes disabled.
+- Risks: OAuth/token scope, accidental mutation tools, rate limits.
+- Approval needed: MCP server configuration approval and strict tool include/exclude review.
+- Evaluation plan: add in isolated profile with read-only tool filters, test repository search/file read only, surface in cockpit.
+- Rollback: remove MCP server config and fall back to `gh`/public API.
+
+### dep.mcp.codex-implementation-lane
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `operator_ux`, `native`, `verification`
+- Candidate: local `codex mcp-server` / Codex CLI for bounded coding lanes.
+- Problem: Forge can use specialized coding agents, but outputs must be treated as untrusted patches and verified by Hermes.
+- Expected leverage: better implementation throughput for scoped repair cards.
+- Risks: agent overreach, tool drift, unreviewed file mutation, hidden assumptions.
+- Approval needed: approved-for-spike before adopting as standard worker lane.
+- Evaluation plan: run on a small isolated repair task/worktree; Hermes reviews diff and reruns canonical tests before acceptance.
+- Rollback: disable Codex lane and use normal Hermes workers.
+
+### dep.mcp.context-docs
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`, `native`, `verification`
+- Candidate: Context7/docs MCP or equivalent current-docs provider.
+- Problem: Forge needs up-to-date framework/tool docs for Swift/Xcode/testing/MCP/tooling decisions.
+- Expected leverage: less stale API usage and fewer hallucinated commands.
+- Risks: external service dependency, account/API/cost depending on provider.
+- Approval needed: depends on provider; require proposal before adoption.
+- Evaluation plan: test against fixed docs queries for XCTest, simctl, SwiftUI accessibility, and selected dependencies.
+- Rollback: use direct official docs URLs/manual citations.
+
+### dep.native.xcode-developer-dir-preflight
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `native`, `verification`
+- Candidate: Configurable `DEVELOPER_DIR` native preflight using `/Applications/Xcode-26.5.0.app/Contents/Developer` when available.
+- Problem: global `xcode-select` points to CommandLineTools, but full Xcode is available if invoked explicitly; Forge should not falsely report native proof impossible or mutate global selection.
+- Expected leverage: reliable native build/simulator readiness checks.
+- Risks: local path/version drift.
+- Approval needed: none for local preflight; do not mutate global `xcode-select` without approval.
+- Evaluation plan: add preflight command that checks `xcodebuild -version`, `simctl list`, selected simulator, and Mock scheme availability using configured `DEVELOPER_DIR`.
+- Rollback: remove configured path and fail with `native_tooling_unavailable`.
+
+### dep.native.xcresulttool-first
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `native`, `verification`
+- Candidate: Built-in `xcresulttool` before adopting third-party `xcparse`.
+- Problem: Forge needs durable extraction from Xcode result bundles for screenshots, logs, tests, and attachments.
+- Expected leverage: native evidence collection without new dependency.
+- Risks: Apple CLI format churn, extraction complexity.
+- Approval needed: none for built-in local use.
+- Evaluation plan: run a minimal UI test result bundle and extract attachment metadata/screenshots using `xcresulttool`.
+- Rollback: spike `xcparse` if built-in extraction is insufficient.
+
+### dep.native.xcparse
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `native`, `verification`
+- Candidate: `ChargePoint/xcparse`.
+- Problem: extracting screenshots and coverage from `.xcresult` may be easier with a dedicated tool.
+- Expected leverage: lower friction evidence extraction.
+- Risks: third-party dependency, install/maintenance risk.
+- Approval needed: spike before adoption.
+- Evaluation plan: compare against `xcresulttool` on the same result bundle.
+- Rollback: remove tool and return to built-in extraction.
+
+### dep.native.fastlane-snapshot
+
+- Status: `parked`
+- Scope: `foundation`
+- Layer: `launch`, `native`
+- Candidate: `fastlane snapshot`.
+- Problem: multi-device/localized App Store screenshot production may become useful later.
+- Expected leverage: strong launch screenshot automation after local proof is stable.
+- Risks: Ruby/tooling complexity, can creep toward live App Store Connect actions.
+- Approval needed: explicit approval before install/adoption; live upload/deliver always requires separate approval.
+- Evaluation plan: only after local native evidence works; dry-run screenshot generation without ASC upload.
+- Rollback: remove fastlane files/dependency.
+
+### dep.research.refero-mcp
+
+- Status: `needs_approval`
+- Scope: `foundation`
+- Layer: `research`, `visual`
+- Candidate: Refero MCP / Refero Pro.
+- Problem: Forge needs structured, agent-friendly design references to fight AI slop.
+- Expected leverage: potentially highest-leverage paid/account design intelligence source.
+- Risks: paid subscription, external service dependency, prompt/data sent to service, copying/overfitting risk.
+- Approval needed: explicit Matvii approval before account/payment/MCP use.
+- Evaluation plan: isolated profile spike; measure structured metadata quality, source citation, and originality safeguards.
+- Rollback: remove MCP and fall back to App Store/Page Flows/public references.
+
 ## Current per-app proposals
 
 None adopted.

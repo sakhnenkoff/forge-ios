@@ -18,11 +18,13 @@ The four lane specs agree on the next move: repair Forge's executable pipeline c
 
 The integrated plan is:
 
-1. Define shared schema/artifact contracts for product, design, verification, launch, scorecards, postmortem, and learning patches.
-2. Implement local validators/runners that prove these contracts are executable.
+1. Define shared schema/artifact contracts for product, visual excellence, design, verification, launch, scorecards, postmortem, and learning patches.
+2. Implement local validators/runners/judges that prove these contracts are executable.
 3. Replace DayRate-specific verifier/handoff assumptions with app-specific `.forge/` plans read by generic scripts.
 4. Add fixtures that demonstrate pass/fail behavior without creating a real second app.
-5. Ask Matvii whether to proceed to second-app generation, repair more first, or change the bar.
+5. Require a pre-native visual judge pass before any native implementation worker starts Swift generation or expansion.
+6. Require a post-native visual judge pass before any human review packet or Matvii approval request is allowed.
+7. Ask Matvii whether to proceed to second-app generation, repair more first, or change the bar.
 
 ## 2. Source lanes used
 
@@ -85,6 +87,8 @@ docs/forge-vnext/
     forge.design-handshake.v1.schema.json
     forge.design-system.v1.schema.json
     forge.design-review-receipt.v1.schema.json
+    forge.visual-evidence-packet.v1.schema.json
+    forge.visual-judge.v1.schema.json
     forge.verification-plan.v1.schema.json
     forge.evidence-index.v1.schema.json
     forge.substitute-evidence.v1.schema.json
@@ -101,6 +105,8 @@ docs/forge-vnext/
   prompts/
     product-gate-contract.md
     design-gate-contract.md
+    visual-reference-research-contract.md
+    visual-judge-contract.md
     verifier-plan-contract.md
     launch-package-contract.md
     postmortem-learning-contract.md
@@ -142,22 +148,39 @@ Each generated app repo should own its app-specific plan and evidence:
     native-evidence-gate.json
     final-audit-gate.json
   design/
+    references.md
     references.json
     original-synthesis.md
+    original-synthesis.json
     emotional-tone.md
     design-system.json
     prototype-receipt.json
     native-screenshot-review.json
     final-design-receipt.json
+    visual-evidence-packet.json
+    prototype/
+      index.html
+      prototype-receipt.json
   verification-plan.json
   evidence/
     evidence-index.json
     substitutes/
       <substitute-id>.json
     screenshots/
+      native/
+        activation.png
+        core-loop-after-action.png
+        returning-progress.png
+        empty-error.png
+        money-boundary.png
+        accessibility-snapshots/
     videos/
     logs/
     audit-receipts/
+  judges/
+    visual-judge-pre-native.json
+    visual-judge-post-native.json
+    visual-repair-log.md
   launch/
     launch-package.json
     asc-drafts.json
@@ -235,25 +258,35 @@ Hard blockers:
 - dashboard/card shell without activation/core loop/retention/money proof
 - weak evidence integrity
 
-### Gate 3: Design proof before Swift expansion
+### Gate 3: Visual excellence before Swift expansion
 
-Purpose: make design a hard gate, not late polish.
+Purpose: make visual taste a hard pre-native gate, not late polish after Swift exists.
 
 Required outputs:
 
 - product-design handshake
-- references + original synthesis
+- `visual_reference_research`: `.forge/design/references.md` and `.forge/design/references.json` with at least 5 safe references, including at least 3 category references and at least 1 high-quality general craft reference
+- `original_visual_synthesis`: `.forge/design/original-synthesis.md` and `.forge/design/original-synthesis.json` with borrow/avoid/transform notes, signature surfaces, core metaphor/shape, rejected patterns, and first-screen contract
 - emotional tone
 - app-specific design-system JSON
-- HTML/clickable prototype receipt
-- generic UI rejection tests
+- `prototype_before_native`: local HTML/clickable prototype or equivalent visual artifact for activation, core loop, returning/progress, empty/error, and money/deferred-boundary states
+- `.forge/design/visual-evidence-packet.json`
+- `visual_judge_pre_native`: `.forge/judges/visual-judge-pre-native.json`
 
 Hard blockers:
 
+- unsafe or unproven reference capture; paid/login/account action used without explicit approval
+- direct copying of competitor asset, brand, exact layout, or distinctive visual identity
 - token-only scaffold reskin
 - generic dashboard/card density without app-specific workflow shape
+- original synthesis only says “native cards, warm colors, rounded corners”
 - prototype missing before native expansion
-- native screenshots later contradict the design contract
+- pre-native visual judge verdict is not `pass`
+- pre-native visual judge does not explicitly allow native expansion
+
+Orchestration rule:
+
+Native generation or Swift expansion MUST NOT start until `visual_judge_pre_native` passes and its judge artifact explicitly sets native expansion allowed. A pre-native `repair`, `kill`, `human_gate`, or `hard_fail_ai_slop` verdict routes to `visual_repair_loop` or Matvii; it never falls through to native generation by default.
 
 ### Gate 4: Native implementation slice
 
@@ -265,7 +298,7 @@ Required outputs:
 - Mock build target
 - app-specific SwiftUI feature slice(s)
 - tests/previews/mock data where practical
-- screenshots for activation/core loop/retention or progress/money boundary
+- native output that traces each key screen back to the pre-native prototype/design packet
 
 Hard blockers:
 
@@ -273,24 +306,50 @@ Hard blockers:
 - app only contains static docs/mockup
 - template contamination
 - native screen contradicts gate artifacts
+- native work started without Gate 3 pre-native visual judge pass
 
-### Gate 5: Generic verification and evidence
+### Gate 5: Native screenshot sequence and generic evidence
 
-Purpose: prove verifier reusability and evidence integrity.
+Purpose: prove verifier reusability, evidence integrity, and current native visual state before any judge or human sees the app.
 
 Required outputs:
 
 - `.forge/verification-plan.json`
 - `.forge/evidence/evidence-index.json`
+- `native_screenshot_sequence`: activation, core-loop-after-action, returning/progress, empty/error, and money-boundary screenshots
+- accessibility snapshots for every required screenshot state
 - build/test/run/screenshot/video or approved substitute evidence
-- audit receipt from generic verifier
+- audit receipt from generic verifier, including the `visual_evidence_sequence` check
 
 Hard blockers:
 
 - verifier needs domain-specific source edits
 - screenshot slots are hardcoded instead of derived from app gates
 - missing evidence has no approved substitute
+- screenshots are stale, unindexed, missing hashes, or disconnected from accessibility snapshots
 - console success has no evidence index
+
+### Gate 5.5: Post-native visual judge before human review
+
+Purpose: fail “regular AI slop” before Matvii is asked to review or approve the generated app.
+
+Required outputs:
+
+- `.forge/judges/visual-judge-post-native.json`
+- judge comparison across references, original synthesis, prototype, native screenshot sequence, accessibility snapshots, and stale-residue scan
+- `visual_repair_loop` card(s) for every non-human repairable failure
+- updated proof packet showing visual judge verdict, hard fails, screenshots, and next route
+
+Hard blockers:
+
+- post-native visual judge verdict is not `pass`
+- post-native visual judge does not explicitly allow human review
+- any hard fail such as `generic_first_screen`, `token_reskin`, `no_signature_surface`, `screenshots_missing`, `native_mismatch`, `empty_shell`, `stale_residue`, or `human_says_slop`
+- repairable visual failures are reported as “needs human review” instead of routed to repair cards
+
+Orchestration rule:
+
+Human review, Matvii approval requests, final proof packets, launch-package review, and “app is ready” claims MUST NOT proceed until `visual_judge_post_native` passes and explicitly allows human review. A post-native failure routes to `visual_repair_loop`; after repair, the native screenshot sequence and post-native judge rerun before any human gate is reopened.
 
 ### Gate 6: Launch package and scorecards
 
@@ -343,25 +402,32 @@ Acceptance:
 - validator command can run locally against fixtures
 - no generated app is created
 
-### Phase 2: Product + design validators
+### Phase 2: Product + pre-native visual excellence validators
 
-Implement product/taste and design gate validators before verifier work. These are earlier in the pipeline and prevent bad native work from starting.
+Implement product/taste, visual reference/synthesis/prototype, and design gate validators before verifier work. These are earlier in the pipeline and prevent bad native work from starting.
 
 Acceptance:
 
 - shallow dashboard/card-shell fixture fails product gate
 - token-reskin fixture fails design gate
-- minimal app-specific fixture passes only with real activation/core loop/design evidence
+- missing/unsafe references fail `visual_reference_research`
+- missing original synthesis or generic “warm native cards” synthesis fails `original_visual_synthesis`
+- missing prototype receipt fails `prototype_before_native`
+- `visual_judge_pre_native` is required before any native generation card can be promoted/started
+- minimal app-specific fixture passes only with real activation/core loop/design/visual evidence
 
-### Phase 3: Generic verifier and evidence index
+### Phase 3: Generic verifier, native screenshot sequence, and post-native visual judge
 
-Implement the generic verifier runner driven by `.forge/verification-plan.json`.
+Implement the generic verifier runner driven by `.forge/verification-plan.json`, then require post-native screenshot evidence and a visual judge before human review.
 
 Acceptance:
 
 - two different fixture app trees can be verified by editing only their `.forge/verification-plan.json` and evidence files
 - no DayRateLab literals appear in reusable verifier source
 - missing evidence fails unless substitute evidence is explicitly approved and indexed
+- `native_screenshot_sequence` fails stale/missing/unindexed screenshots or missing accessibility snapshots
+- `visual_judge_post_native` is required before any human review/proof packet/launch-review card can be promoted/started
+- post-native visual judge failures route to `visual_repair_loop`, not to Matvii by default unless the judge verdict is an explicit human taste/product gate
 
 ### Phase 4: Launch package + learning loop
 
@@ -474,7 +540,7 @@ Acceptance:
 - no second app generation, no external actions
 ```
 
-### Card 2: Implement design gate schemas and fixture validator
+### Card 2: Implement pre-native visual excellence gate schemas and fixture validator
 
 Assignee: `forgedesign`
 
@@ -483,30 +549,42 @@ Parents: `t_d9a685b2`
 Body:
 
 ```text
-Implement Forge vNext design/look-feel executable gate contracts. Do not generate a second app.
+Implement Forge vNext design/look-feel plus pre-native visual excellence executable gate contracts. Do not generate a second app.
 
 Inputs:
 - docs/forge-vnext/executable-pipeline-integration.md
 - docs/forge-vnext/lanes/design-look-feel-gates.md
+- docs/forge-vnext/visual-excellence-research-and-judge-layer.md
+- docs/forge-vnext/visual-judge-contract-and-rubric.md when available
 - docs/forge-vnext-charter.md
 
 Deliverables:
 - docs/forge-vnext/schemas/forge.design-handshake.v1.schema.json
 - docs/forge-vnext/schemas/forge.design-system.v1.schema.json
 - docs/forge-vnext/schemas/forge.design-review-receipt.v1.schema.json
+- docs/forge-vnext/schemas/forge.visual-evidence-packet.v1.schema.json
 - docs/forge-vnext/fixtures/token-reskin-fail/
 - docs/forge-vnext/fixtures/shallow-dashboard-fail/design/
-- scripts/forge-vnext-design-gate-verify.mjs
+- docs/forge-vnext/fixtures/visual-judge-pre-native-pass/
+- scripts/forge-vnext-design-gate-verify.mjs or equivalent gate validator
+
+Required gates encoded:
+- visual_reference_research: references.md/json exist, use safe reference capture policy, include at least 5 references with borrow/avoid/transform notes
+- original_visual_synthesis: synthesis.md/json defines signature surfaces, core metaphor/shape, rejected patterns, and first-screen contract
+- prototype_before_native: local prototype receipt covers activation, core loop, returning/progress, empty/error, and money/deferred-boundary states
+- visual_judge_pre_native: judge artifact must pass and explicitly allow native expansion before any native generation card starts
 
 Acceptance:
 - token-only scaffold reskin fixture fails
+- missing/unsafe references fail before synthesis/prototype
+- generic original synthesis such as “warm native cards” fails
 - missing HTML/clickable prototype receipt fails pre-native phase
-- minimal app-specific fixture can pass with references, original synthesis, emotional tone, and design-system evidence
-- native screenshot review contract is defined but can use fixture evidence only
+- minimal app-specific fixture can pass with references, original synthesis, emotional tone, design-system evidence, prototype, and pre-native visual judge pass
+- native generation cannot proceed from this card unless pre-native visual judge pass is present
 - no second app generation, no external actions
 ```
 
-### Card 3: Implement generic verifier plan/evidence index runner
+### Card 3: Implement generic verifier plan/evidence index runner with native screenshot sequence
 
 Assignee: `forgeverifier`
 
@@ -515,11 +593,12 @@ Parents: `t_d9a685b2`
 Body:
 
 ```text
-Implement Forge vNext generic verification/evidence contracts. Do not generate a second app.
+Implement Forge vNext generic verification/evidence contracts, including the native screenshot sequence needed before the post-native visual judge. Do not generate a second app.
 
 Inputs:
 - docs/forge-vnext/executable-pipeline-integration.md
 - docs/forge-vnext/lanes/verifier-evidence-architecture.md
+- docs/forge-vnext/screenshot-sequence-verifier-contract.md when available
 - current scripts/forge-e2e-native-verify.mjs as an anti-pattern/reference only
 
 Deliverables:
@@ -529,6 +608,7 @@ Deliverables:
 - docs/forge-vnext/fixtures/missing-evidence-fail/
 - at least two verifier fixture app trees with different .forge/verification-plan.json files
 - scripts/forge-vnext-verifier.mjs
+- `visual_evidence_sequence` verifier check or equivalent local fixture contract
 
 Acceptance:
 - two fixture apps verify without editing verifier source
@@ -536,6 +616,9 @@ Acceptance:
 - approved substitute evidence can pass only when indexed with rationale/owner
 - reusable verifier source contains no DayRateLab/domain-specific literals
 - screenshot requirements are read from/derived through fixture .forge plans, not hardcoded names
+- native_screenshot_sequence requires activation, core-loop-after-action, returning/progress, empty/error, and money-boundary screenshots plus accessibility snapshots and evidence-index entries
+- stale/missing screenshots or mismatched hashes fail before visual_judge_post_native
+- verifier output states pixel/snapshot diffs are regression evidence only, not a taste judgment
 ```
 
 ### Card 4: Implement local launch package + learning schemas
@@ -609,6 +692,122 @@ Implementation note from fan-in dry run:
 - The pass fixture now includes a generic `.forge/verification-plan.json` plus `.forge/evidence/evidence-index.json`, so product, design, verifier, and launch-learning validators all pass locally without generating a second app.
 - Expected-fail fixtures remain intentionally failing at their configured gates: shallow dashboard (product/design), token reskin (design), missing evidence (verifier), and substitute without owner (verifier).
 
+### Visual gate overlay cards for any future native app-generation run
+
+These are not optional polish cards. They are required dependency edges for the next replacement of archived `t_81f3440f` or any future “generate proof app” card.
+
+#### Visual Card A: Run visual_reference_research for approved direction
+
+Assignee: `forgedesign`
+Parents: approved direction/product-taste gate
+
+Outcome: create safe, attributed visual reference research before prototype or native work.
+
+Required outputs:
+- `.forge/design/references.md`
+- `.forge/design/references.json`
+
+Acceptance:
+- at least 5 references total
+- at least 3 category references
+- at least 1 high-quality general craft reference
+- every reference has borrow/avoid/transform notes and safe capture policy
+- no paid/login/account action and no copied assets/layouts
+
+#### Visual Card B: Synthesize original visual language and prototype_before_native
+
+Assignee: `forgedesign`
+Parents: Visual Card A
+
+Outcome: create a product-specific visual language and local prototype for required states.
+
+Required outputs:
+- `.forge/design/original-synthesis.md`
+- `.forge/design/original-synthesis.json`
+- `.forge/design/prototype/index.html`
+- `.forge/design/prototype/prototype-receipt.json`
+- `.forge/design/visual-evidence-packet.json`
+
+Acceptance:
+- signature surfaces and first-screen contract are app-specific
+- prototype covers activation, core-loop-after-action, returning/progress, empty/error, and money/deferred-boundary states
+- token reskin/generic dashboard/card-shell patterns are explicitly rejected
+
+#### Visual Card C: Run visual_judge_pre_native
+
+Assignee: `forgejudge`
+Parents: Visual Card B
+
+Outcome: independently judge references, synthesis, and prototype before Swift generation.
+
+Required output:
+- `.forge/judges/visual-judge-pre-native.json`
+
+Acceptance:
+- verdict is `pass`
+- hard-fail list is empty
+- artifact explicitly allows native expansion
+- if verdict is repair/kill/human_gate/hard_fail_ai_slop, create or route `visual_repair_loop` cards and do not start native generation
+
+Hard dependency:
+- Native implementation/generation cards must list Visual Card C as a parent or prove an equivalent pre-native judge pass in their body and handoff.
+
+#### Visual Card D: Capture native_screenshot_sequence
+
+Assignee: `forgeverifier` or the native implementation worker, with `forgeverifier` owning verification
+Parents: native implementation slice
+
+Outcome: collect current native screenshots and accessibility snapshots for judge review.
+
+Required outputs:
+- `.forge/evidence/screenshots/native/activation.png`
+- `.forge/evidence/screenshots/native/core-loop-after-action.png`
+- `.forge/evidence/screenshots/native/returning-progress.png`
+- `.forge/evidence/screenshots/native/empty-error.png`
+- `.forge/evidence/screenshots/native/money-boundary.png`
+- `.forge/evidence/screenshots/native/accessibility-snapshots/*.json`
+- `.forge/evidence/evidence-index.json` entries with hashes for every screenshot/snapshot
+- verifier receipt for `visual_evidence_sequence`
+
+Acceptance:
+- missing/stale/unindexed screenshots fail
+- accessibility snapshot is present and non-empty for every screenshot state
+- pixel/snapshot diff is reported only as regression evidence, never as taste verdict
+
+#### Visual Card E: Run visual_judge_post_native before human review
+
+Assignee: `forgejudge`
+Parents: Visual Card D
+
+Outcome: independently judge whether native output matches the approved visual direction and is not AI slop before Matvii sees it.
+
+Required output:
+- `.forge/judges/visual-judge-post-native.json`
+
+Acceptance:
+- verdict is `pass`
+- hard-fail list is empty
+- artifact explicitly allows human review
+- judge compares references, original synthesis, prototype, native screenshot sequence, accessibility snapshots, and stale-residue scan
+- if verdict is repair/kill/human_gate/hard_fail_ai_slop, create or route `visual_repair_loop` cards and do not request Matvii review
+
+Hard dependency:
+- Human review, launch package review, final proof packet, and “ready” claims must list Visual Card E as a parent or prove an equivalent post-native judge pass in their body and handoff.
+
+#### Visual Card F: visual_repair_loop
+
+Assignee: owning lane based on failure (`forgedesign` for references/synthesis/prototype, native implementer for Swift surface mismatch, `forgeverifier` for stale/missing evidence)
+Parents: failed visual judge card
+
+Outcome: repair a specific visual failure, rerun the required evidence capture, and send the app back to the blocked judge gate.
+
+Acceptance:
+- repair card names exact failed screenshot/state/rubric dimension
+- repaired artifact path is listed
+- pre-native failures rerun Visual Card C
+- post-native failures rerun Visual Card D then Visual Card E
+- Matvii is asked only for explicit taste/product/kill decisions, not for mechanical repairable slop
+
 ### Card 6: Matvii decision gate for second-app generation
 
 Assignee: `forgejudge`
@@ -629,7 +828,7 @@ Deliverable:
 
 Acceptance:
 - no second app starts until Matvii explicitly chooses proceed
-- if proceed, assign/unblock t_81f3440f or create a replacement second-app card with concrete assignee and updated acceptance bar
+- if proceed, create a replacement second-app card with concrete assignee and updated acceptance bar; archived `t_81f3440f` remains historical context unless a human explicitly reactivates it
 ```
 
 ### Card 7: Generate second proof app from scratch
@@ -638,27 +837,41 @@ Assignee: choose after Card 6. Candidate: `default` if it is the implementation-
 
 Parents: Card 6 proceed decision
 
-Existing related card: `t_81f3440f` is already present but unassigned. Prefer updating/assigning that card after approval instead of creating a duplicate.
+Existing historical card: `t_81f3440f` exists but is archived. Treat it as context; create a replacement generation card only after Card 6 proceed approval, unless a human explicitly reactivates the archived card.
 
-Body additions for `t_81f3440f` when approved:
+Body additions for the replacement generation card when approved:
 
 ```text
 Use the repaired Forge vNext pipeline and gate package from docs/forge-vnext/executable-pipeline-integration.md.
 
 Before native generation:
 - product/taste gate must pass or block for Matvii
-- design proof gate must pass or block for Matvii
+- visual_reference_research must produce safe references.md/json with borrow/avoid/transform notes
+- original_visual_synthesis must define signature surfaces, core metaphor/shape, rejected patterns, and first-screen contract
+- prototype_before_native must produce a local prototype receipt for activation, core-loop-after-action, returning/progress, empty/error, and money/deferred-boundary states
+- visual_judge_pre_native must pass and explicitly allow native expansion
 - .forge/verification-plan.json must exist
+
+Native generation hard stop:
+- if visual_judge_pre_native is missing or non-pass, do not write/expand Swift; create/route visual_repair_loop instead
+
+Before human review:
+- native_screenshot_sequence must include activation, core-loop-after-action, returning/progress, empty/error, and money-boundary screenshots plus accessibility snapshots and evidence-index hashes
+- visual_judge_post_native must pass and explicitly allow human review
+
+Human review hard stop:
+- if visual_judge_post_native is missing or non-pass, do not ask Matvii to review/approve; create/route visual_repair_loop instead
 
 Completion bar:
 - separate generated app repo outside Forge template
 - native Mock build succeeds
 - simulator run succeeds
-- screenshots/evidence prove activation/core loop/retention or progress/money boundary
-- generic verifier passes without source edits
+- screenshots/evidence prove activation, core loop, returning/progress, empty/error, and money/deferred boundary
+- generic verifier passes without source edits, including visual_evidence_sequence
+- pre-native and post-native visual judge artifacts exist and pass
 - local launch package exists
 - app scorecard + pipeline scorecard + postmortem + learning-patches.json exist
-- no template contamination and no generic dashboard/card-shell pass
+- no template contamination and no generic dashboard/card-shell/AI-slop pass
 ```
 
 ## 9. Gate decision options for Matvii

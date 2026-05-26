@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.visual-evidence-packet.v1.schema.json",
+  "title": "Forge Visual Evidence Packet",
+  "description": "Inputs consumed by pre-native and post-native visual judges: safe references, original synthesis, prototype receipts, and native screenshot/accessibility evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "app",
+    "safety",
+    "references",
+    "original_synthesis",
+    "prototype",
+    "judge_results"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.visual_evidence_packet.v1"
+    },
+    "app": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "run_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "public_or_paid_actions",
+        "source_capture_policy",
+        "copy_assets_from_references"
+      ],
+      "properties": {
+        "public_or_paid_actions": {
+          "const": false
+        },
+        "source_capture_policy": {
+          "const": "reference_urls_only_or_local_thumbnails_with_attribution"
+        },
+        "copy_assets_from_references": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "references": {
+      "type": "array",
+      "minItems": 5,
+      "contains": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "const": "category_app"
+          }
+        }
+      },
+      "minContains": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "source_url",
+          "why_relevant",
+          "borrow",
+          "avoid",
+          "transformation_required"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "category_app",
+              "general_craft",
+              "platform_guideline",
+              "pattern_library"
+            ]
+          },
+          "source_url": {
+            "type": "string"
+          },
+          "screenshot_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "why_relevant": {
+            "type": "string"
+          },
+          "borrow": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "avoid": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "transformation_required": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "original_synthesis": {
+      "type": "object",
+      "required": [
+        "one_sentence_direction",
+        "core_shape",
+        "signature_surfaces",
+        "explicitly_rejected_patterns",
+        "first_screen_contract"
+      ],
+      "properties": {
+        "one_sentence_direction": {
+          "type": "string"
+        },
+        "core_shape": {
+          "type": "string"
+        },
+        "signature_surfaces": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "explicitly_rejected_patterns": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "first_screen_contract": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "prototype": {
+      "type": "object",
+      "required": [
+        "path",
+        "states",
+        "receipt_path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "activation",
+              "core-loop-after-action",
+              "returning-progress",
+              "empty-error",
+              "money-boundary"
+            ]
+          }
+        },
+        "receipt_path": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "native_screenshots": {
+      "type": "array",
+      "items": {
+        "$ref": "forge.visual-judge.v1.schema.json#/$defs/nativeScreenshot"
+      }
+    },
+    "judge_results": {
+      "type": "object",
+      "required": [
+        "pre_native",
+        "post_native"
+      ],
+      "properties": {
+        "pre_native": {
+          "type": "string"
+        },
+        "post_native": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

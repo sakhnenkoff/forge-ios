@@ -1,6 +1,7 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -23,6 +24,15 @@ function runVerifierAtPath(appPath, extraArgs = []) {
 function writeJson(filePath, value) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function writeFile(filePath, value) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, value);
+}
+
+function sha256File(filePath) {
+  return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
 }
 
 function parseStdoutJson(result) {
@@ -159,6 +169,119 @@ ${rejected.stderr}`);
         result.stderr,
         /stale evidence source hash in \.forge\/evidence\/ui-state-transcript\.json for HabitSpark\/Features\/HabitLoop\/HabitLoopViewModel\.swift: expected 0{64}, got [a-f0-9]{64}/
       );
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("requires current visual screenshot sequence evidence with accessibility snapshots", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "forge-visual-sequence-"));
+    try {
+      const appPath = path.join(tempRoot, "app");
+      fs.cpSync(path.join(fixtureRoot, "verifier-habit-pass"), appPath, { recursive: true });
+
+      const requiredStates = [
+        "activation",
+        "core-loop-after-action",
+        "returning-progress",
+        "empty-error",
+        "money-boundary"
+      ];
+      const planPath = path.join(appPath, ".forge/verification-plan.json");
+      const plan = JSON.parse(fs.readFileSync(planPath, "utf8"));
+      plan.checks.push({
+        id: "visual-sequence-required",
+        type: "visual_evidence_sequence",
+        severity: "blocker",
+        states: requiredStates,
+        rationale: "Post-native visual review needs current screenshots plus accessibility snapshots for every required loop state; pixel diffs alone are not a taste judge."
+      });
+      for (const state of requiredStates) {
+        plan.screenshot_slots.push({
+          id: `visual.screenshot.${state}`,
+          class: "screenshot",
+          required: true,
+          artifact: `.forge/evidence/screenshots/native/${state}.png`,
+          visual_state: state,
+          accessibility_snapshot_slot: `visual.accessibility.${state}`
+        });
+        plan.evidence_slots.push({
+          id: `visual.accessibility.${state}`,
+          class: "accessibility_snapshot",
+          required: true,
+          artifact: `.forge/evidence/screenshots/native/accessibility-snapshots/${state}.json`,
+          visual_state: state
+        });
+      }
+      writeJson(planPath, plan);
+
+      const indexPath = path.join(appPath, ".forge/evidence/evidence-index.json");
+      const index = JSON.parse(fs.readFileSync(indexPath, "utf8"));
+      for (const state of requiredStates) {
+        const screenshotRel = `.forge/evidence/screenshots/native/${state}.png`;
+        const accessibilityRel = `.forge/evidence/screenshots/native/accessibility-snapshots/${state}.json`;
+        const screenshotPath = path.join(appPath, screenshotRel);
+        const accessibilityPath = path.join(appPath, accessibilityRel);
+        writeFile(screenshotPath, `png fixture bytes for ${state}`);
+        writeJson(accessibilityPath, {
+          schema_version: "forge.accessibility-snapshot.v1",
+          state,
+          elements: [{ label: `${state} visible control` }]
+        });
+        index.slots.push({
+          id: `visual.screenshot.${state}`,
+          class: "screenshot",
+          required: true,
+          status: "accepted",
+          artifact: screenshotRel,
+          artifact_sha256: sha256File(screenshotPath)
+        });
+        index.slots.push({
+          id: `visual.accessibility.${state}`,
+          class: "accessibility_snapshot",
+          required: true,
+          status: "accepted",
+          artifact: accessibilityRel,
+          artifact_sha256: sha256File(accessibilityPath)
+        });
+      }
+      writeJson(indexPath, index);
+
+      const passing = parseStdoutJson(runVerifierAtPath(appPath));
+      assert.deepEqual(passing.visual_evidence_sequence_states, requiredStates);
+      assert.equal(passing.status, "pass");
+
+      const missingStatePlan = JSON.parse(fs.readFileSync(planPath, "utf8"));
+      missingStatePlan.checks.find((check) => check.id === "visual-sequence-required").states = requiredStates.filter((state) => state !== "money-boundary");
+      writeJson(planPath, missingStatePlan);
+      const missingState = runVerifierAtPath(appPath);
+      assert.notEqual(missingState.status, 0, "expected verifier contract to require money-boundary state");
+      assert.match(missingState.stderr, /required visual evidence state missing from check contract: money-boundary/i);
+      writeJson(planPath, plan);
+
+      fs.appendFileSync(path.join(appPath, ".forge/evidence/screenshots/native/core-loop-after-action.png"), "stale mutation");
+      const stale = runVerifierAtPath(appPath);
+      assert.notEqual(stale.status, 0, "expected stale screenshot hash rejection");
+      assert.match(stale.stderr, /stale visual evidence artifact hash.*core-loop-after-action\.png/i);
+
+      const repairedIndex = JSON.parse(fs.readFileSync(indexPath, "utf8"));
+      const corePath = path.join(appPath, ".forge/evidence/screenshots/native/core-loop-after-action.png");
+      repairedIndex.slots.find((slot) => slot.id === "visual.screenshot.core-loop-after-action").artifact_sha256 = sha256File(corePath);
+      fs.unlinkSync(path.join(appPath, ".forge/evidence/screenshots/native/accessibility-snapshots/returning-progress.json"));
+      writeJson(indexPath, repairedIndex);
+      const missingAccessibility = runVerifierAtPath(appPath);
+      assert.notEqual(missingAccessibility.status, 0, "expected missing accessibility snapshot rejection");
+      assert.match(missingAccessibility.stderr, /missing visual evidence artifact.*returning-progress\.json/i);
+
+      writeFile(path.join(tempRoot, "outside.png"), "outside fixture that must not be readable");
+      const escapeIndex = JSON.parse(fs.readFileSync(indexPath, "utf8"));
+      const escapeSlot = escapeIndex.slots.find((slot) => slot.id === "visual.screenshot.activation");
+      escapeSlot.artifact = "../outside.png";
+      escapeSlot.artifact_sha256 = sha256File(path.join(tempRoot, "outside.png"));
+      writeJson(indexPath, escapeIndex);
+      const escapedPath = runVerifierAtPath(appPath);
+      assert.notEqual(escapedPath.status, 0, "expected path traversal artifact rejection");
+      assert.match(escapedPath.stderr, /path escapes app root: \.\.\/outside\.png/i);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

@@ -8,6 +8,13 @@ const PLAN_VERSION = "forge.verification-plan.v1";
 const INDEX_VERSION = "forge.evidence-index.v1";
 const SUBSTITUTE_VERSION = "forge.substitute-evidence.v1";
 const MODULE_PLAN_VERSION = "forge.module-plan.v1";
+const REQUIRED_VISUAL_EVIDENCE_STATES = [
+  "activation",
+  "core-loop-after-action",
+  "returning-progress",
+  "empty-error",
+  "money-boundary"
+];
 const DEFAULT_REJECTED_PROOF_MODULES = [
   "auth-account",
   "paywall-purchases",
@@ -66,7 +73,13 @@ function normalizeArtifactPath(value) {
 }
 
 function relPath(base, value) {
-  return path.resolve(base, value);
+  const baseResolved = path.resolve(base);
+  const candidate = path.resolve(baseResolved, value);
+  const relative = path.relative(baseResolved, candidate);
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`path escapes app root: ${value}`);
+  }
+  return candidate;
 }
 
 function requireString(value, label, errors) {
@@ -361,6 +374,10 @@ async function runCheck(check, ctx) {
     if (!ctx.slotById.has(check.slot_id)) fail(`unknown evidence slot ${check.slot_id}`);
     return;
   }
+  if (check.type === "visual_evidence_sequence") {
+    await validateVisualEvidenceSequence(check, ctx);
+    return;
+  }
   fail(`unsupported generic check type ${check.type}`);
 }
 
@@ -377,6 +394,94 @@ function collectSlots(plan) {
 function validateIndexShape(index, errors) {
   if (index.schema_version !== INDEX_VERSION) errors.push(`evidence index schema_version must be ${INDEX_VERSION}`);
   if (!Array.isArray(index.slots)) errors.push("evidence index slots must be an array");
+}
+
+function findSlotForVisualState(slotById, state, klass) {
+  const canonical = klass === "screenshot" ? `visual.screenshot.${state}` : `visual.accessibility.${state}`;
+  if (slotById.has(canonical)) return slotById.get(canonical);
+  return [...slotById.values()].find((slot) => slot.class === klass && slot.visual_state === state);
+}
+
+async function validateIndexedArtifactHash(appPath, indexSlot, label, errors) {
+  if (typeof indexSlot.artifact !== "string" || indexSlot.artifact.trim() === "") {
+    errors.push(`missing visual evidence artifact for ${label}`);
+    return null;
+  }
+  const artifactPath = relPath(appPath, indexSlot.artifact);
+  if (!await exists(artifactPath)) {
+    errors.push(`missing visual evidence artifact for ${label}: ${indexSlot.artifact}`);
+    return null;
+  }
+  if (typeof indexSlot.artifact_sha256 !== "string" || !/^[a-f0-9]{64}$/i.test(indexSlot.artifact_sha256)) {
+    errors.push(`visual evidence index entry for ${label} must include artifact_sha256 to reject stale screenshot reuse`);
+    return artifactPath;
+  }
+  const actual = await sha256File(artifactPath);
+  if (actual !== indexSlot.artifact_sha256) {
+    errors.push(`stale visual evidence artifact hash for ${label} at ${indexSlot.artifact}: expected ${indexSlot.artifact_sha256}, got ${actual}`);
+  }
+  return artifactPath;
+}
+
+async function validateAccessibilitySnapshot(appPath, state, indexSlot, errors) {
+  const artifactPath = await validateIndexedArtifactHash(appPath, indexSlot, `accessibility ${state}`, errors);
+  if (!artifactPath) return;
+  const snapshot = await readJson(artifactPath).catch((error) => {
+    errors.push(`invalid accessibility snapshot JSON for ${state}: ${error.message}`);
+    return null;
+  });
+  if (!snapshot) return;
+  if (snapshot.state !== state) errors.push(`accessibility snapshot for ${state} must declare matching state, got ${snapshot.state ?? "<missing>"}`);
+  if (!Array.isArray(snapshot.elements) || snapshot.elements.length === 0) errors.push(`accessibility snapshot for ${state} must include visible elements`);
+}
+
+async function validateVisualEvidenceSequence(check, ctx) {
+  const fail = (message) => severitySink(check, ctx.errors, ctx.warnings).push(`${check.id}: ${message}`);
+  const states = Array.isArray(check.states) && check.states.length > 0 ? check.states : REQUIRED_VISUAL_EVIDENCE_STATES;
+  for (const state of REQUIRED_VISUAL_EVIDENCE_STATES) {
+    if (!states.includes(state)) fail(`required visual evidence state missing from check contract: ${state}`);
+  }
+
+  const indexPath = relPath(ctx.appPath, ".forge/evidence/evidence-index.json");
+  const index = await readJson(indexPath).catch((error) => {
+    fail(`missing or invalid evidence index: ${error.message}`);
+    return null;
+  });
+  if (!index) return;
+  validateIndexShape(index, ctx.errors);
+  const indexSlots = new Map((index.slots ?? []).map((slot) => [slot.id, slot]));
+
+  const acceptedStates = [];
+  for (const state of states) {
+    const screenshotSlot = findSlotForVisualState(ctx.slotById, state, "screenshot");
+    if (!screenshotSlot) {
+      fail(`missing screenshot slot in verification plan for visual state ${state}`);
+      continue;
+    }
+    const accessibilitySlotId = screenshotSlot.accessibility_snapshot_slot;
+    const accessibilitySlot = accessibilitySlotId ? ctx.slotById.get(accessibilitySlotId) : findSlotForVisualState(ctx.slotById, state, "accessibility_snapshot");
+    if (!accessibilitySlot) {
+      fail(`missing accessibility snapshot slot in verification plan for visual state ${state}`);
+      continue;
+    }
+
+    const screenshotIndexSlot = indexSlots.get(screenshotSlot.id);
+    const accessibilityIndexSlot = indexSlots.get(accessibilitySlot.id);
+    if (!screenshotIndexSlot) fail(`missing visual evidence index entry for ${state} screenshot slot ${screenshotSlot.id}`);
+    if (!accessibilityIndexSlot) fail(`missing visual evidence index entry for ${state} accessibility snapshot slot ${accessibilitySlot.id}`);
+    if (!screenshotIndexSlot || !accessibilityIndexSlot) continue;
+    if (screenshotIndexSlot.status !== "accepted") fail(`visual screenshot ${state} must be accepted, got ${screenshotIndexSlot.status}`);
+    if (accessibilityIndexSlot.status !== "accepted") fail(`visual accessibility snapshot ${state} must be accepted, got ${accessibilityIndexSlot.status}`);
+    if (screenshotIndexSlot.status !== "accepted" || accessibilityIndexSlot.status !== "accepted") continue;
+    if (screenshotSlot.artifact && screenshotIndexSlot.artifact !== screenshotSlot.artifact) fail(`visual screenshot ${state} artifact mismatch: plan ${screenshotSlot.artifact}, index ${screenshotIndexSlot.artifact ?? "<missing>"}`);
+    if (accessibilitySlot.artifact && accessibilityIndexSlot.artifact !== accessibilitySlot.artifact) fail(`visual accessibility ${state} artifact mismatch: plan ${accessibilitySlot.artifact}, index ${accessibilityIndexSlot.artifact ?? "<missing>"}`);
+
+    await validateIndexedArtifactHash(ctx.appPath, screenshotIndexSlot, `screenshot ${state}`, ctx.errors);
+    await validateAccessibilitySnapshot(ctx.appPath, state, accessibilityIndexSlot, ctx.errors);
+    acceptedStates.push(state);
+  }
+
+  ctx.visualEvidenceSequenceStates = acceptedStates;
 }
 
 async function validateAcceptedEvidenceSourceHashes(appPath, indexSlot, errors) {
@@ -487,7 +592,7 @@ async function main() {
   await evaluateModulePlan(appPath, plan, errors);
 
   const slotById = collectSlots(plan);
-  const ctx = { appPath, plan, errors, warnings, slotById };
+  const ctx = { appPath, plan, errors, warnings, slotById, visualEvidenceSequenceStates: [] };
   for (const check of [...mandatoryGeneratedProofChecks(plan), ...(plan.checks ?? [])]) await runCheck(check, ctx);
   const evidence = await evaluateEvidence(appPath, plan, slotById, errors, warnings);
 
@@ -498,6 +603,8 @@ async function main() {
     plan_path: planPath,
     evidence_index: evidence.indexPath,
     screenshot_slots: [...slotById.values()].filter((slot) => slot.class === "screenshot").map((slot) => slot.id),
+    visual_evidence_sequence_states: ctx.visualEvidenceSequenceStates,
+    visual_evidence_sequence_policy: "integrity_only_requires_screenshots_accessibility_hashes_and_index_entries_not_pixel_taste_judgment",
     blockers: errors,
     warnings
   };

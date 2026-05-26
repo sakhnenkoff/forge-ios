@@ -1,0 +1,234 @@
+{
+  "schema_version": "forge.visual_judge.v1",
+  "rubric_version": "forge.visual_judge.rubric.v1",
+  "stage": "post_native",
+  "verdict": "hard_fail_ai_slop",
+  "confidence": "high",
+  "app": {
+    "id": "pet-care-relay",
+    "name": "Pet Care Relay",
+    "run_id_or_fixture": "visual-judge-ai-slop-fail"
+  },
+  "inputs": {
+    "visual_evidence_packet": ".forge/design/visual-evidence-packet.json",
+    "references": ".forge/design/references.json",
+    "original_synthesis": ".forge/design/original-synthesis.json",
+    "prototype_receipt": ".forge/design/prototype/prototype-receipt.json",
+    "design_system": ".forge/design/design-system.json",
+    "native_screenshots": [
+      {
+        "state": "activation",
+        "path": ".forge/evidence/screenshots/native/activation.png",
+        "required_visible_claims": [
+          "named product surface",
+          "visible next action"
+        ],
+        "accessibility_snapshot_path": ".forge/evidence/screenshots/native/accessibility-snapshots/activation.json"
+      },
+      {
+        "state": "core-loop-after-action",
+        "path": ".forge/evidence/screenshots/native/core-loop-after-action.png",
+        "required_visible_claims": [
+          "named product surface",
+          "visible next action"
+        ],
+        "accessibility_snapshot_path": ".forge/evidence/screenshots/native/accessibility-snapshots/core-loop-after-action.json"
+      },
+      {
+        "state": "returning-progress",
+        "path": ".forge/evidence/screenshots/native/returning-progress.png",
+        "required_visible_claims": [
+          "named product surface",
+          "visible next action"
+        ],
+        "accessibility_snapshot_path": ".forge/evidence/screenshots/native/accessibility-snapshots/returning-progress.json"
+      },
+      {
+        "state": "empty-error",
+        "path": ".forge/evidence/screenshots/native/empty-error.png",
+        "required_visible_claims": [
+          "named product surface",
+          "visible next action"
+        ],
+        "accessibility_snapshot_path": ".forge/evidence/screenshots/native/accessibility-snapshots/empty-error.json"
+      },
+      {
+        "state": "money-boundary",
+        "path": ".forge/evidence/screenshots/native/money-boundary.png",
+        "required_visible_claims": [
+          "named product surface",
+          "visible next action"
+        ],
+        "accessibility_snapshot_path": ".forge/evidence/screenshots/native/accessibility-snapshots/money-boundary.json"
+      }
+    ],
+    "accessibility_snapshots": [
+      ".forge/evidence/screenshots/native/accessibility-snapshots/activation.json",
+      ".forge/evidence/screenshots/native/accessibility-snapshots/core-loop-after-action.json",
+      ".forge/evidence/screenshots/native/accessibility-snapshots/returning-progress.json",
+      ".forge/evidence/screenshots/native/accessibility-snapshots/empty-error.json",
+      ".forge/evidence/screenshots/native/accessibility-snapshots/money-boundary.json"
+    ],
+    "evidence_index": ".forge/evidence/evidence-index.json"
+  },
+  "score_thresholds": {
+    "total_pass_min": 80,
+    "hard_minimums": {
+      "reference_quality": 8,
+      "original_synthesis": 10,
+      "first_screen_specificity": 11,
+      "workflow_shape": 9,
+      "native_ios_craft": 7,
+      "visual_hierarchy_density": 7,
+      "emotional_tone_copy": 6,
+      "evidence_integrity": 8,
+      "distinctiveness_non_bullshit": 8
+    },
+    "dimension_maxima": {
+      "reference_quality": 12,
+      "original_synthesis": 14,
+      "first_screen_specificity": 14,
+      "workflow_shape": 12,
+      "native_ios_craft": 10,
+      "visual_hierarchy_density": 10,
+      "emotional_tone_copy": 8,
+      "evidence_integrity": 10,
+      "distinctiveness_non_bullshit": 10
+    },
+    "hard_fail_policy": "any_hard_fail_blocks_even_if_total_score_passes"
+  },
+  "scores": {
+    "reference_quality": 9,
+    "original_synthesis": 5,
+    "first_screen_specificity": 4,
+    "workflow_shape": 5,
+    "native_ios_craft": 7,
+    "visual_hierarchy_density": 4,
+    "emotional_tone_copy": 3,
+    "evidence_integrity": 8,
+    "distinctiveness_non_bullshit": 2,
+    "total": 47
+  },
+  "hard_fails": [
+    "generic_first_screen",
+    "token_reskin",
+    "no_signature_surface",
+    "human_says_slop"
+  ],
+  "comparison_summary": "The screenshot packet reads as a noun-swapped dashboard: equal cards, generic progress copy, and no named-pet relay surface despite sufficient references.",
+  "dimension_findings": [
+    {
+      "dimension": "reference_quality",
+      "score": 9,
+      "max": 12,
+      "hard_min": 8,
+      "status": "pass",
+      "evidence": [
+        "References are public, attributed, category-relevant, and transformed rather than copied."
+      ]
+    },
+    {
+      "dimension": "original_synthesis",
+      "score": 5,
+      "max": 14,
+      "hard_min": 10,
+      "status": "fail",
+      "evidence": [
+        "Borrow/avoid/transform logic yields a product-specific visual metaphor and concrete signature surfaces."
+      ]
+    },
+    {
+      "dimension": "first_screen_specificity",
+      "score": 4,
+      "max": 14,
+      "hard_min": 11,
+      "status": "fail",
+      "evidence": [
+        "The first screen proves the app category/job above the fold without noun-swap dashboard genericism."
+      ]
+    },
+    {
+      "dimension": "workflow_shape",
+      "score": 5,
+      "max": 12,
+      "hard_min": 9,
+      "status": "fail",
+      "evidence": [
+        "Activation, action, changed state, and returning-progress loop are visible in artifacts, not only prose."
+      ]
+    },
+    {
+      "dimension": "native_ios_craft",
+      "score": 7,
+      "max": 10,
+      "hard_min": 7,
+      "status": "pass",
+      "evidence": [
+        "Native hierarchy, accessibility, touch targets, and platform conventions support the design instead of flattening it."
+      ]
+    },
+    {
+      "dimension": "visual_hierarchy_density",
+      "score": 4,
+      "max": 10,
+      "hard_min": 7,
+      "status": "fail",
+      "evidence": [
+        "One dominant job is visually prioritized; density is intentional, not equal-card soup."
+      ]
+    },
+    {
+      "dimension": "emotional_tone_copy",
+      "score": 3,
+      "max": 8,
+      "hard_min": 6,
+      "status": "fail",
+      "evidence": [
+        "Copy reflects the user anxiety/relief and avoids generic SaaS filler."
+      ]
+    },
+    {
+      "dimension": "evidence_integrity",
+      "score": 8,
+      "max": 10,
+      "hard_min": 8,
+      "status": "pass",
+      "evidence": [
+        "Artifacts are current, path-indexed, and sufficient for retryable judgment."
+      ]
+    },
+    {
+      "dimension": "distinctiveness_non_bullshit",
+      "score": 2,
+      "max": 10,
+      "hard_min": 8,
+      "status": "fail",
+      "evidence": [
+        "Removing labels would still leave a recognizable product-specific shape."
+      ]
+    }
+  ],
+  "repair_requests": [
+    {
+      "id": "repair.signature_surface_missing",
+      "severity": "blocking",
+      "target_state": "activation",
+      "request": "Replace the generic dashboard with a named-pet morning relay surface showing due care, recent note, and vet-packet readiness.",
+      "acceptance": [
+        "Activation screenshot has a product-specific hero, not four equal metric cards.",
+        "At least one signature surface remains identifiable after labels are hidden."
+      ]
+    }
+  ],
+  "next_gate": "visual_repair",
+  "next_gate_allowed": false,
+  "human_gate_allowed": false,
+  "safety": {
+    "no_paid_or_account_actions": true,
+    "references_are_research_only": true,
+    "no_reference_assets_copied": true,
+    "notes": [
+      "Fixture data only; no native app generated and no external action performed."
+    ]
+  }
+}

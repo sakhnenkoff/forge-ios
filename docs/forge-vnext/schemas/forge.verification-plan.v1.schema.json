@@ -137,7 +137,8 @@
               "repo_forbid_regex",
               "spec_feature_statuses",
               "gate_assertion",
-              "evidence_slot_present"
+              "evidence_slot_present",
+              "visual_evidence_sequence"
             ]
           },
           "severity": {

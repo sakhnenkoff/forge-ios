@@ -1,0 +1,60 @@
+{
+  "schema_version": "forge.taste_first_candidate_gate.evidence.v1",
+  "generated_at": "2026-05-26 11:15:27 CEST",
+  "task_id": "t_40554af0",
+  "source": "public iTunes lookup API plus prior next-app-direction-research artifacts",
+  "safety_boundaries": [
+    "read-only public App Store/iTunes data only",
+    "local docs written under docs/forge-vnext only",
+    "no native generation",
+    "no app repo creation",
+    "no App Store Connect, TestFlight, signing, account, money, IAP setup, public posting, or external mutation"
+  ],
+  "recommended_direction": "pet_care_relay",
+  "gate_options": ["accept", "repair", "reject"],
+  "candidates": [
+    {
+      "id": "pet_care_relay",
+      "gate_posture": "accept_with_tight_taste_safety_contract",
+      "expected_first_screenshot": "Milo's Morning Relay: pet identity/status, due care cards, recent note, vet-packet readiness, mark-care-done/add-note actions, tracking-not-medical-advice microcopy",
+      "evidence_strength": "medium_high_for_direction_gate_low_for_launch_claims",
+      "retention_loop": "morning/evening care or refill/appointment trigger -> complete/snooze care or add note -> timeline/vet packet becomes useful -> next due care/prep returns user",
+      "monetization_believability": "medium: DogCat public IAP rows previously captured at $4.49 monthly / $39.99 yearly; future Pro could package multi-pet history, recurring templates, vet packet export, refill insights, household handoff after sync approval",
+      "risks": ["medical-advice creep", "clinic integration gravity", "household sync expectation", "generic checklist/dashboard UI", "privacy-sensitive pet health notes"],
+      "public_apps": [
+        {"name": "PetDesk", "track_id": 631377773, "rating": 4.85818, "rating_count": 480261, "updated": "2026-04-15T20:28:22Z", "signals": ["appointments", "reminders/messages/to-dos", "providers", "medication refills"]},
+        {"name": "Digitail - Smarter Pet Care", "track_id": 1473042508, "rating": 4.90072, "rating_count": 2790, "updated": "2026-05-06T07:32:21Z", "signals": ["digital medical record", "share with vet", "appointments", "chat", "day-to-day activities", "refills"]},
+        {"name": "Pet Care Tracker Dog Cat Log", "track_id": 1551003273, "rating": 4.82409, "rating_count": 921, "updated": "2026-05-18T00:06:42Z", "signals": ["pet schedules", "daily reminders", "health records", "activity logs", "vaccination tracking"]}
+      ]
+    },
+    {
+      "id": "closet_cost_per_wear_coach",
+      "gate_posture": "repair_before_native",
+      "expected_first_screenshot": "Shop your closet this week: 20-item capsule rail, outfit cards, neglected-piece nudge, cost-per-wear meter, log-today action",
+      "evidence_strength": "medium",
+      "retention_loop": "getting dressed/laundry/packing/shopping trigger -> log outfit or inspect capsule -> less decision fatigue and wardrobe utilization insight -> next outfit/reset returns user",
+      "monetization_believability": "high relative to candidates: Stylebook paid upfront; Whering/Acloset public IAP/subscription rows previously captured",
+      "risks": ["manual proof may feel fake without real garment photos", "AI/photo cleanup expectations", "generic grid/calendar/list risk", "privacy posture for photos later"],
+      "public_apps": [
+        {"name": "Whering: Your Digital Closet", "track_id": 1519461680, "rating": 4.67272, "rating_count": 10123, "updated": "2026-04-27T09:01:36Z", "signals": ["digital closet", "closet insights", "outfit inspiration", "shopping sense-check"]},
+        {"name": "Stylebook", "track_id": 335709058, "price": "$4.99", "rating": 4.67467, "rating_count": 8622, "updated": "2025-06-15T13:08:37Z", "signals": ["wardrobe management", "outfit calendar", "packing lists", "wardrobe stats"]},
+        {"name": "Acloset - AI Fashion Assistant", "track_id": 1542311809, "rating": 4.36038, "rating_count": 3932, "updated": "2026-05-22T01:18:05Z", "signals": ["digital wardrobe", "photo item adding", "AI stylist", "spending habits"]}
+      ]
+    },
+    {
+      "id": "maintenance_milepost",
+      "gate_posture": "reject_or_park_unless_safe_utility_is_goal",
+      "expected_first_screenshot": "Before the next trip: older-car card, due-soon lane, last receipt summary, mechanic-packet preview, log-service/update-mileage action",
+      "evidence_strength": "medium",
+      "retention_loop": "odometer/service/repair/pre-trip trigger -> log service/update mileage/reset interval -> clearer next due/mechanic conversation/resale history -> next service threshold returns user",
+      "monetization_believability": "low_medium: Fuelly public IAP previously captured at $7.99 annual / $0.99 monthly; likely low utility ceiling",
+      "risks": ["generic forms/tables/reminders UI", "CARFAX data moat", "low price ceiling", "less frequent emotional loop"],
+      "public_apps": [
+        {"name": "CARFAX Car Care", "track_id": 552472249, "rating": 4.84037, "rating_count": 123201, "updated": "2026-05-06T14:01:46Z", "signals": ["maintenance and repair tracking", "service reminders", "service history", "recall alerts", "estimated value"]},
+        {"name": "Vehicle Maintenance Tracker", "track_id": 1315913699, "rating": 4.54758, "rating_count": 2679, "updated": "2026-05-25T22:48:08Z", "signals": ["vehicle details", "due dates", "maintenance records", "receipt photos", "multi-vehicle history"]},
+        {"name": "Fuelly: MPG & Service Tracker", "track_id": 295905460, "rating": 4.73681, "rating_count": 29010, "updated": "2024-06-03T07:55:33Z", "signals": ["fuel economy", "maintenance records", "service reminders", "expenses", "photo/PDF attachments"]}
+      ]
+    }
+  ],
+  "native_generation_allowed": false
+}

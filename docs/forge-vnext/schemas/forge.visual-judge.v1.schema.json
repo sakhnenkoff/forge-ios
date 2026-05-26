@@ -1,0 +1,735 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.local/schemas/forge.visual-judge.v1.schema.json",
+  "title": "Forge Visual Judge Output",
+  "description": "Machine-readable output contract for Forge pre-native and post-native visual/taste judges. The judge is a blocking gate above build/verifier results and may hard-fail AI slop before human review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rubric_version",
+    "stage",
+    "verdict",
+    "confidence",
+    "app",
+    "inputs",
+    "score_thresholds",
+    "scores",
+    "hard_fails",
+    "comparison_summary",
+    "dimension_findings",
+    "repair_requests",
+    "next_gate",
+    "next_gate_allowed",
+    "human_gate_allowed",
+    "safety"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "forge.visual_judge.v1"
+    },
+    "rubric_version": {
+      "const": "forge.visual_judge.rubric.v1"
+    },
+    "stage": {
+      "enum": [
+        "pre_native",
+        "post_native"
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "repair_required",
+        "hard_fail_ai_slop",
+        "hard_fail_safety",
+        "kill_direction"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "app": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "run_id_or_fixture"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id_or_fixture": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visual_evidence_packet",
+        "references",
+        "original_synthesis",
+        "prototype_receipt"
+      ],
+      "properties": {
+        "visual_evidence_packet": {
+          "type": "string",
+          "minLength": 1
+        },
+        "references": {
+          "type": "string",
+          "minLength": 1
+        },
+        "original_synthesis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prototype_receipt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "design_system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "native_screenshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nativeScreenshot"
+          }
+        },
+        "accessibility_snapshots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evidence_index": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "score_thresholds": {
+      "$ref": "#/$defs/scoreThresholds"
+    },
+    "scores": {
+      "$ref": "#/$defs/scores"
+    },
+    "hard_fails": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/hardFailReason"
+      }
+    },
+    "comparison_summary": {
+      "type": "string",
+      "minLength": 30
+    },
+    "dimension_findings": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "$ref": "#/$defs/dimensionFinding"
+      }
+    },
+    "repair_requests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repairRequest"
+      }
+    },
+    "next_gate": {
+      "enum": [
+        "native_expansion",
+        "visual_repair",
+        "human_review",
+        "kill_or_research_reset",
+        "safety_review"
+      ]
+    },
+    "next_gate_allowed": {
+      "type": "boolean"
+    },
+    "human_gate_allowed": {
+      "type": "boolean"
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_paid_or_account_actions",
+        "references_are_research_only",
+        "no_reference_assets_copied",
+        "notes"
+      ],
+      "properties": {
+        "no_paid_or_account_actions": {
+          "type": "boolean"
+        },
+        "references_are_research_only": {
+          "type": "boolean"
+        },
+        "no_reference_assets_copied": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "const": "post_native"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "inputs": {
+            "required": [
+              "native_screenshots",
+              "accessibility_snapshots",
+              "evidence_index"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "const": "pass"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "hard_fails": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "enum": [
+              "hard_fail_ai_slop",
+              "hard_fail_safety",
+              "kill_direction"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "next_gate_allowed": {
+            "const": false
+          },
+          "human_gate_allowed": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "const": "pass"
+          }
+        },
+        "required": [
+          "verdict"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scores": {
+            "properties": {
+              "total": {
+                "minimum": 80
+              },
+              "reference_quality": {
+                "minimum": 8
+              },
+              "original_synthesis": {
+                "minimum": 10
+              },
+              "first_screen_specificity": {
+                "minimum": 11
+              },
+              "workflow_shape": {
+                "minimum": 9
+              },
+              "native_ios_craft": {
+                "minimum": 7
+              },
+              "visual_hierarchy_density": {
+                "minimum": 7
+              },
+              "emotional_tone_copy": {
+                "minimum": 6
+              },
+              "evidence_integrity": {
+                "minimum": 8
+              },
+              "distinctiveness_non_bullshit": {
+                "minimum": 8
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "const": "pre_native"
+          },
+          "verdict": {
+            "const": "pass"
+          }
+        },
+        "required": [
+          "stage",
+          "verdict"
+        ]
+      },
+      "then": {
+        "properties": {
+          "next_gate": {
+            "const": "native_expansion"
+          },
+          "next_gate_allowed": {
+            "const": true
+          },
+          "human_gate_allowed": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "const": "post_native"
+          },
+          "verdict": {
+            "const": "pass"
+          }
+        },
+        "required": [
+          "stage",
+          "verdict"
+        ]
+      },
+      "then": {
+        "properties": {
+          "next_gate": {
+            "const": "human_review"
+          },
+          "next_gate_allowed": {
+            "const": true
+          },
+          "human_gate_allowed": {
+            "const": true
+          },
+          "inputs": {
+            "required": [
+              "native_screenshots",
+              "accessibility_snapshots",
+              "evidence_index"
+            ],
+            "properties": {
+              "native_screenshots": {
+                "minItems": 5
+              },
+              "accessibility_snapshots": {
+                "minItems": 5
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "enum": [
+              "repair_required",
+              "hard_fail_ai_slop",
+              "hard_fail_safety",
+              "kill_direction"
+            ]
+          }
+        },
+        "required": [
+          "verdict"
+        ]
+      },
+      "then": {
+        "properties": {
+          "human_gate_allowed": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "dimensionId": {
+      "enum": [
+        "reference_quality",
+        "original_synthesis",
+        "first_screen_specificity",
+        "workflow_shape",
+        "native_ios_craft",
+        "visual_hierarchy_density",
+        "emotional_tone_copy",
+        "evidence_integrity",
+        "distinctiveness_non_bullshit"
+      ]
+    },
+    "hardFailReason": {
+      "enum": [
+        "missing_references",
+        "copying_reference",
+        "missing_original_synthesis",
+        "generic_first_screen",
+        "token_reskin",
+        "no_signature_surface",
+        "prototype_missing",
+        "native_mismatch",
+        "screenshots_missing",
+        "empty_shell",
+        "stale_residue",
+        "human_says_slop",
+        "unsafe_reference_capture",
+        "paid_or_account_action_required",
+        "medical_or_financial_claim_creep"
+      ]
+    },
+    "scoreThresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_pass_min",
+        "hard_minimums",
+        "dimension_maxima",
+        "hard_fail_policy"
+      ],
+      "properties": {
+        "total_pass_min": {
+          "const": 80
+        },
+        "hard_minimums": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reference_quality",
+            "original_synthesis",
+            "first_screen_specificity",
+            "workflow_shape",
+            "native_ios_craft",
+            "visual_hierarchy_density",
+            "emotional_tone_copy",
+            "evidence_integrity",
+            "distinctiveness_non_bullshit"
+          ],
+          "properties": {
+            "reference_quality": {
+              "const": 8
+            },
+            "original_synthesis": {
+              "const": 10
+            },
+            "first_screen_specificity": {
+              "const": 11
+            },
+            "workflow_shape": {
+              "const": 9
+            },
+            "native_ios_craft": {
+              "const": 7
+            },
+            "visual_hierarchy_density": {
+              "const": 7
+            },
+            "emotional_tone_copy": {
+              "const": 6
+            },
+            "evidence_integrity": {
+              "const": 8
+            },
+            "distinctiveness_non_bullshit": {
+              "const": 8
+            }
+          }
+        },
+        "dimension_maxima": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reference_quality",
+            "original_synthesis",
+            "first_screen_specificity",
+            "workflow_shape",
+            "native_ios_craft",
+            "visual_hierarchy_density",
+            "emotional_tone_copy",
+            "evidence_integrity",
+            "distinctiveness_non_bullshit"
+          ],
+          "properties": {
+            "reference_quality": {
+              "const": 12
+            },
+            "original_synthesis": {
+              "const": 14
+            },
+            "first_screen_specificity": {
+              "const": 14
+            },
+            "workflow_shape": {
+              "const": 12
+            },
+            "native_ios_craft": {
+              "const": 10
+            },
+            "visual_hierarchy_density": {
+              "const": 10
+            },
+            "emotional_tone_copy": {
+              "const": 8
+            },
+            "evidence_integrity": {
+              "const": 10
+            },
+            "distinctiveness_non_bullshit": {
+              "const": 10
+            }
+          }
+        },
+        "hard_fail_policy": {
+          "const": "any_hard_fail_blocks_even_if_total_score_passes"
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_quality",
+        "original_synthesis",
+        "first_screen_specificity",
+        "workflow_shape",
+        "native_ios_craft",
+        "visual_hierarchy_density",
+        "emotional_tone_copy",
+        "evidence_integrity",
+        "distinctiveness_non_bullshit",
+        "total"
+      ],
+      "properties": {
+        "reference_quality": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "original_synthesis": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 14
+        },
+        "first_screen_specificity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 14
+        },
+        "workflow_shape": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "native_ios_craft": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "visual_hierarchy_density": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "emotional_tone_copy": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "evidence_integrity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "distinctiveness_non_bullshit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "dimensionFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "score",
+        "max",
+        "hard_min",
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/dimensionId"
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "hard_min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "repair",
+            "fail"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "repairRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "target_state",
+        "request",
+        "acceptance"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "enum": [
+            "blocking",
+            "advisory"
+          ]
+        },
+        "target_state": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request": {
+          "type": "string",
+          "minLength": 10
+        },
+        "acceptance": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "nativeScreenshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "path",
+        "required_visible_claims",
+        "accessibility_snapshot_path"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "activation",
+            "core-loop-after-action",
+            "returning-progress",
+            "empty-error",
+            "money-boundary"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_visible_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "accessibility_snapshot_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

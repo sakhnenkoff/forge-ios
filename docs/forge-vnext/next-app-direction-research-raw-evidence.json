@@ -1,0 +1,158 @@
+{
+  "schema_version": "forge.app_direction_research.raw_evidence.v1",
+  "generated_at": "2026-05-26 05:59:18 CEST",
+  "task_id": "t_af23dabc",
+  "scope": "read-only public App Store/iTunes evidence for three next-app iOS app directions",
+  "safety_boundaries": [
+    "no retired old proof app inspiration, baseline, naming, design, product direction, fixtures, or implementation artifacts used",
+    "no public mutation, posting, accounts, credentials, paid services, App Store Connect, TestFlight, signing, IAP setup, or work-system access",
+    "no app installation or logged-in competitor use"
+  ],
+  "methods": [
+    {
+      "id": "M-APPLE-SEARCH",
+      "source_type": "app_store_public",
+      "access_method": "Python urllib against https://itunes.apple.com/search?entity=software&country=us",
+      "confidence": "medium",
+      "limitation": "iTunes search resultCount is returned-result count, not true App Store search volume; ratings are popularity proxy, not direct demand"
+    },
+    {
+      "id": "M-APPLE-LOOKUP",
+      "source_type": "app_store_public",
+      "access_method": "Python urllib against https://itunes.apple.com/lookup?id=...&country=us&entity=software",
+      "confidence": "high_for_listing_metadata_medium_for_market_fit",
+      "limitation": "listing copy and ratings do not expose full paywall, churn, retention, or review text"
+    },
+    {
+      "id": "M-APPLE-PAGE-SCRAPE",
+      "source_type": "public_web",
+      "access_method": "Python urllib logged-out apps.apple.com page text extraction for IAP snippets",
+      "confidence": "medium",
+      "limitation": "public HTML is volatile and snippet-based; no in-app purchase flow was opened"
+    }
+  ],
+  "search_density_probes": [
+    {"query": "pet care tracker", "returned_results": 48, "top_10_rating_count_sum": 494038},
+    {"query": "pet medication reminder", "returned_results": 49, "top_10_rating_count_sum": 709685, "limitation": "mixed with human medication reminder apps"},
+    {"query": "car maintenance", "returned_results": 46, "top_10_rating_count_sum": 156278},
+    {"query": "vehicle maintenance log", "returned_results": 47, "top_10_rating_count_sum": 156026},
+    {"query": "wardrobe outfit planner", "returned_results": 46, "top_10_rating_count_sum": 66792},
+    {"query": "closet outfit planner", "returned_results": 49, "top_10_rating_count_sum": 29185}
+  ],
+  "competitor_sources": [
+    {
+      "id": "PET-APP-DOGCAT",
+      "direction": "pet_care_relay",
+      "name": "Pet Care Tracker Dog Cat Log",
+      "url": "https://apps.apple.com/us/app/pet-care-tracker-dog-cat-log/id1551003273",
+      "rating": 4.82409,
+      "rating_count": 921,
+      "price": "Free",
+      "updated": "2026-05-18T00:06:42Z",
+      "listing_signals": ["pet schedules", "daily reminders", "health records", "activity logs", "vaccination/health tracking"],
+      "iap_public_snippet": "DogCat Plus Monthly $4.49; Dog Cat Plus Yearly $39.99; additional avatar/video credit purchases",
+      "confidence": "medium"
+    },
+    {
+      "id": "PET-APP-PETDESK",
+      "direction": "pet_care_relay",
+      "name": "PetDesk",
+      "url": "https://apps.apple.com/us/app/petdesk/id631377773",
+      "rating": 4.8582,
+      "rating_count": 480204,
+      "price": "Free",
+      "updated": "2026-04-15T20:28:22Z",
+      "listing_signals": ["appointments", "reminders/messages/to-dos", "providers", "loyalty", "medication refills"],
+      "confidence": "high_for_category_popularity_low_for_indie_monetization"
+    },
+    {
+      "id": "PET-APP-DIGITAIL",
+      "direction": "pet_care_relay",
+      "name": "Digitail - Smarter Pet Care",
+      "url": "https://apps.apple.com/us/app/digitail-smarter-pet-care/id1473042508",
+      "rating": 4.90068,
+      "rating_count": 2789,
+      "price": "Free",
+      "updated": "2026-05-06T07:32:21Z",
+      "listing_signals": ["digital medical record", "share with vet", "appointments", "vet chat", "day-to-day activities", "refills"],
+      "confidence": "medium"
+    },
+    {
+      "id": "CAR-APP-CARFAX",
+      "direction": "maintenance_milepost",
+      "name": "CARFAX Car Care",
+      "url": "https://apps.apple.com/us/app/carfax-car-care/id552472249",
+      "rating": 4.84037,
+      "rating_count": 123193,
+      "price": "Free",
+      "updated": "2026-05-06T14:01:46Z",
+      "listing_signals": ["maintenance and repair tracking", "service reminders", "estimated value", "service history", "recall alerts", "mileage and fuel tracking"],
+      "confidence": "high_for_category_popularity_low_for_indie_defensibility"
+    },
+    {
+      "id": "CAR-APP-VMT",
+      "direction": "maintenance_milepost",
+      "name": "Vehicle Maintenance Tracker",
+      "url": "https://apps.apple.com/us/app/vehicle-maintenance-tracker/id1315913699",
+      "rating": 4.54758,
+      "rating_count": 2679,
+      "price": "Free",
+      "updated": "2026-05-25T22:48:08Z",
+      "listing_signals": ["vehicle details", "due dates", "maintenance records", "receipt photos", "multi-vehicle", "chronological history"],
+      "confidence": "medium"
+    },
+    {
+      "id": "CAR-APP-FUELLY",
+      "direction": "maintenance_milepost",
+      "name": "Fuelly: MPG & Service Tracker",
+      "url": "https://apps.apple.com/us/app/fuelly-mpg-service-tracker/id295905460",
+      "rating": 4.73681,
+      "rating_count": 29009,
+      "price": "Free",
+      "updated": "2024-06-03T07:55:33Z",
+      "listing_signals": ["fuel economy", "maintenance records", "service reminders", "expenses", "photo/PDF attachments", "sync"],
+      "iap_public_snippet": "Premium Annual $7.99; Premium Monthly $0.99",
+      "confidence": "medium"
+    },
+    {
+      "id": "CLOSET-APP-WHERING",
+      "direction": "closet_cost_per_wear_coach",
+      "name": "Whering: Your Digital Closet",
+      "url": "https://apps.apple.com/us/app/whering-your-digital-closet/id1519461680",
+      "rating": 4.67272,
+      "rating_count": 10117,
+      "price": "Free",
+      "updated": "2026-04-27T09:01:36Z",
+      "listing_signals": ["digital closet", "outfit inspiration", "shopping sense-check", "personal insights", "9M+ users claimed in listing"],
+      "iap_public_snippet": "credits and supporter tiers including $0.99, $9.99, $14.99, $29.99, $49.99; Outfit Maker $4.99",
+      "confidence": "medium"
+    },
+    {
+      "id": "CLOSET-APP-STYLEBOOK",
+      "direction": "closet_cost_per_wear_coach",
+      "name": "Stylebook",
+      "url": "https://apps.apple.com/us/app/stylebook/id335709058",
+      "rating": 4.67462,
+      "rating_count": 8621,
+      "price": "$4.99",
+      "updated": "2025-06-15T13:08:37Z",
+      "listing_signals": ["90+ wardrobe management features", "import clothes", "outfit calendar", "packing lists", "wardrobe stats", "15+ years claimed in listing"],
+      "confidence": "medium_high_for_paid_precedent"
+    },
+    {
+      "id": "CLOSET-APP-ACLOSET",
+      "direction": "closet_cost_per_wear_coach",
+      "name": "Acloset - AI Fashion Assistant",
+      "url": "https://apps.apple.com/us/app/acloset-ai-fashion-assistant/id1542311809",
+      "rating": 4.36056,
+      "rating_count": 3930,
+      "price": "Free",
+      "updated": "2026-05-22T01:18:05Z",
+      "listing_signals": ["digital wardrobe", "AI stylist", "photo/search item adding", "weather and schedule outfit suggestions", "spending habits"],
+      "iap_public_snippet": "Basic Monthly $3.99; Premium Monthly $9.99; Basic Yearly $27.99; Premium Yearly $59.99; Expert Monthly $24.99; Expert Yearly $147.99; beans purchases",
+      "confidence": "medium"
+    }
+  ],
+  "recommended_direction": "pet_care_relay",
+  "native_generation_allowed": false
+}

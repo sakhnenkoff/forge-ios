@@ -153,6 +153,19 @@ A per-app dependency must state:
 - Evaluation plan: read-only query set + source capture; no posting/DM/follow/login mutation.
 - Rollback: mark unavailable and use public web/HN/blog substitutes.
 
+### dep.research.github-stars-capability-miner
+
+- Status: `proposed`
+- Scope: `foundation`
+- Layer: `research`, `operator_ux`, `native`, `visual`, `launch`, `substrate`
+- Candidate: Authenticated read-only mining of Matvii's GitHub starred repositories via `gh api /user/starred`.
+- Problem: Generic web research misses Matvii's personally curated tool/taste priors; starred repos contain many high-signal Forge capability candidates.
+- Expected leverage: personalized capability discovery for agent skills, iOS proof tooling, design/taste references, launch tools, and orchestration patterns.
+- Risks: personal bias, stale stars, license/maintenance uncertainty, accidental dependency adoption without review.
+- Approval needed: none for read-only metadata mining; cloning/installing/adopting any repo requires separate approval/review.
+- Evaluation plan: classify all stars into Forge layers and produce top inspect/spike/park recommendations with URLs, star counts, license/update metadata, and risk class.
+- Rollback: remove stars as required source and continue with public GitHub/API search.
+
 ### dep.research.appstore-public-harvester
 
 - Status: `proposed`

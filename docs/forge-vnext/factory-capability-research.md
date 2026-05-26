@@ -32,6 +32,7 @@ These were probed as read-only public/local sources and are usable for Forge cap
 - Hacker News Algolia API
 - Product Hunt public pages
 - GitHub public API and public repository pages
+- Matvii's GitHub starred repositories via authenticated read-only `gh api /user/starred`
 - Page Flows public pages where exposed without login
 - Refero public pages and public GitHub skill repo
 - Local Hermes skills/profiles/Kanban state
@@ -127,7 +128,7 @@ Recommended spike:
 
 - `spike.reddit-demand-harvester`
 
-#### GitHub public API and public repos
+#### GitHub public API, public repos, and Matvii's stars
 
 Use for:
 
@@ -135,7 +136,8 @@ Use for:
 - open-source iOS app patterns;
 - package health and maintenance signals;
 - issue/discussion pain signals;
-- agent/tool/MCP candidate discovery.
+- agent/tool/MCP candidate discovery;
+- personalized Forge capability discovery from Matvii's own curated stars.
 
 Key references:
 
@@ -145,15 +147,23 @@ Key references:
 - `https://github.com/pointfreeco/swift-snapshot-testing`
 - `https://github.com/ChargePoint/xcparse`
 - `https://github.com/mobile-dev-inc/Maestro`
+- `docs/forge-vnext/github-stars-capability-mining.md`
+
+Stars mining result:
+
+- `189` starred repos fetched read-only.
+- High-signal candidates include `getsentry/XcodeBuildMCP`, `b-nnett/codex-plusplus-ios-simulator`, `ParthJadhav/app-store-screenshots`, `froessell/app-store-opportunity-research`, `AvdLee/SwiftUI-Agent-Skill`, `AvdLee/Xcode-Build-Optimization-Agent-Skill`, `raindrop-ai/workshop`, `steipete/agent-scripts`, `jakubkrehel/make-interfaces-feel-better`, and `VoltAgent/awesome-design-md`.
 
 Risks:
 
 - license must be checked per repo;
-- stars are not taste;
+- stars are a discovery signal, not adoption approval;
+- star count is not taste;
 - do not copy code/assets unless explicitly allowed and approved.
 
-Recommended spike:
+Recommended spikes:
 
+- `spike.github-stars-capability-miner`
 - `spike.github-real-ios-pattern-index`
 
 #### Apple HIG and Design Resources
